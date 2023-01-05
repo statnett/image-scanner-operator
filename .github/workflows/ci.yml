@@ -81,3 +81,23 @@ jobs:
           go-version-file: go.mod
           cache: true
       - run: make test
+  build-image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: image-scanner/controller:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/controller-image.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: controller-image
+          path: /tmp/controller-image.tar
