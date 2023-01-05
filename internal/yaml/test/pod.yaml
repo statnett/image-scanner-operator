@@ -1,0 +1,5 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  generateName: akhq-dk-7fbbc6bbd6-

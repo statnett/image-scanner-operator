@@ -1,0 +1,7 @@
+2022-10-07T07:00:22.800Z	[31mFATAL[0m	image scan error: scan error: unable to initialize a scanner: unable to initialize the docker scanner: 4 errors occurred:
+	* unable to inspect the image (docker.io/library/nginx@sha256:bbbac8fadefe364d77e2f4671c9af568cc74c3ba65e57f6f7d0335f8c90b37a7): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+	* unable to initialize Podman client: no podman socket found: stat podman/podman.sock: no such file or directory
+	* containerd socket not found: /run/containerd/containerd.sock
+	* GET https://registry1.docker.io/v2/library/nginx/manifests/sha256:bbbac8fadefe364d77e2f4671c9af568cc74c3ba65e57f6f7d0335f8c90b37a7: MANIFEST_UNKNOWN: The named manifest is not known to the registry.; map[manifest:sha256:bbbac8fadefe364d77e2f4671c9af568cc74c3ba65e57f6f7d0335f8c90b37a7]
+
+

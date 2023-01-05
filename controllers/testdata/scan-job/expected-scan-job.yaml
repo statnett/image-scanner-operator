@@ -1,0 +1,126 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    batch.kubernetes.io/job-tracking: ""
+  generateName: echo-6bdfc76c56-8ae43
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: image-scanner
+    app.kubernetes.io/name: trivy
+    controller.statnett.no/hash: 81f104762422c0137dee1c58e2c4d454
+    controller.statnett.no/namespace: replica-set
+    controller.statnett.no/uid: <CIS-UID>
+  namespace: image-scanner-jobs
+spec:
+  activeDeadlineSeconds: 3600
+  backoffLimit: 3
+  completionMode: NonIndexed
+  completions: 1
+  parallelism: 1
+  suspend: false
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/managed-by: image-scanner
+        app.kubernetes.io/name: trivy
+        controller-uid: <CONTROLLER-UID>
+        job-name: <JOB-NAME>
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchFields:
+                  - key: metadata.name
+                    operator: In
+                    values:
+                      - worker-1
+      automountServiceAccountToken: false
+      containers:
+        - args:
+            - filesystem
+            - /
+          command:
+            - /var/run/image-scanner/trivy
+          env:
+            - name: HOME
+              value: /tmp
+            - name: TRIVY_OFFLINE_SCAN
+              value: "true"
+            - name: TRIVY_SECURITY_CHECKS
+              value: vuln
+            - name: TRIVY_CACHE_DIR
+              value: /tmp
+            - name: TRIVY_SERVER
+              value: http://trivy.image-scanner.svc.cluster.local
+            - name: TRIVY_QUIET
+              value: "true"
+            - name: TRIVY_FORMAT
+              value: template
+            - name: TRIVY_TEMPLATE
+              value: <REPORT-TEMPLATE>
+            - name: TRIVY_TIMEOUT
+              value: 1h0m0s
+          image: docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+          imagePullPolicy: IfNotPresent
+          name: scan-image
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500M
+            requests:
+              cpu: 100m
+              memory: 100M
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+            - mountPath: /var/run/image-scanner
+              name: image-scanner
+            - mountPath: /tmp
+              name: tmp
+          workingDir: /tmp
+      dnsPolicy: ClusterFirst
+      initContainers:
+        - command:
+            - cp
+            - -v
+            - /usr/local/bin/trivy
+            - /var/run/image-scanner/trivy
+          image: aquasecurity/trivy
+          imagePullPolicy: IfNotPresent
+          name: trivy
+          resources:
+            limits:
+              cpu: 50m
+              memory: 200Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+            - mountPath: /var/run/image-scanner
+              name: image-scanner
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: image-scanner
+      serviceAccountName: image-scanner
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: image-scanner
+        - emptyDir: {}
+          name: tmp
+  ttlSecondsAfterFinished: 7200  # Two hours

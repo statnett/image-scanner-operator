@@ -1,0 +1,9 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: application-example-app-a309a
+  namespace: default
+spec:
+  digest: 'sha256:a309a1246997daa3f8b0edc6dbf7aa0733805e7387b33cb825b0a41f95a076b7'
+  name: docker.io/kennship/http-echo

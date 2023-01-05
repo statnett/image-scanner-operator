@@ -1,0 +1,9 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: example-764f64554c-c8e44
+  namespace: default
+spec:
+  digest: 'sha256:bbbac8fadefe364d77e2f4671c9af568cc74c3ba65e57f6f7d0335f8c90b37a7'
+  name: docker.io/library/nginx

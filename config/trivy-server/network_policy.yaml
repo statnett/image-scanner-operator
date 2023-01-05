@@ -1,0 +1,17 @@
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: trivy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: trivy
+      app.kubernetes.io/component: server
+  ingress:
+    - ports:
+        # Note: The port(s) must refer to the Pod/container port(s), and not the Service port(s)
+        - port: 4954
+          protocol: TCP
+  policyTypes:
+    - Ingress

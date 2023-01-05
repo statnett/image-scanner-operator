@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: trivy
+spec:
+  serviceName: trivy
+  replicas: 1
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+            storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+  template:
+    spec:
+      containers:
+        - name: server
+          image: ghcr.io/aquasecurity/trivy:0.35.0
+          args:
+            - server
+          envFrom:
+            - configMapRef:
+                name: trivy
+              prefix: TRIVY_
+          ports:
+            - name: http
+              containerPort: 4954
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+              readOnly: false
+            - mountPath: /home/scanner/.cache
+              name: data
+              readOnly: false
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}

@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo
+  labels:
+    app.kubernetes.io/name: echo-d
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: echo-d
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: echo-d
+    spec:
+      containers:
+        - name: app
+          # Using image digest to avoid fragile tests
+          image: >-
+            docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+          ports:
+            - name: app
+              containerPort: 8080
+              protocol: TCP

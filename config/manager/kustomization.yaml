@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manager.yaml
+patchesStrategicMerge:
+  - manager_patch.yaml
+configMapGenerator:
+  - literals:
+      - CIS_METRICS_LABELS=app.kubernetes.io/name
+      - SCAN_INTERVAL=12h
+      - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.35.0
+      - TRIVY_SERVER=http://trivy.image-scanner.svc.cluster.local
+      - SCAN_JOB_NAMESPACE=image-scanner-jobs
+      - SCAN_JOB_SERVICE_ACCOUNT=image-scanner
+      - SCAN_WORKLOAD_RESOURCES=deployments.apps,replicasets.apps,statefulsets.apps,daemonsets.apps,cronjobs.batch,jobs.batch,replicationcontrollers
+      - ZAP_ENCODER=json
+      - ZAP_LOG_LEVEL=info
+      - ZAP_TIME_ENCODING=iso8601
+    name: config
+images:
+  - name: controller
+    newName: image-scanner/controller
+    newTag: latest

@@ -1,0 +1,10 @@
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+metadata:
+  name: default
+testDirs:
+  - test/e2e/scenario
+  - test/e2e/workload-scan
+timeout: 120
+reportFormat: xml

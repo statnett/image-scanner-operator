@@ -1,0 +1,6 @@
+resources:
+  - monitor.yaml
+  - service.yaml
+
+configurations:
+  - kustomizeconfig.yaml

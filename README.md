@@ -1,0 +1,230 @@
+# Image Scanner Operator
+
+Image Scanner is a Kubernetes Operator supporting detection of vulnerabilities
+in running container images.
+
+Kubernetes clusters run containers created from a great diversity of container
+images with several origins.
+Some images are custom for an in-house application, while others are pulled
+from internal/external registries.
+It is considered best practice to scan images in container image build
+pipelines, to provide developers with early feedback on potential
+vulnerabilities.
+
+While this is good, it is not enough:
+
+Software vulnerabilities are typically detected after the software is available
+for use, and some applications will typically "just run" in their runtime
+environment - with little/no maintenance.
+And some users might not use pipelines at all or use pipelines without image
+scanning enabled.
+
+Running applications on container images with vulnerabilities _might_ represent
+an unacceptable threat.
+To mend this, we want **a mechanism to identify vulnerabilities
+in running container images**.
+This could then be used by developers, system administrators, platform
+administrators and security officers
+to take action when vulnerabilities are detected.
+
+Actions could for instance be:
+
+- upgrade to a patched version of the vulnerable software component
+- conclude that the vulnerability is not relevant
+- conclude that the vulnerability represents an acceptable risk
+- shut down the application
+
+There seem to be quite a lot of companies/communities providing similar
+software. Some key features of this operator are:
+
+- **Can be configured to scan container images for any
+  [Kubernetes Workload](https://kubernetes.io/docs/concepts/workloads/)**,
+  including custom resources. The only requirement is that the resource
+  MUST
+  [own](https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/)
+  Pods - either directly or indirectly.
+- **Container images are scanned based on immutable image sha256 digests**
+  obtained from
+  [Container Runtime Interface (CRI)](https://kubernetes.io/docs/concepts/architecture/cri/),
+  not from potentially mutable image tags.
+- To avoid unnecessary image pulls, the image scan workload is preferred
+  scheduled on the same node(s) as the workload to be scanned.
+- Since the image to scan should already be present in the node container
+  registry, **the image scan workload does not have to bother with image pull secrets for
+  private images**, exploiting a
+  [Kubernetes "bug"](https://github.com/kubernetes/kubernetes/issues/18787).
+
+## Description
+
+// TODO(user): An in-depth paragraph about your project and overview of use
+
+### Custom resources
+
+// TODO: Add a summary of key `ContainerImageScan` (CIS) characteristics
+
+### Supported features
+
+- Namespaced container image scan API (custom resource): `ContainerImageScan` (CIS)
+- A CIS resource contains details and a summary of detected vulnerabilities
+- Users can identify the owning/controlling resource (workload) of the scanned container image
+- All container images are rescanned regularly with configurable interval
+- Provides vulnerability summary metrics from CIS to enable dashboards/alerts
+- Any user with access to a namespace is allowed to _view_ CIS
+- Cluster-scoped operator that operates in configured namespaces with an
+  include/block list of namespaces that should be scanned
+- Supports any type of workload (also CRDs) by configuration
+- Scanning workload images from private/authenticated image registries
+
+### Future improvements
+
+- Push-based feedback to stakeholders
+- Enable users to ignore/suppress vulnerabilities
+- Perform actions from detected vulnerabilities
+
+### Eschewed Features
+
+- Produce metrics for vulnerability details
+- Historical container image scans
+- Helm chart installation
+
+## Getting Started
+
+You’ll need a Kubernetes cluster to run the Image Scanner.
+You can use [KIND](https://sigs.k8s.io/kind) or [k3s](https://k3s.io/)
+to get a local cluster for testing.
+
+We currently only support installation using
+[Kustomize](https://kustomize.io/), either as a standalone tool,
+using the kustomize (`-k`) feature in recent versions of `kubectl`
+or any GitOps tool with support for Kustomize.
+
+### Install
+
+Since you probably want to adjust the default configuration (and/or have
+multiple clusters), we suggest you start by creating a kustomize overlay using
+the Image Scanner default kustomization as a
+[remote directory](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md#remote-directories)
+base. Your initial kustomization.yaml could be as simple as:
+
+```yaml
+resources:
+  - https://github.com/statnett/image-scanner-operator//config/default?ref=vMAJOR.MINOR.PATCH
+```
+
+If you have multiple clusters, you should create one
+[variant](https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#variant)
+overlay per cluster.
+
+To install (or update) the operator into your cluster run:
+
+```sh
+kubectl apply --server-side -k <overlay-directory>
+```
+
+### Configure
+
+The Image Scanner operator is highly configurable and supports numerous
+flags with corresponding environment variables. To get an overview over
+all that can be configured, the easiest is to use the CLI:
+
+```sh
+docker run ghcr.io/statnett/image-scanner-operator --help
+```
+
+You can also use environment variables for configuration, but a flag takes
+precedence over the corresponding environment variable.
+Environment variable names can be deduced from flags by upper-casing and
+replacing the `-` delimiter with `_`.
+
+Since we use kustomize to install the operator, the easiest is
+to customize the environment variables provided
+from the ConfigMap in the default Image Scanner configuration using a
+[configMapGenerator](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/configmapgenerator/).
+
+```yaml
+configMapGenerator:
+  - name: config
+    behavior: merge
+    literals:
+      - CIS_METRICS_LABELS=app.kubernetes.io/name
+      - SCAN_INTERVAL=24h
+```
+
+This example will override the default configuration to:
+
+- add metric labels with values obtained from `app.kubernetes.io/name` Pod labels
+- rescan workload images with an interval of 24 hours
+
+### Uninstall
+
+To uninstall the operator, just use `kubectl` to delete all resources produced
+by the overlay used when [installing](#install) the operator:
+
+```sh
+kubectl delete -k --ignore-not-found=true <overlay-directory>
+```
+
+## Contributing
+
+We would love your feedback on any aspect of the Image Scanner!
+Feel free to open issues for things you think can be improved.
+Or/and open a PR (better) to show how we can improve.
+
+See [Contributing](CONTRIBUTING.md) for information about setting up
+your local development environment, and the contribution workflow expected.
+
+Please ensure that you are following our [Code Of Conduct](CODE_OF_CONDUCT.md)
+during any interaction with the community.
+
+### How it works
+
+This project aims to follow the Kubernetes
+[Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/).
+
+It uses
+[Controllers](https://kubernetes.io/docs/concepts/architecture/controller/)
+which provides a reconcile function responsible for synchronizing resources
+until the desired state is reached.
+
+Image Scanner consists of three controllers that coordinates
+scanning of running container images as illustrated in the diagram below.
+
+The container image scan Kubernetes API is materialized
+by the `ContainerImageScan` custom resources providing
+an eventually consistent image scanning result in its
+status.
+
+The actual vulnerability scan of a container image and the vulnerability
+database is provided by an external service to the operator.
+
+Using a simple `Pod`, with a single container, as an example:
+
+1. Create a `ContainerImageScan` when the immutable image reference is available in the `Pod` status.
+2. Create a scan `Job` from immutable image reference in the `ContainerImageScan` spec.
+3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
+   and update the `ContainerImageScan` status.
+
+```plantuml
+@startuml
+
+cloud "Kubernetes API server" {
+  () Pod as pod
+  () ContainerImageScan as cis
+  () Job as job
+}
+
+package "Image Scanner Operator" {
+  [Workload controller] ..> pod : watch
+  [Workload controller] --> cis : create
+  [CIS controller] ..> cis : watch
+  [CIS controller] --> job : create
+  [Scan Job controller] ..> job : watch
+  [Scan Job controller] --> cis : update status
+}
+
+@enduml
+```
+
+## License
+
+Licensed under the [MIT License](LICENSE).

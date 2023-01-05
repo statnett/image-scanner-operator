@@ -1,0 +1,16 @@
+{{- $vulns := list -}}
+{{- range . }}
+    {{- range .Vulnerabilities -}}
+        {{- $vuln := dict -}}
+        {{- $_ := set $vuln "vulnerabilityID" .VulnerabilityID -}}
+        {{- $_ := set $vuln "pkgName" .PkgName -}}
+        {{- $_ := set $vuln "installedVersion" .InstalledVersion -}}
+        {{- $_ := set $vuln "severity" .Severity -}}
+        {{- if .PkgPath }}{{ $_ := set $vuln "pkgPath" .PkgPath }}{{ end -}}
+        {{- if .FixedVersion }}{{ $_ := set $vuln "fixedVersion" .FixedVersion }}{{ end -}}
+        {{- if .Title }}{{ $_ := set $vuln "title" .Title }}{{ end -}}
+        {{- if .PrimaryURL }}{{ $_ := set $vuln "primaryURL" .PrimaryURL }}{{ end -}}
+        {{- $vulns = append $vulns $vuln -}}
+    {{- end -}}
+{{- end -}}
+{{- toPrettyJson $vulns }}

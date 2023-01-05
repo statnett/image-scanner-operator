@@ -1,0 +1,31 @@
+# permissions for end users to view containerimagescans.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: containerimagescan-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: image-scanner-operator
+    app.kubernetes.io/part-of: image-scanner-operator
+    app.kubernetes.io/managed-by: kustomize
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    rbac.authorization.k8s.io/aggregate-to-cluster-reader: "true"
+  name: containerimagescan-viewer-role
+rules:
+  - apiGroups:
+      - stas.statnett.no
+    resources:
+      - containerimagescans
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - stas.statnett.no
+    resources:
+      - containerimagescans/status
+    verbs:
+      - get

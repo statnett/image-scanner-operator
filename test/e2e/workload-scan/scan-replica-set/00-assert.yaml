@@ -1,0 +1,13 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: replicaset-echo-app-8394d
+spec:
+  digest: 'sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33'
+  name: docker.io/nginxinc/nginx-unprivileged
+  workload:
+    containerName: app
+    group: apps
+    kind: ReplicaSet
+    name: echo

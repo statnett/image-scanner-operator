@@ -1,0 +1,11 @@
+---
+kind: ResourceQuota
+apiVersion: v1
+metadata:
+  name: image-scanner-jobs
+spec:
+  hard:
+    limits.cpu: '4'
+    limits.memory: 32Gi
+    requests.cpu: '2'
+    requests.memory: 16Gi

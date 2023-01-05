@@ -1,0 +1,20 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echo
+  labels:
+    app.kubernetes.io/name: echo-j
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          # Using image digest to avoid fragile tests
+          image: >-
+            docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+          command:
+            - sleep
+            - 10s
+      restartPolicy: Never
+  ttlSecondsAfterFinished: 120

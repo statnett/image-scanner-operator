@@ -1,0 +1,6 @@
+---
+apiVersion: k3d.io/v1alpha4
+kind: Simple
+metadata:
+  name: image-scanner
+image: docker.io/rancher/k3s:v1.25.4-k3s1

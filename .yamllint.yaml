@@ -1,0 +1,11 @@
+extends: default
+ignore: |
+  /config/crd/bases/
+  /config/rbac/role.yaml
+rules:
+  comments:
+    require-starting-space: false
+  document-start: disable
+  line-length:
+    max: 120
+    allow-non-breakable-inline-mappings: true

@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: echo
+  labels:
+    app.kubernetes.io/name: echo-ds
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: echo-ds
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: echo-ds
+    spec:
+      containers:
+        - name: app
+          # Using image digest to avoid fragile tests
+          image: >-
+            docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+          ports:
+            - name: app
+              containerPort: 8080
+              protocol: TCP
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  # Single node k3s cluster
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: In
+                    values:
+                      - "true"
+              - matchExpressions:
+                  # Openshift workers
+                  - key: node-role.kubernetes.io/worker
+                    operator: In
+                    values:
+                      - ''

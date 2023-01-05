@@ -1,0 +1,182 @@
+[
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32207",
+    "severity": "CRITICAL",
+    "title": "curl: Unpreserved file permissions",
+    "vulnerabilityID": "CVE-2022-32207"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32221",
+    "severity": "CRITICAL",
+    "title": "curl: POST following PUT confusion",
+    "vulnerabilityID": "CVE-2022-32221"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42915",
+    "severity": "CRITICAL",
+    "title": "curl: HTTP proxy double-free",
+    "vulnerabilityID": "CVE-2022-42915"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27780",
+    "severity": "HIGH",
+    "title": "curl: percent-encoded path separator in URL host",
+    "vulnerabilityID": "CVE-2022-27780"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27781",
+    "severity": "HIGH",
+    "title": "curl: CERTINFO never-ending busy-loop",
+    "vulnerabilityID": "CVE-2022-27781"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27782",
+    "severity": "HIGH",
+    "title": "curl: TLS and SSH connection too eager reuse",
+    "vulnerabilityID": "CVE-2022-27782"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42916",
+    "severity": "HIGH",
+    "title": "curl: HSTS bypass via IDN",
+    "vulnerabilityID": "CVE-2022-42916"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32207",
+    "severity": "CRITICAL",
+    "title": "curl: Unpreserved file permissions",
+    "vulnerabilityID": "CVE-2022-32207"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32221",
+    "severity": "CRITICAL",
+    "title": "curl: POST following PUT confusion",
+    "vulnerabilityID": "CVE-2022-32221"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42915",
+    "severity": "CRITICAL",
+    "title": "curl: HTTP proxy double-free",
+    "vulnerabilityID": "CVE-2022-42915"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27780",
+    "severity": "HIGH",
+    "title": "curl: percent-encoded path separator in URL host",
+    "vulnerabilityID": "CVE-2022-27780"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27781",
+    "severity": "HIGH",
+    "title": "curl: CERTINFO never-ending busy-loop",
+    "vulnerabilityID": "CVE-2022-27781"
+  },
+  {
+    "fixedVersion": "7.80.0-r2",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27782",
+    "severity": "HIGH",
+    "title": "curl: TLS and SSH connection too eager reuse",
+    "vulnerabilityID": "CVE-2022-27782"
+  },
+  {
+    "fixedVersion": "7.80.0-r4",
+    "installedVersion": "7.80.0-r1",
+    "pkgName": "libcurl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42916",
+    "severity": "HIGH",
+    "title": "curl: HSTS bypass via IDN",
+    "vulnerabilityID": "CVE-2022-42916"
+  },
+  {
+    "fixedVersion": "2.9.14-r1",
+    "installedVersion": "2.9.14-r0",
+    "pkgName": "libxml2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-2309",
+    "severity": "HIGH",
+    "title": "lxml: NULL Pointer Dereference in lxml",
+    "vulnerabilityID": "CVE-2022-2309"
+  },
+  {
+    "fixedVersion": "2.9.14-r2",
+    "installedVersion": "2.9.14-r0",
+    "pkgName": "libxml2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-40303",
+    "severity": "HIGH",
+    "title": "libxml2: integer overflows with XML_PARSE_HUGE",
+    "vulnerabilityID": "CVE-2022-40303"
+  },
+  {
+    "fixedVersion": "2.9.14-r2",
+    "installedVersion": "2.9.14-r0",
+    "pkgName": "libxml2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-40304",
+    "severity": "HIGH",
+    "title": "libxml2: dict corruption caused by entity reference cycles",
+    "vulnerabilityID": "CVE-2022-40304"
+  },
+  {
+    "fixedVersion": "6.3_p20211120-r1",
+    "installedVersion": "6.3_p20211120-r0",
+    "pkgName": "ncurses-libs",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
+    "severity": "HIGH",
+    "title": "ncurses: segfaulting OOB read",
+    "vulnerabilityID": "CVE-2022-29458"
+  },
+  {
+    "fixedVersion": "6.3_p20211120-r1",
+    "installedVersion": "6.3_p20211120-r0",
+    "pkgName": "ncurses-terminfo-base",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
+    "severity": "HIGH",
+    "title": "ncurses: segfaulting OOB read",
+    "vulnerabilityID": "CVE-2022-29458"
+  },
+  {
+    "fixedVersion": "1.2.12-r2",
+    "installedVersion": "1.2.12-r0",
+    "pkgName": "zlib",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-37434",
+    "severity": "CRITICAL",
+    "title": "zlib: heap-based buffer over-read and overflow in inflate() in inflate.c via a large gzip header extra field",
+    "vulnerabilityID": "CVE-2022-37434"
+  }
+]

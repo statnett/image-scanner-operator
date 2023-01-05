@@ -1,0 +1,11 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: pod-private-app-a2aaa
+spec:
+  digest: 'sha256:dff47399162e01bec423fa5a06796d076df6b7f69695bca00e9d3acfa83cd717'
+  name: ghcr.io/statnett/http-https-echo-internal
+status:
+  vulnerabilitySummary:
+    severityCount: {}

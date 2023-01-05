@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+data:
+  .dockerconfigjson: >-
+    ewoJImF1dGhzIjogewoJCSJnaXRsYWItcmVnaXN0cnkuc3RhdG5ldHQubm8iOiB7CgkJCSJhdXRoIjogIlptOXZPa010YzBob1lWWmpabEZMZGtGbVZXRkRkSGwzIgoJCX0KCX0KfQ==
+metadata:
+  name: registry-credentials
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private
+  labels:
+    app.kubernetes.io/name: private
+spec:
+  containers:
+    - name: app
+      # Using image digest to avoid fragile tests
+      image: >-
+        ghcr.io/statnett/http-https-echo-internal:initial-version@sha256:dff47399162e01bec423fa5a06796d076df6b7f69695bca00e9d3acfa83cd717
+      ports:
+        - name: app
+          containerPort: 8080
+          protocol: TCP
+  imagePullSecrets:
+    - name: registry-credentials

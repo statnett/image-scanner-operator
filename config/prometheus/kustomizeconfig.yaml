@@ -1,0 +1,6 @@
+# This file is for teaching kustomize how to substitute label matching in ServiceMonitor
+commonLabels:
+  - path: spec/selector/matchLabels
+    create: true
+    group: monitoring.coreos.com
+    kind: ServiceMonitor
