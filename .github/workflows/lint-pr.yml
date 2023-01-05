@@ -1,0 +1,48 @@
+---
+name: Lint PR
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+permissions: # added using https://github.com/step-security/secure-workflows
+  contents: read
+jobs:
+  pr-title-lint:
+    permissions:
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
+      statuses: write # for amannn/action-semantic-pull-request to mark status of analyzed PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: amannn/action-semantic-pull-request@01d5fd8a8ebb9aafe902c40c53f0f4744f7381eb # v5.0.2
+        id: lint_pr_title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: marocchino/sticky-pull-request-comment@fcf6fe9e4a0409cd9316a5011435be0f3327f1e1 # v2.3.1
+        # When the previous steps fails, the workflow would stop. By adding this
+        # condition you can continue the execution with the populated error message.
+        if: always() && (steps.lint_pr_title.outputs.error_message != null)
+        with:
+          header: pr-title-lint-error
+          # yamllint disable rule:line-length
+          message: |
+            Hey there and thank you for opening this pull request! :wave:
+
+            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
+
+            Details:
+
+            ```
+            ${{ steps.lint_pr_title.outputs.error_message }}
+            ```
+          # yamllint enable rule:line-length
+      # Delete a previous comment when the issue has been resolved
+      - if: ${{ steps.lint_pr_title.outputs.error_message == null }}
+        uses: marocchino/sticky-pull-request-comment@fcf6fe9e4a0409cd9316a5011435be0f3327f1e1 # v2.3.1
+        with:
+          header: pr-title-lint-error
+          delete: true
