@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 jobs:
-  build-image:
+  build-push-image:
     permissions:
       contents: read # for actions/checkout to fetch code
       packages: write # for docker/build-push-action to push images
