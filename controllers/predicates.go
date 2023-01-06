@@ -106,21 +106,3 @@ var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool 
 var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Object) bool {
 	return object.(*stasv1alpha1.ContainerImageScan).HasVulnerabilityOverflow()
 })
-
-// TODO: Replace with new func added to c-r in https://github.com/kubernetes-sigs/controller-runtime/pull/2031
-func notPredicate(p predicate.Predicate) predicate.Predicate {
-	return predicate.Funcs{
-		CreateFunc: func(event event.CreateEvent) bool {
-			return !p.Create(event)
-		},
-		DeleteFunc: func(event event.DeleteEvent) bool {
-			return !p.Delete(event)
-		},
-		UpdateFunc: func(event event.UpdateEvent) bool {
-			return !p.Update(event)
-		},
-		GenericFunc: func(event event.GenericEvent) bool {
-			return !p.Generic(event)
-		},
-	}
-}
