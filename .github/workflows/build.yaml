@@ -18,15 +18,20 @@ jobs:
       packages: write # for docker/build-push-action to push images
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
-      - uses: docker/setup-qemu-action@v2
-      - uses: docker/setup-buildx-action@v2
-      - uses: docker/login-action@v2
+      - uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18 # v2.1.0
+      - uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325 # v2.2.1
+      - uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/metadata-action@v4
+      - uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea # v4.1.1
         id: meta
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -38,7 +43,7 @@ jobs:
             # disabled if major zero
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=ref,event=branch
-      - uses: docker/build-push-action@v3
+      - uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5 # v3.2.0
         with:
           context: .
           push: true
