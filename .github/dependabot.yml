@@ -17,3 +17,11 @@ updates:
     commit-message:
       prefix: ci
       include: scope
+  # Maintain dependencies for Docker
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build
+      include: scope
