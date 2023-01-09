@@ -128,4 +128,3 @@ jobs:
       - run: |
           kubectl kuttl version
           kubectl kuttl test --config test/e2e-config/kuttl-test.yaml
- 
