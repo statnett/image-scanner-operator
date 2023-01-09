@@ -111,15 +111,15 @@ jobs:
           path: /tmp
       - uses: AbsaOSS/k3d-action@v2
         with:
-          cluster-name: e2e
+          cluster-name: image-scanner
           args: >-
             --config=k3d-config.yml
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
-          k3d image import --cluster e2e /tmp/controller-image.tar
-          make deploy
+          k3d image import --cluster image-scanner /tmp/controller-image.tar
+          make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@v1
         with:
           repo: kudobuilder/kuttl
