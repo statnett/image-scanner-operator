@@ -126,5 +126,4 @@ jobs:
           tag: v0.15.0
           cache: enable
       - run: |
-          kubectl kuttl version
           kubectl kuttl test --config test/e2e-config/kuttl-test.yaml
