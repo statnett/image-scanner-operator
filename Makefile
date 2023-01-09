@@ -1,6 +1,5 @@
 
 # Image URL to use all building/pushing image targets
-# FIXME: this variable is currently NOT fully respected, since we don't run kustomize edit set image on deploy
 IMG ?= "image-scanner/controller:latest"
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.25.0
@@ -138,8 +137,7 @@ uninstall: manifests kustomize ## Uninstall CRDs from the K8s cluster specified 
 
 .PHONY: deploy
 deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
-	# FIXME: We cannot run kustomize edit - since kustomize uses an uncommon YAML format, and always reformats the file...
-	# cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	$(KUSTOMIZE) build config/default | kubectl apply --server-side -f -
 	for w in statefulset/trivy deployment/image-scanner-controller-manager; do \
   		kubectl rollout status $$w -n $(K8S_NAMESPACE) --timeout=2m \

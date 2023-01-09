@@ -100,3 +100,30 @@ jobs:
         with:
           name: controller-image
           path: /tmp/controller-image.tar
+  e2e-test:
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+      - uses: actions/download-artifact@v3
+        with:
+          name: controller-image
+          path: /tmp
+      - uses: AbsaOSS/k3d-action@v2
+        with:
+          cluster-name: image-scanner
+          args: >-
+            --config=k3d-config.yml
+      - run: |
+          kubectl cluster-info
+          kubectl version --output=yaml
+      - run: |
+          k3d image import --cluster image-scanner /tmp/controller-image.tar
+          make deploy-dependencies deploy
+      - uses: jaxxstorm/action-install-gh-release@v1
+        with:
+          repo: kudobuilder/kuttl
+          tag: v0.15.0
+          cache: enable
+      - run: |
+          make e2e-test
