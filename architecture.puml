@@ -1,0 +1,18 @@
+@startuml Image Scanner architecture
+
+cloud "Kubernetes API server" {
+  () Pod as pod
+  () ContainerImageScan as cis
+  () Job as job
+}
+
+package "Image Scanner Operator" {
+  [Workload controller] ..> pod : watch
+  [Workload controller] --> cis : create
+  [CIS controller] ..> cis : watch
+  [CIS controller] --> job : create
+  [Scan Job controller] ..> job : watch
+  [Scan Job controller] --> cis : update status
+}
+
+@enduml

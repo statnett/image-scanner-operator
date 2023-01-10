@@ -225,26 +225,7 @@ Using a simple `Pod`, with a single container, as an example:
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
    and update the `ContainerImageScan` status.
 
-```plantuml
-@startuml
-
-cloud "Kubernetes API server" {
-  () Pod as pod
-  () ContainerImageScan as cis
-  () Job as job
-}
-
-package "Image Scanner Operator" {
-  [Workload controller] ..> pod : watch
-  [Workload controller] --> cis : create
-  [CIS controller] ..> cis : watch
-  [CIS controller] --> job : create
-  [Scan Job controller] ..> job : watch
-  [Scan Job controller] --> cis : update status
-}
-
-@enduml
-```
+![Image scanner architecture](https://www.plantuml.com/plantuml/dpng/5SqnZWCX30NGVa-nES3WFjLSnV5y3KXWaFbMhf-aUkKxDpMOe_yzcblF2ndzlv9hFqL2t-LkhFdAZR3fXBFO7BAfT93IXjuujgaxufWBePmXGvkBXjL663DGrYyvuTVN3m00)
 
 ## License
 
