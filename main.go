@@ -72,6 +72,7 @@ func main() {
 	opts.BindFlags(flag.CommandLine)
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.BoolP("help", "h", false, "Display help text and exit")
 	pflag.Parse()
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
