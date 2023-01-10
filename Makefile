@@ -140,8 +140,11 @@ deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	$(KUSTOMIZE) build config/default | kubectl apply --server-side -f -
 	for w in statefulset/trivy deployment/image-scanner-controller-manager; do \
-  		kubectl rollout status $$w -n $(K8S_NAMESPACE) --timeout=2m \
-  		|| (kubectl logs -n $(K8S_NAMESPACE) $$w --tail -1; kubectl get events -n $(K8S_NAMESPACE); false); \
+		if ! kubectl rollout status $$w -n $(K8S_NAMESPACE) --timeout=2m; then \
+			kubectl logs -n $(K8S_NAMESPACE) $$w --tail -1; \
+			kubectl get events -n $(K8S_NAMESPACE); \
+			exit 1; \
+		fi \
   	done
 
 .PHONY: undeploy
