@@ -81,7 +81,7 @@ future:
 
 | Pod annotation key                         | Default value | Description                                                                                                           |
 |--------------------------------------------|:--------------|:----------------------------------------------------------------------------------------------------------------------|
-| `image-scanner.statnett.no/ignore-unfixed` | `"false"`     | If set to `"true"`, the image-scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
+| `image-scanner.statnett.no/ignore-unfixed` | `"false"`     | If set to `"true"`, the Image Scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
 
 ### Supported features
 
