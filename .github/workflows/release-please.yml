@@ -27,4 +27,6 @@ jobs:
               { "type": "fix", "section": "Bug Fixes" },
               { "type": "build", "scope": "deps", "section": "Dependency Updates" }
             ]
-          release-type: go
+          release-type: simple
+          extra-files: |
+            config/manager/kustomization.yaml
