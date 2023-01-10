@@ -60,7 +60,7 @@ software. Some key features of this operator are:
 
 ### Custom resources
 
-The Image Scanner operator does currently define a single user-facing Custom
+The Image Scanner operator currently defines a single user-facing Custom
 Resource Definition (CRD), [ContainerImageScan][CIS-CRD] (CIS), that represents the
 Kubernetes API for runtime image scanning of workload container images.
 See [stas_v1alpha1_containerimagescan.yaml][CIS-example] for a (simplified)
@@ -70,8 +70,8 @@ The CIS resource `.spec` specifies the container image to scan and some
 additional workload metadata, and the image scan result is added/updated
 in `.status` by the `ContainerImageScan` controller.
 
-CIS resources should not be edited by a standard users, as the `Workload`
-controller will create CIS'es from scheduled pods. And the standard Kubernetes
+CIS resources should not be edited by standard users, as the `Workload`
+controller will create CIS'es from running pods. And the standard Kubernetes
 garbage collector should delete obsolete resources when owning pods are gone.
 
 A user can influence the image scanning process by adding annotations to pods.
