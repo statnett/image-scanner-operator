@@ -72,7 +72,7 @@ in `.status` by the `ContainerImageScan` controller.
 
 CIS resources should not be edited by standard users, as the `Workload`
 controller will create CIS'es from running pods. And the standard Kubernetes
-garbage collector should delete obsolete resources when owning pods are gone.
+garbage collector deletes the obsolete CIS resources when the owning pods are gone.
 
 A user can influence the image scanning process by adding annotations to pods.
 The set of annotations is currently limited, but more might be added in the
