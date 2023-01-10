@@ -78,9 +78,9 @@ A user can influence the image scanning process by adding annotations to pods.
 The set of annotations is currently limited, but more might be added in the
 future:
 
-| Pod annotation key                         | Default value | Description                                                                                                         |
-|--------------------------------------------|:--------------|:--------------------------------------------------------------------------------------------------------------------|
-| `image-scanner.statnett.no/ignore-unfixed` | "false"       | If set to "true", the image-scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
+| Pod annotation key                         | Default value | Description                                                                                                           |
+|--------------------------------------------|:--------------|:----------------------------------------------------------------------------------------------------------------------|
+| `image-scanner.statnett.no/ignore-unfixed` | `"false"`     | If set to `"true"`, the image-scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
 
 ### Supported features
 
