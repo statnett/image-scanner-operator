@@ -60,7 +60,27 @@ software. Some key features of this operator are:
 
 ### Custom resources
 
-// TODO: Add a summary of key `ContainerImageScan` (CIS) characteristics
+The Image Scanner operator does currently define a single user-facing Custom
+Resource Definition (CRD), [ContainerImageScan][CIS-CRD] (CIS), that represents the
+Kubernetes API for runtime image scanning of workload container images.
+See [stas_v1alpha1_containerimagescan.yaml][CIS-example] for a (simplified)
+example of a CIS resource.
+
+The CIS resource `.spec` specifies the container image to scan and some
+additional workload metadata, and the image scan result is added/updated
+in `.status` by the `ContainerImageScan` controller.
+
+CIS resources should not be edited by a standard users, as the `Workload`
+controller will create CIS'es from scheduled pods. And the standard Kubernetes
+garbage collector should delete obsolete resources when owning pods are gone.
+
+A user can influence the image scanning process by adding annotations to pods.
+The set of annotations is currently limited, but more might be added in the
+future:
+
+| Pod annotation                           | Default (not present) | Description                                                                                                         |
+|------------------------------------------|:----------------------|:--------------------------------------------------------------------------------------------------------------------|
+| image-scanner.statnett.no/ignore-unfixed | "false"               | If set to "true", the image-scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
 
 ### Supported features
 
@@ -228,3 +248,6 @@ package "Image Scanner Operator" {
 ## License
 
 Licensed under the [MIT License](LICENSE).
+
+[CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1@v0.0.0
+[CIS-example]: config/samples/stas_v1alpha1_containerimagescan.yaml
