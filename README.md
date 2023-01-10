@@ -225,7 +225,7 @@ Using a simple `Pod`, with a single container, as an example:
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
    and update the `ContainerImageScan` status.
 
-![Image scanner architecture](https://www.plantuml.com/plantuml/dpng/5SqnZWCX30NGVa-nES3WFjLSnV5y3KXWaFbMhf-aUkKxDpMOe_yzcblF2ndzlv9hFqL2t-LkhFdAZR3fXBFO7BAfT93IXjuujgaxufWBePmXGvkBXjL663DGrYyvuTVN3m00)
+![Image scanner architecture](https://www.plantuml.com/plantuml/png/5Ssn3G8n30NGdYbWW8jxgbl5EDObKk94zhTO7wvwvJi3xCWv7gzkCh9g-dWsOCURoFbRhewMdmnrMGOr55cJ0WnJWFhaIuyGDbC_rbPdBAV9tQWk2MANrg62T2txdawr-lS7)
 
 ## License
 
