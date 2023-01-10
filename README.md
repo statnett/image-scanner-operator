@@ -249,5 +249,5 @@ package "Image Scanner Operator" {
 
 Licensed under the [MIT License](LICENSE).
 
-[CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1@v0.0.0
+[CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1
 [CIS-example]: config/samples/stas_v1alpha1_containerimagescan.yaml
