@@ -103,8 +103,7 @@ jobs:
           make deploy-dependencies deploy
         env:
           # Image tag format differs for pull requests and branch pushes
-          IMG: >-
-            ghcr.io/statnett/image-scanner-operator:${{ github.head_ref && format('pr-{0}', github.event.number) || github.ref }}
+          IMG: ghcr.io/statnett/image-scanner-operator:${{ github.head_ref && format('pr-{0}', github.event.number) || github.ref }}
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
           repo: kudobuilder/kuttl
