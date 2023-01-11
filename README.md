@@ -129,7 +129,7 @@ base. Your initial kustomization.yaml could be as simple as:
 
 ```yaml
 resources:
-  - https://github.com/statnett/image-scanner-operator?ref=vMAJOR.MINOR.PATCH
+  - https://github.com/statnett/image-scanner-operator?ref=v0.0.0 # x-release-please-version
 ```
 
 If you have multiple clusters, you should create one
