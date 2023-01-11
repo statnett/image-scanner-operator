@@ -29,4 +29,4 @@ jobs:
             ]
           release-type: simple
           extra-files: |
-            config/manager/kustomization.yaml
+            kustomization.yaml

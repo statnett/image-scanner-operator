@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - config/default
+images:
+  - name: image-scanner/controller
+    newName: ghcr.io/statnett/image-scanner-operator
+    newTag: 0.0.0 # x-release-please-version

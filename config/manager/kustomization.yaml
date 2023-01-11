@@ -19,5 +19,5 @@ configMapGenerator:
     name: config
 images:
   - name: controller
-    newName: ghcr.io/statnett/image-scanner-operator
-    newTag: 0.0.0 # x-release-please-version
+    newName: image-scanner/controller
+    newTag: latest
