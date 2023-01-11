@@ -30,3 +30,4 @@ jobs:
           release-type: simple
           extra-files: |
             kustomization.yaml
+            README.md

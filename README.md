@@ -127,10 +127,12 @@ the Image Scanner default kustomization as a
 [remote directory](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md#remote-directories)
 base. Your initial kustomization.yaml could be as simple as:
 
+<!-- x-release-please-start-version -->
 ```yaml
 resources:
-  - https://github.com/statnett/image-scanner-operator?ref=v0.0.0 # x-release-please-version
+  - https://github.com/statnett/image-scanner-operator?ref=v0.0.0
 ```
+<!-- x-release-please-end -->
 
 If you have multiple clusters, you should create one
 [variant](https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#variant)
