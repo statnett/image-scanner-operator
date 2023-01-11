@@ -7,5 +7,5 @@ rules:
     require-starting-space: false
   document-start: disable
   line-length:
-    max: 130
+    max: 140
     allow-non-breakable-inline-mappings: true
