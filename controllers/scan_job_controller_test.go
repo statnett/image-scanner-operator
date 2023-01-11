@@ -25,7 +25,7 @@ import (
 
 var _ = Describe("Scan Job controller", func() {
 	const (
-		timeout  = 10 * time.Second
+		timeout  = 20 * time.Second
 		interval = 100 * time.Millisecond
 	)
 

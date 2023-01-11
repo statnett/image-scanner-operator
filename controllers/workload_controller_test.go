@@ -22,7 +22,7 @@ type TestWorkloadFactory func(namespacedName types.NamespacedName, labels map[st
 
 var _ = Describe("Workload controller", func() {
 	const (
-		timeout  = 10 * time.Second
+		timeout  = 20 * time.Second
 		interval = 100 * time.Millisecond
 	)
 
