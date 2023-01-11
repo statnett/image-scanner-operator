@@ -69,8 +69,8 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(
-			notPredicate(systemNamespace),
-			notPredicate(managedByImageScanner),
+			predicate.Not(systemNamespace),
+			predicate.Not(managedByImageScanner),
 		)).
 		Watches(&source.Kind{Type: &stasv1alpha1.ContainerImageScan{}},
 			&handler.EnqueueRequestForOwner{OwnerType: &corev1.Pod{}},

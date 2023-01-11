@@ -60,7 +60,28 @@ software. Some key features of this operator are:
 
 ### Custom resources
 
-// TODO: Add a summary of key `ContainerImageScan` (CIS) characteristics
+The Image Scanner operator currently defines a single user-facing Custom
+Resource Definition (CRD), [ContainerImageScan][CIS-CRD] (CIS), that represents the
+Kubernetes API for runtime image scanning of workload container images.
+See [stas_v1alpha1_containerimagescan.yaml][CIS-example] for a (simplified)
+example of a CIS resource.
+
+The CIS resource `.spec` specifies the container image to scan and some
+additional workload metadata, and the image scan result is added/updated
+in `.status` by the `ContainerImageScan` controller.
+
+CIS resources should not be edited by standard users, as the `Workload`
+controller will create CIS resources from running pods. And the standard
+Kubernetes garbage collector deletes the obsolete CIS resources when the
+owning pods are gone.
+
+A user can influence the image scanning process by adding annotations to pods.
+The set of annotations is currently limited, but more might be added in the
+future:
+
+| Pod annotation key                         | Default value | Description                                                                                                           |
+|--------------------------------------------|:--------------|:----------------------------------------------------------------------------------------------------------------------|
+| `image-scanner.statnett.no/ignore-unfixed` | `"false"`     | If set to `"true"`, the Image Scanner will ignore any detected vulnerability that can't be fix by updating package(s) |
 
 ### Supported features
 
@@ -106,10 +127,12 @@ the Image Scanner default kustomization as a
 [remote directory](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md#remote-directories)
 base. Your initial kustomization.yaml could be as simple as:
 
+<!-- x-release-please-start-version -->
 ```yaml
 resources:
-  - https://github.com/statnett/image-scanner-operator//config/default?ref=vMAJOR.MINOR.PATCH
+  - https://github.com/statnett/image-scanner-operator?ref=v0.0.0
 ```
+<!-- x-release-please-end -->
 
 If you have multiple clusters, you should create one
 [variant](https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#variant)
@@ -204,27 +227,11 @@ Using a simple `Pod`, with a single container, as an example:
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
    and update the `ContainerImageScan` status.
 
-```plantuml
-@startuml
-
-cloud "Kubernetes API server" {
-  () Pod as pod
-  () ContainerImageScan as cis
-  () Job as job
-}
-
-package "Image Scanner Operator" {
-  [Workload controller] ..> pod : watch
-  [Workload controller] --> cis : create
-  [CIS controller] ..> cis : watch
-  [CIS controller] --> job : create
-  [Scan Job controller] ..> job : watch
-  [Scan Job controller] --> cis : update status
-}
-
-@enduml
-```
+![Image scanner architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/architecture.puml)
 
 ## License
 
 Licensed under the [MIT License](LICENSE).
+
+[CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1
+[CIS-example]: config/samples/stas_v1alpha1_containerimagescan.yaml

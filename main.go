@@ -18,11 +18,11 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
+	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
 	"github.com/statnett/image-scanner-operator/controllers"
-	"github.com/statnett/image-scanner-operator/internal/cluster"
 	"github.com/statnett/image-scanner-operator/internal/metrics"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 	"github.com/statnett/image-scanner-operator/internal/resources"
@@ -72,6 +72,7 @@ func main() {
 	opts.BindFlags(flag.CommandLine)
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.BoolP("help", "h", false, "Display help text and exit")
 	pflag.Parse()
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
@@ -96,7 +97,7 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	options := ctrl.Options{
-		NewClient:              cluster.NewCachingClient,
+		NewClient:              cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:                 scheme,
 		MetricsBindAddress:     metricsAddr,
 		Port:                   9443,

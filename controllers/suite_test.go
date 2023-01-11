@@ -18,6 +18,7 @@ import (
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -25,7 +26,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
-	"github.com/statnett/image-scanner-operator/internal/cluster"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 	//+kubebuilder:scaffold:imports
@@ -90,7 +90,7 @@ var _ = BeforeSuite(func() {
 	}
 
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
-		NewClient: cluster.NewCachingClient,
+		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:    scheme.Scheme,
 	})
 	Expect(err).NotTo(HaveOccurred())
