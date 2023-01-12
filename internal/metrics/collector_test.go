@@ -142,6 +142,7 @@ func newClientWithTestdata() client.Client {
 	}
 	scheme := runtime.NewScheme()
 	Expect(stasv1alpha1.AddToScheme(scheme)).To(Succeed())
+
 	return fake.NewClientBuilder().
 		WithScheme(scheme).
 		WithRuntimeObjects(ciss...).

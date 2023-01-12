@@ -24,7 +24,7 @@ import (
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
-// ContainerImageScanReconciler reconciles a ContainerImageScan object
+// ContainerImageScanReconciler reconciles a ContainerImageScan object.
 type ContainerImageScanReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
@@ -48,12 +48,15 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 		if err := r.Get(ctx, req.NamespacedName, cis); err != nil {
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
+
 		timeUntilNextScan := r.TimeUntilNextScan(cis)
 		if timeUntilNextScan > 0 {
 			return ctrl.Result{RequeueAfter: timeUntilNextScan}, nil
 		}
+
 		return ctrl.Result{}, r.reconcile(ctx, cis)
 	}
+
 	return controller.Reconcile(ctx, fn)
 }
 
@@ -89,11 +92,13 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 	}
 
 	cis.Status.ObservedGeneration = cis.Generation
+
 	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 }
 
 func (r *ContainerImageScanReconciler) createScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
 	var nodeNames []string
+
 	for _, or := range cis.OwnerReferences {
 		pod := &corev1.Pod{}
 		if err := r.Get(ctx, client.ObjectKey{Name: or.Name, Namespace: cis.Namespace}, pod); err != nil {
@@ -101,8 +106,10 @@ func (r *ContainerImageScanReconciler) createScanJob(ctx context.Context, cis *s
 				// Owner might have been deleted; continue to next owner
 				continue
 			}
+
 			return nil, err
 		}
+
 		if pod.Spec.NodeName != "" {
 			nodeNames = append(nodeNames, pod.Spec.NodeName)
 		}
@@ -127,5 +134,6 @@ func (r *ContainerImageScanReconciler) listScanJobs(ctx context.Context, cis *st
 		client.InNamespace(r.ScanJobNamespace),
 		client.MatchingLabels(matchLabels),
 	}
+
 	return r.List(ctx, jobs, listOps...)
 }

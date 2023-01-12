@@ -36,6 +36,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
 	reportTemplate = string(bytes)
 }
 
@@ -60,6 +61,7 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 	if err != nil {
 		return job, err
 	}
+
 	job.Namespace = f.ScanJobNamespace
 	job.GenerateName = cis.Name
 	job.Labels = map[string]string{
@@ -69,6 +71,7 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
 		stasv1alpha1.LabelStatnettControllerHash:      hash.NewString(cis.Spec),
 	}
+
 	return job, nil
 }
 
@@ -79,6 +82,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 	if err != nil {
 		return nil, err
 	}
+
 	job.Spec.Template.Labels = map[string]string{
 		stasv1alpha1.LabelK8sAppName:      stasv1alpha1.AppNameTrivy,
 		stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.AppNameImageScanner,
@@ -106,6 +110,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 	job.Spec.BackoffLimit = pointer.Int32(3)
 	job.Spec.TTLSecondsAfterFinished = pointer.Int32(7200)
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
+
 	if len(f.preferredNodeNames) > 0 {
 		terms := make([]corev1.PreferredSchedulingTerm, len(f.preferredNodeNames))
 		for i, nodeName := range f.preferredNodeNames {
@@ -120,14 +125,17 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 				},
 			}
 		}
+
 		job.Spec.Template.Spec.Affinity = &corev1.Affinity{
 			NodeAffinity: &corev1.NodeAffinity{
 				PreferredDuringSchedulingIgnoredDuringExecution: terms,
 			},
 		}
 	}
+
 	job.Spec.Template.Spec.AutomountServiceAccountToken = pointer.Bool(false)
 	job.Spec.Template.Spec.RestartPolicy = corev1.RestartPolicyOnFailure
+
 	return job, nil
 }
 
@@ -138,6 +146,7 @@ func (f *filesystemScanJobBuilder) OnPreferredNodes(nodeNames ...string) ImageSc
 
 func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageScanSpec) (corev1.Container, error) {
 	container := corev1.Container{}
+
 	canonical, err := spec.Image.Canonical()
 	if err != nil {
 		return container, err
@@ -161,26 +170,33 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		{Name: "TRIVY_TEMPLATE", Value: reportTemplate},
 		{Name: "TRIVY_TIMEOUT", Value: ScanJobTimeout.String()},
 	}
+
 	if spec.MinSeverity != nil {
 		minSeverity, err := stasv1alpha1.NewSeverity(*spec.MinSeverity)
 		if err != nil {
 			return container, err
 		}
+
 		var severityNames []string
+
 		for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 			severityNames = append(severityNames, severity.String())
 		}
-		container.Env = append(container.Env, corev1.EnvVar{
+
+		envVar := corev1.EnvVar{
 			Name:  "TRIVY_SEVERITY",
 			Value: strings.Join(severityNames, ","),
-		})
+		}
+		container.Env = append(container.Env, envVar)
 	}
+
 	if pointer.BoolDeref(spec.IgnoreUnfixed, false) {
 		container.Env = append(container.Env, corev1.EnvVar{
 			Name:  "TRIVY_IGNORE_UNFIXED",
 			Value: "true",
 		})
 	}
+
 	container.Resources = corev1.ResourceRequirements{
 		Limits: corev1.ResourceList{
 			corev1.ResourceCPU:    resource.MustParse("500m"),
@@ -212,6 +228,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		},
 	}
 	container.WorkingDir = TempVolumeMountPath
+
 	return container, nil
 }
 

@@ -16,6 +16,7 @@ func TestIgnoreAny(t *testing.T) {
 		err error
 		is  []ErrorIs
 	}
+
 	tests := []struct {
 		name    string
 		args    args
@@ -42,6 +43,7 @@ func TestIgnore(t *testing.T) {
 		err error
 		is  ErrorIs
 	}
+
 	tests := []struct {
 		name    string
 		args    args
@@ -63,6 +65,7 @@ func TestIsNamespaceTerminating(t *testing.T) {
 	type args struct {
 		err error
 	}
+
 	tests := []struct {
 		name string
 		args args

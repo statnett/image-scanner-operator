@@ -16,12 +16,9 @@ type Config struct {
 }
 
 func (c Config) TimeUntilNextScan(cis *stasv1alpha1.ContainerImageScan) time.Duration {
-	if cis.Status.ObservedGeneration != cis.Generation {
+	if cis.Status.ObservedGeneration != cis.Generation || cis.Status.LastScanTime.IsZero() {
 		return 0
 	}
-	if cis.Status.LastScanTime.IsZero() {
-		return 0
-	}
-	nextScanTime := cis.Status.LastScanTime.Add(c.ScanInterval)
-	return time.Until(nextScanTime)
+
+	return time.Until(cis.Status.LastScanTime.Add(c.ScanInterval))
 }

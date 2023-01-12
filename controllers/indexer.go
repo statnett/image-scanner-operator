@@ -22,10 +22,12 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 
 	ownerUIDFn := func(obj client.Object) []string {
 		ownerReferences := obj.GetOwnerReferences()
+
 		uids := make([]string, len(ownerReferences))
 		for i, or := range ownerReferences {
 			uids[i] = string(or.UID)
 		}
+
 		return uids
 	}
 	for _, object := range []client.Object{&stasv1alpha1.ContainerImageScan{}} {
@@ -42,5 +44,6 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 			return err
 		}
 	}
+
 	return nil
 }

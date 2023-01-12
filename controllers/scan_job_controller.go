@@ -30,7 +30,7 @@ import (
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
-// ScanJobReconciler reconciles a finished image scan Job object
+// ScanJobReconciler reconciles a finished image scan Job object.
 type ScanJobReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
@@ -56,16 +56,19 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 }
 
 func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName string, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
-	cleanCis := cis.DeepCopy()
+	var (
+		cleanCis        = cis.DeepCopy()
+		vulnerabilities []stasv1alpha1.Vulnerability
+	)
 
-	var vulnerabilities []stasv1alpha1.Vulnerability
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
 	if err != nil {
 		return err
 	}
-	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
 
+	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
 	cis.Status.Vulnerabilities = vulnerabilities
+
 	minSeverity := stasv1alpha1.SeverityUnknown
 	if cis.Spec.MinSeverity != nil {
 		minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
@@ -73,14 +76,15 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 			return err
 		}
 	}
-	cis.Status.VulnerabilitySummary = vulnerabilitySummary(vulnerabilities, minSeverity)
 
+	cis.Status.VulnerabilitySummary = vulnerabilitySummary(vulnerabilities, minSeverity)
 	// Clear any conditions since we now have a successful scan report
 	cis.Status.Conditions = nil
 	now := metav1.Now()
 	cis.Status.LastScanTime = &now
 	cis.Status.LastScanJobName = jobName
 	cis.Status.LastSuccessfulScanTime = &now
+
 	err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 	if err != nil && isResourceTooLargeError(err) {
 		cis = cleanCis.DeepCopy()
@@ -97,6 +101,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		cis.Status.LastScanJobName = jobName
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 	}
+
 	return err
 }
 
@@ -113,6 +118,7 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName stri
 	if err != nil {
 		return err
 	}
+
 	condition := metav1.Condition{
 		Type:    string(kstatus.ConditionStalled),
 		Status:  metav1.ConditionTrue,
@@ -121,9 +127,11 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName stri
 	}
 	meta.SetStatusCondition(&cis.Status.Conditions, condition)
 	meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
+
 	now := metav1.Now()
 	cis.Status.LastScanTime = &now
 	cis.Status.LastScanJobName = jobName
+
 	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 }
 
@@ -136,22 +144,25 @@ func (r *ScanJobReconciler) reconcile() reconcile.Func {
 			if err := r.Get(ctx, req.NamespacedName, job); err != nil {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
+
 			return ctrl.Result{}, r.reconcileJob(ctx, job)
 		}
+
 		return controller.Reconcile(ctx, fn)
 	}
 }
 
 func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) error {
 	cisList := &stasv1alpha1.ContainerImageScanList{}
+
 	listOps := []client.ListOption{
 		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
 		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
 	}
-	err := r.List(ctx, cisList, listOps...)
-	if err != nil {
+	if err := r.List(ctx, cisList, listOps...); err != nil {
 		return err
 	}
+
 	switch len(cisList.Items) {
 	case 0:
 		// CIS deleted; nothing more to do
@@ -160,6 +171,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	default:
 		return errors.New("expected number of container image scans to be 1")
 	}
+
 	cis := &cisList.Items[0]
 
 	if job.Name == cis.Status.LastScanJobName {
@@ -176,6 +188,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 			return err
 		}
 	}
+
 	defer func(podLogs io.ReadCloser) {
 		err := podLogs.Close()
 		if err != nil {
@@ -196,11 +209,12 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	if err != nil {
 		return nil, err
 	}
+
 	pods := &corev1.PodList{}
-	err = r.List(ctx, pods, client.MatchingLabelsSelector{Selector: selector})
-	if err != nil {
+	if err = r.List(ctx, pods, client.MatchingLabelsSelector{Selector: selector}); err != nil {
 		return nil, err
 	}
+
 	switch len(pods.Items) {
 	case 0:
 		return nil, staserrors.NewJobPodNotFound(job.Name)
@@ -208,19 +222,21 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	default:
 		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods.Items))
 	}
+
 	jobPod := pods.Items[0]
 
 	var scanJobContainerStatus corev1.ContainerStatus
+
 	for _, cs := range jobPod.Status.ContainerStatuses {
 		if cs.Name == trivy.ScanJobContainerName {
 			scanJobContainerStatus = cs
 			break
 		}
 	}
+
 	if scanJobContainerStatus.State.Waiting != nil {
 		return nil, staserrors.NewScanJobContainerWaiting(*scanJobContainerStatus.State.Waiting)
 	}
-
 	// Get logs from Job pod
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
@@ -232,14 +248,17 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 	}
 
 	var fixedCount, unfixedCount int32
+
 	for _, vuln := range vulnerabilities {
 		severityCount[vuln.Severity] += 1
+
 		if vuln.FixedVersion != "" {
 			fixedCount++
 		} else {
 			unfixedCount++
 		}
 	}
+
 	return &stasv1alpha1.VulnerabilitySummary{
 		SeverityCount: severityCount,
 		FixedCount:    fixedCount,
