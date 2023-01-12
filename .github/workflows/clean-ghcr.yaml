@@ -1,0 +1,36 @@
+---
+name: Delete obsolete container images
+on:
+  schedule:
+    - cron: "0 0 1 * *"  # every day at midnight
+permissions:
+  contents: read
+jobs:
+  clean-ghcr:
+    name: Delete obsolete container images
+    permissions:
+      packages: write # for snok/container-retention-policy to delete images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - name: Delete untagged container images older than a week
+        uses: snok/container-retention-policy@6601a342b42bf08909bbd5b48736d4176100365b # v1.5.1
+        with:
+          image-names: image-scanner-operator
+          cut-off: A week ago UTC
+          account-type: org
+          org-name: statnett
+          untagged-only: true
+          token: ${{ secrets.BOT_PAT }}
+      - name: Delete PR container images older than a month, using a wildcard
+        uses: snok/container-retention-policy@6601a342b42bf08909bbd5b48736d4176100365b # v1.5.1
+        with:
+          image-names: image-scanner-operator
+          cut-off: One month ago UTC
+          account-type: org
+          org-name: statnett
+          filter-tags: pr-*
+          token: ${{ secrets.BOT_PAT }}
