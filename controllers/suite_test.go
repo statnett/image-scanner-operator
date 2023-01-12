@@ -17,8 +17,8 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -90,7 +90,7 @@ var _ = BeforeSuite(func() {
 	}
 
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
-		NewClient: newNoCacheClient,
+		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:    scheme.Scheme,
 	})
 	Expect(err).NotTo(HaveOccurred())
@@ -177,17 +177,4 @@ func newPod(owner client.Object, scheme *runtime.Scheme) *corev1.Pod {
 		},
 	}
 	return p
-}
-
-func newNoCacheClient(cache cache.Cache, config *rest.Config, options client.Options, uncachedObjects ...client.Object) (client.Client, error) {
-	c, err := client.New(config, options)
-	if err != nil {
-		return nil, err
-	}
-
-	return client.NewDelegatingClient(client.NewDelegatingClientInput{
-		CacheReader:     nil,
-		Client:          c,
-		UncachedObjects: uncachedObjects,
-	})
 }
