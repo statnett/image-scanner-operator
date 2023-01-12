@@ -89,6 +89,7 @@ var _ = BeforeSuite(func() {
 		Expect(err).To(Succeed())
 	}
 
+	// FIXME: temporarily disable cache to see if the tests pass in Github
 	uncachedObjects := []client.Object{&batchv1.Job{}}
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
 		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true, UncachedObjects: uncachedObjects}),
