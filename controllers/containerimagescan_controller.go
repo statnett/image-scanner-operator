@@ -94,6 +94,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 
 func (r *ContainerImageScanReconciler) createScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
 	var nodeNames []string
+
 	for _, or := range cis.OwnerReferences {
 		pod := &corev1.Pod{}
 		if err := r.Get(ctx, client.ObjectKey{Name: or.Name, Namespace: cis.Namespace}, pod); err != nil {

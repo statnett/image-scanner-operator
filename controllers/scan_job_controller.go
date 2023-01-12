@@ -63,8 +63,8 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 	if err != nil {
 		return err
 	}
-	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
 
+	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
 	cis.Status.Vulnerabilities = vulnerabilities
 	minSeverity := stasv1alpha1.SeverityUnknown
 	if cis.Spec.MinSeverity != nil {
@@ -152,6 +152,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	if err != nil {
 		return err
 	}
+
 	switch len(cisList.Items) {
 	case 0:
 		// CIS deleted; nothing more to do
@@ -176,6 +177,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 			return err
 		}
 	}
+
 	defer func(podLogs io.ReadCloser) {
 		err := podLogs.Close()
 		if err != nil {
@@ -201,6 +203,7 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	if err != nil {
 		return nil, err
 	}
+
 	switch len(pods.Items) {
 	case 0:
 		return nil, staserrors.NewJobPodNotFound(job.Name)
@@ -211,6 +214,7 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	jobPod := pods.Items[0]
 
 	var scanJobContainerStatus corev1.ContainerStatus
+
 	for _, cs := range jobPod.Status.ContainerStatuses {
 		if cs.Name == trivy.ScanJobContainerName {
 			scanJobContainerStatus = cs
@@ -232,8 +236,10 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 	}
 
 	var fixedCount, unfixedCount int32
+
 	for _, vuln := range vulnerabilities {
 		severityCount[vuln.Severity] += 1
+
 		if vuln.FixedVersion != "" {
 			fixedCount++
 		} else {

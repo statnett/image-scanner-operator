@@ -16,6 +16,7 @@ func TestIgnoreAny(t *testing.T) {
 		err error
 		is  []ErrorIs
 	}
+
 	tests := []struct {
 		name    string
 		args    args

@@ -166,14 +166,17 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		if err != nil {
 			return container, err
 		}
+
 		var severityNames []string
+
 		for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 			severityNames = append(severityNames, severity.String())
 		}
-		container.Env = append(container.Env, corev1.EnvVar{
+		envVar := corev1.EnvVar{
 			Name:  "TRIVY_SEVERITY",
 			Value: strings.Join(severityNames, ","),
-		})
+		}
+		container.Env = append(container.Env, envVar)
 	}
 	if pointer.BoolDeref(spec.IgnoreUnfixed, false) {
 		container.Env = append(container.Env, corev1.EnvVar{

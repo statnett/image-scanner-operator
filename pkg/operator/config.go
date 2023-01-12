@@ -19,6 +19,7 @@ func (c Config) TimeUntilNextScan(cis *stasv1alpha1.ContainerImageScan) time.Dur
 	if cis.Status.ObservedGeneration != cis.Generation {
 		return 0
 	}
+
 	if cis.Status.LastScanTime.IsZero() {
 		return 0
 	}

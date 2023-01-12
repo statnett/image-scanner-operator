@@ -52,12 +52,14 @@ func (m *ResourceKindMapper) NamespacedKindFor(gr schema.GroupResource) (schema.
 // The format used for GR is "resource.group", i.e. "replicasets.apps"
 func (m *ResourceKindMapper) NamespacedKindsForResources(resources ...string) ([]schema.GroupVersionKind, error) {
 	var kinds []schema.GroupVersionKind
+
 	for _, r := range resources {
 		gr := schema.ParseGroupResource(r)
 		kind, err := m.NamespacedKindFor(gr)
 		if err != nil {
 			return nil, err
 		}
+
 		kinds = append(kinds, kind)
 	}
 	return kinds, nil

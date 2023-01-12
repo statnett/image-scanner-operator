@@ -78,6 +78,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				predicate.Or(predicate.GenerationChangedPredicate{}, cisVulnerabilityOverflow),
 				ignoreCreationPredicate(),
 			))
+
 	for _, kind := range r.WorkloadKinds {
 		obj := &metav1.PartialObjectMetadata{}
 		obj.SetGroupVersionKind(kind)
@@ -122,13 +123,12 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 		cis.Name = imageScanName(podController, containerName, image)
 		mutateFn := func() error {
 			cis.Labels = pod.GetLabels()
-
 			cis.Spec.Workload.Group = podController.GetObjectKind().GroupVersionKind().Group
 			cis.Spec.Workload.Kind = podController.GetObjectKind().GroupVersionKind().Kind
 			cis.Spec.Workload.Name = podController.GetName()
 			cis.Spec.Workload.ContainerName = containerName
-
 			cis.Spec.Image = image
+
 			var ignoreUnfixed *bool
 			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
 				ignoreUnfixed = pointer.Bool(true)
@@ -169,6 +169,8 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 		return err
 	}
 	for _, cis := range CISes {
+		// Done to avoid "Implicit memory aliasing in for loop"
+		cis := cis
 		if cis.Name != wantCIS.Name {
 			if err := r.Delete(ctx, &cis); err != nil {
 				return err
@@ -187,7 +189,9 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 	if err := r.List(ctx, list, listOps...); err != nil {
 		return nil, err
 	}
+
 	var CISes []stasv1alpha1.ContainerImageScan
+
 	for _, cis := range list.Items {
 		if cis.Spec.Workload.ContainerName == containerName {
 			CISes = append(CISes, cis)
@@ -198,6 +202,7 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 
 func containerImages(pod *corev1.Pod) (map[string]stasv1alpha1.Image, error) {
 	images := make(map[string]stasv1alpha1.Image)
+
 	for _, containerStatus := range pod.Status.ContainerStatuses {
 		if containerStatus.Image != "" && containerStatus.ImageID != "" {
 			image, err := NewImageFromContainerStatus(containerStatus)
@@ -210,14 +215,14 @@ func containerImages(pod *corev1.Pod) (map[string]stasv1alpha1.Image, error) {
 	return images, nil
 }
 
-func imageScanName(controller client.Object, containerName string, image stasv1alpha1.Image) string {
-	kindPart := strings.ToLower(controller.GetObjectKind().GroupVersionKind().Kind)
+func imageScanName(podController client.Object, containerName string, image stasv1alpha1.Image) string {
+	kindPart := strings.ToLower(podController.GetObjectKind().GroupVersionKind().Kind)
 	imagePart := hash.NewString(image.Name, image.Digest)[0:ImageShortSHALength]
 	nameFn := func(controllerName string) string {
 		return fmt.Sprintf("%s-%s-%s-%s", kindPart, controllerName, containerName, imagePart)
 	}
 
-	controllerName := controller.GetName()
+	controllerName := podController.GetName()
 	name := nameFn(controllerName)
 	if len(name) > KubernetesNameMaxLength {
 		shortenControllerName := controllerName[0 : len(controllerName)-(len(name)-KubernetesNameMaxLength)]
