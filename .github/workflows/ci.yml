@@ -86,7 +86,7 @@ jobs:
         with:
           cluster-name: image-scanner
           args: >-
-            --config=k3d-config.yml
+            --config=test/e2e-config/k3d-config.yml
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
