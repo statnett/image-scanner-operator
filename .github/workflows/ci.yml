@@ -68,6 +68,7 @@ jobs:
             \nPlease run 'make generate-all' locally and commit the changes"
           echo -e "$errorMsg" && exit 1
   test:
+    needs: verify-generated
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
@@ -104,11 +105,6 @@ jobs:
     needs: build-image
     runs-on: ubuntu-latest
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
       - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
