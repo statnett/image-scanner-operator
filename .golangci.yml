@@ -19,5 +19,3 @@ linters-settings:
       - importShadow
   goimports:
     local-prefixes: github.com/statnett/image-scanner-operator
-  wsl:
-    allow-trailing-comment: true
