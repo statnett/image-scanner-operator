@@ -89,8 +89,9 @@ var _ = BeforeSuite(func() {
 		Expect(err).To(Succeed())
 	}
 
+	uncachedObjects := []client.Object{&batchv1.Job{}}
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
-		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
+		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true, UncachedObjects: uncachedObjects}),
 		Scheme:    scheme.Scheme,
 	})
 	Expect(err).NotTo(HaveOccurred())
