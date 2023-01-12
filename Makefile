@@ -208,7 +208,7 @@ k3d-image-import: docker-build ## Imports controller image into k3d cluster
 	k3d image import --cluster "${K3D_CLUSTER}" "${IMG}"
 
 k3d-cluster-create: ## Create a default K3d cluster
-	k3d cluster create "${K3D_CLUSTER}" --config k3d-config.yml
+	k3d cluster create "${K3D_CLUSTER}" --config test/e2e-config/k3d-config.yml
 
 k3d-cluster-delete: ## Delete the default K3d cluster
 	k3d cluster delete "${K3D_CLUSTER}"
