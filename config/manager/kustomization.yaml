@@ -8,7 +8,7 @@ configMapGenerator:
   - literals:
       - CIS_METRICS_LABELS=app.kubernetes.io/name
       - SCAN_INTERVAL=12h
-      - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.35.0
+      - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.36.1
       - TRIVY_SERVER=http://trivy.image-scanner.svc.cluster.local
       - SCAN_JOB_NAMESPACE=image-scanner-jobs
       - SCAN_JOB_SERVICE_ACCOUNT=image-scanner
