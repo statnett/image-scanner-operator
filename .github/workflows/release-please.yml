@@ -19,6 +19,7 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: google-github-actions/release-please-action@5c07f8be172b1f6e90f9c35baf8184461b91b85f # v3.7.1
         with:
+          token: ${{ secrets.BOT_PAT }}
           # TODO: Eventually remove this, when we are ready for GA (version 1.0.0)
           bump-minor-pre-major: true
           changelog-types: >
