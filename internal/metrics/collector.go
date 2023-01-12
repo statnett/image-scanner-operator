@@ -55,6 +55,7 @@ func (c *ImageMetricsCollector) SetupWithManager(mgr manager.Manager, metricsLab
 
 	if len(metricsLabels) > 0 {
 		re := regexp.MustCompile("[^a-zA-Z0-9_]+")
+
 		for _, l := range metricsLabels {
 			labelKey := l
 			cl := cisLabel{
@@ -90,6 +91,7 @@ func (c *ImageMetricsCollector) SetupWithManager(mgr manager.Manager, metricsLab
 		labels.names("condition"),
 		nil,
 	)
+
 	return mgr.Add(c)
 }
 
@@ -100,8 +102,8 @@ func (c ImageMetricsCollector) Start(ctx context.Context) error {
 
 	// Block until the context is done.
 	<-ctx.Done()
-
 	k8smetrics.Registry.Unregister(c)
+
 	return nil
 }
 
@@ -117,6 +119,7 @@ func (c ImageMetricsCollector) Describe(descs chan<- *prometheus.Desc) {
 
 func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 	ctx := context.Background()
+
 	cisList := &stasv1alpha1.ContainerImageScanList{}
 	if err := c.List(ctx, cisList, client.InNamespace("")); err != nil {
 		// TODO: Log
@@ -126,10 +129,12 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 	cisLabelValues := make([]string, len(c.cisLabels))
 	issuesLabelValues := make([]string, len(cisLabelValues)+1)
 	patchStatusLabelValues := make([]string, len(cisLabelValues)+1)
+
 	for _, cis := range cisList.Items {
 		for i, l := range c.cisLabels {
 			cisLabelValues[i] = l.value(cis)
 		}
+
 		copy(issuesLabelValues, cisLabelValues)
 		copy(patchStatusLabelValues, cisLabelValues)
 
@@ -149,6 +154,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 		if cis.Status.VulnerabilitySummary != nil {
 			patchStatusLabelValues[len(patchStatusLabelValues)-1] = "fixed"
 			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(cis.Status.VulnerabilitySummary.FixedCount), patchStatusLabelValues...)
+
 			patchStatusLabelValues[len(patchStatusLabelValues)-1] = "unfixed"
 			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(cis.Status.VulnerabilitySummary.UnfixedCount), patchStatusLabelValues...)
 		}
@@ -169,9 +175,11 @@ func (cl cisLabels) names(additionalNames ...string) []string {
 	for _, l := range cl {
 		names = append(names, l.name)
 	}
+
 	names = append(names, additionalNames...)
+
 	return names
 }
 
-// Ensure ImageMetricsCollector is leader-election aware
+// Ensure ImageMetricsCollector is leader-election aware.
 var _ manager.LeaderElectionRunnable = &ImageMetricsCollector{}

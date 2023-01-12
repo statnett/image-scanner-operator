@@ -84,6 +84,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		obj.SetGroupVersionKind(kind)
 		bldr.Watches(&source.Kind{Type: obj}, noEventsEventHandler, builder.OnlyMetadata)
 	}
+
 	return bldr.Complete(r.reconcilePod())
 }
 
@@ -94,13 +95,17 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 			if err := r.Get(ctx, req.NamespacedName, pod); err != nil {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
+
 			if pod.GetDeletionTimestamp() != nil {
 				// Workload is about to be deleted. No need to do any Reconcile.
 				return ctrl.Result{}, nil
 			}
+
 			err := r.reconcile(ctx, pod)
+
 			return ctrl.Result{}, err
 		}
+
 		return controller.Reconcile(ctx, fn)
 	}
 }
@@ -117,6 +122,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	if err != nil {
 		return err
 	}
+
 	for containerName, image := range images {
 		cis := &stasv1alpha1.ContainerImageScan{}
 		cis.Namespace = pod.Namespace
@@ -129,11 +135,11 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			cis.Spec.Workload.ContainerName = containerName
 			cis.Spec.Image = image
 
-			var ignoreUnfixed *bool
 			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
-				ignoreUnfixed = pointer.Bool(true)
+				cis.Spec.IgnoreUnfixed = pointer.Bool(true)
+			} else {
+				cis.Spec.IgnoreUnfixed = pointer.Bool(false)
 			}
-			cis.Spec.IgnoreUnfixed = ignoreUnfixed
 
 			if cis.HasVulnerabilityOverflow() {
 				minSeverity := stasv1alpha1.MinSeverity
@@ -143,13 +149,16 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 						return err
 					}
 				}
+
 				if minSeverity < stasv1alpha1.MaxSeverity {
 					minSeverity++
 					cis.Spec.MinSeverity = pointer.String(minSeverity.String())
 				}
 			}
+
 			return controllerutil.SetOwnerReference(pod, cis, r.Scheme)
 		}
+
 		_, err = controllerutil.CreateOrUpdate(ctx, r.Client, cis, mutateFn)
 		if err != nil {
 			return err
@@ -160,6 +169,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -168,6 +178,7 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 	if err != nil {
 		return err
 	}
+
 	for _, cis := range CISes {
 		// Done to avoid "Implicit memory aliasing in for loop"
 		cis := cis
@@ -177,6 +188,7 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 			}
 		}
 	}
+
 	return nil
 }
 
@@ -185,6 +197,7 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 		client.InNamespace(pod.Namespace),
 		client.MatchingFields{indexOwnerUID: string(pod.UID)},
 	}
+
 	list := &stasv1alpha1.ContainerImageScanList{}
 	if err := r.List(ctx, list, listOps...); err != nil {
 		return nil, err
@@ -197,6 +210,7 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 			CISes = append(CISes, cis)
 		}
 	}
+
 	return CISes, nil
 }
 
@@ -209,9 +223,11 @@ func containerImages(pod *corev1.Pod) (map[string]stasv1alpha1.Image, error) {
 			if err != nil {
 				return nil, err
 			}
+
 			images[containerStatus.Name] = image
 		}
 	}
+
 	return images, nil
 }
 
@@ -222,12 +238,14 @@ func imageScanName(podController client.Object, containerName string, image stas
 		return fmt.Sprintf("%s-%s-%s-%s", kindPart, controllerName, containerName, imagePart)
 	}
 
-	controllerName := podController.GetName()
-	name := nameFn(controllerName)
+	podControllerName := podController.GetName()
+
+	name := nameFn(podControllerName)
 	if len(name) > KubernetesNameMaxLength {
-		shortenControllerName := controllerName[0 : len(controllerName)-(len(name)-KubernetesNameMaxLength)]
+		shortenControllerName := podControllerName[0 : len(podControllerName)-(len(name)-KubernetesNameMaxLength)]
 		name = nameFn(shortenControllerName)
 	}
+
 	return name
 }
 
@@ -242,6 +260,7 @@ func (r *PodReconciler) getControllerWorkloadOrSelf(ctx context.Context, control
 	if err != nil {
 		return nil, err
 	}
+
 	if !refInWorkloadKinds {
 		// Controller not in workload kinds; return the object
 		return controllee, nil
@@ -250,6 +269,7 @@ func (r *PodReconciler) getControllerWorkloadOrSelf(ctx context.Context, control
 	c := &metav1.PartialObjectMetadata{}
 	c.APIVersion = ref.APIVersion
 	c.Kind = ref.Kind
+
 	name := types.NamespacedName{
 		Namespace: controllee.GetNamespace(),
 		Name:      ref.Name,
@@ -266,6 +286,7 @@ func (r *PodReconciler) inWorkloadKinds(ref *metav1.OwnerReference) (bool, error
 	if err != nil {
 		return false, err
 	}
+
 	gk := schema.GroupKind{Group: gv.Group, Kind: ref.Kind}
 
 	for _, kind := range r.WorkloadKinds {
@@ -273,5 +294,6 @@ func (r *PodReconciler) inWorkloadKinds(ref *metav1.OwnerReference) (bool, error
 			return true, nil
 		}
 	}
+
 	return false, nil
 }

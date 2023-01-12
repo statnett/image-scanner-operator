@@ -156,6 +156,7 @@ func createPod(ctx context.Context, owner client.Object, s *runtime.Scheme) *cor
 	podCopy := p.DeepCopy()
 	Expect(k8sClient.Create(ctx, podCopy)).To(Succeed())
 	Expect(k8sClient.Status().Update(ctx, p)).To(Succeed())
+
 	return p
 }
 
@@ -166,6 +167,7 @@ func newPod(owner client.Object, s *runtime.Scheme) *corev1.Pod {
 	p.Labels = owner.GetLabels()
 	err := controllerutil.SetControllerReference(owner, p, s)
 	Expect(err).To(Succeed())
+
 	p.Spec.Containers = []corev1.Container{
 		{
 			Name:  "foo",
@@ -178,5 +180,6 @@ func newPod(owner client.Object, s *runtime.Scheme) *corev1.Pod {
 			ImageID: "my.registry/repository/app@sha256:4b59f7dacd37c688968756d176139715df69d89eb0be1802e059316f9d58d9ef",
 		},
 	}
+
 	return p
 }

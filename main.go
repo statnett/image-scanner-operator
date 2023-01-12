@@ -69,6 +69,7 @@ func main() {
 	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
 	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
+
 	opts := zap.Options{
 		Development: true,
 	}
@@ -77,6 +78,7 @@ func main() {
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.BoolP("help", "h", false, "Display help text and exit")
 	pflag.Parse()
+
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
 		setupLog.Error(err, "unable to bind command line flags")
@@ -116,11 +118,13 @@ func main() {
 		setupLog.Error(err, "unable to read in namespaces flag/env")
 		os.Exit(1)
 	}
+
 	if len(namespaces) > 0 {
 		options.NewCache = cache.MultiNamespacedCacheBuilder(namespaces)
 	}
 
 	kubeConfig := ctrl.GetConfigOrDie()
+
 	mgr, err := ctrl.NewManager(kubeConfig, options)
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -133,6 +137,7 @@ func main() {
 	}
 
 	mapper := &resources.ResourceKindMapper{RestMapper: mgr.GetRESTMapper()}
+
 	kinds, err := mapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
 	if err != nil {
 		setupLog.Error(err, "unable to map resources to kinds")
@@ -154,6 +159,7 @@ func main() {
 		setupLog.Error(err, "unable to create Kube ClientSet")
 		os.Exit(1)
 	}
+
 	if err = (&controllers.ScanJobReconciler{
 		Client:     mgr.GetClient(),
 		Scheme:     mgr.GetScheme(),
@@ -182,10 +188,12 @@ func main() {
 			os.Exit(1)
 		}
 	}
+
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up health check")
 		os.Exit(1)
 	}
+
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up ready check")
 		os.Exit(1)
@@ -206,6 +214,7 @@ func main() {
 	}
 
 	setupLog.Info("starting manager")
+
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")
 		os.Exit(1)

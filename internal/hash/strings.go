@@ -10,5 +10,6 @@ func NewString(objs ...interface{}) string {
 	for _, v := range objs {
 		digester.Write([]byte(fmt.Sprintf("%s", v)))
 	}
+
 	return fmt.Sprintf("%x", digester.Sum(nil))
 }

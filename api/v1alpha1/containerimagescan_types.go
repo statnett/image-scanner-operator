@@ -47,6 +47,7 @@ func (vs *VulnerabilitySummary) GetSeverityCount() map[string]int32 {
 	if vs == nil {
 		return nil
 	}
+
 	return vs.SeverityCount
 }
 
@@ -55,6 +56,7 @@ func (in *Image) Canonical() (reference.Canonical, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return reference.WithDigest(named, in.Digest)
 }
 
@@ -63,10 +65,12 @@ func (cis ContainerImageScan) HasVulnerabilityOverflow() bool {
 		// CIS is still under reconciliation
 		return false
 	}
+
 	stalledCondition := meta.FindStatusCondition(cis.Status.Conditions, string(kstatus.ConditionStalled))
 	if stalledCondition == nil {
 		return false
 	}
+
 	return stalledCondition.Reason == ReasonVulnerabilityOverflow
 }
 
@@ -106,7 +110,7 @@ type ContainerImageScanStatus struct {
 //+kubebuilder:printcolumn:name="Digest",type=string,JSONPath=`.spec.digest`
 //+kubebuilder:printcolumn:name="Tag",type=string,JSONPath=`.spec.tag`
 
-// ContainerImageScan is the Schema for the containerimagescans API
+// ContainerImageScan is the Schema for the containerImageScans API.
 type ContainerImageScan struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -117,7 +121,7 @@ type ContainerImageScan struct {
 
 //+kubebuilder:object:root=true
 
-// ContainerImageScanList contains a list of ContainerImageScan
+// ContainerImageScanList contains a list of ContainerImageScan.
 type ContainerImageScanList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
