@@ -89,13 +89,9 @@ jobs:
         uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
-      - uses: AbsaOSS/k3d-action@597f8436a25d6d2e8e46a5047ed986a833a6674c # v2.4.0
-        with:
-          cluster-name: image-scanner
-          args: >-
-            --config=test/e2e-config/k3d-config.yml
+      - uses: medyagh/setup-minikube@latest
+        id: minikube
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
