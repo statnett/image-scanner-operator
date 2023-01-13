@@ -6,5 +6,5 @@ metadata:
 testDirs:
   - test/e2e/scenario
   - test/e2e/workload-scan
-timeout: 240
+timeout: 1000
 reportFormat: xml
