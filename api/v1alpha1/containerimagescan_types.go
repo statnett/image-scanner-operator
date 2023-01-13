@@ -38,9 +38,11 @@ type VulnerabilitySummary struct {
 	// +mapType=atomic
 	SeverityCount map[string]int32 `json:"severityCount,omitempty"`
 	// FixedCount is the total number of fixed vulnerabilities where a patch is available.
-	FixedCount int32 `json:"fixedCount"`
+	// TODO: Make mandatory when Xray is gone
+	FixedCount int32 `json:"fixedCount,omitempty"`
 	// UnfixedCount is the total number of vulnerabilities where no patch is yet available.
-	UnfixedCount int32 `json:"unfixedCount"`
+	// TODO: Make mandatory when Xray is gone
+	UnfixedCount int32 `json:"unfixedCount,omitempty"`
 }
 
 func (vs *VulnerabilitySummary) GetSeverityCount() map[string]int32 {

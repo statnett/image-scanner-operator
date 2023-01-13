@@ -224,8 +224,9 @@ spec:
                 description: VulnerabilitySummary is a summary of detected vulnerabilities.
                 properties:
                   fixedCount:
-                    description: FixedCount is the total number of fixed vulnerabilities
-                      where a patch is available.
+                    description: 'FixedCount is the total number of fixed vulnerabilities
+                      where a patch is available. TODO: Make mandatory when Xray is
+                      gone'
                     format: int32
                     type: integer
                   severityCount:
@@ -237,13 +238,11 @@ spec:
                     type: object
                     x-kubernetes-map-type: atomic
                   unfixedCount:
-                    description: UnfixedCount is the total number of vulnerabilities
-                      where no patch is yet available.
+                    description: 'UnfixedCount is the total number of vulnerabilities
+                      where no patch is yet available. TODO: Make mandatory when Xray
+                      is gone'
                     format: int32
                     type: integer
-                required:
-                - fixedCount
-                - unfixedCount
                 type: object
             type: object
         type: object
