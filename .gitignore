@@ -29,3 +29,6 @@ Dockerfile.cross
 # Kuttl
 /kuttl-report.xml
 /kubeconfig
+
+# Local k3d/k3s config
+/registries.yaml
