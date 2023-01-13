@@ -92,8 +92,9 @@ jobs:
 
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
       - uses: debianmaster/actions-k3s@b9cf3f599fd118699a3c8a0d18a2f2bda6cf4ce4 # v1.0.5
+        id: k3s
         with:
-          version: 'v1.26.0+k3s2'
+          version: 'v1.21.2-k3s1'
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
