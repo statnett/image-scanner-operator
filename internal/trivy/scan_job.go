@@ -166,6 +166,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		{Name: "TRIVY_CACHE_DIR", Value: TempVolumeMountPath},
 		{Name: "TRIVY_SERVER", Value: f.TrivyServer},
 		{Name: "TRIVY_QUIET", Value: "true"},
+		{Name: "TRIVY_SLOW", Value: "true"},
 		{Name: "TRIVY_FORMAT", Value: "template"},
 		{Name: "TRIVY_TEMPLATE", Value: reportTemplate},
 		{Name: "TRIVY_TIMEOUT", Value: ScanJobTimeout.String()},
