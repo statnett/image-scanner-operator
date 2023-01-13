@@ -1,7 +1,7 @@
 apiVersion: stas.statnett.no/v1alpha1
 kind: ContainerImageScan
 metadata:
-  name: pod-nginx-app-f24e5
+  name: pod-nginx-app-afd44
   ownerReferences:
     - apiVersion: v1
       kind: Pod
@@ -10,7 +10,7 @@ metadata:
   labels:
     app.kubernetes.io/name: nginx
 spec:
-  digest: 'sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4'
+  digest: 'sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33'
   name: docker.io/nginxinc/nginx-unprivileged
   workload:
     containerName: app
@@ -23,970 +23,251 @@ status:
   lastSuccessfulScanTime: '2023-01-10T10:24:53Z'
   observedGeneration: 1
   vulnerabilities:
-    - installedVersion: 5.1-2+deb11u1
-      pkgName: bash
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3715'
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32207'
       severity: CRITICAL
-      title: 'bash: a heap-buffer-overflow in valid_parameter_transform'
-      vulnerabilityID: CVE-2022-3715
-    - installedVersion: 7.74.0-1.3+deb11u3
+      title: 'curl: Unpreserved file permissions'
+      vulnerabilityID: CVE-2022-32207
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
       pkgName: curl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32221'
       severity: CRITICAL
       title: 'curl: POST following PUT confusion'
       vulnerabilityID: CVE-2022-32221
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42915'
+      severity: CRITICAL
+      title: 'curl: HTTP proxy double-free'
+      vulnerabilityID: CVE-2022-42915
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32207'
+      severity: CRITICAL
+      title: 'curl: Unpreserved file permissions'
+      vulnerabilityID: CVE-2022-32207
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32221'
       severity: CRITICAL
       title: 'curl: POST following PUT confusion'
       vulnerabilityID: CVE-2022-32221
-    - installedVersion: 5.3.28+dfsg1-0.8
-      pkgName: libdb5.3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-8457'
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42915'
       severity: CRITICAL
-      title: 'sqlite: heap out-of-bound read in function rtreenode()'
-      vulnerabilityID: CVE-2019-8457
-    - installedVersion: 7.74.0-1.3+deb11u3
+      title: 'curl: HTTP proxy double-free'
+      vulnerabilityID: CVE-2022-42915
+    - fixedVersion: 1.2.12-r2
+      installedVersion: 1.2.12-r0
+      pkgName: zlib
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-37434'
+      severity: CRITICAL
+      title: >-
+        zlib: heap-based buffer over-read and overflow in inflate() in inflate.c
+        via a large gzip header extra field
+      vulnerabilityID: CVE-2022-37434
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27780'
+      severity: HIGH
+      title: 'curl: percent-encoded path separator in URL host'
+      vulnerabilityID: CVE-2022-27780
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27781'
+      severity: HIGH
+      title: 'curl: CERTINFO never-ending busy-loop'
+      vulnerabilityID: CVE-2022-27781
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27782'
+      severity: HIGH
+      title: 'curl: TLS and SSH connection too eager reuse'
+      vulnerabilityID: CVE-2022-27782
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
       pkgName: curl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42916'
       severity: HIGH
       title: 'curl: HSTS bypass via IDN'
       vulnerabilityID: CVE-2022-42916
-    - installedVersion: 7.74.0-1.3+deb11u3
+    - fixedVersion: 7.80.0-r5
+      installedVersion: 7.80.0-r1
       pkgName: curl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43551'
       severity: HIGH
       title: 'curl: HSTS bypass via IDN'
       vulnerabilityID: CVE-2022-43551
-    - installedVersion: 1.46.2-2
-      pkgName: e2fsprogs
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1304'
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27780'
       severity: HIGH
-      title: 'e2fsprogs: out-of-bounds read/write via crafted filesystem'
-      vulnerabilityID: CVE-2022-1304
-    - installedVersion: 1.46.2-2
-      pkgName: libcom-err2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1304'
+      title: 'curl: percent-encoded path separator in URL host'
+      vulnerabilityID: CVE-2022-27780
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27781'
       severity: HIGH
-      title: 'e2fsprogs: out-of-bounds read/write via crafted filesystem'
-      vulnerabilityID: CVE-2022-1304
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
+      title: 'curl: CERTINFO never-ending busy-loop'
+      vulnerabilityID: CVE-2022-27781
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27782'
+      severity: HIGH
+      title: 'curl: TLS and SSH connection too eager reuse'
+      vulnerabilityID: CVE-2022-27782
+    - fixedVersion: 7.80.0-r4
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42916'
       severity: HIGH
       title: 'curl: HSTS bypass via IDN'
       vulnerabilityID: CVE-2022-42916
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
+    - fixedVersion: 7.80.0-r5
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43551'
       severity: HIGH
       title: 'curl: HSTS bypass via IDN'
       vulnerabilityID: CVE-2022-43551
-    - installedVersion: 1.46.2-2
-      pkgName: libext2fs2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1304'
-      severity: HIGH
-      title: 'e2fsprogs: out-of-bounds read/write via crafted filesystem'
-      vulnerabilityID: CVE-2022-1304
-    - installedVersion: 1.8.7-6
-      pkgName: libgcrypt20
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-33560'
-      severity: HIGH
-      title: >-
-        libgcrypt: mishandles ElGamal encryption because it lacks exponent
-        blinding to address a side-channel attack against mpi_powm
-      vulnerabilityID: CVE-2021-33560
-    - installedVersion: 1.46.2-2
-      pkgName: libss2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1304'
-      severity: HIGH
-      title: 'e2fsprogs: out-of-bounds read/write via crafted filesystem'
-      vulnerabilityID: CVE-2022-1304
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3970'
-      severity: HIGH
-      title: 'libtiff: integer overflow in function TIFFReadRGBATileExt of the file'
-      vulnerabilityID: CVE-2022-3970
-    - installedVersion: 6.2+20201114-2
-      pkgName: libtinfo6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
-      severity: HIGH
-      title: 'ncurses: segfaulting OOB read'
-      vulnerabilityID: CVE-2022-29458
-    - installedVersion: 1.46.2-2
-      pkgName: logsave
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1304'
-      severity: HIGH
-      title: 'e2fsprogs: out-of-bounds read/write via crafted filesystem'
-      vulnerabilityID: CVE-2022-1304
-    - installedVersion: 6.2+20201114-2
-      pkgName: ncurses-base
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
-      severity: HIGH
-      title: 'ncurses: segfaulting OOB read'
-      vulnerabilityID: CVE-2022-29458
-    - installedVersion: 6.2+20201114-2
-      pkgName: ncurses-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
-      severity: HIGH
-      title: 'ncurses: segfaulting OOB read'
-      vulnerabilityID: CVE-2022-29458
-    - installedVersion: 5.32.1-4+deb11u2
-      pkgName: perl-base
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-16156'
-      severity: HIGH
-      title: 'perl-CPAN: Bypass of verification of signatures in CHECKSUMS files'
-      vulnerabilityID: CVE-2020-16156
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
-      severity: MEDIUM
-      title: 'curl: HTTP Proxy deny use-after-free'
-      vulnerabilityID: CVE-2022-43552
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
-      severity: MEDIUM
-      title: 'curl: HTTP Proxy deny use-after-free'
-      vulnerabilityID: CVE-2022-43552
-    - installedVersion: 2.3.0-2
-      pkgName: libgd3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-38115'
-      severity: MEDIUM
-      title: >-
-        read_header_tga in gd_tga.c in the GD Graphics Library (aka LibGD) thr
-        ...
-      vulnerabilityID: CVE-2021-38115
-    - installedVersion: 2.3.0-2
-      pkgName: libgd3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-40812'
-      severity: MEDIUM
-      title: >-
-        The GD Graphics Library (aka LibGD) through 2.3.2 has an out-of-bounds
-        ...
-      vulnerabilityID: CVE-2021-40812
-    - installedVersion: '1:2.0.6-4'
-      pkgName: libjpeg62-turbo
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-46822'
-      severity: MEDIUM
-      title: 'libjpeg-turbo: heap buffer overflow in get_word_rgb_row() in rdppm.c'
-      vulnerabilityID: CVE-2021-46822
-    - installedVersion: 1.1.1n-0+deb11u3
-      pkgName: libssl1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2097'
-      severity: MEDIUM
-      title: 'openssl: AES OCB fails to encrypt some bytes'
-      vulnerabilityID: CVE-2022-2097
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libsystemd0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3821'
-      severity: MEDIUM
-      title: 'systemd: buffer overrun in format_timespan() function'
-      vulnerabilityID: CVE-2022-3821
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libsystemd0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-4415'
-      severity: MEDIUM
-      title: >-
-        systemd: local information leak due to systemd-coredump not respecting
-        fs.suid_dumpable kernel setting
-      vulnerabilityID: CVE-2022-4415
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1354'
-      severity: MEDIUM
-      title: 'libtiff: heap-buffer-overflow in TIFFReadRawDataStriped() in tiffinfo.c'
-      vulnerabilityID: CVE-2022-1354
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1355'
-      severity: MEDIUM
-      title: 'libtiff: stack-buffer-overflow in tiffcp.c in main()'
-      vulnerabilityID: CVE-2022-1355
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1622'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds read in LZWDecode'
-      vulnerabilityID: CVE-2022-1622
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1623'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds read in LZWDecode'
-      vulnerabilityID: CVE-2022-1623
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2056'
-      severity: MEDIUM
-      title: 'LibTiff: DoS from Divide By Zero Error'
-      vulnerabilityID: CVE-2022-2056
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2057'
-      severity: MEDIUM
-      title: 'LibTiff: DoS from Divide By Zero Error'
-      vulnerabilityID: CVE-2022-2057
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2058'
-      severity: MEDIUM
-      title: 'LibTiff: DoS from Divide By Zero Error'
-      vulnerabilityID: CVE-2022-2058
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2867'
-      severity: MEDIUM
-      title: >-
-        libtiff: uint32_t underflow leads to out of bounds read and write in
-        tiffcrop.c
-      vulnerabilityID: CVE-2022-2867
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2868'
-      severity: MEDIUM
-      title: >-
-        libtiff: Invalid crop_width and/or crop_length could cause an
-        out-of-bounds read in reverseSamples16bits()
-      vulnerabilityID: CVE-2022-2868
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2869'
-      severity: MEDIUM
-      title: >-
-        libtiff: tiffcrop.c has uint32_t underflow which leads to out of bounds
-        read and write in extractContigSamples8bits()
-      vulnerabilityID: CVE-2022-2869
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-34526'
-      severity: MEDIUM
-      title: >-
-        libtiff: A stack overflow was discovered in the _TIFFVGetField function
-        of Tiffsplit
-      vulnerabilityID: CVE-2022-34526
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3570'
-      severity: MEDIUM
-      title: 'libtiff: heap Buffer overflows in tiffcrop.c'
-      vulnerabilityID: CVE-2022-3570
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3597'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds write in _TIFFmemcpy in libtiff/tif_unix'
-      vulnerabilityID: CVE-2022-3597
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3598'
-      severity: MEDIUM
-      title: >-
-        libtiff: out-of-bounds write in extractContigSamplesShifted24bits in
-        tools/tiffcrop.c
-      vulnerabilityID: CVE-2022-3598
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3599'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds read in writeSingleSection in tools/tiffcrop.c'
-      vulnerabilityID: CVE-2022-3599
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3626'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds write in _TIFFmemset in libtiff/tif_unix.c'
-      vulnerabilityID: CVE-2022-3626
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3627'
-      severity: MEDIUM
-      title: 'libtiff: out-of-bounds write in _TIFFmemcpy in libtiff/tif_unix.c'
-      vulnerabilityID: CVE-2022-3627
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libudev1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3821'
-      severity: MEDIUM
-      title: 'systemd: buffer overrun in format_timespan() function'
-      vulnerabilityID: CVE-2022-3821
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libudev1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-4415'
-      severity: MEDIUM
-      title: >-
-        systemd: local information leak due to systemd-coredump not respecting
-        fs.suid_dumpable kernel setting
-      vulnerabilityID: CVE-2022-4415
-    - installedVersion: 2.9.10+dfsg-6.7+deb11u3
+    - fixedVersion: 2.9.14-r1
+      installedVersion: 2.9.14-r0
       pkgName: libxml2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2016-3709'
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2309'
+      severity: HIGH
+      title: 'lxml: NULL Pointer Dereference in lxml'
+      vulnerabilityID: CVE-2022-2309
+    - fixedVersion: 2.9.14-r2
+      installedVersion: 2.9.14-r0
+      pkgName: libxml2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-40303'
+      severity: HIGH
+      title: 'libxml2: integer overflows with XML_PARSE_HUGE'
+      vulnerabilityID: CVE-2022-40303
+    - fixedVersion: 2.9.14-r2
+      installedVersion: 2.9.14-r0
+      pkgName: libxml2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-40304'
+      severity: HIGH
+      title: 'libxml2: dict corruption caused by entity reference cycles'
+      vulnerabilityID: CVE-2022-40304
+    - fixedVersion: 6.3_p20211120-r1
+      installedVersion: 6.3_p20211120-r0
+      pkgName: ncurses-libs
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
+      severity: HIGH
+      title: 'ncurses: segfaulting OOB read'
+      vulnerabilityID: CVE-2022-29458
+    - fixedVersion: 6.3_p20211120-r1
+      installedVersion: 6.3_p20211120-r0
+      pkgName: ncurses-terminfo-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
+      severity: HIGH
+      title: 'ncurses: segfaulting OOB read'
+      vulnerabilityID: CVE-2022-29458
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32205'
       severity: MEDIUM
-      title: 'libxml2: Incorrect server side include parsing can lead to XSS'
-      vulnerabilityID: CVE-2016-3709
-    - installedVersion: 1.22.1-1~bullseye
-      pkgName: nginx
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-36309'
+      title: 'curl: Set-Cookie denial of service'
+      vulnerabilityID: CVE-2022-32205
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32206'
       severity: MEDIUM
-      title: >-
-        ngx_http_lua_module (aka lua-nginx-module) before 0.10.16 in OpenResty
-        ...
-      vulnerabilityID: CVE-2020-36309
-    - installedVersion: 1.1.1n-0+deb11u3
-      pkgName: openssl
+      title: 'curl: HTTP compression denial of service'
+      vulnerabilityID: CVE-2022-32206
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32208'
+      severity: MEDIUM
+      title: 'curl: FTP-KRB bad message verification'
+      vulnerabilityID: CVE-2022-32208
+    - fixedVersion: 7.80.0-r5
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
+      severity: MEDIUM
+      title: 'curl: HTTP Proxy deny use-after-free'
+      vulnerabilityID: CVE-2022-43552
+    - fixedVersion: 1.1.1q-r0
+      installedVersion: 1.1.1n-r0
+      pkgName: libcrypto1.1
       primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2097'
       severity: MEDIUM
       title: 'openssl: AES OCB fails to encrypt some bytes'
       vulnerabilityID: CVE-2022-2097
-    - installedVersion: 2.2.4
-      pkgName: apt
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3374'
-      severity: LOW
-      title: >-
-        It was found that apt-key in apt, all versions, do not correctly valid
-        ...
-      vulnerabilityID: CVE-2011-3374
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: bsdutils
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: 8.32-4
-      pkgName: coreutils
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2016-2781'
-      severity: LOW
-      title: >-
-        coreutils: Non-privileged session can escape to the parent session in
-        chroot
-      vulnerabilityID: CVE-2016-2781
-    - installedVersion: 8.32-4
-      pkgName: coreutils
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-18018'
-      severity: LOW
-      title: 'coreutils: race condition vulnerability in chown and chgrp'
-      vulnerabilityID: CVE-2017-18018
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-22922'
-      severity: LOW
-      title: 'curl: Content not matching hash in Metalink is not being discarded'
-      vulnerabilityID: CVE-2021-22922
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-22923'
-      severity: LOW
-      title: 'curl: Metalink download sends credentials'
-      vulnerabilityID: CVE-2021-22923
-    - installedVersion: 2.2.4
-      pkgName: libapt-pkg6.0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3374'
-      severity: LOW
-      title: >-
-        It was found that apt-key in apt, all versions, do not correctly valid
-        ...
-      vulnerabilityID: CVE-2011-3374
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: libblkid1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-4756'
-      severity: LOW
-      title: >-
-        glibc: glob implementation can cause excessive CPU and memory
-        consumption due to crafted glob expressions
-      vulnerabilityID: CVE-2010-4756
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-20796'
-      severity: LOW
-      title: >-
-        glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in
-        posix/regexec.c
-      vulnerabilityID: CVE-2018-20796
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010022'
-      severity: LOW
-      title: 'glibc: stack guard protection bypass'
-      vulnerabilityID: CVE-2019-1010022
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010023'
-      severity: LOW
-      title: >-
-        glibc: running ldd on malicious ELF leads to code execution because of
-        wrong size computation
-      vulnerabilityID: CVE-2019-1010023
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010024'
-      severity: LOW
-      title: 'glibc: ASLR bypass using cache of thread stack and heap'
-      vulnerabilityID: CVE-2019-1010024
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010025'
-      severity: LOW
-      title: >-
-        glibc: information disclosure of heap addresses of pthread_created
-        thread
-      vulnerabilityID: CVE-2019-1010025
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-9192'
-      severity: LOW
-      title: >-
-        glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in
-        posix/regexec.c
-      vulnerabilityID: CVE-2019-9192
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-4756'
-      severity: LOW
-      title: >-
-        glibc: glob implementation can cause excessive CPU and memory
-        consumption due to crafted glob expressions
-      vulnerabilityID: CVE-2010-4756
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-20796'
-      severity: LOW
-      title: >-
-        glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in
-        posix/regexec.c
-      vulnerabilityID: CVE-2018-20796
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010022'
-      severity: LOW
-      title: 'glibc: stack guard protection bypass'
-      vulnerabilityID: CVE-2019-1010022
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010023'
-      severity: LOW
-      title: >-
-        glibc: running ldd on malicious ELF leads to code execution because of
-        wrong size computation
-      vulnerabilityID: CVE-2019-1010023
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010024'
-      severity: LOW
-      title: 'glibc: ASLR bypass using cache of thread stack and heap'
-      vulnerabilityID: CVE-2019-1010024
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010025'
-      severity: LOW
-      title: >-
-        glibc: information disclosure of heap addresses of pthread_created
-        thread
-      vulnerabilityID: CVE-2019-1010025
-    - installedVersion: 2.31-13+deb11u5
-      pkgName: libc6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-9192'
-      severity: LOW
-      title: >-
-        glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in
-        posix/regexec.c
-      vulnerabilityID: CVE-2019-9192
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-22922'
-      severity: LOW
-      title: 'curl: Content not matching hash in Metalink is not being discarded'
-      vulnerabilityID: CVE-2021-22922
-    - installedVersion: 7.74.0-1.3+deb11u3
-      pkgName: libcurl4
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-22923'
-      severity: LOW
-      title: 'curl: Metalink download sends credentials'
-      vulnerabilityID: CVE-2021-22923
-    - installedVersion: 2.2.10-2+deb11u5
-      pkgName: libexpat1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-0340'
-      severity: LOW
-      title: 'expat: internal entity expansion'
-      vulnerabilityID: CVE-2013-0340
-    - installedVersion: 2.10.4+dfsg-1+deb11u1
-      pkgName: libfreetype6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-31782'
-      severity: LOW
-      title: >-
-        ftbench.c in FreeType Demo Programs through 2.12.1 has a heap-based bu
-        ...
-      vulnerabilityID: CVE-2022-31782
-    - installedVersion: 1.8.7-6
-      pkgName: libgcrypt20
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-6829'
-      severity: LOW
-      title: >-
-        libgcrypt: ElGamal implementation doesn't have semantic security due to
-        incorrectly encoded plaintexts possibly allowing to obtain sensitive
-        information
-      vulnerabilityID: CVE-2018-6829
-    - installedVersion: 2.3.0-2
-      pkgName: libgd3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-40145'
-      severity: LOW
-      title: >-
-        ** DISPUTED ** gdImageGd2Ptr in gd_gd2.c in the GD Graphics Library (a
-        ...
-      vulnerabilityID: CVE-2021-40145
-    - installedVersion: 3.7.1-5+deb11u2
-      pkgName: libgnutls30
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3389'
-      severity: LOW
-      title: 'HTTPS: block-wise chosen-plaintext attack against SSL/TLS (BEAST)'
-      vulnerabilityID: CVE-2011-3389
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libgssapi-krb5-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2004-0971'
-      severity: LOW
-      title: security flaw
-      vulnerabilityID: CVE-2004-0971
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libgssapi-krb5-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
-      severity: LOW
-      title: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
-      vulnerabilityID: CVE-2018-5709
-    - installedVersion: 2.1-3.1
-      pkgName: libjbig0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-9937'
-      severity: LOW
-      title: 'libtiff: memory malloc failure in tif_jbig.c could cause DOS.'
-      vulnerabilityID: CVE-2017-9937
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libk5crypto3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2004-0971'
-      severity: LOW
-      title: security flaw
-      vulnerabilityID: CVE-2004-0971
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libk5crypto3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
-      severity: LOW
-      title: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
-      vulnerabilityID: CVE-2018-5709
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libkrb5-3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2004-0971'
-      severity: LOW
-      title: security flaw
-      vulnerabilityID: CVE-2004-0971
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libkrb5-3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
-      severity: LOW
-      title: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
-      vulnerabilityID: CVE-2018-5709
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libkrb5support0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2004-0971'
-      severity: LOW
-      title: security flaw
-      vulnerabilityID: CVE-2004-0971
-    - installedVersion: 1.18.3-6+deb11u3
-      pkgName: libkrb5support0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
-      severity: LOW
-      title: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
-      vulnerabilityID: CVE-2018-5709
-    - installedVersion: 2.4.57+dfsg-3+deb11u1
-      pkgName: libldap-2.4-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2015-3276'
-      severity: LOW
-      title: 'openldap: incorrect multi-keyword mode cipherstring parsing'
-      vulnerabilityID: CVE-2015-3276
-    - installedVersion: 2.4.57+dfsg-3+deb11u1
-      pkgName: libldap-2.4-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-14159'
-      severity: LOW
-      title: 'openldap: Privilege escalation via PID file manipulation'
-      vulnerabilityID: CVE-2017-14159
-    - installedVersion: 2.4.57+dfsg-3+deb11u1
-      pkgName: libldap-2.4-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-17740'
-      severity: LOW
-      title: >-
-        openldap: contrib/slapd-modules/nops/nops.c attempts to free stack
-        buffer allowing remote attackers to cause a denial of service
-      vulnerabilityID: CVE-2017-17740
-    - installedVersion: 2.4.57+dfsg-3+deb11u1
-      pkgName: libldap-2.4-2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-15719'
-      severity: LOW
-      title: 'openldap: Certificate validation incorrectly matches name against CN-ID'
-      vulnerabilityID: CVE-2020-15719
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: libmount1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: '2:8.39-13'
-      pkgName: libpcre3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-11164'
-      severity: LOW
-      title: 'pcre: OP_KETRMAX feature in the match function in pcre_exec.c'
-      vulnerabilityID: CVE-2017-11164
-    - installedVersion: '2:8.39-13'
-      pkgName: libpcre3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-16231'
-      severity: LOW
-      title: >-
-        pcre: self-recursive call in match() in pcre_exec.c leads to denial of
-        service
-      vulnerabilityID: CVE-2017-16231
-    - installedVersion: '2:8.39-13'
-      pkgName: libpcre3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-7245'
-      severity: LOW
-      title: 'pcre: stack-based buffer overflow write in pcre32_copy_substring'
-      vulnerabilityID: CVE-2017-7245
-    - installedVersion: '2:8.39-13'
-      pkgName: libpcre3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-7246'
-      severity: LOW
-      title: 'pcre: stack-based buffer overflow write in pcre32_copy_substring'
-      vulnerabilityID: CVE-2017-7246
-    - installedVersion: '2:8.39-13'
-      pkgName: libpcre3
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-20838'
-      severity: LOW
-      title: >-
-        pcre: Buffer over-read in JIT when UTF is disabled and \X or \R has
-        fixed quantifier greater than 1
-      vulnerabilityID: CVE-2019-20838
-    - installedVersion: 1.6.37-3
-      pkgName: libpng16-16
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-6129'
-      severity: LOW
-      title: 'libpng: memory leak of png_info struct in pngcp.c'
-      vulnerabilityID: CVE-2019-6129
-    - installedVersion: 1.6.37-3
-      pkgName: libpng16-16
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-4214'
-      severity: LOW
-      title: 'libpng: hardcoded value leads to heap-overflow'
-      vulnerabilityID: CVE-2021-4214
-    - installedVersion: 3.1-1
-      pkgName: libsepol1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-36084'
-      severity: LOW
-      title: 'libsepol: use-after-free in __cil_verify_classperms()'
-      vulnerabilityID: CVE-2021-36084
-    - installedVersion: 3.1-1
-      pkgName: libsepol1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-36085'
-      severity: LOW
-      title: 'libsepol: use-after-free in __cil_verify_classperms()'
-      vulnerabilityID: CVE-2021-36085
-    - installedVersion: 3.1-1
-      pkgName: libsepol1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-36086'
-      severity: LOW
-      title: 'libsepol: use-after-free in cil_reset_classpermission()'
-      vulnerabilityID: CVE-2021-36086
-    - installedVersion: 3.1-1
-      pkgName: libsepol1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-36087'
-      severity: LOW
-      title: 'libsepol: heap-based buffer overflow in ebitmap_match_any()'
-      vulnerabilityID: CVE-2021-36087
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: libsmartcols1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: 1.1.1n-0+deb11u3
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32205'
+      severity: MEDIUM
+      title: 'curl: Set-Cookie denial of service'
+      vulnerabilityID: CVE-2022-32205
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32206'
+      severity: MEDIUM
+      title: 'curl: HTTP compression denial of service'
+      vulnerabilityID: CVE-2022-32206
+    - fixedVersion: 7.80.0-r2
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32208'
+      severity: MEDIUM
+      title: 'curl: FTP-KRB bad message verification'
+      vulnerabilityID: CVE-2022-32208
+    - fixedVersion: 7.80.0-r5
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
+      severity: MEDIUM
+      title: 'curl: HTTP Proxy deny use-after-free'
+      vulnerabilityID: CVE-2022-43552
+    - fixedVersion: 1.1.1q-r0
+      installedVersion: 1.1.1n-r0
       pkgName: libssl1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-6755'
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2097'
+      severity: MEDIUM
+      title: 'openssl: AES OCB fails to encrypt some bytes'
+      vulnerabilityID: CVE-2022-2097
+    - fixedVersion: 7.80.0-r3
+      installedVersion: 7.80.0-r1
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-35252'
       severity: LOW
-      title: 'Dual_EC_DRBG: weak pseudo random number generator'
-      vulnerabilityID: CVE-2007-6755
-    - installedVersion: 1.1.1n-0+deb11u3
-      pkgName: libssl1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-0928'
+      title: 'curl: control code in cookie denial of service'
+      vulnerabilityID: CVE-2022-35252
+    - fixedVersion: 7.80.0-r3
+      installedVersion: 7.80.0-r1
+      pkgName: libcurl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-35252'
       severity: LOW
-      title: 'openssl: RSA authentication weakness'
-      vulnerabilityID: CVE-2010-0928
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libsystemd0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4392'
-      severity: LOW
-      title: >-
-        systemd: TOCTOU race condition when updating file permissions and
-        SELinux security contexts
-      vulnerabilityID: CVE-2013-4392
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libsystemd0
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-13529'
-      severity: LOW
-      title: >-
-        systemd: DHCP FORCERENEW authentication not implemented can cause a
-        system running the DHCP client to have its network reconfigured
-      vulnerabilityID: CVE-2020-13529
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2014-8130'
-      severity: LOW
-      title: 'libtiff: divide by zero in the tiffdither tool'
-      vulnerabilityID: CVE-2014-8130
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-16232'
-      severity: LOW
-      title: 'libtiff: Memory leaks in tif_open.c, tif_lzw.c, and tif_aux.c'
-      vulnerabilityID: CVE-2017-16232
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-17973'
-      severity: LOW
-      title: 'libtiff: heap-based use after free in tiff2pdf.c:t2p_writeproc'
-      vulnerabilityID: CVE-2017-17973
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-5563'
-      severity: LOW
-      title: 'libtiff: Heap-buffer overflow in LZWEncode tif_lzw.c'
-      vulnerabilityID: CVE-2017-5563
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-9117'
-      severity: LOW
-      title: 'libtiff: Heap-based buffer over-read in bmp2tiff'
-      vulnerabilityID: CVE-2017-9117
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-10126'
-      severity: LOW
-      title: >-
-        libtiff: NULL pointer dereference in the jpeg_fdct_16x16 function in
-        jfdctint.c
-      vulnerabilityID: CVE-2018-10126
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1056'
-      severity: LOW
-      title: >-
-        Out-of-bounds Read error in tiffcrop in libtiff 4.3.0 allows attackers
-        ...
-      vulnerabilityID: CVE-2022-1056
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1210'
-      severity: LOW
-      title: 'tiff: Malicious file leads to a denial of service in TIFF File Handler'
-      vulnerabilityID: CVE-2022-1210
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2519'
-      severity: LOW
-      title: >-
-        libtiff: Double free or corruption in rotateImage() function at
-        tiffcrop.c
-      vulnerabilityID: CVE-2022-2519
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2520'
-      severity: LOW
-      title: 'libtiff: Assertion fail in rotateImage() function at tiffcrop.c'
-      vulnerabilityID: CVE-2022-2520
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2521'
-      severity: LOW
-      title: 'libtiff: Invalid pointer free operation in TIFFClose() at tif_close.c'
-      vulnerabilityID: CVE-2022-2521
-    - installedVersion: 4.2.0-1+deb11u1
-      pkgName: libtiff5
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2953'
-      severity: LOW
-      title: >-
-        libtiff: tiffcrop: heap-buffer-overflow in extractImageSection in
-        tiffcrop.c
-      vulnerabilityID: CVE-2022-2953
-    - installedVersion: 6.2+20201114-2
-      pkgName: libtinfo6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-39537'
-      severity: LOW
-      title: 'ncurses: heap-based buffer overflow in _nc_captoinfo() in captoinfo.c'
-      vulnerabilityID: CVE-2021-39537
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libudev1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4392'
-      severity: LOW
-      title: >-
-        systemd: TOCTOU race condition when updating file permissions and
-        SELinux security contexts
-      vulnerabilityID: CVE-2013-4392
-    - installedVersion: 247.3-7+deb11u1
-      pkgName: libudev1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-13529'
-      severity: LOW
-      title: >-
-        systemd: DHCP FORCERENEW authentication not implemented can cause a
-        system running the DHCP client to have its network reconfigured
-      vulnerabilityID: CVE-2020-13529
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: libuuid1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: 0.6.1-2.1
-      pkgName: libwebp6
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2016-9085'
-      severity: LOW
-      title: 'libwebp: Several integer overflows'
-      vulnerabilityID: CVE-2016-9085
-    - installedVersion: 1.1.34-4+deb11u1
-      pkgName: libxslt1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2015-9019'
-      severity: LOW
-      title: 'libxslt: math.random() in xslt uses unseeded randomness'
-      vulnerabilityID: CVE-2015-9019
-    - installedVersion: '1:4.8.1-1'
-      pkgName: login
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-5686'
-      severity: LOW
-      title: >-
-        initscripts in rPath Linux 1 sets insecure permissions for the /var/lo
-        ...
-      vulnerabilityID: CVE-2007-5686
-    - installedVersion: '1:4.8.1-1'
-      pkgName: login
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4235'
-      severity: LOW
-      title: >-
-        shadow-utils: TOCTOU race conditions by copying and removing directory
-        trees
-      vulnerabilityID: CVE-2013-4235
-    - installedVersion: '1:4.8.1-1'
-      pkgName: login
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-19882'
-      severity: LOW
-      title: >-
-        shadow-utils: local users can obtain root access because setuid programs
-        are misconfigured
-      vulnerabilityID: CVE-2019-19882
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: mount
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
-    - installedVersion: 6.2+20201114-2
-      pkgName: ncurses-base
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-39537'
-      severity: LOW
-      title: 'ncurses: heap-based buffer overflow in _nc_captoinfo() in captoinfo.c'
-      vulnerabilityID: CVE-2021-39537
-    - installedVersion: 6.2+20201114-2
-      pkgName: ncurses-bin
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-39537'
-      severity: LOW
-      title: 'ncurses: heap-based buffer overflow in _nc_captoinfo() in captoinfo.c'
-      vulnerabilityID: CVE-2021-39537
-    - installedVersion: 1.22.1-1~bullseye
-      pkgName: nginx
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2009-4487'
-      severity: LOW
-      title: 'nginx: Absent sanitation of escape sequences in web server log'
-      vulnerabilityID: CVE-2009-4487
-    - installedVersion: 1.22.1-1~bullseye
-      pkgName: nginx
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-0337'
-      severity: LOW
-      title: >-
-        The default configuration of nginx, possibly 1.3.13 and earlier, uses 
-        ...
-      vulnerabilityID: CVE-2013-0337
-    - installedVersion: 1.1.1n-0+deb11u3
-      pkgName: openssl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-6755'
-      severity: LOW
-      title: 'Dual_EC_DRBG: weak pseudo random number generator'
-      vulnerabilityID: CVE-2007-6755
-    - installedVersion: 1.1.1n-0+deb11u3
-      pkgName: openssl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-0928'
-      severity: LOW
-      title: 'openssl: RSA authentication weakness'
-      vulnerabilityID: CVE-2010-0928
-    - installedVersion: '1:4.8.1-1'
-      pkgName: passwd
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-5686'
-      severity: LOW
-      title: >-
-        initscripts in rPath Linux 1 sets insecure permissions for the /var/lo
-        ...
-      vulnerabilityID: CVE-2007-5686
-    - installedVersion: '1:4.8.1-1'
-      pkgName: passwd
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4235'
-      severity: LOW
-      title: >-
-        shadow-utils: TOCTOU race conditions by copying and removing directory
-        trees
-      vulnerabilityID: CVE-2013-4235
-    - installedVersion: '1:4.8.1-1'
-      pkgName: passwd
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-19882'
-      severity: LOW
-      title: >-
-        shadow-utils: local users can obtain root access because setuid programs
-        are misconfigured
-      vulnerabilityID: CVE-2019-19882
-    - installedVersion: 5.32.1-4+deb11u2
-      pkgName: perl-base
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-4116'
-      severity: LOW
-      title: 'perl: File::Temp insecure temporary file handling'
-      vulnerabilityID: CVE-2011-4116
-    - installedVersion: 1.34+dfsg-1
-      pkgName: tar
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2005-2541'
-      severity: LOW
-      title: >-
-        tar: does not properly warn the user when extracting setuid or setgid
-        files
-      vulnerabilityID: CVE-2005-2541
-    - installedVersion: 2.36.1-8+deb11u1
-      pkgName: util-linux
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
-      severity: LOW
-      title: >-
-        util-linux: partial disclosure of arbitrary files in chfn and chsh when
-        compiled with libreadline
-      vulnerabilityID: CVE-2022-0563
+      title: 'curl: control code in cookie denial of service'
+      vulnerabilityID: CVE-2022-35252
   vulnerabilitySummary:
+    fixedCount: 34
     severityCount:
-      CRITICAL: 4
+      CRITICAL: 7
       HIGH: 15
-      LOW: 93
-      MEDIUM: 30
+      LOW: 2
+      MEDIUM: 10
       UNKNOWN: 0
-    unfixedCount: 142
