@@ -1,7 +1,7 @@
 ---
 name: Clear cache
 on:
-  pull_request:
+  workflow_dispatch:
 permissions:
   actions: write
 jobs:
@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: Clear cache
         run: |
-          echo "$REPO"
           gh extension install actions/gh-actions-cache
 
           echo "Fetching list of cache key"
