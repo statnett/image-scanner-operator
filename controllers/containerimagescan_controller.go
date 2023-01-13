@@ -20,7 +20,6 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
-	"github.com/statnett/image-scanner-operator/internal/hash"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
@@ -75,33 +74,37 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) error {
 	cleanCis := cis.DeepCopy()
 
-	scanJobs := &batchv1.JobList{}
-	if err := r.listScanJobs(ctx, cis, scanJobs); err != nil {
+	scanJob, err := r.newScanJob(ctx, cis)
+	if err != nil {
 		return err
 	}
-	// Don't create duplicate jobs
-	if len(scanJobs.Items) == 0 {
-		scanJob, err := r.createScanJob(ctx, cis)
-		if err != nil {
-			return err
+
+	// Jobs are highly immutable, so not attempting to update
+	err = r.Create(ctx, scanJob)
+	if err != nil {
+		if apierrors.IsAlreadyExists(err) {
+			// Don't create duplicate jobs
+			return nil
 		}
 
-		condition := metav1.Condition{
-			Type:    string(kstatus.ConditionReconciling),
-			Status:  metav1.ConditionTrue,
-			Reason:  "ScanJobCreated",
-			Message: fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name),
-		}
-		meta.SetStatusCondition(&cis.Status.Conditions, condition)
-		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionStalled))
+		return err
 	}
+
+	condition := metav1.Condition{
+		Type:    string(kstatus.ConditionReconciling),
+		Status:  metav1.ConditionTrue,
+		Reason:  "ScanJobCreated",
+		Message: fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name),
+	}
+	meta.SetStatusCondition(&cis.Status.Conditions, condition)
+	meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionStalled))
 
 	cis.Status.ObservedGeneration = cis.Generation
 
 	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 }
 
-func (r *ContainerImageScanReconciler) createScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
+func (r *ContainerImageScanReconciler) newScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
 	var nodeNames []string
 
 	for _, or := range cis.OwnerReferences {
@@ -127,18 +130,5 @@ func (r *ContainerImageScanReconciler) createScanJob(ctx context.Context, cis *s
 		return nil, err
 	}
 
-	return job, r.Create(ctx, job)
-}
-
-func (r *ContainerImageScanReconciler) listScanJobs(ctx context.Context, cis *stasv1alpha1.ContainerImageScan, jobs *batchv1.JobList) error {
-	matchLabels := map[string]string{
-		stasv1alpha1.LabelStatnettControllerUID:  string(cis.UID),
-		stasv1alpha1.LabelStatnettControllerHash: hash.NewString(cis.Spec),
-	}
-	listOps := []client.ListOption{
-		client.InNamespace(r.ScanJobNamespace),
-		client.MatchingLabels(matchLabels),
-	}
-
-	return r.List(ctx, jobs, listOps...)
+	return job, nil
 }

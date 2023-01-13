@@ -2,12 +2,14 @@ package trivy
 
 import (
 	"embed"
+	"fmt"
 	"strings"
 	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/utils/pointer"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
@@ -19,6 +21,8 @@ const (
 	FsScanSharedVolumeMountPath = "/var/run/image-scanner"
 	FsScanSharedVolumeName      = "image-scanner"
 	FsScanTrivyBinaryPath       = FsScanSharedVolumeMountPath + "/trivy"
+	JobNameSpecHashPartLength   = 5
+	KubernetesJobNameMaxLength  = validation.DNS1123LabelMaxLength
 	ScanJobContainerName        = "scan-image"
 	ScanJobTimeout              = 1 * time.Hour
 	TempVolumeName              = "tmp"
@@ -63,16 +67,30 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 	}
 
 	job.Namespace = f.ScanJobNamespace
-	job.GenerateName = cis.Name
+	job.Name = scanJobName(cis)
 	job.Labels = map[string]string{
 		stasv1alpha1.LabelK8sAppName:                  stasv1alpha1.AppNameTrivy,
 		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
 		stasv1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
 		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
-		stasv1alpha1.LabelStatnettControllerHash:      hash.NewString(cis.Spec),
 	}
 
 	return job, nil
+}
+
+func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {
+	hashPart := hash.NewString(cis.Spec, cis.Namespace)[0:JobNameSpecHashPartLength]
+	nameFn := func(cisName string) string {
+		return fmt.Sprintf("%s-%s", cisName, hashPart)
+	}
+
+	name := nameFn(cis.Name)
+	if len(name) > KubernetesJobNameMaxLength {
+		shortenCISName := cis.Name[0 : len(cis.Name)-(len(name)-KubernetesJobNameMaxLength)]
+		name = nameFn(shortenCISName)
+	}
+
+	return name
 }
 
 func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerImageScanSpec) (*batchv1.Job, error) {

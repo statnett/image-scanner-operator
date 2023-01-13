@@ -4,15 +4,14 @@ kind: Job
 metadata:
   annotations:
     batch.kubernetes.io/job-tracking: ""
-  generateName: echo-6bdfc76c56-8ae43
   generation: 1
   labels:
     app.kubernetes.io/managed-by: image-scanner
     app.kubernetes.io/name: trivy
-    controller.statnett.no/hash: 81f104762422c0137dee1c58e2c4d454
     controller.statnett.no/namespace: replica-set
     controller.statnett.no/uid: <CIS-UID>
   namespace: image-scanner-jobs
+  name: echo-6bdfc76c56-8ae43-8731b
 spec:
   activeDeadlineSeconds: 3600
   backoffLimit: 3
