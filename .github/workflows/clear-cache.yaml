@@ -16,12 +16,12 @@ jobs:
       - name: Clear cache
         run: |
           gh extension install actions/gh-actions-cache
-          
+
           echo "Fetching list of cache key"
           ## The maximum GH fetch limit is 100
           cacheKeysForPR=$(gh actions-cache list -L 100 | cut -f 1 )
 
-          ## Setting this to not fail the workflow while deleting cache keys. 
+          ## Setting this to not fail the workflow while deleting cache keys.
           set +e
           echo "Deleting caches..."
           for cacheKey in $cacheKeysForPR
