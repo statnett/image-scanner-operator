@@ -71,7 +71,7 @@ test-reports: test ## Run tests and generate reports (no reports for now)
 
 .PHONY: update-scan-log
 update-scan-log: ## Update successful scan job pod log used in tests from template
-	trivy image nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33 \
+	trivy image nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4 \
 		--offline-scan --severity CRITICAL,HIGH --quiet --format template \
 		--template @$(shell pwd)/internal/trivy/templates/scan-report.json.tmpl \
 		> controllers/testdata/scan-job-successful/successful-scan-job-pod.log.json

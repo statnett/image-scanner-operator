@@ -12,7 +12,7 @@ spec:
         - name: app
           # Using image digest to avoid fragile tests
           image: >-
-            docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+            docker.io/nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4
           command:
             - sleep
             - 10s
