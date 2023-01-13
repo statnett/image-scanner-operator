@@ -216,7 +216,6 @@ func newReplicaSet(namespacedName types.NamespacedName, labels map[string]string
 			Image: "foo-image",
 		},
 	}
-
 	return rs
 }
 
@@ -235,6 +234,5 @@ func newStatefulSet(namespacedName types.NamespacedName, labels map[string]strin
 			Image: "foo-image",
 		},
 	}
-
 	return ss
 }

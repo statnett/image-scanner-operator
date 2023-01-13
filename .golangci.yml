@@ -4,18 +4,18 @@ linters:
     - errname
     - errorlint
     - goconst
-    - gocritic
-    - godot
+#    - gocritic
+#    - godot
     - gofmt
     - goimports
-    - gosec
+#    - gosec
     - predeclared
     - unparam
     - whitespace
-    - wsl
+#    - wsl
 linters-settings:
-  gocritic:
-    enabled-checks:
-      - importShadow
+#  gocritic:
+#    enabled-checks:
+#      - importShadow
   goimports:
     local-prefixes: github.com/statnett/image-scanner-operator

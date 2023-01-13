@@ -18,15 +18,12 @@ func Reconcile(ctx context.Context, reconcileFn ReconcileFn) (ctrl.Result, error
 		// Resource conflict; requeue the request
 		return ctrl.Result{Requeue: true}, nil
 	}
-
 	if apierrors.IsAlreadyExists(err) {
 		// Log error message as warning (-1 = WARN)
 		logf.FromContext(ctx, "error", err.Error()).
 			V(-1).
 			Info("Assuming transient error (race condition), requeuing request")
-
 		return ctrl.Result{Requeue: true}, nil
 	}
-
 	return result, staserrors.IgnoreAny(err, staserrors.IsNamespaceTerminating, apierrors.IsNotFound)
 }

@@ -160,7 +160,6 @@ func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job
 	}
 	Expect(k8sClient.List(ctx, jobs, listOps...)).To(Succeed())
 	Expect(jobs.Items).To(HaveLen(1))
-
 	return &jobs.Items[0]
 }
 

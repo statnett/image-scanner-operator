@@ -20,7 +20,6 @@ func TestReconcile(t *testing.T) {
 		ctx         context.Context
 		reconcileFn ReconcileFn
 	}
-
 	tests := []struct {
 		name    string
 		args    args

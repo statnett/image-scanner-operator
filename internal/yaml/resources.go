@@ -12,6 +12,5 @@ func FromFile(filename string, obj runtime.Object) error {
 	if err != nil {
 		return err
 	}
-
 	return yaml.UnmarshalStrict(file, obj)
 }

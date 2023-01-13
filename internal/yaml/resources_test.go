@@ -13,7 +13,6 @@ func TestFromFile(t *testing.T) {
 		filename string
 		obj      runtime.Object
 	}
-
 	tests := []struct {
 		name    string
 		args    args

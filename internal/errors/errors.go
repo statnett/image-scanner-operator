@@ -20,7 +20,6 @@ func IgnoreAny(err error, is ...ErrorIs) error {
 			return nil
 		}
 	}
-
 	return err
 }
 
