@@ -1,33 +1,29 @@
 ---
 name: Clear cache
 on:
-  workflow_dispatch:
+  pull_request:
 permissions:
   actions: write
 jobs:
   clear-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
       - name: Clear cache
         run: |
           gh extension install actions/gh-actions-cache
 
           echo "Fetching list of cache key"
           ## The maximum GH fetch limit is 100
-          cacheKeysForPR=$(gh actions-cache list -L 100 | cut -f 1 )
+          cacheKeysForPR=$(gh actions-cache list -R $REPO -L 100 | cut -f 1 )
 
           ## Setting this to not fail the workflow while deleting cache keys.
           set +e
           echo "Deleting caches..."
           for cacheKey in $cacheKeysForPR
           do
-              gh actions-cache delete $cacheKey --confirm
+              gh actions-cache delete $cacheKey -R $REPO --confirm
           done
           echo "Done"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
