@@ -73,7 +73,7 @@ func (cis ContainerImageScan) HasVulnerabilityOverflow() bool {
 	return stalledCondition.Reason == ReasonVulnerabilityOverflow
 }
 
-// ImageScanSpec represents the specification for the image scan
+// ImageScanSpec represents the specification for the container image scan.
 type ImageScanSpec struct {
 	Image      `json:",inline"`
 	ScanConfig `json:",inline"`
