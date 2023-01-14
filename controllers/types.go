@@ -7,8 +7,13 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
 )
 
-func NewImageFromContainerStatus(containerStatus corev1.ContainerStatus) (stasv1alpha1.Image, error) {
-	image := stasv1alpha1.Image{}
+type podContainerImage struct {
+	stasv1alpha1.Image
+	Tag string
+}
+
+func newImageFromContainerStatus(containerStatus corev1.ContainerStatus) (podContainerImage, error) {
+	image := podContainerImage{}
 
 	idRef, err := reference.ParseAnyReference(containerStatus.ImageID)
 	if err != nil {

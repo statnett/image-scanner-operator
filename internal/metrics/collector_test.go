@@ -84,9 +84,11 @@ func newClientWithTestdata() client.Client {
 				},
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
-				Image: stasv1alpha1.Image{
-					Name:   "my.registry.com/my-namespace/good-image",
-					Digest: "sha256:293d59096e2bf7bce8c8af44086f5d3f81c98cad87928837b1cb52a61041e5d5",
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "my.registry.com/my-namespace/good-image",
+						Digest: "sha256:293d59096e2bf7bce8c8af44086f5d3f81c98cad87928837b1cb52a61041e5d5",
+					},
 				},
 			},
 		},
@@ -100,11 +102,13 @@ func newClientWithTestdata() client.Client {
 				},
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
-				Image: stasv1alpha1.Image{
-					Name:   "my.registry.com/my-namespace/bad-app",
-					Digest: "sha256:aa5f8d668258d929ee42f000b71318379a86b56e72e301ced34df8887ccbc76a",
-					Tag:    "latest",
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "my.registry.com/my-namespace/bad-app",
+						Digest: "sha256:aa5f8d668258d929ee42f000b71318379a86b56e72e301ced34df8887ccbc76a",
+					},
 				},
+				Tag: "latest",
 			},
 			Status: stasv1alpha1.ContainerImageScanStatus{
 				VulnerabilitySummary: &stasv1alpha1.VulnerabilitySummary{
@@ -124,11 +128,13 @@ func newClientWithTestdata() client.Client {
 				},
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
-				Image: stasv1alpha1.Image{
-					Name:   "my.registry.com/my-namespace/scan-error",
-					Digest: "sha256:babaa4d10a7e388a37b8d41069438518184f13cdec20c580f16114b84819618b",
-					Tag:    "latest",
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "my.registry.com/my-namespace/scan-error",
+						Digest: "sha256:babaa4d10a7e388a37b8d41069438518184f13cdec20c580f16114b84819618b",
+					},
 				},
+				Tag: "latest",
 			},
 			Status: stasv1alpha1.ContainerImageScanStatus{
 				Conditions: []metav1.Condition{{

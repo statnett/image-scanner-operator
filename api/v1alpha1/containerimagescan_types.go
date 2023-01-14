@@ -16,7 +16,6 @@ const (
 type Image struct {
 	Name   string        `json:"name"`
 	Digest digest.Digest `json:"digest"`
-	Tag    string        `json:"tag,omitempty"`
 }
 
 type Workload struct {
@@ -74,11 +73,17 @@ func (cis ContainerImageScan) HasVulnerabilityOverflow() bool {
 	return stalledCondition.Reason == ReasonVulnerabilityOverflow
 }
 
-// ContainerImageScanSpec contains a resolved container image in use by owning workload.
-type ContainerImageScanSpec struct {
+// ImageScanSpec represents the specification for the image scan
+type ImageScanSpec struct {
 	Image      `json:",inline"`
 	ScanConfig `json:",inline"`
-	Workload   Workload `json:"workload"`
+}
+
+// ContainerImageScanSpec contains a resolved container image in use by owning workload.
+type ContainerImageScanSpec struct {
+	ImageScanSpec `json:",inline"`
+	Tag           string   `json:"tag,omitempty"`
+	Workload      Workload `json:"workload"`
 }
 
 // ContainerImageScanStatus defines the observed state of ContainerImageScan.

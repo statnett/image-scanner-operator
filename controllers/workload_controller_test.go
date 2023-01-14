@@ -51,7 +51,6 @@ var _ = Describe("Workload controller", func() {
 			expectedImage := stasv1alpha1.Image{
 				Name:   "my.registry/repository/app",
 				Digest: "sha256:4b59f7dacd37c688968756d176139715df69d89eb0be1802e059316f9d58d9ef",
-				Tag:    "f54a333e",
 			}
 
 			imageScans := &stasv1alpha1.ContainerImageScanList{}
@@ -61,6 +60,7 @@ var _ = Describe("Workload controller", func() {
 			}
 			Eventually(komega.ObjectList(imageScans, listOps...), timeout, interval).Should(HaveField("Items", HaveLen(1)))
 			Expect(imageScans.Items[0].Spec.Image).To(Equal(expectedImage))
+			Expect(imageScans.Items[0].Spec.Tag).To(Equal("f54a333e"))
 		},
 		Entry("ReplicaSet", "replica-set", newReplicaSet),
 		Entry("StatefulSet", "stateful-set", newStatefulSet),
