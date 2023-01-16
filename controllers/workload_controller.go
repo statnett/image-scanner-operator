@@ -11,6 +11,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/utils/pointer"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -31,7 +32,7 @@ import (
 
 const (
 	ImageShortSHALength     = 5
-	KubernetesNameMaxLength = 253
+	KubernetesNameMaxLength = validation.DNS1123SubdomainMaxLength
 )
 
 var noEventsEventHandler = handler.EnqueueRequestsFromMapFunc(func(o client.Object) []reconcile.Request {
