@@ -82,8 +82,6 @@ jobs:
           cache: true
       - run: make test
   e2e-test:
-    # FIXME: The e2e-tests are currently always failing because what appears like CPU limitations
-    if: false
     needs: test
     runs-on: ubuntu-latest
     steps:
