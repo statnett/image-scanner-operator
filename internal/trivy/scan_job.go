@@ -73,9 +73,9 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
 		stasv1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
 		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
-		stasv1alpha1.LabelStatnettWorkloadKind:        string(cis.Spec.Workload.Kind),
-		stasv1alpha1.LabelStatnettWorkloadName:        string(cis.Spec.Workload.Name),
-		stasv1alpha1.LabelStatnettWorkloadNamespace:   string(cis.Namespace),
+		stasv1alpha1.LabelStatnettWorkloadKind:        cis.Spec.Workload.Kind,
+		stasv1alpha1.LabelStatnettWorkloadName:        cis.Spec.Workload.Name,
+		stasv1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
 	}
 
 	return job, nil
