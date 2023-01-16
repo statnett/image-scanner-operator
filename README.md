@@ -187,18 +187,6 @@ by the overlay used when [installing](#install) the operator:
 kubectl delete -k --ignore-not-found=true <overlay-directory>
 ```
 
-## Contributing
-
-We would love your feedback on any aspect of the Image Scanner!
-Feel free to open issues for things you think can be improved.
-Or/and open a PR (better) to show how we can improve.
-
-See [Contributing](CONTRIBUTING.md) for information about setting up
-your local development environment, and the contribution workflow expected.
-
-Please ensure that you are following our [Code Of Conduct](CODE_OF_CONDUCT.md)
-during any interaction with the community.
-
 ### How it works
 
 This project aims to follow the Kubernetes
@@ -228,6 +216,18 @@ Using a simple `Pod`, with a single container, as an example:
    and update the `ContainerImageScan` status.
 
 ![Image scanner architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/architecture.puml)
+
+## Contributing
+
+We would love your feedback on any aspect of the Image Scanner!
+Feel free to open issues for things you think can be improved.
+Or/and open a PR (better) to show how we can improve.
+
+See [Contributing](CONTRIBUTING.md) for information about setting up
+your local development environment, and the contribution workflow expected.
+
+Please ensure that you are following our [Code Of Conduct](CODE_OF_CONDUCT.md)
+during any interaction with the community.
 
 ## License
 
