@@ -51,8 +51,8 @@ func init() {
 
 func main() {
 	var (
-		metricsAddr, probeAddr                string
-		enableLeaderElection, enableProfiling bool
+		metricsAddr, probeAddr                               string
+		helpRequested, enableLeaderElection, enableProfiling bool
 	)
 
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
@@ -76,8 +76,13 @@ func main() {
 	opts.BindFlags(flag.CommandLine)
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.BoolP("help", "h", false, "Display help text and exit")
+	pflag.BoolVarP(&helpRequested, "help", "h", false, "print out usage and a summary of options")
 	pflag.Parse()
+
+	if helpRequested {
+		pflag.Usage()
+		os.Exit(0)
+	}
 
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
