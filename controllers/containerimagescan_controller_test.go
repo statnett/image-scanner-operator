@@ -64,7 +64,6 @@ var _ = Describe("ContainerImageScan controller", func() {
 	normalizeUntestableScanJobFields := func(job *batchv1.Job) *batchv1.Job {
 		job.APIVersion = "batch/v1"
 		job.Kind = "Job"
-		job.Name = ""
 		job.UID = ""
 		job.ResourceVersion = ""
 		job.CreationTimestamp = metav1.Time{}
