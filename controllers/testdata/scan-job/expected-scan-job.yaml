@@ -11,7 +11,7 @@ metadata:
     controller.statnett.no/namespace: replica-set
     controller.statnett.no/uid: <CIS-UID>
   namespace: image-scanner-jobs
-  name: echo-6bdfc76c56-8ae43-8731b
+  name: echo-6bdfc76c56-8ae43-b4cf9
 spec:
   activeDeadlineSeconds: 3600
   backoffLimit: 3
@@ -63,7 +63,7 @@ spec:
               value: <REPORT-TEMPLATE>
             - name: TRIVY_TIMEOUT
               value: 1h0m0s
-          image: docker.io/nginxinc/nginx-unprivileged@sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33
+          image: docker.io/nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4
           imagePullPolicy: IfNotPresent
           name: scan-image
           resources:

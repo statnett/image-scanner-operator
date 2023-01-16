@@ -62,14 +62,14 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(cis.Status.Vulnerabilities).To(Not(BeEmpty()))
 			expectedVulnSummary := &stasv1alpha1.VulnerabilitySummary{
 				SeverityCount: map[string]int32{
-					"CRITICAL": 7,
-					"HIGH":     13,
+					"CRITICAL": 4,
+					"HIGH":     15,
 					"MEDIUM":   0,
 					"LOW":      0,
 					"UNKNOWN":  0,
 				},
-				FixedCount:   20,
-				UnfixedCount: 0,
+				FixedCount:   0,
+				UnfixedCount: 19,
 			}
 			Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
 		})

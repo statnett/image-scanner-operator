@@ -1,16 +1,14 @@
 [
   {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "curl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32207",
+    "installedVersion": "5.1-2+deb11u1",
+    "pkgName": "bash",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-3715",
     "severity": "CRITICAL",
-    "title": "curl: Unpreserved file permissions",
-    "vulnerabilityID": "CVE-2022-32207"
+    "title": "bash: a heap-buffer-overflow in valid_parameter_transform",
+    "vulnerabilityID": "CVE-2022-3715"
   },
   {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
+    "installedVersion": "7.74.0-1.3+deb11u3",
     "pkgName": "curl",
     "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32221",
     "severity": "CRITICAL",
@@ -18,44 +16,7 @@
     "vulnerabilityID": "CVE-2022-32221"
   },
   {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "curl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42915",
-    "severity": "CRITICAL",
-    "title": "curl: HTTP proxy double-free",
-    "vulnerabilityID": "CVE-2022-42915"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "curl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27780",
-    "severity": "HIGH",
-    "title": "curl: percent-encoded path separator in URL host",
-    "vulnerabilityID": "CVE-2022-27780"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "curl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27781",
-    "severity": "HIGH",
-    "title": "curl: CERTINFO never-ending busy-loop",
-    "vulnerabilityID": "CVE-2022-27781"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "curl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27782",
-    "severity": "HIGH",
-    "title": "curl: TLS and SSH connection too eager reuse",
-    "vulnerabilityID": "CVE-2022-27782"
-  },
-  {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
+    "installedVersion": "7.74.0-1.3+deb11u3",
     "pkgName": "curl",
     "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42916",
     "severity": "HIGH",
@@ -63,120 +24,131 @@
     "vulnerabilityID": "CVE-2022-42916"
   },
   {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32207",
-    "severity": "CRITICAL",
-    "title": "curl: Unpreserved file permissions",
-    "vulnerabilityID": "CVE-2022-32207"
+    "installedVersion": "7.74.0-1.3+deb11u3",
+    "pkgName": "curl",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-43551",
+    "severity": "HIGH",
+    "title": "curl: HSTS bypass via IDN",
+    "vulnerabilityID": "CVE-2022-43551"
   },
   {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
+    "installedVersion": "1.46.2-2",
+    "pkgName": "e2fsprogs",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-1304",
+    "severity": "HIGH",
+    "title": "e2fsprogs: out-of-bounds read/write via crafted filesystem",
+    "vulnerabilityID": "CVE-2022-1304"
+  },
+  {
+    "installedVersion": "1.46.2-2",
+    "pkgName": "libcom-err2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-1304",
+    "severity": "HIGH",
+    "title": "e2fsprogs: out-of-bounds read/write via crafted filesystem",
+    "vulnerabilityID": "CVE-2022-1304"
+  },
+  {
+    "installedVersion": "7.74.0-1.3+deb11u3",
+    "pkgName": "libcurl4",
     "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-32221",
     "severity": "CRITICAL",
     "title": "curl: POST following PUT confusion",
     "vulnerabilityID": "CVE-2022-32221"
   },
   {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42915",
-    "severity": "CRITICAL",
-    "title": "curl: HTTP proxy double-free",
-    "vulnerabilityID": "CVE-2022-42915"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27780",
-    "severity": "HIGH",
-    "title": "curl: percent-encoded path separator in URL host",
-    "vulnerabilityID": "CVE-2022-27780"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27781",
-    "severity": "HIGH",
-    "title": "curl: CERTINFO never-ending busy-loop",
-    "vulnerabilityID": "CVE-2022-27781"
-  },
-  {
-    "fixedVersion": "7.80.0-r2",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-27782",
-    "severity": "HIGH",
-    "title": "curl: TLS and SSH connection too eager reuse",
-    "vulnerabilityID": "CVE-2022-27782"
-  },
-  {
-    "fixedVersion": "7.80.0-r4",
-    "installedVersion": "7.80.0-r1",
-    "pkgName": "libcurl",
+    "installedVersion": "7.74.0-1.3+deb11u3",
+    "pkgName": "libcurl4",
     "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-42916",
     "severity": "HIGH",
     "title": "curl: HSTS bypass via IDN",
     "vulnerabilityID": "CVE-2022-42916"
   },
   {
-    "fixedVersion": "2.9.14-r1",
-    "installedVersion": "2.9.14-r0",
-    "pkgName": "libxml2",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-2309",
+    "installedVersion": "7.74.0-1.3+deb11u3",
+    "pkgName": "libcurl4",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-43551",
     "severity": "HIGH",
-    "title": "lxml: NULL Pointer Dereference in lxml",
-    "vulnerabilityID": "CVE-2022-2309"
+    "title": "curl: HSTS bypass via IDN",
+    "vulnerabilityID": "CVE-2022-43551"
   },
   {
-    "fixedVersion": "2.9.14-r2",
-    "installedVersion": "2.9.14-r0",
-    "pkgName": "libxml2",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-40303",
-    "severity": "HIGH",
-    "title": "libxml2: integer overflows with XML_PARSE_HUGE",
-    "vulnerabilityID": "CVE-2022-40303"
-  },
-  {
-    "fixedVersion": "2.9.14-r2",
-    "installedVersion": "2.9.14-r0",
-    "pkgName": "libxml2",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-40304",
-    "severity": "HIGH",
-    "title": "libxml2: dict corruption caused by entity reference cycles",
-    "vulnerabilityID": "CVE-2022-40304"
-  },
-  {
-    "fixedVersion": "6.3_p20211120-r1",
-    "installedVersion": "6.3_p20211120-r0",
-    "pkgName": "ncurses-libs",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
-    "severity": "HIGH",
-    "title": "ncurses: segfaulting OOB read",
-    "vulnerabilityID": "CVE-2022-29458"
-  },
-  {
-    "fixedVersion": "6.3_p20211120-r1",
-    "installedVersion": "6.3_p20211120-r0",
-    "pkgName": "ncurses-terminfo-base",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
-    "severity": "HIGH",
-    "title": "ncurses: segfaulting OOB read",
-    "vulnerabilityID": "CVE-2022-29458"
-  },
-  {
-    "fixedVersion": "1.2.12-r2",
-    "installedVersion": "1.2.12-r0",
-    "pkgName": "zlib",
-    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-37434",
+    "installedVersion": "5.3.28+dfsg1-0.8",
+    "pkgName": "libdb5.3",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2019-8457",
     "severity": "CRITICAL",
-    "title": "zlib: heap-based buffer over-read and overflow in inflate() in inflate.c via a large gzip header extra field",
-    "vulnerabilityID": "CVE-2022-37434"
+    "title": "sqlite: heap out-of-bound read in function rtreenode()",
+    "vulnerabilityID": "CVE-2019-8457"
+  },
+  {
+    "installedVersion": "1.46.2-2",
+    "pkgName": "libext2fs2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-1304",
+    "severity": "HIGH",
+    "title": "e2fsprogs: out-of-bounds read/write via crafted filesystem",
+    "vulnerabilityID": "CVE-2022-1304"
+  },
+  {
+    "installedVersion": "1.8.7-6",
+    "pkgName": "libgcrypt20",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2021-33560",
+    "severity": "HIGH",
+    "title": "libgcrypt: mishandles ElGamal encryption because it lacks exponent blinding to address a side-channel attack against mpi_powm",
+    "vulnerabilityID": "CVE-2021-33560"
+  },
+  {
+    "installedVersion": "1.46.2-2",
+    "pkgName": "libss2",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-1304",
+    "severity": "HIGH",
+    "title": "e2fsprogs: out-of-bounds read/write via crafted filesystem",
+    "vulnerabilityID": "CVE-2022-1304"
+  },
+  {
+    "installedVersion": "4.2.0-1+deb11u1",
+    "pkgName": "libtiff5",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-3970",
+    "severity": "HIGH",
+    "title": "libtiff: integer overflow in function TIFFReadRGBATileExt of the file",
+    "vulnerabilityID": "CVE-2022-3970"
+  },
+  {
+    "installedVersion": "6.2+20201114-2",
+    "pkgName": "libtinfo6",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
+    "severity": "HIGH",
+    "title": "ncurses: segfaulting OOB read",
+    "vulnerabilityID": "CVE-2022-29458"
+  },
+  {
+    "installedVersion": "1.46.2-2",
+    "pkgName": "logsave",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-1304",
+    "severity": "HIGH",
+    "title": "e2fsprogs: out-of-bounds read/write via crafted filesystem",
+    "vulnerabilityID": "CVE-2022-1304"
+  },
+  {
+    "installedVersion": "6.2+20201114-2",
+    "pkgName": "ncurses-base",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
+    "severity": "HIGH",
+    "title": "ncurses: segfaulting OOB read",
+    "vulnerabilityID": "CVE-2022-29458"
+  },
+  {
+    "installedVersion": "6.2+20201114-2",
+    "pkgName": "ncurses-bin",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2022-29458",
+    "severity": "HIGH",
+    "title": "ncurses: segfaulting OOB read",
+    "vulnerabilityID": "CVE-2022-29458"
+  },
+  {
+    "installedVersion": "5.32.1-4+deb11u2",
+    "pkgName": "perl-base",
+    "primaryURL": "https://avd.aquasec.com/nvd/cve-2020-16156",
+    "severity": "HIGH",
+    "title": "perl-CPAN: Bypass of verification of signatures in CHECKSUMS files",
+    "vulnerabilityID": "CVE-2020-16156"
   }
 ]
