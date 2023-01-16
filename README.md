@@ -178,6 +178,15 @@ This example will override the default configuration to:
 - add metric labels with values obtained from `app.kubernetes.io/name` Pod labels
 - rescan workload images with an interval of 24 hours
 
+### Upgrade
+
+At this early stage, we might introduce breaking changes. But when we do,
+the breaking changes should be highlighted in the changelog and release notes.
+
+We might also do breaking changes in the CRD(s), without adding the complexity
+of conversion webhooks. So if you experience any issue when upgrading to a
+newer version, please try to reinstall the operator as a first step.
+
 ### Uninstall
 
 To uninstall the operator, just use `kubectl` to delete all resources produced
