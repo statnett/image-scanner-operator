@@ -11,7 +11,7 @@ metadata:
     controller.statnett.no/namespace: replica-set
     controller.statnett.no/uid: <CIS-UID>
   namespace: image-scanner-jobs
-  name: echo-6bdfc76c56-8ae43-8731b
+  name: echo-6bdfc76c56-8ae43-b4cf9
 spec:
   activeDeadlineSeconds: 3600
   backoffLimit: 3
