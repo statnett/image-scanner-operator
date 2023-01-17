@@ -75,18 +75,18 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 		stasv1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
 		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
 		stasv1alpha1.LabelStatnettWorkloadKind:        cis.Spec.Workload.Kind,
-		stasv1alpha1.LabelStatnettWorkloadName:        workloadLabelName(cis),
+		stasv1alpha1.LabelStatnettWorkloadName:        truncateString(cis.Spec.Workload.Name, KubernetesLabelValueMaxLength),
 		stasv1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
 	}
 
 	return job, nil
 }
 
-func workloadLabelName(cis *stasv1alpha1.ContainerImageScan) string {
-	if len(cis.Spec.Workload.Name) > KubernetesLabelValueMaxLength {
-		return cis.Spec.Workload.Name[0 : KubernetesLabelValueMaxLength-1]
+func truncateString(name string, length int) string {
+	if len(name) > length {
+		return name[0 : length-1]
 	} else {
-		return cis.Spec.Workload.Name
+		return name
 	}
 }
 
