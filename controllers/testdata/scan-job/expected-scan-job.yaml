@@ -29,6 +29,11 @@ spec:
         app.kubernetes.io/name: trivy
         controller-uid: <CONTROLLER-UID>
         job-name: <JOB-NAME>
+        controller.statnett.no/namespace: replica-set
+        controller.statnett.no/uid: <CIS-UID>
+        workload.statnett.no/kind: Pod
+        workload.statnett.no/name: echo
+        workload.statnett.no/namespace: replica-set
     spec:
       affinity:
         nodeAffinity:

@@ -78,6 +78,7 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 		stasv1alpha1.LabelStatnettWorkloadName:        truncateString(cis.Spec.Workload.Name, KubernetesLabelValueMaxLength),
 		stasv1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
 	}
+	job.Spec.Template.Labels = job.Labels
 
 	return job, nil
 }
@@ -113,10 +114,6 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 		return nil, err
 	}
 
-	job.Spec.Template.Labels = map[string]string{
-		stasv1alpha1.LabelK8sAppName:      stasv1alpha1.AppNameTrivy,
-		stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.AppNameImageScanner,
-	}
 	job.Spec.Template.Spec.InitContainers = []corev1.Container{f.initContainer()}
 	job.Spec.Template.Spec.Containers = []corev1.Container{container}
 	job.Spec.Template.Spec.Volumes = []corev1.Volume{
