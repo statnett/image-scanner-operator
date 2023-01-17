@@ -56,15 +56,17 @@ func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
 
 	for _, container := range pod.Spec.Containers {
 		image, ok := images[container.Name]
-		if ok {
-			ref, err := reference.ParseAnyReference(container.Image)
-			if err != nil {
-				return nil, err
-			}
-			if taggedRef, ok := ref.(reference.Tagged); ok {
-				image.Tag = taggedRef.Tag()
-				images[container.Name] = image
-			}
+		if !ok {
+			// We only want to add tag to images that are resolved by CRI
+			continue
+		}
+		ref, err := reference.ParseAnyReference(container.Image)
+		if err != nil {
+			return nil, err
+		}
+		if taggedRef, ok := ref.(reference.Tagged); ok {
+			image.Tag = taggedRef.Tag()
+			images[container.Name] = image
 		}
 	}
 
