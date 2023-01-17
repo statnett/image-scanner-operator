@@ -39,9 +39,11 @@ var _ = Describe("ContainerImageScan controller", func() {
 				Namespace: "default",
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
-				Image: stasv1alpha1.Image{
-					Name:   "docker.io/nginxinc/nginx-unprivileged",
-					Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "docker.io/nginxinc/nginx-unprivileged",
+						Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
+					},
 				},
 			},
 		}

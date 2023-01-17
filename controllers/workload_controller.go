@@ -127,14 +127,15 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	for containerName, image := range images {
 		cis := &stasv1alpha1.ContainerImageScan{}
 		cis.Namespace = pod.Namespace
-		cis.Name = imageScanName(podController, containerName, image)
+		cis.Name = imageScanName(podController, containerName, image.Image)
 		mutateFn := func() error {
 			cis.Labels = pod.GetLabels()
 			cis.Spec.Workload.Group = podController.GetObjectKind().GroupVersionKind().Group
 			cis.Spec.Workload.Kind = podController.GetObjectKind().GroupVersionKind().Kind
 			cis.Spec.Workload.Name = podController.GetName()
 			cis.Spec.Workload.ContainerName = containerName
-			cis.Spec.Image = image
+			cis.Spec.Image = image.Image
+			cis.Spec.Tag = image.Tag
 
 			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
 				cis.Spec.IgnoreUnfixed = pointer.Bool(true)
@@ -215,12 +216,12 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 	return CISes, nil
 }
 
-func containerImages(pod *corev1.Pod) (map[string]stasv1alpha1.Image, error) {
-	images := make(map[string]stasv1alpha1.Image)
+func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
+	images := make(map[string]podContainerImage)
 
 	for _, containerStatus := range pod.Status.ContainerStatuses {
 		if containerStatus.Image != "" && containerStatus.ImageID != "" {
-			image, err := NewImageFromContainerStatus(containerStatus)
+			image, err := newImageFromContainerStatus(containerStatus)
 			if err != nil {
 				return nil, err
 			}
