@@ -13,7 +13,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
-	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 	"github.com/statnett/image-scanner-operator/internal/yaml"
 )
@@ -23,7 +23,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		ctx = context.Background()
 	})
 
-	normalizeContainerImageScanStatus := func(status v1alpha1.ContainerImageScanStatus) v1alpha1.ContainerImageScanStatus {
+	normalizeContainerImageScanStatus := func(status stasv1alpha1.ContainerImageScanStatus) stasv1alpha1.ContainerImageScanStatus {
 		status.LastScanTime = nil
 		for i := range status.Conditions {
 			status.Conditions[i].LastTransitionTime = metav1.Time{}
@@ -33,14 +33,14 @@ var _ = Describe("ContainerImageScan controller", func() {
 	}
 
 	It("should reconcile status", func() {
-		cis := &v1alpha1.ContainerImageScan{
+		cis := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "nginx-unprivileged",
 				Namespace: "default",
 			},
-			Spec: v1alpha1.ContainerImageScanSpec{
-				ImageScanSpec: v1alpha1.ImageScanSpec{
-					Image: v1alpha1.Image{
+			Spec: stasv1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
 						Name:   "docker.io/nginxinc/nginx-unprivileged",
 						Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
 					},
@@ -51,7 +51,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 		// Wait for CIS to be processed by controller
 		Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
-		expectedStatus := v1alpha1.ContainerImageScanStatus{
+		expectedStatus := stasv1alpha1.ContainerImageScanStatus{
 			ObservedGeneration: 1,
 			Conditions: []metav1.Condition{{
 				Type:    "Reconciling",
@@ -71,7 +71,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		job.CreationTimestamp = metav1.Time{}
 		job.ManagedFields = nil
 		for k := range job.Labels {
-			if k == v1alpha1.LabelStatnettControllerUID {
+			if k == stasv1alpha1.LabelStatnettControllerUID {
 				job.Labels[k] = "<CIS-UID>"
 			}
 		}
@@ -104,7 +104,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		Expect(yaml.FromFile(path.Join("testdata", "scan-job", "workload-pod.yaml"), workloadPod)).To(Succeed())
 		Expect(k8sClient.Create(ctx, workloadPod)).To(Succeed())
 
-		cis := &v1alpha1.ContainerImageScan{}
+		cis := &stasv1alpha1.ContainerImageScan{}
 		Expect(yaml.FromFile(path.Join("testdata", "scan-job", "cis.yaml"), cis)).To(Succeed())
 		Expect(controllerutil.SetOwnerReference(workloadPod, cis, k8sScheme)).To(Succeed())
 		Expect(k8sClient.Create(ctx, cis)).To(Succeed())
@@ -112,7 +112,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		jobs := &batchv1.JobList{}
 		listOps := []client.ListOption{
 			client.InNamespace(scanJobNamespace),
-			client.MatchingLabels(map[string]string{v1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
+			client.MatchingLabels(map[string]string{stasv1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
 		}
 		Eventually(komega.ObjectList(jobs, listOps...)).Should(HaveField("Items", HaveLen(1)))
 		scanJob := &jobs.Items[0]

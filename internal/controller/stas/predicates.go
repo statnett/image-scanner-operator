@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
-	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
 var systemNamespaceRegex = regexp.MustCompile("^(kube-|openshift-).*")
@@ -92,8 +92,8 @@ func inNamespacePredicate(namespace string) predicate.Predicate {
 }
 
 var managedByImageScanner = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	if managedBy, ok := object.GetLabels()[v1alpha1.LabelK8SAppManagedBy]; ok {
-		return managedBy == v1alpha1.AppNameImageScanner
+	if managedBy, ok := object.GetLabels()[stasv1alpha1.LabelK8SAppManagedBy]; ok {
+		return managedBy == stasv1alpha1.AppNameImageScanner
 	}
 	return false
 })
@@ -104,5 +104,5 @@ var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool 
 })
 
 var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	return object.(*v1alpha1.ContainerImageScan).HasVulnerabilityOverflow()
+	return object.(*stasv1alpha1.ContainerImageScan).HasVulnerabilityOverflow()
 })

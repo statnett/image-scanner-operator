@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
-	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/hash"
@@ -73,7 +73,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			predicate.Not(systemNamespace),
 			predicate.Not(managedByImageScanner),
 		)).
-		Watches(&source.Kind{Type: &v1alpha1.ContainerImageScan{}},
+		Watches(&source.Kind{Type: &stasv1alpha1.ContainerImageScan{}},
 			&handler.EnqueueRequestForOwner{OwnerType: &corev1.Pod{}},
 			builder.WithPredicates(
 				predicate.Or(predicate.GenerationChangedPredicate{}, cisVulnerabilityOverflow),
@@ -125,7 +125,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	}
 
 	for containerName, image := range images {
-		cis := &v1alpha1.ContainerImageScan{}
+		cis := &stasv1alpha1.ContainerImageScan{}
 		cis.Namespace = pod.Namespace
 		cis.Name = imageScanName(podController, containerName, image.Image)
 		mutateFn := func() error {
@@ -137,22 +137,22 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			cis.Spec.Image = image.Image
 			cis.Spec.Tag = image.Tag
 
-			if v := podController.GetAnnotations()[v1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
+			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
 				cis.Spec.IgnoreUnfixed = pointer.Bool(true)
 			} else {
 				cis.Spec.IgnoreUnfixed = pointer.Bool(false)
 			}
 
 			if cis.HasVulnerabilityOverflow() {
-				minSeverity := v1alpha1.MinSeverity
+				minSeverity := stasv1alpha1.MinSeverity
 				if cis.Spec.MinSeverity != nil {
-					minSeverity, err = v1alpha1.NewSeverity(*cis.Spec.MinSeverity)
+					minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
 					if err != nil {
 						return err
 					}
 				}
 
-				if minSeverity < v1alpha1.MaxSeverity {
+				if minSeverity < stasv1alpha1.MaxSeverity {
 					minSeverity++
 					cis.Spec.MinSeverity = pointer.String(minSeverity.String())
 				}
@@ -175,7 +175,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	return nil
 }
 
-func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, pod *corev1.Pod, wantCIS *v1alpha1.ContainerImageScan) error {
+func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, pod *corev1.Pod, wantCIS *stasv1alpha1.ContainerImageScan) error {
 	CISes, err := r.getImageScansOwnedByPodContainer(ctx, pod, wantCIS.Spec.Workload.ContainerName)
 	if err != nil {
 		return err
@@ -194,18 +194,18 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 	return nil
 }
 
-func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, pod *corev1.Pod, containerName string) ([]v1alpha1.ContainerImageScan, error) {
+func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, pod *corev1.Pod, containerName string) ([]stasv1alpha1.ContainerImageScan, error) {
 	listOps := []client.ListOption{
 		client.InNamespace(pod.Namespace),
 		client.MatchingFields{indexOwnerUID: string(pod.UID)},
 	}
 
-	list := &v1alpha1.ContainerImageScanList{}
+	list := &stasv1alpha1.ContainerImageScanList{}
 	if err := r.List(ctx, list, listOps...); err != nil {
 		return nil, err
 	}
 
-	var CISes []v1alpha1.ContainerImageScan
+	var CISes []stasv1alpha1.ContainerImageScan
 
 	for _, cis := range list.Items {
 		if cis.Spec.Workload.ContainerName == containerName {
@@ -233,7 +233,7 @@ func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
 	return images, nil
 }
 
-func imageScanName(podController client.Object, containerName string, image v1alpha1.Image) string {
+func imageScanName(podController client.Object, containerName string, image stasv1alpha1.Image) string {
 	kindPart := strings.ToLower(podController.GetObjectKind().GroupVersionKind().Kind)
 	imagePart := hash.NewString(image.Name, image.Digest)[0:ImageShortSHALength]
 	nameFn := func(controllerName string) string {

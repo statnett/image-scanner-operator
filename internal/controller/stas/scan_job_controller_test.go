@@ -18,7 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
-	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 	"github.com/statnett/image-scanner-operator/internal/yaml"
 )
@@ -36,7 +36,7 @@ var _ = Describe("Scan Job controller", func() {
 	Context("When scan job is complete", func() {
 		It("should write scan results back to CIS status", func() {
 			// Create CIS
-			cis := &v1alpha1.ContainerImageScan{}
+			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful", "successful-scan-cis.yaml"), cis)).To(Succeed())
 			Expect(k8sClient.Create(ctx, cis))
 
@@ -60,7 +60,7 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(cis.Status.Conditions).To(BeEmpty())
 			// Check scan results available
 			Expect(cis.Status.Vulnerabilities).To(Not(BeEmpty()))
-			expectedVulnSummary := &v1alpha1.VulnerabilitySummary{
+			expectedVulnSummary := &stasv1alpha1.VulnerabilitySummary{
 				SeverityCount: map[string]int32{
 					"CRITICAL": 4,
 					"HIGH":     15,
@@ -77,7 +77,7 @@ var _ = Describe("Scan Job controller", func() {
 		Context("and scan report is too big", func() {
 			It("should report correct conditions", func() {
 				// Create CIS
-				cis := &v1alpha1.ContainerImageScan{}
+				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful-long", "cis.yaml"), cis)).To(Succeed())
 				Expect(k8sClient.Create(ctx, cis))
 
@@ -111,7 +111,7 @@ var _ = Describe("Scan Job controller", func() {
 	Context("When scan job is failed", func() {
 		It("should write scan results back to CIS status", func() {
 			// Create CIS
-			cis := &v1alpha1.ContainerImageScan{}
+			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-failed", "failed-scan-cis.yaml"), cis)).To(Succeed())
 			Expect(k8sClient.Create(ctx, cis))
 
@@ -143,20 +143,20 @@ var _ = Describe("Scan Job controller", func() {
 })
 
 var _ = DescribeTable("Converting to vulnerability summary (severity count)",
-	func(vulnerabilities []v1alpha1.Vulnerability, expectedSummary map[string]int32) {
-		summary := vulnerabilitySummary(vulnerabilities, v1alpha1.SeverityHigh)
+	func(vulnerabilities []stasv1alpha1.Vulnerability, expectedSummary map[string]int32) {
+		summary := vulnerabilitySummary(vulnerabilities, stasv1alpha1.SeverityHigh)
 		Expect(summary.SeverityCount).To(Equal(expectedSummary))
 	},
 	Entry("When no vulnerabilities", nil, map[string]int32{"CRITICAL": 0, "HIGH": 0}),
-	Entry("When single severity", []v1alpha1.Vulnerability{{Severity: "CRITICAL"}}, map[string]int32{"CRITICAL": 1, "HIGH": 0}),
-	Entry("When severity outside scope", []v1alpha1.Vulnerability{{Severity: "LOW"}}, map[string]int32{"CRITICAL": 0, "HIGH": 0, "LOW": 1}),
+	Entry("When single severity", []stasv1alpha1.Vulnerability{{Severity: "CRITICAL"}}, map[string]int32{"CRITICAL": 1, "HIGH": 0}),
+	Entry("When severity outside scope", []stasv1alpha1.Vulnerability{{Severity: "LOW"}}, map[string]int32{"CRITICAL": 0, "HIGH": 0, "LOW": 1}),
 )
 
-func getContainerImageScanJob(cis *v1alpha1.ContainerImageScan) *batchv1.Job {
+func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job {
 	jobs := &batchv1.JobList{}
 	listOps := []client.ListOption{
 		client.InNamespace(scanJobNamespace),
-		client.MatchingLabels(map[string]string{v1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
+		client.MatchingLabels(map[string]string{stasv1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
 	}
 	Expect(k8sClient.List(ctx, jobs, listOps...)).To(Succeed())
 	Expect(jobs.Items).To(HaveLen(1))
