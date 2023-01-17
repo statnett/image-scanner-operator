@@ -18,15 +18,16 @@ import (
 )
 
 const (
-	FsScanSharedVolumeMountPath = "/var/run/image-scanner"
-	FsScanSharedVolumeName      = "image-scanner"
-	FsScanTrivyBinaryPath       = FsScanSharedVolumeMountPath + "/trivy"
-	JobNameSpecHashPartLength   = 5
-	KubernetesJobNameMaxLength  = validation.DNS1123LabelMaxLength
-	ScanJobContainerName        = "scan-image"
-	ScanJobTimeout              = 1 * time.Hour
-	TempVolumeName              = "tmp"
-	TempVolumeMountPath         = "/tmp"
+	FsScanSharedVolumeMountPath   = "/var/run/image-scanner"
+	FsScanSharedVolumeName        = "image-scanner"
+	FsScanTrivyBinaryPath         = FsScanSharedVolumeMountPath + "/trivy"
+	JobNameSpecHashPartLength     = 5
+	KubernetesJobNameMaxLength    = validation.DNS1123LabelMaxLength
+	KubernetesLabelValueMaxLength = validation.DNS1123LabelMaxLength
+	ScanJobContainerName          = "scan-image"
+	ScanJobTimeout                = 1 * time.Hour
+	TempVolumeName                = "tmp"
+	TempVolumeMountPath           = "/tmp"
 )
 
 var (
@@ -73,9 +74,20 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
 		stasv1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
 		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
+		stasv1alpha1.LabelStatnettWorkloadKind:        cis.Spec.Workload.Kind,
+		stasv1alpha1.LabelStatnettWorkloadName:        truncateString(cis.Spec.Workload.Name, KubernetesLabelValueMaxLength),
+		stasv1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
 	}
 
 	return job, nil
+}
+
+func truncateString(name string, length int) string {
+	if len(name) > length {
+		return name[0 : length-1]
+	} else {
+		return name
+	}
 }
 
 func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {

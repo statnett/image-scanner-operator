@@ -10,8 +10,11 @@ metadata:
     app.kubernetes.io/name: trivy
     controller.statnett.no/namespace: replica-set
     controller.statnett.no/uid: <CIS-UID>
+    workload.statnett.no/kind: Pod
+    workload.statnett.no/name: echo
+    workload.statnett.no/namespace: replica-set
   namespace: image-scanner-jobs
-  name: echo-6bdfc76c56-8ae43-b4cf9
+  name: echo-6bdfc76c56-8ae43-2693c
 spec:
   activeDeadlineSeconds: 3600
   backoffLimit: 3
