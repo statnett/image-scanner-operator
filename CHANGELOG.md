@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.0](https://github.com/statnett/image-scanner-operator/compare/v0.0.1...v0.1.0) (2023-01-17)
+
+
+### Features
+
+* add workload labels on the scan job ([#80](https://github.com/statnett/image-scanner-operator/issues/80)) ([0faade8](https://github.com/statnett/image-scanner-operator/commit/0faade88ca218ba699452a448080af0af8bd456d))
+
+
+### Bug Fixes
+
+* add GenerationChangedPredicate to CIS controller ([#66](https://github.com/statnett/image-scanner-operator/issues/66)) ([9d6372b](https://github.com/statnett/image-scanner-operator/commit/9d6372b5336d907ac4875e8f1caaa984d9942f83))
+* **cli:** should print help when requested ([#62](https://github.com/statnett/image-scanner-operator/issues/62)) ([f7dd4d3](https://github.com/statnett/image-scanner-operator/commit/f7dd4d39fd19e173dd8b54bce0f0ad1b983d6f63))
+* don't use generateName when creating jobs ([#48](https://github.com/statnett/image-scanner-operator/issues/48)) ([d7c8185](https://github.com/statnett/image-scanner-operator/commit/d7c818552fdbb6442caebf8b06bf1865a9df4c66))
+
 ## [0.0.1](https://github.com/statnett/image-scanner-operator/compare/v0.0.0...v0.0.1) (2023-01-12)
 
 
