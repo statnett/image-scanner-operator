@@ -60,10 +60,12 @@ func containerImages(pod *corev1.Pod) (map[string]*podContainerImage, error) {
 			// We only want to add tag to images that are resolved by CRI
 			continue
 		}
+
 		ref, err := reference.ParseAnyReference(container.Image)
 		if err != nil {
 			return nil, err
 		}
+
 		if taggedRef, ok := ref.(reference.Tagged); ok {
 			image.Tag = taggedRef.Tag()
 		}
