@@ -86,7 +86,7 @@ generate-all: manifests generate fmt fmt-imports go-mod-tidy ## Ensure all gener
 ##@ Build
 
 .PHONY: build
-build: generate fmt vet ## Build manager binary.
+build: manifests generate fmt vet ## Build manager binary.
 	go build -o bin/manager cmd/main.go
 
 .PHONY: run
