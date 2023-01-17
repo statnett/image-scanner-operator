@@ -216,23 +216,6 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 	return CISes, nil
 }
 
-func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
-	images := make(map[string]podContainerImage)
-
-	for _, containerStatus := range pod.Status.ContainerStatuses {
-		if containerStatus.Image != "" && containerStatus.ImageID != "" {
-			image, err := newImageFromContainerStatus(containerStatus)
-			if err != nil {
-				return nil, err
-			}
-
-			images[containerStatus.Name] = image
-		}
-	}
-
-	return images, nil
-}
-
 func imageScanName(podController client.Object, containerName string, image stasv1alpha1.Image) string {
 	kindPart := strings.ToLower(podController.GetObjectKind().GroupVersionKind().Kind)
 	imagePart := hash.NewString(image.Name, image.Digest)[0:ImageShortSHALength]
