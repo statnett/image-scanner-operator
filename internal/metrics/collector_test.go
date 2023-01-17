@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
 var _ = Describe("ContainerImageScan Collector", func() {
@@ -74,7 +74,7 @@ var _ = Describe("ContainerImageScan Collector", func() {
 
 func newClientWithTestdata() client.Client {
 	ciss := []runtime.Object{
-		&stasv1alpha1.ContainerImageScan{
+		&v1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "good-app-aaa123",
 				Namespace: "default",
@@ -83,16 +83,16 @@ func newClientWithTestdata() client.Client {
 					"app.kubernetes.io/name":  "good-app",
 				},
 			},
-			Spec: stasv1alpha1.ContainerImageScanSpec{
-				ImageScanSpec: stasv1alpha1.ImageScanSpec{
-					Image: stasv1alpha1.Image{
+			Spec: v1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: v1alpha1.ImageScanSpec{
+					Image: v1alpha1.Image{
 						Name:   "my.registry.com/my-namespace/good-image",
 						Digest: "sha256:293d59096e2bf7bce8c8af44086f5d3f81c98cad87928837b1cb52a61041e5d5",
 					},
 				},
 			},
 		},
-		&stasv1alpha1.ContainerImageScan{
+		&v1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "bad-app-666666",
 				Namespace: "default",
@@ -101,24 +101,24 @@ func newClientWithTestdata() client.Client {
 					"app.kubernetes.io/name":  "bad-app",
 				},
 			},
-			Spec: stasv1alpha1.ContainerImageScanSpec{
-				ImageScanSpec: stasv1alpha1.ImageScanSpec{
-					Image: stasv1alpha1.Image{
+			Spec: v1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: v1alpha1.ImageScanSpec{
+					Image: v1alpha1.Image{
 						Name:   "my.registry.com/my-namespace/bad-app",
 						Digest: "sha256:aa5f8d668258d929ee42f000b71318379a86b56e72e301ced34df8887ccbc76a",
 					},
 				},
 				Tag: "latest",
 			},
-			Status: stasv1alpha1.ContainerImageScanStatus{
-				VulnerabilitySummary: &stasv1alpha1.VulnerabilitySummary{
+			Status: v1alpha1.ContainerImageScanStatus{
+				VulnerabilitySummary: &v1alpha1.VulnerabilitySummary{
 					SeverityCount: map[string]int32{"CRITICAL": 1, "HIGH": 5},
 					FixedCount:    4,
 					UnfixedCount:  2,
 				},
 			},
 		},
-		&stasv1alpha1.ContainerImageScan{
+		&v1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "scan-failure-111111",
 				Namespace: "default",
@@ -127,16 +127,16 @@ func newClientWithTestdata() client.Client {
 					"app.kubernetes.io/name":  "scan-failure",
 				},
 			},
-			Spec: stasv1alpha1.ContainerImageScanSpec{
-				ImageScanSpec: stasv1alpha1.ImageScanSpec{
-					Image: stasv1alpha1.Image{
+			Spec: v1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: v1alpha1.ImageScanSpec{
+					Image: v1alpha1.Image{
 						Name:   "my.registry.com/my-namespace/scan-error",
 						Digest: "sha256:babaa4d10a7e388a37b8d41069438518184f13cdec20c580f16114b84819618b",
 					},
 				},
 				Tag: "latest",
 			},
-			Status: stasv1alpha1.ContainerImageScanStatus{
+			Status: v1alpha1.ContainerImageScanStatus{
 				Conditions: []metav1.Condition{{
 					Type:    "Stalled",
 					Status:  metav1.ConditionTrue,
@@ -147,7 +147,7 @@ func newClientWithTestdata() client.Client {
 		},
 	}
 	scheme := runtime.NewScheme()
-	Expect(stasv1alpha1.AddToScheme(scheme)).To(Succeed())
+	Expect(v1alpha1.AddToScheme(scheme)).To(Succeed())
 
 	return fake.NewClientBuilder().
 		WithScheme(scheme).

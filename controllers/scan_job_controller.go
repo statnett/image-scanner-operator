@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/json"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/pod"
@@ -55,10 +55,10 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r.reconcile())
 }
 
-func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName string, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
+func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName string, log io.Reader, cis *v1alpha1.ContainerImageScan) error {
 	var (
 		cleanCis        = cis.DeepCopy()
-		vulnerabilities []stasv1alpha1.Vulnerability
+		vulnerabilities []v1alpha1.Vulnerability
 	)
 
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
@@ -66,12 +66,12 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		return err
 	}
 
-	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
+	sort.Sort(v1alpha1.BySeverity(vulnerabilities))
 	cis.Status.Vulnerabilities = vulnerabilities
 
-	minSeverity := stasv1alpha1.SeverityUnknown
+	minSeverity := v1alpha1.SeverityUnknown
 	if cis.Spec.MinSeverity != nil {
-		minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
+		minSeverity, err = v1alpha1.NewSeverity(*cis.Spec.MinSeverity)
 		if err != nil {
 			return err
 		}
@@ -92,7 +92,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		condition := metav1.Condition{
 			Type:    string(kstatus.ConditionStalled),
 			Status:  metav1.ConditionTrue,
-			Reason:  stasv1alpha1.ReasonVulnerabilityOverflow,
+			Reason:  v1alpha1.ReasonVulnerabilityOverflow,
 			Message: "Number of detected vulnerabilities is too high to fit in API",
 		}
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
@@ -111,7 +111,7 @@ func isResourceTooLargeError(err error) bool {
 			strings.Contains(err.Error(), "request is too large"))
 }
 
-func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName string, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
+func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName string, log io.Reader, cis *v1alpha1.ContainerImageScan) error {
 	cleanCis := cis.DeepCopy()
 
 	logBytes, err := io.ReadAll(log)
@@ -153,11 +153,11 @@ func (r *ScanJobReconciler) reconcile() reconcile.Func {
 }
 
 func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) error {
-	cisList := &stasv1alpha1.ContainerImageScanList{}
+	cisList := &v1alpha1.ContainerImageScanList{}
 
 	listOps := []client.ListOption{
-		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
-		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
+		client.InNamespace(job.Labels[v1alpha1.LabelStatnettControllerNamespace]),
+		client.MatchingFields{indexUID: job.Labels[v1alpha1.LabelStatnettControllerUID]},
 	}
 	if err := r.List(ctx, cisList, listOps...); err != nil {
 		return err
@@ -241,9 +241,9 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
-func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
+func vulnerabilitySummary(vulnerabilities []v1alpha1.Vulnerability, minSeverity v1alpha1.Severity) *v1alpha1.VulnerabilitySummary {
 	severityCount := make(map[string]int32)
-	for severity := minSeverity; severity <= stasv1alpha1.SeverityCritical; severity++ {
+	for severity := minSeverity; severity <= v1alpha1.SeverityCritical; severity++ {
 		severityCount[severity.String()] = 0
 	}
 
@@ -259,7 +259,7 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 		}
 	}
 
-	return &stasv1alpha1.VulnerabilitySummary{
+	return &v1alpha1.VulnerabilitySummary{
 		SeverityCount: severityCount,
 		FixedCount:    fixedCount,
 		UnfixedCount:  unfixedCount,

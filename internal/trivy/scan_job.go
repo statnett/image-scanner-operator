@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/utils/pointer"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	"github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/hash"
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
@@ -47,7 +47,7 @@ func init() {
 
 type ImageScanJobBuilder interface {
 	OnPreferredNodes(nodeNames ...string) ImageScanJobBuilder
-	ForCIS(cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error)
+	ForCIS(cis *v1alpha1.ContainerImageScan) (*batchv1.Job, error)
 }
 
 func NewImageScanJob(config operator.Config) ImageScanJobBuilder {
@@ -61,7 +61,7 @@ type filesystemScanJobBuilder struct {
 	preferredNodeNames []string
 }
 
-func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
+func (f *filesystemScanJobBuilder) ForCIS(cis *v1alpha1.ContainerImageScan) (*batchv1.Job, error) {
 	job, err := f.newImageScanJob(cis.Spec)
 	if err != nil {
 		return job, err
@@ -70,13 +70,13 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 	job.Namespace = f.ScanJobNamespace
 	job.Name = scanJobName(cis)
 	job.Labels = map[string]string{
-		stasv1alpha1.LabelK8sAppName:                  stasv1alpha1.AppNameTrivy,
-		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
-		stasv1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
-		stasv1alpha1.LabelStatnettControllerUID:       string(cis.UID),
-		stasv1alpha1.LabelStatnettWorkloadKind:        cis.Spec.Workload.Kind,
-		stasv1alpha1.LabelStatnettWorkloadName:        truncateString(cis.Spec.Workload.Name, KubernetesLabelValueMaxLength),
-		stasv1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
+		v1alpha1.LabelK8sAppName:                  v1alpha1.AppNameTrivy,
+		v1alpha1.LabelK8SAppManagedBy:             v1alpha1.AppNameImageScanner,
+		v1alpha1.LabelStatnettControllerNamespace: cis.Namespace,
+		v1alpha1.LabelStatnettControllerUID:       string(cis.UID),
+		v1alpha1.LabelStatnettWorkloadKind:        cis.Spec.Workload.Kind,
+		v1alpha1.LabelStatnettWorkloadName:        truncateString(cis.Spec.Workload.Name, KubernetesLabelValueMaxLength),
+		v1alpha1.LabelStatnettWorkloadNamespace:   cis.Namespace,
 	}
 	job.Spec.Template.Labels = job.Labels
 
@@ -91,7 +91,7 @@ func truncateString(name string, length int) string {
 	}
 }
 
-func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {
+func scanJobName(cis *v1alpha1.ContainerImageScan) string {
 	hashPart := hash.NewString(cis.Spec, cis.Namespace)[0:JobNameSpecHashPartLength]
 	nameFn := func(cisName string) string {
 		return fmt.Sprintf("%s-%s", cisName, hashPart)
@@ -106,7 +106,7 @@ func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {
 	return name
 }
 
-func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerImageScanSpec) (*batchv1.Job, error) {
+func (f *filesystemScanJobBuilder) newImageScanJob(spec v1alpha1.ContainerImageScanSpec) (*batchv1.Job, error) {
 	job := &batchv1.Job{}
 
 	container, err := f.container(spec)
@@ -171,7 +171,7 @@ func (f *filesystemScanJobBuilder) OnPreferredNodes(nodeNames ...string) ImageSc
 	return f
 }
 
-func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageScanSpec) (corev1.Container, error) {
+func (f *filesystemScanJobBuilder) container(spec v1alpha1.ContainerImageScanSpec) (corev1.Container, error) {
 	container := corev1.Container{}
 
 	canonical, err := spec.Image.Canonical()
@@ -199,14 +199,14 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	}
 
 	if spec.MinSeverity != nil {
-		minSeverity, err := stasv1alpha1.NewSeverity(*spec.MinSeverity)
+		minSeverity, err := v1alpha1.NewSeverity(*spec.MinSeverity)
 		if err != nil {
 			return container, err
 		}
 
 		var severityNames []string
 
-		for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
+		for severity := minSeverity; severity <= v1alpha1.MaxSeverity; severity++ {
 			severityNames = append(severityNames, severity.String())
 		}
 
