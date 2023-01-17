@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- stas_v1alpha1_containerimagescan.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
