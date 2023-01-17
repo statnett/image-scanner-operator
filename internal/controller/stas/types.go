@@ -40,8 +40,8 @@ func newImageFromContainerStatus(containerStatus corev1.ContainerStatus) (podCon
 	return image, nil
 }
 
-func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
-	images := make(map[string]podContainerImage)
+func containerImages(pod *corev1.Pod) (map[string]*podContainerImage, error) {
+	images := make(map[string]*podContainerImage)
 
 	for _, containerStatus := range pod.Status.ContainerStatuses {
 		if containerStatus.Image != "" && containerStatus.ImageID != "" {
@@ -50,7 +50,7 @@ func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
 				return nil, err
 			}
 
-			images[containerStatus.Name] = image
+			images[containerStatus.Name] = &image
 		}
 	}
 
@@ -66,7 +66,6 @@ func containerImages(pod *corev1.Pod) (map[string]podContainerImage, error) {
 		}
 		if taggedRef, ok := ref.(reference.Tagged); ok {
 			image.Tag = taggedRef.Tag()
-			images[container.Name] = image
 		}
 	}
 

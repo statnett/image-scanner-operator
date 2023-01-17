@@ -15,7 +15,7 @@ var _ = Describe("ImageReference", func() {
 			Expect(err).To(Succeed())
 			Expect(images).To(HaveLen(1))
 			for _, image := range images {
-				Expect(image).To(Equal(expectedImage))
+				Expect(*image).To(Equal(expectedImage))
 			}
 		},
 		Entry("Standard FQ image",
