@@ -1,4 +1,4 @@
-package controllers
+package stas
 
 import (
 	. "github.com/onsi/ginkgo/v2"

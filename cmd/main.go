@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	"github.com/statnett/image-scanner-operator/controllers"
+	"github.com/statnett/image-scanner-operator/internal/controller/stas"
 	"github.com/statnett/image-scanner-operator/internal/metrics"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 	"github.com/statnett/image-scanner-operator/internal/resources"
@@ -136,7 +136,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.Indexer{}).SetupWithManager(mgr); err != nil {
+	if err = (&stas.Indexer{}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to setup indexer")
 		os.Exit(1)
 	}
@@ -149,7 +149,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.PodReconciler{
+	if err = (&stas.PodReconciler{
 		Client:        mgr.GetClient(),
 		Scheme:        mgr.GetScheme(),
 		Config:        cfg,
@@ -165,7 +165,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.ScanJobReconciler{
+	if err = (&stas.ScanJobReconciler{
 		Client:     mgr.GetClient(),
 		Scheme:     mgr.GetScheme(),
 		Config:     cfg,
@@ -175,7 +175,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.ContainerImageScanReconciler{
+	if err = (&stas.ContainerImageScanReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 		Config: cfg,
