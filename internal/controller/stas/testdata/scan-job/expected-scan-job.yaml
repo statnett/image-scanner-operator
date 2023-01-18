@@ -63,8 +63,6 @@ spec:
               value: /tmp
             - name: TRIVY_SERVER
               value: http://trivy.image-scanner.svc.cluster.local
-            - name: TRIVY_QUIET
-              value: "true"
             - name: TRIVY_DEBUG
               value: "true"
             - name: TRIVY_FORMAT
