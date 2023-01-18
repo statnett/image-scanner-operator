@@ -1,4 +1,4 @@
-package controllers
+package stas
 
 import (
 	"context"
@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/json"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/pod"

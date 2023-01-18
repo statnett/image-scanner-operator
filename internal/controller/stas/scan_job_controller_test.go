@@ -1,4 +1,4 @@
-package controllers
+package stas
 
 import (
 	"bytes"
@@ -18,7 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 	"github.com/statnett/image-scanner-operator/internal/yaml"
 )

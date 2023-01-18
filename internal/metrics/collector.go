@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	k8smetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 

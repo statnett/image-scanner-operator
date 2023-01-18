@@ -36,7 +36,7 @@ all: build
 
 .PHONY: help
 help: ## Display this help.
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@ Development
 
@@ -74,7 +74,7 @@ update-scan-log: ## Update successful scan job pod log used in tests from templa
 	trivy image nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4 \
 		--offline-scan --severity CRITICAL,HIGH --quiet --format template \
 		--template @$(shell pwd)/internal/trivy/templates/scan-report.json.tmpl \
-		> controllers/testdata/scan-job-successful/successful-scan-job-pod.log.json
+		> internal/controller/stas/testdata/scan-job-successful/successful-scan-job-pod.log.json
 
 .PHONY: go-mod-tidy
 go-mod-tidy: ## Run go mod tidy against code.
@@ -87,11 +87,11 @@ generate-all: manifests generate fmt fmt-imports go-mod-tidy ## Ensure all gener
 
 .PHONY: build
 build: generate fmt vet ## Build manager binary.
-	go build -o bin/manager main.go
+	go build -o bin/manager cmd/main.go
 
 .PHONY: run
 run: manifests generate fmt vet ## Run a controller from your host.
-	go run ./main.go
+	go run ./cmd/main.go
 
 # If you wish built the manager image targeting other platforms you can use the --platform flag.
 # (i.e. docker build --platform linux/arm64 ). However, you must enable docker buildKit for it.
@@ -108,7 +108,7 @@ docker-push: ## Push docker image with the manager.
 # architectures. (i.e. make docker-buildx IMG=myregistry/mypoperator:0.0.1). To use this option you need to:
 # - able to use docker buildx . More info: https://docs.docker.com/build/buildx/
 # - have enable BuildKit, More info: https://docs.docker.com/develop/develop-images/build_enhancements/
-# - be able to push the image for your registry (i.e. if you do not inform a valid value via IMG=<myregistry/image:<tag>> than the export will fail)
+# - be able to push the image for your registry (i.e. if you do not inform a valid value via IMG=<myregistry/image:<tag>> then the export will fail)
 # To properly provided solutions that supports more than one platform you should use this option.
 PLATFORMS ?= linux/arm64,linux/amd64,linux/s390x,linux/ppc64le
 .PHONY: docker-buildx
@@ -117,7 +117,7 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 	sed -e '1 s/\(^FROM\)/FROM --platform=\$$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$$\{BUILDPLATFORM\}/' Dockerfile > Dockerfile.cross
 	- docker buildx create --name project-v3-builder
 	docker buildx use project-v3-builder
-	- docker buildx build --push --platform=$(PLATFORMS) --tag ${IMG} -f Dockerfile.cross
+	- docker buildx build --push --platform=$(PLATFORMS) --tag ${IMG} -f Dockerfile.cross .
 	- docker buildx rm project-v3-builder
 	rm Dockerfile.cross
 
@@ -174,14 +174,19 @@ CONTROLLER_TOOLS_VERSION ?= v0.11.1
 GOIMPORTS_VERSION ?= v0.3.0
 
 .PHONY: kustomize
-kustomize: $(KUSTOMIZE) ## Download kustomize locally if necessary.
+kustomize: $(KUSTOMIZE) ## Download kustomize locally if necessary. If wrong version is installed, it will be removed before downloading.
 $(KUSTOMIZE): $(LOCALBIN)
+	@if test -x $(LOCALBIN)/kustomize && ! $(LOCALBIN)/kustomize version | grep -q $(KUSTOMIZE_VERSION); then \
+		echo "$(LOCALBIN)/kustomize version is not expected $(KUSTOMIZE_VERSION). Removing it before installing."; \
+		rm -rf $(LOCALBIN)/kustomize; \
+	fi
 	test -s $(LOCALBIN)/kustomize || GOBIN=$(LOCALBIN) go install sigs.k8s.io/kustomize/kustomize/v4@$(KUSTOMIZE_VERSION)
 
 .PHONY: controller-gen
-controller-gen: $(CONTROLLER_GEN) ## Download controller-gen locally if necessary.
+controller-gen: $(CONTROLLER_GEN) ## Download controller-gen locally if necessary. If wrong version is installed, it will be overwritten.
 $(CONTROLLER_GEN): $(LOCALBIN)
-	test -s $(LOCALBIN)/controller-gen || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION)
+	test -s $(LOCALBIN)/controller-gen && $(LOCALBIN)/controller-gen --version | grep -q $(CONTROLLER_TOOLS_VERSION) || \
+	GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION)
 
 .PHONY: envtest
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.

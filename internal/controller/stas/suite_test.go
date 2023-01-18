@@ -1,4 +1,4 @@
-package controllers
+package stas
 
 import (
 	"context"
@@ -25,7 +25,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 	"github.com/statnett/image-scanner-operator/pkg/operator"
 	//+kubebuilder:scaffold:imports
@@ -61,7 +61,7 @@ var _ = BeforeSuite(func() {
 
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
-		CRDDirectoryPaths:     []string{filepath.Join("..", "config", "crd", "bases")},
+		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
 		ErrorIfCRDPathMissing: true,
 	}
 

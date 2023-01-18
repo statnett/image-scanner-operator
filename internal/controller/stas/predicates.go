@@ -1,4 +1,4 @@
-package controllers
+package stas
 
 import (
 	"regexp"
@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
-	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/v1alpha1"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
 var systemNamespaceRegex = regexp.MustCompile("^(kube-|openshift-).*")
