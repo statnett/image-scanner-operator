@@ -106,6 +106,39 @@ var _ = Describe("Scan Job controller", func() {
 				Expect(condition.Message).To(Not(BeEmpty()))
 			})
 		})
+
+		Context("but scan report is invalid JSON", func() {
+			It("should report stalled condition", func() {
+				// Create CIS
+				cis := &stasv1alpha1.ContainerImageScan{}
+				Expect(yaml.FromFile(path.Join("testdata", "scan-job-invalid-json", "cis.yaml"), cis)).To(Succeed())
+				Expect(k8sClient.Create(ctx, cis))
+
+				// Wait for CIS to get reconciled
+				Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
+				// Sanity check for conditions set
+				Expect(cis.Status.Conditions).To(Not(BeEmpty()))
+
+				// Simulate scan job complete
+				scanJob := getContainerImageScanJob(cis)
+				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-invalid-json", "scan-job-pod.log.invalid.json"))
+				Eventually(komega.UpdateStatus(scanJob, func() {
+					scanJob.Status.Succeeded = 1
+				})).Should(Succeed())
+
+				// Wait for Job to get reconciled
+				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
+				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
+				Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
+				// Check conditions
+				Expect(cis.Status.Conditions).To(HaveLen(1))
+				condition := cis.Status.Conditions[0]
+				Expect(condition.Type).To(Equal("Stalled"))
+				Expect(condition.Status).To(Equal(metav1.ConditionTrue))
+				Expect(condition.Reason).To(Equal("ScanReportDecodeError"))
+				Expect(condition.Message).To(Not(BeEmpty()))
+			})
+		})
 	})
 
 	Context("When scan job is failed", func() {
