@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.1](https://github.com/statnett/image-scanner-operator/compare/v0.1.0...v0.1.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* add workload labels to the podTemplate in the scan Job ([#83](https://github.com/statnett/image-scanner-operator/issues/83)) ([b4327fd](https://github.com/statnett/image-scanner-operator/commit/b4327fdbef45ae88c114ad7c42c569e0640ce182))
+* obtain image tags from pod container spec ([#86](https://github.com/statnett/image-scanner-operator/issues/86)) ([93c183f](https://github.com/statnett/image-scanner-operator/commit/93c183f73dff4d507cbe28a71109ac55fb161559))
+* update CIS status with errors decoding scan report ([#90](https://github.com/statnett/image-scanner-operator/issues/90)) ([27e5c51](https://github.com/statnett/image-scanner-operator/commit/27e5c51b45673e1fff0bd597a60473472f21680f))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.24.2 to 1.25.0 ([#88](https://github.com/statnett/image-scanner-operator/issues/88)) ([74860c2](https://github.com/statnett/image-scanner-operator/commit/74860c2530407241e089b7f44f5565a2759bacbb))
+
 ## [0.1.0](https://github.com/statnett/image-scanner-operator/compare/v0.0.1...v0.1.0) (2023-01-17)
 
 
