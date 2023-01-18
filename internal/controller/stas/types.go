@@ -37,11 +37,39 @@ func newImageFromContainerStatus(containerStatus corev1.ContainerStatus) (podCon
 		image.Digest = ref.Digest()
 	}
 
-	if ref, ok := idRef.(reference.Tagged); ok {
-		image.Tag = ref.Tag()
-	} else if ref, ok := nameRef.(reference.Tagged); ok {
-		image.Tag = ref.Tag()
+	return image, nil
+}
+
+func containerImages(pod *corev1.Pod) (map[string]*podContainerImage, error) {
+	images := make(map[string]*podContainerImage)
+
+	for _, containerStatus := range pod.Status.ContainerStatuses {
+		if containerStatus.Image != "" && containerStatus.ImageID != "" {
+			image, err := newImageFromContainerStatus(containerStatus)
+			if err != nil {
+				return nil, err
+			}
+
+			images[containerStatus.Name] = &image
+		}
 	}
 
-	return image, nil
+	for _, container := range pod.Spec.Containers {
+		image, ok := images[container.Name]
+		if !ok {
+			// We only want to add tag to images that are resolved by CRI
+			continue
+		}
+
+		ref, err := reference.ParseAnyReference(container.Image)
+		if err != nil {
+			return nil, err
+		}
+
+		if taggedRef, ok := ref.(reference.Tagged); ok {
+			image.Tag = taggedRef.Tag()
+		}
+	}
+
+	return images, nil
 }

@@ -174,6 +174,7 @@ func newPod(owner client.Object, s *runtime.Scheme) *corev1.Pod {
 	}
 	p.Status.ContainerStatuses = []corev1.ContainerStatus{
 		{
+			Name:    "foo",
 			Image:   "my.registry/repository/app:f54a333e",
 			ImageID: "my.registry/repository/app@sha256:4b59f7dacd37c688968756d176139715df69d89eb0be1802e059316f9d58d9ef",
 		},
