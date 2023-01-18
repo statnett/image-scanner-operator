@@ -1,7 +1,6 @@
 # Image Scanner Operator
 
 [![Conventional Commits][conventional-commits-img]][conventional-commits]
-[![CI][CI-img]][CI]
 [![Go Report Card][report-card-img]][report-card]
 [![CodeQL][CodeQL-img]][CodeQL]
 
