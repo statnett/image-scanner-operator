@@ -15,7 +15,7 @@ will be hidden when you post but you can delete them if you wish. -->
 Image Scanner Version:
 <!-- Provide the used imaged image tag for the ghcr.io/statnett/image-scanner-operator image -->
 
-Kubernetes distro:
+Kubernetes distro and version:
 <!-- Provide your flavour of Kubernetes; e.g. Openshift, RKE 2, K3s -->
 
 Cluster Configuration:
