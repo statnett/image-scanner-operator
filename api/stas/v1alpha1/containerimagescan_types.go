@@ -10,6 +10,7 @@ import (
 
 const (
 	ReasonVulnerabilityOverflow        = "VulnerabilityOverflow"
+	ReasonScanReportDecodeError        = "ScanReportDecodeError"
 	WorkloadAnnotationKeyIgnoreUnfixed = "image-scanner.statnett.no/ignore-unfixed"
 )
 

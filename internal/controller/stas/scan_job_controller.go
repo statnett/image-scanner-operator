@@ -59,10 +59,25 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 	var (
 		cleanCis        = cis.DeepCopy()
 		vulnerabilities []stasv1alpha1.Vulnerability
+		now             = metav1.Now()
 	)
 
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
 	if err != nil {
+		cis = cleanCis.DeepCopy()
+
+		condition := metav1.Condition{
+			Type:    string(kstatus.ConditionStalled),
+			Status:  metav1.ConditionTrue,
+			Reason:  stasv1alpha1.ReasonScanReportDecodeError,
+			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", jobName, err),
+		}
+		meta.SetStatusCondition(&cis.Status.Conditions, condition)
+		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
+		cis.Status.LastScanTime = &now
+		cis.Status.LastScanJobName = jobName
+		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+
 		return err
 	}
 
@@ -80,7 +95,6 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 	cis.Status.VulnerabilitySummary = vulnerabilitySummary(vulnerabilities, minSeverity)
 	// Clear any conditions since we now have a successful scan report
 	cis.Status.Conditions = nil
-	now := metav1.Now()
 	cis.Status.LastScanTime = &now
 	cis.Status.LastScanJobName = jobName
 	cis.Status.LastSuccessfulScanTime = &now
@@ -93,7 +107,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 			Type:    string(kstatus.ConditionStalled),
 			Status:  metav1.ConditionTrue,
 			Reason:  stasv1alpha1.ReasonVulnerabilityOverflow,
-			Message: "Number of detected vulnerabilities is too high to fit in API",
+			Message: fmt.Sprintf("vulnerability report is too large to fit in API: %s", err),
 		}
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
