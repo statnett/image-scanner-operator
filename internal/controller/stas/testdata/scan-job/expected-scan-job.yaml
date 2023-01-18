@@ -65,6 +65,8 @@ spec:
               value: http://trivy.image-scanner.svc.cluster.local
             - name: TRIVY_QUIET
               value: "true"
+            - name: TRIVY_DEBUG
+              value: "true"
             - name: TRIVY_FORMAT
               value: template
             - name: TRIVY_TEMPLATE
