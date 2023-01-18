@@ -1,5 +1,9 @@
 # Image Scanner Operator
 
+[![Conventional Commits][conventional-commits-img]][conventional-commits]
+[![Go Report Card][report-card-img]][report-card]
+[![CodeQL][CodeQL-img]][CodeQL]
+
 Image Scanner is a Kubernetes Operator supporting detection of vulnerabilities
 in running container images.
 
@@ -242,5 +246,11 @@ during any interaction with the community.
 
 Licensed under the [MIT License](LICENSE).
 
+[CodeQL-img]: https://github.com/statnett/image-scanner-operator/actions/workflows/codeql.yml/badge.svg?branch=main
+[CodeQL]: https://github.com/statnett/image-scanner-operator/actions/workflows/codeql.yml?query=branch%3Amain
+[conventional-commits-img]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white
+[conventional-commits]: https://conventionalcommits.org
+[report-card-img]: https://goreportcard.com/badge/github.com/statnett/image-scanner-operator
+[report-card]: https://goreportcard.com/report/github.com/statnett/image-scanner-operator
 [CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1
 [CIS-example]: config/samples/stas_v1alpha1_containerimagescan.yaml
