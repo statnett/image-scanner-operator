@@ -23,8 +23,6 @@ patches:
         volumeClaimTemplates: []
         template:
           spec:
-            containers:
-              - name: server
             volumes:
               - name: data
                 emptyDir: {}
