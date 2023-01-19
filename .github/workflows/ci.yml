@@ -82,7 +82,7 @@ jobs:
           cache: true
       - run: make test
   e2e-test:
-    needs: test
+    needs: verify-generated
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
