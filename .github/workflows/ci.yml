@@ -107,6 +107,7 @@ jobs:
           cluster-name: image-scanner
           args: >-
             --config=test/e2e-config/k3d-config.yml
+            --volume=/tmp/pod-logs:/var/log/pods
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
@@ -122,3 +123,6 @@ jobs:
           cache: enable
       - run: |
           make e2e-test
+      - if: ${{ always() }}
+        run: |
+          ls -al /tmp/pod-logs
