@@ -51,8 +51,8 @@ func init() {
 
 func main() {
 	var (
-		metricsAddr, probeAddr                               string
-		helpRequested, enableLeaderElection, enableProfiling bool
+		metricsAddr, probeAddr                string
+		enableLeaderElection, enableProfiling bool
 	)
 
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
@@ -69,20 +69,14 @@ func main() {
 	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
 	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
+	flag.Bool("help", false, "print out usage and a summary of options")
 
 	opts := zap.Options{
 		Development: true,
 	}
 	opts.BindFlags(flag.CommandLine)
-
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.BoolVarP(&helpRequested, "help", "h", false, "print out usage and a summary of options")
 	pflag.Parse()
-
-	if helpRequested {
-		pflag.Usage()
-		os.Exit(0)
-	}
 
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
@@ -92,6 +86,11 @@ func main() {
 
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	if viper.GetBool("help") {
+		pflag.Usage()
+		os.Exit(0)
+	}
 
 	cfg := operator.Config{}
 	if err := viper.Unmarshal(&cfg); err != nil {
