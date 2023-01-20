@@ -32,9 +32,7 @@ import (
 )
 
 const (
-	ErrCreateCtrl        = "unable to create controller"
-	flagCISMetricsLabels = "cis-metrics-labels"
-	flagNamespaces       = "namespaces"
+	ErrCreateCtrl = "unable to create controller"
 )
 
 var (
@@ -56,8 +54,8 @@ func main() {
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
 	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
-	flag.String(flagNamespaces, "", "comma-separated list of namespaces to watch")
-	flag.String(flagCISMetricsLabels, "", "comma-separated list of labels in CIS resources to create metrics labels for")
+	flag.String("namespaces", "", "comma-separated list of namespaces to watch")
+	flag.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
 	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
 	flag.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
 	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
@@ -112,12 +110,7 @@ func main() {
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
-	namespaces := []string{}
-	if err := viper.UnmarshalKey(flagNamespaces, &namespaces); err != nil {
-		setupLog.Error(err, "unable to read in namespaces flag/env")
-		os.Exit(1)
-	}
-
+	namespaces := viper.GetStringSlice("namespaces")
 	if len(namespaces) > 0 {
 		options.NewCache = cache.MultiNamespacedCacheBuilder(namespaces)
 	}
@@ -198,12 +191,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	cisMetricsLabels := []string{}
-	if err := viper.UnmarshalKey(flagCISMetricsLabels, &cisMetricsLabels); err != nil {
-		setupLog.Error(err, "unable to read in cis-metrics-labels flag/env")
-		os.Exit(1)
-	}
-
+	cisMetricsLabels := viper.GetStringSlice("cis-metrics-labels")
 	if err = (&metrics.ImageMetricsCollector{
 		Client: mgr.GetClient(),
 		Config: cfg,
