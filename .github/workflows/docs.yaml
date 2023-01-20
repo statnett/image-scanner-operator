@@ -1,0 +1,17 @@
+---
+name: Release Docs
+on:
+  release:
+    types:
+      - published
+permissions:
+  contents: read
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  trigger-api-docs-indexing:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl https://doc.crds.dev/github.com/${{ github.event.repository.full_name }}@${{ github.event.release.tag_name }}
