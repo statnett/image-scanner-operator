@@ -50,17 +50,12 @@ func init() {
 }
 
 func main() {
-	var (
-		metricsAddr, probeAddr                string
-		enableLeaderElection, enableProfiling bool
-	)
-
-	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
+	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
+	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+	flag.Bool("leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
-	flag.BoolVar(&enableProfiling, "enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
+	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
 	flag.String(flagNamespaces, "", "comma-separated list of namespaces to watch")
 	flag.String(flagCISMetricsLabels, "", "comma-separated list of labels in CIS resources to create metrics labels for")
 	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
@@ -110,10 +105,10 @@ func main() {
 	options := ctrl.Options{
 		NewClient:              cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:                 scheme,
-		MetricsBindAddress:     metricsAddr,
+		MetricsBindAddress:     viper.GetString("metrics-bind-address"),
 		Port:                   9443,
-		HealthProbeBindAddress: probeAddr,
-		LeaderElection:         enableLeaderElection,
+		HealthProbeBindAddress: viper.GetString("health-probe-bind-address"),
+		LeaderElection:         viper.GetBool("leader-elect"),
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
@@ -185,7 +180,7 @@ func main() {
 
 	//+kubebuilder:scaffold:builder
 
-	if enableProfiling {
+	if viper.GetBool("enable-profiling") {
 		err = mgr.AddMetricsExtraHandler("/debug/pprof/", http.HandlerFunc(pprof.Index))
 		if err != nil {
 			setupLog.Error(err, "unable to attach pprof to webserver")
