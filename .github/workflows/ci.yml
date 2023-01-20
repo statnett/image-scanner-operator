@@ -125,7 +125,6 @@ jobs:
           cache: enable
       - run: |
           make e2e-test
-
       - if: ${{ failure() }}
         # Copy files from volume and update permissions to avoid permission denied
         run: |
