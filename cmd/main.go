@@ -32,9 +32,7 @@ import (
 )
 
 const (
-	ErrCreateCtrl        = "unable to create controller"
-	flagCISMetricsLabels = "cis-metrics-labels"
-	flagNamespaces       = "namespaces"
+	ErrCreateCtrl = "unable to create controller"
 )
 
 var (
@@ -50,39 +48,28 @@ func init() {
 }
 
 func main() {
-	var (
-		metricsAddr, probeAddr                               string
-		helpRequested, enableLeaderElection, enableProfiling bool
-	)
-
-	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
+	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
+	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+	flag.Bool("leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
-	flag.BoolVar(&enableProfiling, "enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
-	flag.String(flagNamespaces, "", "comma-separated list of namespaces to watch")
-	flag.String(flagCISMetricsLabels, "", "comma-separated list of labels in CIS resources to create metrics labels for")
+	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
+	flag.String("namespaces", "", "comma-separated list of namespaces to watch")
+	flag.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
 	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
 	flag.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
 	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
 	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
 	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
+	flag.Bool("help", false, "print out usage and a summary of options")
 
 	opts := zap.Options{
 		Development: true,
 	}
 	opts.BindFlags(flag.CommandLine)
-
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.BoolVarP(&helpRequested, "help", "h", false, "print out usage and a summary of options")
 	pflag.Parse()
-
-	if helpRequested {
-		pflag.Usage()
-		os.Exit(0)
-	}
 
 	err := viper.BindPFlags(pflag.CommandLine)
 	if err != nil {
@@ -92,6 +79,12 @@ func main() {
 
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	helpRequested := viper.GetBool("help")
+	if helpRequested {
+		pflag.Usage()
+		os.Exit(0)
+	}
 
 	cfg := operator.Config{}
 	if err := viper.Unmarshal(&cfg); err != nil {
@@ -108,6 +101,9 @@ func main() {
 	ctrl.SetLogger(logger)
 	klog.SetLogger(logger)
 
+	metricsAddr := viper.GetString("metrics-bind-address")
+	probeAddr := viper.GetString("health-probe-bind-address")
+	enableLeaderElection := viper.GetBool("leader-elect")
 	options := ctrl.Options{
 		NewClient:              cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:                 scheme,
@@ -118,12 +114,7 @@ func main() {
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
-	namespaces := []string{}
-	if err := viper.UnmarshalKey(flagNamespaces, &namespaces); err != nil {
-		setupLog.Error(err, "unable to read in namespaces flag/env")
-		os.Exit(1)
-	}
-
+	namespaces := viper.GetStringSlice("namespaces")
 	if len(namespaces) > 0 {
 		options.NewCache = cache.MultiNamespacedCacheBuilder(namespaces)
 	}
@@ -186,6 +177,7 @@ func main() {
 
 	//+kubebuilder:scaffold:builder
 
+	enableProfiling := viper.GetBool("enable-profiling")
 	if enableProfiling {
 		err = mgr.AddMetricsExtraHandler("/debug/pprof/", http.HandlerFunc(pprof.Index))
 		if err != nil {
@@ -204,12 +196,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	cisMetricsLabels := []string{}
-	if err := viper.UnmarshalKey(flagCISMetricsLabels, &cisMetricsLabels); err != nil {
-		setupLog.Error(err, "unable to read in cis-metrics-labels flag/env")
-		os.Exit(1)
-	}
-
+	cisMetricsLabels := viper.GetStringSlice("cis-metrics-labels")
 	if err = (&metrics.ImageMetricsCollector{
 		Client: mgr.GetClient(),
 		Config: cfg,
