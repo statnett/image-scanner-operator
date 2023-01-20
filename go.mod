@@ -14,7 +14,7 @@ require (
 	github.com/statnett/controller-runtime-viper v0.1.1
 	github.com/stretchr/testify v1.8.1
 	github.com/vektra/mockery/v2 v2.16.0
-	k8s.io/api v0.26.0
+	k8s.io/api v0.26.1
 	k8s.io/apimachinery v0.26.1
 	k8s.io/client-go v0.26.0
 	k8s.io/klog/v2 v2.80.1
