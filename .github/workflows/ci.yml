@@ -92,6 +92,8 @@ jobs:
           go-version-file: go.mod
           cache: true
       - run: make test
+        env:
+          KUBEBUILDER_ATTACH_CONTROL_PLANE_OUTPUT: true
   e2e-test:
     needs: verify-generated
     runs-on: ubuntu-latest
