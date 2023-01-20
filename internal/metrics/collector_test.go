@@ -12,6 +12,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
 var _ = Describe("ContainerImageScan Collector", func() {
@@ -21,8 +22,9 @@ var _ = Describe("ContainerImageScan Collector", func() {
 		c := newClientWithTestdata()
 		imageMetricsCollector = &ImageMetricsCollector{
 			Client: c,
+			Config: operator.Config{MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"}},
 		}
-		Expect(imageMetricsCollector.SetupWithManager(&fakeManager{}, "system.statnett.no/name", "app.kubernetes.io/name")).To(Succeed())
+		Expect(imageMetricsCollector.SetupWithManager(&fakeManager{})).To(Succeed())
 	})
 
 	AssertNoLintIssues := func() {

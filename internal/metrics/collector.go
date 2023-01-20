@@ -50,13 +50,13 @@ type ImageMetricsCollector struct {
 	patchStatusDesc *prometheus.Desc
 }
 
-func (c *ImageMetricsCollector) SetupWithManager(mgr manager.Manager, metricsLabels ...string) error {
-	labels := make(cisLabels, 0, len(metricsLabels)+len(cisResourceLabels)+1)
+func (c *ImageMetricsCollector) SetupWithManager(mgr manager.Manager) error {
+	labels := make(cisLabels, 0, len(c.MetricsLabels)+len(cisResourceLabels)+1)
 
-	if len(metricsLabels) > 0 {
+	if len(c.MetricsLabels) > 0 {
 		re := regexp.MustCompile("[^a-zA-Z0-9_]+")
 
-		for _, l := range metricsLabels {
+		for _, l := range c.MetricsLabels {
 			labelKey := l
 			cl := cisLabel{
 				name: re.ReplaceAllString(labelKey, "_"),
