@@ -114,9 +114,8 @@ func main() {
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
-	namespaces := viper.GetStringSlice("namespaces")
-	if len(namespaces) > 0 {
-		options.NewCache = cache.MultiNamespacedCacheBuilder(namespaces)
+	if len(cfg.ScanNamespaces) > 0 {
+		options.NewCache = cache.MultiNamespacedCacheBuilder(cfg.ScanNamespaces)
 	}
 
 	kubeConfig := ctrl.GetConfigOrDie()
@@ -196,11 +195,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	cisMetricsLabels := viper.GetStringSlice("cis-metrics-labels")
 	if err = (&metrics.ImageMetricsCollector{
 		Client: mgr.GetClient(),
 		Config: cfg,
-	}).SetupWithManager(mgr, cisMetricsLabels...); err != nil {
+	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to set up image metrics collector")
 		os.Exit(1)
 	}

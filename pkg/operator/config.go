@@ -7,9 +7,11 @@ import (
 )
 
 type Config struct {
+	MetricsLabels         []string      `mapstructure:"cis-metrics-labels"`
 	ScanInterval          time.Duration `mapstructure:"scan-interval"`
 	ScanJobNamespace      string        `mapstructure:"scan-job-namespace"`
 	ScanJobServiceAccount string        `mapstructure:"scan-job-service-account"`
+	ScanNamespaces        []string      `mapstructure:"namespaces"`
 	ScanWorkloadResources []string      `mapstructure:"scan-workload-resources"`
 	TrivyImage            string        `mapstructure:"trivy-image"`
 	TrivyServer           string        `mapstructure:"trivy-server"`
