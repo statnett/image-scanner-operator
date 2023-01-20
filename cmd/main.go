@@ -80,7 +80,8 @@ func main() {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 
-	if viper.GetBool("help") {
+	helpRequested := viper.GetBool("help")
+	if helpRequested {
 		pflag.Usage()
 		os.Exit(0)
 	}
@@ -100,13 +101,16 @@ func main() {
 	ctrl.SetLogger(logger)
 	klog.SetLogger(logger)
 
+	metricsAddr := viper.GetString("metrics-bind-address")
+	probeAddr := viper.GetString("health-probe-bind-address")
+	enableLeaderElection := viper.GetBool("leader-elect")
 	options := ctrl.Options{
 		NewClient:              cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
 		Scheme:                 scheme,
-		MetricsBindAddress:     viper.GetString("metrics-bind-address"),
+		MetricsBindAddress:     metricsAddr,
 		Port:                   9443,
-		HealthProbeBindAddress: viper.GetString("health-probe-bind-address"),
-		LeaderElection:         viper.GetBool("leader-elect"),
+		HealthProbeBindAddress: probeAddr,
+		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
@@ -173,7 +177,8 @@ func main() {
 
 	//+kubebuilder:scaffold:builder
 
-	if viper.GetBool("enable-profiling") {
+	enableProfiling := viper.GetBool("enable-profiling")
+	if enableProfiling {
 		err = mgr.AddMetricsExtraHandler("/debug/pprof/", http.HandlerFunc(pprof.Index))
 		if err != nil {
 			setupLog.Error(err, "unable to attach pprof to webserver")
