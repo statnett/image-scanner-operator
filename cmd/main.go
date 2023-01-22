@@ -48,12 +48,7 @@ func init() {
 }
 
 func main() {
-	opts := zap.Options{
-		Development: true,
-	}
-	cfg := operator.Config{}
-
-	bindConfig(opts, cfg)
+	cfg, opts := bindConfig(flag.CommandLine)
 	validateConfig(cfg)
 	execute(opts, cfg)
 }
@@ -173,7 +168,12 @@ func execute(opts zap.Options, cfg operator.Config) {
 	}
 }
 
-func bindConfig(opts zap.Options, cfg operator.Config) {
+func bindConfig(fs *flag.FlagSet) (operator.Config, zap.Options) {
+	opts := zap.Options{
+		Development: true,
+	}
+	cfg := operator.Config{}
+
 	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.Bool("leader-elect", false,
@@ -190,12 +190,11 @@ func bindConfig(opts zap.Options, cfg operator.Config) {
 	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
 	flag.Bool("help", false, "print out usage and a summary of options")
 
-	opts.BindFlags(flag.CommandLine)
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	opts.BindFlags(fs)
+	pflag.CommandLine.AddGoFlagSet(fs)
 	pflag.Parse()
 
-	err := viper.BindPFlags(pflag.CommandLine)
-	if err != nil {
+	if err := viper.BindPFlags(pflag.CommandLine); err != nil {
 		setupLog.Error(err, "unable to bind command line flags")
 		os.Exit(1)
 	}
@@ -213,6 +212,8 @@ func bindConfig(opts zap.Options, cfg operator.Config) {
 		setupLog.Error(err, "unable to decode config into struct")
 		os.Exit(1)
 	}
+
+	return cfg, opts
 }
 
 func validateConfig(cfg operator.Config) {
