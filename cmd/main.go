@@ -48,56 +48,15 @@ func init() {
 }
 
 func main() {
-	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.Bool("leader-elect", false,
-		"Enable leader election for controller manager. "+
-			"Enabling this will ensure there is only one active controller manager.")
-	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
-	flag.String("namespaces", "", "comma-separated list of namespaces to watch")
-	flag.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
-	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
-	flag.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
-	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
-	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
-	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
-	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
-	flag.Bool("help", false, "print out usage and a summary of options")
-
-	opts := zap.Options{
-		Development: true,
-	}
-	opts.BindFlags(flag.CommandLine)
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
-
-	err := viper.BindPFlags(pflag.CommandLine)
-	if err != nil {
-		setupLog.Error(err, "unable to bind command line flags")
-		os.Exit(1)
-	}
-
-	viper.AutomaticEnv()
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-
-	helpRequested := viper.GetBool("help")
-	if helpRequested {
-		pflag.Usage()
-		os.Exit(0)
-	}
-
 	cfg := operator.Config{}
-	if err := viper.Unmarshal(&cfg); err != nil {
-		setupLog.Error(err, "unable to decode config into struct")
-		os.Exit(1)
-	}
+	cfg.Zap.Development = true
+	bindConfig(cfg, flag.CommandLine)
+	validateConfig(cfg)
+	execute(cfg)
+}
 
-	if cfg.ScanJobNamespace == "" {
-		setupLog.V(0).Info("required flag/env not set", "flag", "scan-job-namespace", "env", "SCAN_JOB_NAMESPACE")
-		os.Exit(1)
-	}
-
-	logger := zap.New(zap.UseFlagOptions(&opts))
+func execute(cfg operator.Config) {
+	logger := zap.New(zap.UseFlagOptions(&cfg.Zap))
 	ctrl.SetLogger(logger)
 	klog.SetLogger(logger)
 
@@ -207,6 +166,54 @@ func main() {
 
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")
+		os.Exit(1)
+	}
+}
+
+func bindConfig(cfg operator.Config, fs *flag.FlagSet) {
+	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
+	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+	flag.Bool("leader-elect", false,
+		"Enable leader election for controller manager. "+
+			"Enabling this will ensure there is only one active controller manager.")
+	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
+	flag.String("namespaces", "", "comma-separated list of namespaces to watch")
+	flag.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
+	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
+	flag.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
+	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
+	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
+	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
+	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
+	flag.Bool("help", false, "print out usage and a summary of options")
+
+	cfg.Zap.BindFlags(fs)
+	pflag.CommandLine.AddGoFlagSet(fs)
+	pflag.Parse()
+
+	if err := viper.BindPFlags(pflag.CommandLine); err != nil {
+		setupLog.Error(err, "unable to bind command line flags")
+		os.Exit(1)
+	}
+
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	helpRequested := viper.GetBool("help")
+	if helpRequested {
+		pflag.Usage()
+		os.Exit(0)
+	}
+
+	if err := viper.Unmarshal(&cfg); err != nil {
+		setupLog.Error(err, "unable to decode config into struct")
+		os.Exit(1)
+	}
+}
+
+func validateConfig(cfg operator.Config) {
+	if cfg.ScanJobNamespace == "" {
+		setupLog.V(0).Info("required flag/env not set", "flag", "scan-job-namespace", "env", "SCAN_JOB_NAMESPACE")
 		os.Exit(1)
 	}
 }
