@@ -74,7 +74,7 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
 		})
 
-		Context("and scan report is too big", func() {
+		Context("and scan report is too big", Label("scanreport", "big"), func() {
 			It("should report correct conditions", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
@@ -94,20 +94,23 @@ var _ = Describe("Scan Job controller", func() {
 				})).Should(Succeed())
 
 				// Wait for Job to get reconciled
-				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
-				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-				Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
-				// Check conditions
-				Expect(cis.Status.Conditions).To(HaveLen(1))
-				condition := cis.Status.Conditions[0]
-				Expect(condition.Type).To(Equal("Stalled"))
-				Expect(condition.Status).To(Equal(metav1.ConditionTrue))
-				Expect(condition.Reason).To(Equal("VulnerabilityOverflow"))
-				Expect(condition.Message).To(Not(BeEmpty()))
+				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status", SatisfyAll(
+					HaveField("LastScanTime", Not(BeZero())),
+					HaveField("LastSuccessfulScanTime", BeZero()),
+					HaveField("LastScanJobName", Equal(scanJob.Name)),
+					HaveField("Conditions", ConsistOf(
+						SatisfyAll(
+							HaveField("Type", "Stalled"),
+							HaveField("Status", metav1.ConditionTrue),
+							HaveField("Reason", "VulnerabilityOverflow"),
+							HaveField("Message", Not(BeEmpty())),
+						)),
+					),
+				)))
 			})
 		})
 
-		Context("but scan report is invalid JSON", func() {
+		Context("but scan report is invalid JSON", Label("scanreport", "invalid"), func() {
 			It("should report stalled condition", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
@@ -127,21 +130,24 @@ var _ = Describe("Scan Job controller", func() {
 				})).Should(Succeed())
 
 				// Wait for Job to get reconciled
-				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
-				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-				Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
-				// Check conditions
-				Expect(cis.Status.Conditions).To(HaveLen(1))
-				condition := cis.Status.Conditions[0]
-				Expect(condition.Type).To(Equal("Stalled"))
-				Expect(condition.Status).To(Equal(metav1.ConditionTrue))
-				Expect(condition.Reason).To(Equal("ScanReportDecodeError"))
-				Expect(condition.Message).To(Not(BeEmpty()))
+				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status", SatisfyAll(
+					HaveField("LastScanTime", Not(BeZero())),
+					HaveField("LastSuccessfulScanTime", BeZero()),
+					HaveField("LastScanJobName", scanJob.Name),
+					HaveField("Conditions", ConsistOf(
+						SatisfyAll(
+							HaveField("Type", "Stalled"),
+							HaveField("Status", metav1.ConditionTrue),
+							HaveField("Reason", "ScanReportDecodeError"),
+							HaveField("Message", Not(BeEmpty())),
+						)),
+					),
+				)))
 			})
 		})
 	})
 
-	Context("When scan job is failed", func() {
+	Context("When scan job is failed", Label("scanreport", "failed"), func() {
 		It("should write scan results back to CIS status", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
@@ -161,16 +167,19 @@ var _ = Describe("Scan Job controller", func() {
 			})).Should(Succeed())
 
 			// Wait for Job to get reconciled
-			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
-			Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-			Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
-			// Check conditions
-			Expect(cis.Status.Conditions).To(HaveLen(1))
-			condition := cis.Status.Conditions[0]
-			Expect(condition.Type).To(Equal("Stalled"))
-			Expect(condition.Status).To(Equal(metav1.ConditionTrue))
-			Expect(condition.Reason).To(Equal("Error"))
-			Expect(condition.Message).To(Not(BeEmpty()))
+			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status", SatisfyAll(
+				HaveField("LastScanTime", Not(BeZero())),
+				HaveField("LastSuccessfulScanTime", BeZero()),
+				HaveField("LastScanJobName", scanJob.Name),
+				HaveField("Conditions", ConsistOf(
+					SatisfyAll(
+						HaveField("Type", "Stalled"),
+						HaveField("Status", metav1.ConditionTrue),
+						HaveField("Reason", "Error"),
+						HaveField("Message", Not(BeEmpty())),
+					)),
+				),
+			)))
 		})
 	})
 })
