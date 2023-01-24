@@ -136,6 +136,7 @@ jobs:
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
+          docker images
           k3d image import ${{ env.IMG }} --cluster image-scanner --mode direct
           make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
