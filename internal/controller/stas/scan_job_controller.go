@@ -171,7 +171,7 @@ func (r *ScanJobReconciler) reconcile() reconcile.Func {
 func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) error {
 	cisList := &stasv1alpha1.ContainerImageScanList{}
 
-	logf.FromContext(ctx).V(3).Info("Reconciling job %s with status %+v", job.Name, job.Status)
+	logf.FromContext(ctx).V(3).Info("Reconciling job %q with status %+v", job.Name, job.Status)
 
 	listOps := []client.ListOption{
 		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
