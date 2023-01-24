@@ -109,14 +109,14 @@ jobs:
       - uses: docker/build-push-action@37abcedcc1da61a57767b7588cb9d03eb57e28b3 # v3.3.0
         with:
           context: .
-          outputs: type=docker,dest=images/operator-image.tar
+          outputs: type=docker,dest=/tmp/operator-image.tar
           tags: ${{ env.IMG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
         with:
-          name: images
-          path: images/
+          name: operator-image
+          path: /tmp/operator-image.tar
   e2e-test:
     needs:
       - verify-generated
@@ -130,8 +130,8 @@ jobs:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
       - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
-          name: images
-          path: images/
+          name: operator-image
+          path: /tmp/
       - run: |
           mkdir /tmp/pod-logs
       - uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79 # v2.4.0
@@ -144,7 +144,7 @@ jobs:
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
-          k3d image import ${{ env.IMG }} ./images/operator-image.tar --cluster image-scanner --mode direct
+          k3d image import ${{ env.IMG }} /tmp/operator-image.tar --cluster image-scanner --mode direct
           make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
