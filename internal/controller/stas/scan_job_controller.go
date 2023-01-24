@@ -78,6 +78,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		cis.Status.LastScanJobName = jobName
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 
+		logf.FromContext(ctx).V(3).Info("Patched CIS status with reason: %q patchStatus: %s\n", condition.Reason, err)
 		return err
 	}
 
@@ -114,6 +115,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		cis.Status.LastScanTime = &now
 		cis.Status.LastScanJobName = jobName
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+		logf.FromContext(ctx).V(3).Info("Patched CIS status with reason: %q patchStatus: %s\n", condition.Reason, err)
 	}
 
 	return err
@@ -169,6 +171,8 @@ func (r *ScanJobReconciler) reconcile() reconcile.Func {
 func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) error {
 	cisList := &stasv1alpha1.ContainerImageScanList{}
 
+	logf.FromContext(ctx).V(3).Info("Reconciling job(%s) with status %+v", job.Name, job.Status)
+
 	listOps := []client.ListOption{
 		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
 		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
@@ -197,6 +201,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	if err != nil {
 		switch {
 		case staserrors.IsJobPodNotFound(err), staserrors.IsScanJobContainerWaiting(err):
+			logf.FromContext(ctx).V(3).Info("Failed to get logs %s", err)
 			return r.reconcileFailedJob(ctx, job.Name, strings.NewReader(err.Error()), cis)
 		default:
 			return err
@@ -211,8 +216,10 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	}(logs)
 
 	if job.Status.Succeeded > 0 {
+		logf.FromContext(ctx).V(3).Info("Patching CIS status with success job status")
 		return r.reconcileCompleteJob(ctx, job.Name, logs, cis)
 	} else {
+		logf.FromContext(ctx).V(3).Info("Patching CIS status with failed job status")
 		return r.reconcileFailedJob(ctx, job.Name, logs, cis)
 	}
 }
