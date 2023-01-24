@@ -104,7 +104,6 @@ var _ = BeforeSuite(func() {
 		ScanJobNamespace:      scanJobNamespace,
 		ScanJobServiceAccount: "image-scanner",
 		TrivyImage:            "aquasecurity/trivy",
-		TrivyServer:           "http://trivy.image-scanner.svc.cluster.local",
 	}
 
 	podReconciler := &PodReconciler{

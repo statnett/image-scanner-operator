@@ -6,3 +6,11 @@ resources:
   - namespace.yaml
   - resource_quota.yaml
   - service_account.yaml
+configMapGenerator:
+  - name: trivy
+    literals:
+      - OFFLINE_SCAN=true
+      - SERVER=http://trivy.image-scanner.svc.cluster.local
+      - TIMEOUT=30m
+generatorOptions:
+  disableNameSuffixHash: true
