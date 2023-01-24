@@ -2,9 +2,10 @@
 name: Build image
 on:
   push:
+    branches:
+      - main
     tags:
       - v*
-  workflow_call: {}
 permissions:
   contents: read
 env:
