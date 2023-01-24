@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"strings"
-	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -25,7 +24,6 @@ const (
 	KubernetesJobNameMaxLength    = validation.DNS1123LabelMaxLength
 	KubernetesLabelValueMaxLength = validation.DNS1123LabelMaxLength
 	ScanJobContainerName          = "scan-image"
-	ScanJobTimeout                = 1 * time.Hour
 	TempVolumeName                = "tmp"
 	TempVolumeMountPath           = "/tmp"
 )
@@ -133,7 +131,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 
 	job.Spec.Parallelism = pointer.Int32(1)
 	job.Spec.Completions = pointer.Int32(1)
-	job.Spec.ActiveDeadlineSeconds = pointer.Int64(int64(ScanJobTimeout.Seconds()))
+	job.Spec.ActiveDeadlineSeconds = pointer.Int64(int64(3600))
 	job.Spec.BackoffLimit = pointer.Int32(3)
 	job.Spec.TTLSecondsAfterFinished = pointer.Int32(7200)
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
@@ -188,14 +186,21 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	}
 	container.Env = []corev1.EnvVar{
 		{Name: "HOME", Value: TempVolumeMountPath},
-		{Name: "TRIVY_OFFLINE_SCAN", Value: "true"},
 		{Name: "TRIVY_SECURITY_CHECKS", Value: "vuln"},
 		{Name: "TRIVY_CACHE_DIR", Value: TempVolumeMountPath},
-		{Name: "TRIVY_SERVER", Value: f.TrivyServer},
 		{Name: "TRIVY_QUIET", Value: "true"},
 		{Name: "TRIVY_FORMAT", Value: "template"},
 		{Name: "TRIVY_TEMPLATE", Value: reportTemplate},
-		{Name: "TRIVY_TIMEOUT", Value: ScanJobTimeout.String()},
+	}
+	container.EnvFrom = []corev1.EnvFromSource{
+		{
+			Prefix: "TRIVY_",
+			ConfigMapRef: &corev1.ConfigMapEnvSource{
+				LocalObjectReference: corev1.LocalObjectReference{
+					Name: "trivy",
+				},
+			},
+		},
 	}
 
 	if spec.MinSeverity != nil {

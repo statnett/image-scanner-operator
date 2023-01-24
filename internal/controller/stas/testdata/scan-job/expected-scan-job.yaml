@@ -16,7 +16,7 @@ metadata:
   namespace: image-scanner-jobs
   name: echo-6bdfc76c56-8ae43-b63f8
 spec:
-  activeDeadlineSeconds: 3600
+  activeDeadlineSeconds: 3600 # 1 hour
   backoffLimit: 3
   completionMode: NonIndexed
   completions: 1
@@ -55,22 +55,20 @@ spec:
           env:
             - name: HOME
               value: /tmp
-            - name: TRIVY_OFFLINE_SCAN
-              value: "true"
             - name: TRIVY_SECURITY_CHECKS
               value: vuln
             - name: TRIVY_CACHE_DIR
               value: /tmp
-            - name: TRIVY_SERVER
-              value: http://trivy.image-scanner.svc.cluster.local
             - name: TRIVY_QUIET
               value: "true"
             - name: TRIVY_FORMAT
               value: template
             - name: TRIVY_TEMPLATE
               value: <REPORT-TEMPLATE>
-            - name: TRIVY_TIMEOUT
-              value: 1h0m0s
+          envFrom:
+            - prefix: TRIVY_
+              configMapRef:
+                name: trivy
           image: docker.io/nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4
           imagePullPolicy: IfNotPresent
           name: scan-image

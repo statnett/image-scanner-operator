@@ -61,7 +61,6 @@ func main() {
 	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
 	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
 	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
-	flag.String("trivy-server", "", "The server to use in Trivy client/server mode.")
 	flag.Bool("help", false, "print out usage and a summary of options")
 
 	opts := zap.Options{
