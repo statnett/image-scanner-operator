@@ -77,8 +77,8 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		cis.Status.LastScanTime = &now
 		cis.Status.LastScanJobName = jobName
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-
 		logf.FromContext(ctx).V(3).Info("Patched CIS status with reason: %q patchStatus: %s\n", condition.Reason, err)
+
 		return err
 	}
 
