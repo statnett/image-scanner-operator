@@ -10,8 +10,6 @@ concurrency:
   cancel-in-progress: true
 permissions: # added using https://github.com/step-security/secure-workflows
   contents: read
-env:
-  IMG: image-scanner/controller:latest
 jobs:
   golangci-lint:
     permissions:
@@ -99,6 +97,10 @@ jobs:
   e2e-test:
     needs: verify-generated
     runs-on: ubuntu-latest
+    env:
+      IMG: image-scanner/controller:latest
+      IMG_FILE: operator-image.tar
+      K3D_CLUSTER: image-scanner
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@18bf8ad2ca49c14cbb28b91346d626ccfb00c518 # v2.1.0
@@ -112,13 +114,13 @@ jobs:
       - uses: docker/build-push-action@37abcedcc1da61a57767b7588cb9d03eb57e28b3 # v3.3.0
         with:
           context: .
-          outputs: type=docker,dest=operator-image.tar
+          outputs: type=docker,dest=${{ env.IMG_FILE }}
           tags: ${{ env.IMG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79 # v2.4.0
         with:
-          cluster-name: image-scanner
+          cluster-name: ${{ env.K3D_CLUSTER }}
           args: >-
             --config=test/e2e-config/k3d-config.yml
             --volume=/tmp/pod-logs:/var/log/pods
@@ -126,7 +128,7 @@ jobs:
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
-          k3d image import operator-image.tar --cluster image-scanner
+          k3d image import ${{ env.IMG_FILE }} --cluster ${{ env.K3D_CLUSTER }}
           make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
