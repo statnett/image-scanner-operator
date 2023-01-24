@@ -94,8 +94,12 @@ jobs:
       - run: make test
         env:
           KUBEBUILDER_ATTACH_CONTROL_PLANE_OUTPUT: true
+  build-image:
+    uses: ./.github/workflows/build-image.yaml
   e2e-test:
-    needs: verify-generated
+    needs:
+      - verify-generated
+      - build-image
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner

@@ -1,15 +1,10 @@
 ---
-name: Build
+name: Build image
 on:
   push:
-    branches:
-      - main
     tags:
       - v*
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
+  workflow_call: {}
 permissions:
   contents: read
 env:
