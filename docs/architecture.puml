@@ -8,7 +8,8 @@ cloud "Kubernetes API server" {
 
 package "Image Scanner Operator" {
   [Workload controller] ..> pod : watch
-  [Workload controller] --> cis : create
+  [Workload controller] --> cis : create/update
+  [Workload controller] ..> cis : watch
   [CIS controller] ..> cis : watch
   [CIS controller] --> job : create
   [Scan Job controller] ..> job : watch
