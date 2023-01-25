@@ -211,7 +211,7 @@ which provides a reconcile function responsible for synchronizing resources
 until the desired state is reached.
 
 Image Scanner consists of three controllers that coordinates
-scanning of running container images as illustrated in the diagram below.
+scanning of running container images as illustrated in the diagrams below.
 
 The container image scan Kubernetes API is materialized
 by the `ContainerImageScan` custom resources providing
@@ -228,7 +228,8 @@ Using a simple `Pod`, with a single container, as an example:
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
    and update the `ContainerImageScan` status.
 
-![Image scanner architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/architecture.puml)
+![Image scanner component diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/architecture.puml)
+![Scan image sequence diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/scan-sequence.puml)
 
 ## Contributing
 
