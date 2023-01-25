@@ -3,6 +3,8 @@ package operator
 import (
 	"time"
 
+	"github.com/statnett/controller-runtime-viper/pkg/zap"
+
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
@@ -14,7 +16,7 @@ type Config struct {
 	ScanNamespaces        []string      `mapstructure:"namespaces"`
 	ScanWorkloadResources []string      `mapstructure:"scan-workload-resources"`
 	TrivyImage            string        `mapstructure:"trivy-image"`
-	TrivyServer           string        `mapstructure:"trivy-server"`
+	Zap                   zap.Options   `mapstructure:"-"`
 }
 
 func (c Config) TimeUntilNextScan(cis *stasv1alpha1.ContainerImageScan) time.Duration {

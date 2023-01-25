@@ -48,6 +48,14 @@ func init() {
 }
 
 func main() {
+	cfg := operator.Config{}
+	cfg.Zap.Development = true
+	bindConfig(&cfg, flag.CommandLine)
+	validateConfig(cfg)
+	execute(cfg)
+}
+
+func bindConfig(cfg *operator.Config, fs *flag.FlagSet) {
 	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.Bool("leader-elect", false,
@@ -63,15 +71,14 @@ func main() {
 	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	flag.Bool("help", false, "print out usage and a summary of options")
 
-	opts := zap.Options{
-		Development: true,
-	}
-	opts.BindFlags(flag.CommandLine)
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	cfg.Zap.BindFlags(fs)
+	pflag.CommandLine.AddGoFlagSet(fs)
 	pflag.Parse()
 
-	err := viper.BindPFlags(pflag.CommandLine)
-	if err != nil {
+	pfs := &pflag.FlagSet{}
+	pfs.AddGoFlagSet(fs)
+
+	if err := viper.BindPFlags(pfs); err != nil {
 		setupLog.Error(err, "unable to bind command line flags")
 		os.Exit(1)
 	}
@@ -85,18 +92,21 @@ func main() {
 		os.Exit(0)
 	}
 
-	cfg := operator.Config{}
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := viper.Unmarshal(cfg); err != nil {
 		setupLog.Error(err, "unable to decode config into struct")
 		os.Exit(1)
 	}
+}
 
+func validateConfig(cfg operator.Config) {
 	if cfg.ScanJobNamespace == "" {
 		setupLog.V(0).Info("required flag/env not set", "flag", "scan-job-namespace", "env", "SCAN_JOB_NAMESPACE")
 		os.Exit(1)
 	}
+}
 
-	logger := zap.New(zap.UseFlagOptions(&opts))
+func execute(cfg operator.Config) {
+	logger := zap.New(zap.UseFlagOptions(&cfg.Zap))
 	ctrl.SetLogger(logger)
 	klog.SetLogger(logger)
 
