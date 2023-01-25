@@ -98,7 +98,7 @@ jobs:
     needs: verify-generated
     runs-on: ubuntu-latest
     env:
-      IMG: image-scanner/controller:latest
+      IMG: registry.dummy-domain.com/image-scanner/controller:latest
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
     steps:
