@@ -3,13 +3,13 @@
   "extends": [
     "config:base",
     ":semanticCommitTypeAll(ci)",
-    "regexManagers:dockerfileVersions"
+    "regexManagers:dockerfileVersions",
   ],
   "labels": ["dependencies"],
   "golang": {
-    "enabled": false
+    "enabled": false,
   },
   "github-actions": {
-    "enabled": false
+    "enabled": false,
   }
 }
