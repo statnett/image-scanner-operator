@@ -1,0 +1,31 @@
+@startuml
+autonumber
+actor       User       as user
+entity      Pod      as pod
+entity      CIS      as cis
+entity      Job      as job
+participant "Workload controller" as wc
+participant "CIS controller" as cc
+participant "Scan Job controller" as jc
+
+user -> pod : create
+activate pod 
+
+pod --> wc : watch
+activate wc
+wc -> cis : create
+deactivate wc
+
+cis --> cc : watch
+activate cc
+cc -> job : create
+deactivate cc
+activate job
+
+job --> jc : watch
+deactivate job
+activate jc
+jc -> cis : update status
+deactivate jc
+
+@enduml
