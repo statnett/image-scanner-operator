@@ -5,6 +5,7 @@
     ":semanticCommitTypeAll(ci)",
     "regexManagers:dockerfileVersions"
   ],
+  "labels": ["dependencies"],
   "golang": {
     "enabled": false
   },
