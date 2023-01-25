@@ -1,5 +1,6 @@
 @startuml
 autonumber
+
 actor       User       as user
 participant "Workload controller" as wc
 entity      Pod      as pod
@@ -21,7 +22,9 @@ activate cc
 cc -> job : create
 deactivate cc
 activate job
+
 |||
+
 jc <<- job: watch
 deactivate job
 activate jc
