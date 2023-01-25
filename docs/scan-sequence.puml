@@ -11,18 +11,18 @@ entity      Job      as job
 user -> pod : create
 activate pod 
 
-wc <-- pod : watch
+wc <<- pod : watch
 activate wc
 wc -> cis : create
 deactivate wc
 
-cc <-- cis : watch
+cc <<- cis : watch
 activate cc
 cc -> job : create
 deactivate cc
 activate job
-
-jc <-- job: watch
+|||
+jc <<- job: watch
 deactivate job
 activate jc
 jc -> cis : update status
