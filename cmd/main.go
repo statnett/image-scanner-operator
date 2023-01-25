@@ -50,12 +50,12 @@ func init() {
 func main() {
 	cfg := operator.Config{}
 	cfg.Zap.Development = true
-	bindConfig(cfg, flag.CommandLine)
+	bindConfig(&cfg, flag.CommandLine)
 	validateConfig(cfg)
 	execute(cfg)
 }
 
-func bindConfig(cfg operator.Config, fs *flag.FlagSet) {
+func bindConfig(cfg *operator.Config, fs *flag.FlagSet) {
 	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.Bool("leader-elect", false,
@@ -92,7 +92,7 @@ func bindConfig(cfg operator.Config, fs *flag.FlagSet) {
 		os.Exit(0)
 	}
 
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := viper.Unmarshal(cfg); err != nil {
 		setupLog.Error(err, "unable to decode config into struct")
 		os.Exit(1)
 	}
