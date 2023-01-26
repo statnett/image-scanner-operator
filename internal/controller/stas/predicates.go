@@ -14,11 +14,11 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
-var systemNamespaceRegex = regexp.MustCompile("^(kube-|openshift-).*")
-
-var systemNamespace = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	return systemNamespaceRegex.MatchString(object.GetNamespace())
-})
+func namespaceMatchRegexp(re *regexp.Regexp) predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		return re.MatchString(object.GetNamespace())
+	})
+}
 
 func podContainerStatusImagesChanged() predicate.Predicate {
 	return predicate.Funcs{

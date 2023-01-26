@@ -62,6 +62,13 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		groupKinds[i] = k.GroupKind()
 	}
 
+	predicates := []predicate.Predicate{
+		predicate.Not(managedByImageScanner),
+	}
+	if r.ScanNamespaceExcludeRegexp != nil {
+		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
+	}
+
 	bldr := ctrl.NewControllerManagedBy(mgr).
 		For(&corev1.Pod{},
 			builder.WithPredicates(
@@ -69,10 +76,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				predicate.Or(controllerInKinds(groupKinds...), noController),
 				ignoreDeletionPredicate(),
 			)).
-		WithEventFilter(predicate.And(
-			predicate.Not(systemNamespace),
-			predicate.Not(managedByImageScanner),
-		)).
+		WithEventFilter(predicate.And(predicates...)).
 		Watches(&source.Kind{Type: &stasv1alpha1.ContainerImageScan{}},
 			&handler.EnqueueRequestForOwner{OwnerType: &corev1.Pod{}},
 			builder.WithPredicates(
