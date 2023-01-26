@@ -71,6 +71,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 	if r.ScanNamespaceExcludeRegexp != nil {
 		bldr.WithEventFilter(predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
 	}
+
 	return bldr.Complete(r)
 }
 

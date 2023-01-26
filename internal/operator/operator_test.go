@@ -24,14 +24,15 @@ var _ = Describe("Operator config from flags", func() {
 
 	Context("Using scan-namespace-exclude-regexp flag", func() {
 		It("Should have correct default", func() {
-			fs.Parse(nil)
+			Expect(fs.Parse(nil)).To(Succeed())
 			opr.UnmarshalConfig(cfg)
 			Expect(cfg.ScanNamespaceExcludeRegexp).NotTo(BeNil())
 			Expect(cfg.ScanNamespaceExcludeRegexp.String()).To(Equal("^(kube-|openshift-).*"))
 		})
 
 		It("Should be configurable", func() {
-			fs.Parse([]string{"--scan-namespace-exclude-regexp=^$"})
+			args := []string{"--scan-namespace-exclude-regexp=^$"}
+			Expect(fs.Parse(args)).To(Succeed())
 			opr.UnmarshalConfig(cfg)
 			Expect(cfg.ScanNamespaceExcludeRegexp).NotTo(BeNil())
 			Expect(cfg.ScanNamespaceExcludeRegexp.String()).To(Equal("^$"))
