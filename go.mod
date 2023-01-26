@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/distribution/distribution v2.8.1+incompatible
 	github.com/go-logr/logr v1.2.3
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/onsi/ginkgo/v2 v2.7.1
 	github.com/onsi/gomega v1.26.0
 	github.com/opencontainers/go-digest v1.0.0
@@ -57,7 +58,6 @@ require (
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
