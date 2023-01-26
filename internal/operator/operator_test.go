@@ -17,7 +17,7 @@ var _ = Describe("Operator config from flags", func() {
 	)
 
 	BeforeEach(func() {
-		fs = flag.NewFlagSet("read from env", flag.ExitOnError)
+		fs = flag.NewFlagSet("test", flag.ExitOnError)
 		cfg = &config.Config{}
 		opr.BindFlags(cfg, fs)
 	})
