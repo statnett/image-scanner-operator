@@ -12,24 +12,28 @@ entity      Job      as job
 user -> pod : create
 activate pod 
 
-wc <<- pod : watch
+wc <<- pod :created
 activate wc
 wc -> cis : create
 deactivate wc
 activate cis
 
-cc <<- cis : watch
+cc <<- cis : created
 activate cc
 cc -> job : create
+note right of job
+Scans the pod
+container image.
+end note
 deactivate cc
 activate job
 
 |||
 
-jc <<- job: watch
-deactivate job
+jc <<- job: finished
 activate jc
 jc -> cis : update status
 deactivate jc
+destroy job
 
 @enduml
