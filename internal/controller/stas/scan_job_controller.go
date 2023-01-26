@@ -201,7 +201,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	if err != nil {
 		switch {
 		case staserrors.IsJobPodNotFound(err), staserrors.IsScanJobContainerWaiting(err):
-			logf.FromContext(ctx).V(-3).Info("Failed to get job logs.", "error", err)
+			logf.FromContext(ctx).V(-3).Error(err, "While getting logs")
 			return r.reconcileFailedJob(ctx, job.Name, strings.NewReader(err.Error()), cis)
 		default:
 			return err
