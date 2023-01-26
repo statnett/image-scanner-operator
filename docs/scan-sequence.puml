@@ -16,6 +16,7 @@ wc <<- pod : watch
 activate wc
 wc -> cis : create
 deactivate wc
+activate cis
 
 cc <<- cis : watch
 activate cc
