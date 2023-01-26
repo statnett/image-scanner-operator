@@ -219,7 +219,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 		logf.FromContext(ctx).V(-3).Info("Patching CIS status", "status", "Succeeded")
 		return r.reconcileCompleteJob(ctx, job.Name, logs, cis)
 	} else {
-		logf.FromContext(ctx).V(-3).Info("Patching CIS status with failed job status")
+		logf.FromContext(ctx).V(-3).Info("Patching CIS status", "status", "Failed")
 		return r.reconcileFailedJob(ctx, job.Name, logs, cis)
 	}
 }
