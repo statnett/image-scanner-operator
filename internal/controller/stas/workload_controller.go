@@ -24,10 +24,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/hash"
-	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
 const (
@@ -42,7 +42,7 @@ var noEventsEventHandler = handler.EnqueueRequestsFromMapFunc(func(o client.Obje
 type PodReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
-	operator.Config
+	config.Config
 	WorkloadKinds []schema.GroupVersionKind
 }
 

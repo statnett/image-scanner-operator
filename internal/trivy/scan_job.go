@@ -12,8 +12,8 @@ import (
 	"k8s.io/utils/pointer"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/hash"
-	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
 const (
@@ -48,14 +48,14 @@ type ImageScanJobBuilder interface {
 	ForCIS(cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error)
 }
 
-func NewImageScanJob(config operator.Config) ImageScanJobBuilder {
+func NewImageScanJob(cfg config.Config) ImageScanJobBuilder {
 	return &filesystemScanJobBuilder{
-		Config: config,
+		Config: cfg,
 	}
 }
 
 type filesystemScanJobBuilder struct {
-	operator.Config
+	config.Config
 	preferredNodeNames []string
 }
 

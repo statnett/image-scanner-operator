@@ -26,8 +26,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/pod"
-	"github.com/statnett/image-scanner-operator/pkg/operator"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -100,7 +100,7 @@ var _ = BeforeSuite(func() {
 
 	k8sScheme = k8sManager.GetScheme()
 
-	config := operator.Config{
+	config := config.Config{
 		ScanJobNamespace:      scanJobNamespace,
 		ScanJobServiceAccount: "image-scanner",
 		TrivyImage:            "aquasecurity/trivy",
