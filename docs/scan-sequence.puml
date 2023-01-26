@@ -1,5 +1,5 @@
 @startuml
-autonumber
+autonumber 1.1
 
 actor       User       as user
 participant "Workload controller" as wc
@@ -8,6 +8,7 @@ participant "CIS controller" as cc
 entity      CIS      as cis
 participant "Scan Job controller" as jc
 entity      Job      as job
+actor "K8s Garbage Collector" as gc
 
 user -> pod : create
 activate pod 
@@ -22,7 +23,7 @@ cc <<- cis : created
 activate cc
 cc -> job : create
 note right of job
-Scans the pod
+Job scans the pod
 container image.
 end note
 deactivate cc
@@ -34,6 +35,17 @@ jc <<- job: finished
 activate jc
 jc -> cis : update status
 deactivate jc
+
+|||
+
 destroy job
 
+|||
+
+autonumber 2.1
+user -> pod : delete
+gc <<- pod: deleted
+destroy pod
+gc -> cis : delete
+destroy cis
 @enduml
