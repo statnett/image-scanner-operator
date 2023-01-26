@@ -45,7 +45,7 @@ func init() {
 	//+kubebuilder:scaffold:scheme
 	utilruntime.Must(stasv1alpha1.AddToScheme(scheme))
 
-	ctrl.SetLogger(ctrlzap.New())
+	ctrl.SetLogger(ctrlzap.New(ctrlzap.ConsoleEncoder()))
 }
 
 type Operator struct{}
