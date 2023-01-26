@@ -98,7 +98,7 @@ jobs:
           KUBEBUILDER_ATTACH_CONTROL_PLANE_OUTPUT: true
   e2e-test:
     needs: verify-generated
-    runs-on: 
+    runs-on:
       labels: ubuntu-latest-4-cores
     env:
       IMG: registry.dummy-domain.com/image-scanner/controller:dev
