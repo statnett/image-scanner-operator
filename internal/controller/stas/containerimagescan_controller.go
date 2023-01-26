@@ -18,17 +18,17 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
-	"github.com/statnett/image-scanner-operator/pkg/operator"
 )
 
 // ContainerImageScanReconciler reconciles a ContainerImageScan object.
 type ContainerImageScanReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
-	operator.Config
+	config.Config
 }
 
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans,verbs=get;list;watch;create;update;patch;delete
