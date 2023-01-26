@@ -62,17 +62,18 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	bldr := ctrl.NewControllerManagedBy(mgr).
+	var predicates []predicate.Predicate
+	if r.ScanNamespaceExcludeRegexp != nil {
+		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
+	}
+	return ctrl.NewControllerManagedBy(mgr).
 		For(&stasv1alpha1.ContainerImageScan{},
 			builder.WithPredicates(
 				predicate.GenerationChangedPredicate{},
 				ignoreDeletionPredicate(),
-			))
-	if r.ScanNamespaceExcludeRegexp != nil {
-		bldr.WithEventFilter(predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
-	}
-
-	return bldr.Complete(r)
+			)).
+		WithEventFilter(predicate.And(predicates...)).
+		Complete(r)
 }
 
 func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) error {
