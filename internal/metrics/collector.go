@@ -12,7 +12,7 @@ import (
 	k8smetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	"github.com/statnett/image-scanner-operator/pkg/operator"
+	"github.com/statnett/image-scanner-operator/internal/config"
 )
 
 const (
@@ -42,7 +42,7 @@ var (
 
 type ImageMetricsCollector struct {
 	client.Client
-	operator.Config
+	config.Config
 
 	cisLabels       cisLabels
 	successDesc     *prometheus.Desc
