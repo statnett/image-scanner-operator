@@ -227,7 +227,7 @@ Using a simple `Pod`, with a single container, as an example:
 2. Create a scan `Job` from immutable image reference in the `ContainerImageScan` spec.
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
    and update the `ContainerImageScan` status.
-
+4. When the `Pod` is deleted, the `ContainerImageScan` is garbage collected.
 ![Image scanner component diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/operator-component.puml))
 ![Scan image sequence diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/scan-sequence.puml)
 
