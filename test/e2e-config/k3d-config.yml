@@ -3,4 +3,5 @@ apiVersion: k3d.io/v1alpha4
 kind: Simple
 metadata:
   name: image-scanner
+# renovate-image: versioning=regex:v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(?<compatibility>k3s)(?<build>\d+)(\s|$)
 image: docker.io/rancher/k3s:v1.26.0-k3s2
