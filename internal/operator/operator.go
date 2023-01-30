@@ -2,6 +2,7 @@ package operator
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -30,10 +31,6 @@ import (
 	"github.com/statnett/image-scanner-operator/internal/resources"
 )
 
-const (
-	ErrCreateCtrl = "unable to create controller"
-)
-
 var (
 	scheme   = runtime.NewScheme()
 	setupLog = ctrl.Log.WithName("setup")
@@ -50,7 +47,7 @@ func init() {
 
 type Operator struct{}
 
-func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) {
+func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) error {
 	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.Bool("leader-elect", false,
@@ -74,8 +71,7 @@ func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) {
 	pfs.AddGoFlagSet(fs)
 
 	if err := viper.BindPFlags(pfs); err != nil {
-		setupLog.Error(err, "unable to bind command line flags")
-		os.Exit(1)
+		return fmt.Errorf("unable to bind command line flags: %w", err)
 	}
 
 	viper.AutomaticEnv()
@@ -88,19 +84,21 @@ func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) {
 	}
 
 	if err := viper.Unmarshal(cfg); err != nil {
-		setupLog.Error(err, "unable to decode config into struct")
-		os.Exit(1)
+		return fmt.Errorf("unable to decode config into struct: %w", err)
 	}
+
+	return nil
 }
 
-func (o Operator) ValidateConfig(cfg config.Config) {
+func (o Operator) ValidateConfig(cfg config.Config) error {
 	if cfg.ScanJobNamespace == "" {
-		setupLog.V(0).Info("required flag/env not set", "flag", "scan-job-namespace", "env", "SCAN_JOB_NAMESPACE")
-		os.Exit(1)
+		return fmt.Errorf("required flag (%q) or env (%q) not set", "scan-job-namespace", "SCAN_JOB_NAMESPACE")
 	}
+
+	return nil
 }
 
-func (o Operator) Start(cfg config.Config) {
+func (o Operator) Start(cfg config.Config) error {
 	logger := zap.New(zap.UseFlagOptions(&cfg.Zap))
 	ctrl.SetLogger(logger)
 	klog.SetLogger(logger)
@@ -126,21 +124,18 @@ func (o Operator) Start(cfg config.Config) {
 
 	mgr, err := ctrl.NewManager(kubeConfig, options)
 	if err != nil {
-		setupLog.Error(err, "unable to start manager")
-		os.Exit(1)
+		return fmt.Errorf("unable to start manager: %w", err)
 	}
 
 	if err = (&stas.Indexer{}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to setup indexer")
-		os.Exit(1)
+		return fmt.Errorf("unable to setup indexer: %w", err)
 	}
 
 	mapper := &resources.ResourceKindMapper{RestMapper: mgr.GetRESTMapper()}
 
 	kinds, err := mapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
 	if err != nil {
-		setupLog.Error(err, "unable to map resources to kinds")
-		os.Exit(1)
+		return fmt.Errorf("unable to map resources to kinds: %w", err)
 	}
 
 	if err = (&stas.PodReconciler{
@@ -149,14 +144,12 @@ func (o Operator) Start(cfg config.Config) {
 		Config:        cfg,
 		WorkloadKinds: kinds,
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, ErrCreateCtrl, "controller", "Pod")
-		os.Exit(1)
+		return fmt.Errorf("unable to create %s controller: %w", "Pod", err)
 	}
 
 	kubeClientset, err := kubernetes.NewForConfig(kubeConfig)
 	if err != nil {
-		setupLog.Error(err, "unable to create Kube ClientSet")
-		os.Exit(1)
+		return fmt.Errorf("unable to create Kube ClientSet: %w", err)
 	}
 
 	if err = (&stas.ScanJobReconciler{
@@ -165,8 +158,7 @@ func (o Operator) Start(cfg config.Config) {
 		Config:     cfg,
 		LogsReader: pod.NewLogsReader(kubeClientset),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, ErrCreateCtrl, "controller", "Job")
-		os.Exit(1)
+		return fmt.Errorf("unable to create %s controller: %w", "Job", err)
 	}
 
 	if err = (&stas.ContainerImageScanReconciler{
@@ -174,8 +166,7 @@ func (o Operator) Start(cfg config.Config) {
 		Scheme: mgr.GetScheme(),
 		Config: cfg,
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, ErrCreateCtrl, "controller", "ContainerImageScan")
-		os.Exit(1)
+		return fmt.Errorf("unable to create %s controller: %w", "ContainerImageScan", err)
 	}
 
 	//+kubebuilder:scaffold:builder
@@ -184,33 +175,30 @@ func (o Operator) Start(cfg config.Config) {
 	if enableProfiling {
 		err = mgr.AddMetricsExtraHandler("/debug/pprof/", http.HandlerFunc(pprof.Index))
 		if err != nil {
-			setupLog.Error(err, "unable to attach pprof to webserver")
-			os.Exit(1)
+			return fmt.Errorf("unable to attach pprof to webserver: %w", err)
 		}
 	}
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
-		setupLog.Error(err, "unable to set up health check")
-		os.Exit(1)
+		return fmt.Errorf("unable to set up health check: %w", err)
 	}
 
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
-		setupLog.Error(err, "unable to set up ready check")
-		os.Exit(1)
+		return fmt.Errorf("unable to set up ready check: %w", err)
 	}
 
 	if err = (&metrics.ImageMetricsCollector{
 		Client: mgr.GetClient(),
 		Config: cfg,
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to set up image metrics collector")
-		os.Exit(1)
+		return fmt.Errorf("unable to set up image metrics collector: %w", err)
 	}
 
 	setupLog.Info("starting manager")
 
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
-		setupLog.Error(err, "problem running manager")
-		os.Exit(1)
+		return fmt.Errorf("problem running manager: %w", err)
 	}
+
+	return nil
 }
