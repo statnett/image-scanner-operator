@@ -32,8 +32,7 @@ import (
 )
 
 var (
-	scheme   = runtime.NewScheme()
-	setupLog = ctrl.Log.WithName("setup")
+	scheme = runtime.NewScheme()
 )
 
 func init() {
@@ -194,7 +193,7 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to set up image metrics collector: %w", err)
 	}
 
-	setupLog.Info("starting manager")
+	ctrl.Log.Info("starting manager")
 
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		return fmt.Errorf("problem running manager: %w", err)
