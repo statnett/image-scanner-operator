@@ -18,6 +18,7 @@ func main() {
 	if err := opr.BindFlags(&cfg, flag.CommandLine); err != nil {
 		log.Fatal(err)
 	}
+
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 
