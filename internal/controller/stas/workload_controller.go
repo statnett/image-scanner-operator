@@ -68,6 +68,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	if r.ScanNamespaceExcludeRegexp != nil {
 		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
 	}
+
 	if r.ScanNamespaceIncludeRegexp != nil {
 		predicates = append(predicates, namespaceMatchRegexp(r.ScanNamespaceIncludeRegexp))
 	}
