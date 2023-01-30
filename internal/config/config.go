@@ -16,6 +16,7 @@ type Config struct {
 	ScanJobServiceAccount      string         `mapstructure:"scan-job-service-account"`
 	ScanNamespaces             []string       `mapstructure:"namespaces"`
 	ScanNamespaceExcludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
+	ScanNamespaceIncludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
 	ScanWorkloadResources      []string       `mapstructure:"scan-workload-resources"`
 	TrivyImage                 string         `mapstructure:"trivy-image"`
 	Zap                        zap.Options    `mapstructure:"-"`

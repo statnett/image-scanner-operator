@@ -69,6 +69,10 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
 	}
 
+	if r.ScanNamespaceIncludeRegexp != nil {
+		predicates = append(predicates, namespaceMatchRegexp(r.ScanNamespaceIncludeRegexp))
+	}
+
 	bldr := ctrl.NewControllerManagedBy(mgr).
 		For(&corev1.Pod{},
 			builder.WithPredicates(

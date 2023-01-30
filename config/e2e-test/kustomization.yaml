@@ -3,6 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../default
+configMapGenerator:
+  - name: config
+    behavior: merge
+    literals:
+      # Only include kuttl namespace pattern to reduce resource waste running e2e tests
+      - SCAN_NAMESPACE_INCLUDE_REGEXP=^kuttl-.*
 patches:
   # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
   # Disable trivy server sessionAffinity; not really needed when running a single replica

@@ -67,6 +67,10 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
 	}
 
+	if r.ScanNamespaceIncludeRegexp != nil {
+		predicates = append(predicates, namespaceMatchRegexp(r.ScanNamespaceIncludeRegexp))
+	}
+
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&stasv1alpha1.ContainerImageScan{},
 			builder.WithPredicates(

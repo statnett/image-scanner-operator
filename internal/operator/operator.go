@@ -61,6 +61,7 @@ func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
 	fs.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
 	fs.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
 	fs.String("scan-namespace-exclude-regexp", "^(kube-|openshift-).*", "regexp for namespace to exclude from scanning")
+	fs.String("scan-namespace-include-regexp", "", "regexp for namespace to include for scanning")
 	fs.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	fs.Bool("help", false, "print out usage and a summary of options")
 
