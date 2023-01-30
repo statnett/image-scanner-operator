@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"github.com/statnett/controller-runtime-viper/pkg/zap"
@@ -46,25 +47,24 @@ func init() {
 
 type Operator struct{}
 
-func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) error {
-	flag.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.Bool("leader-elect", false,
+func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
+	fs.String("metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
+	fs.String("health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+	fs.Bool("leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
-	flag.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
-	flag.String("namespaces", "", "comma-separated list of namespaces to watch")
-	flag.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
-	flag.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
-	flag.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
-	flag.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
-	flag.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
-	flag.String("trivy-image", "", "The image used for obtaining the trivy binary.")
-	flag.Bool("help", false, "print out usage and a summary of options")
+	fs.Bool("enable-profiling", false, "Enable profiling (pprof); available on metrics endpoint.")
+	fs.String("namespaces", "", "comma-separated list of namespaces to watch")
+	fs.String("cis-metrics-labels", "", "comma-separated list of labels in CIS resources to create metrics labels for")
+	fs.Duration("scan-interval", 12*time.Hour, "The minimum time between fetch scan reports from image scanner")
+	fs.String("scan-job-namespace", "", "The namespace to schedule scan jobs.")
+	fs.String("scan-job-service-account", "default", "The service account used to run scan jobs.")
+	fs.String("scan-workload-resources", "", "comma-separated list of workload resources to scan")
+	fs.String("scan-namespace-exclude-regexp", "^(kube-|openshift-).*", "regexp for namespace to exclude from scanning")
+	fs.String("trivy-image", "", "The image used for obtaining the trivy binary.")
+	fs.Bool("help", false, "print out usage and a summary of options")
 
 	cfg.Zap.BindFlags(fs)
-	pflag.CommandLine.AddGoFlagSet(fs)
-	pflag.Parse()
 
 	pfs := &pflag.FlagSet{}
 	pfs.AddGoFlagSet(fs)
@@ -76,13 +76,22 @@ func (o Operator) BindConfig(cfg *config.Config, fs *flag.FlagSet) error {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 
+	return nil
+}
+
+func (o Operator) UnmarshalConfig(cfg *config.Config) error {
 	helpRequested := viper.GetBool("help")
 	if helpRequested {
 		pflag.Usage()
 		os.Exit(0)
 	}
 
-	if err := viper.Unmarshal(cfg); err != nil {
+	hook := mapstructure.ComposeDecodeHookFunc(
+		mapstructure.StringToTimeDurationHookFunc(),
+		mapstructure.StringToSliceHookFunc(","),
+		stringToRegexpHookFunc(),
+	)
+	if err := viper.Unmarshal(cfg, viper.DecodeHook(hook)); err != nil {
 		return fmt.Errorf("unable to decode config into struct: %w", err)
 	}
 

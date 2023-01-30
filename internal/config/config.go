@@ -1,6 +1,7 @@
 package config
 
 import (
+	"regexp"
 	"time"
 
 	"github.com/statnett/controller-runtime-viper/pkg/zap"
@@ -9,14 +10,15 @@ import (
 )
 
 type Config struct {
-	MetricsLabels         []string      `mapstructure:"cis-metrics-labels"`
-	ScanInterval          time.Duration `mapstructure:"scan-interval"`
-	ScanJobNamespace      string        `mapstructure:"scan-job-namespace"`
-	ScanJobServiceAccount string        `mapstructure:"scan-job-service-account"`
-	ScanNamespaces        []string      `mapstructure:"namespaces"`
-	ScanWorkloadResources []string      `mapstructure:"scan-workload-resources"`
-	TrivyImage            string        `mapstructure:"trivy-image"`
-	Zap                   zap.Options   `mapstructure:"-"`
+	MetricsLabels              []string       `mapstructure:"cis-metrics-labels"`
+	ScanInterval               time.Duration  `mapstructure:"scan-interval"`
+	ScanJobNamespace           string         `mapstructure:"scan-job-namespace"`
+	ScanJobServiceAccount      string         `mapstructure:"scan-job-service-account"`
+	ScanNamespaces             []string       `mapstructure:"namespaces"`
+	ScanNamespaceExcludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
+	ScanWorkloadResources      []string       `mapstructure:"scan-workload-resources"`
+	TrivyImage                 string         `mapstructure:"trivy-image"`
+	Zap                        zap.Options    `mapstructure:"-"`
 }
 
 func (c Config) TimeUntilNextScan(cis *stasv1alpha1.ContainerImageScan) time.Duration {
