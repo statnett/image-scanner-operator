@@ -75,9 +75,11 @@ func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
 
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	return nil
 }
 
-func (o Operator) UnmarshalConfig(cfg *config.Config) {
+func (o Operator) UnmarshalConfig(cfg *config.Config) error {
 	helpRequested := viper.GetBool("help")
 	if helpRequested {
 		pflag.Usage()

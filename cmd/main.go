@@ -15,14 +15,13 @@ func main() {
 	cfg.Zap.Development = true
 
 	opr := operator.Operator{}
-	opr.BindFlags(&cfg, flag.CommandLine)
+	if err := opr.BindFlags(&cfg, flag.CommandLine); err != nil {
+		log.Fatal(err)
+	}
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 
-	opr.UnmarshalConfig(&cfg)
-	opr.ValidateConfig(cfg)
-	opr.Start(cfg)
-	if err := opr.BindConfig(&cfg, flag.CommandLine); err != nil {
+	if err := opr.UnmarshalConfig(&cfg); err != nil {
 		log.Fatal(err)
 	}
 
