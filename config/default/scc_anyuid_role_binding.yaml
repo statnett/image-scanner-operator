@@ -1,0 +1,16 @@
+---
+# This role binding is required on Openshift installs.
+# Consider dedicated base - even if this does not harm on other K8s distros.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: scc-anyuid
+  namespace: image-scanner-jobs
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:anyuid
+subjects:
+  - kind: ServiceAccount
+    name: image-scanner
+    namespace: image-scanner-jobs
