@@ -5,7 +5,7 @@ resources:
   - ../image-scanner-jobs
   - ../operator
   - ../trivy-server
-  - anyuid_role_binding.yaml
+  - scc_anyuid_role_binding.yaml
 replacements:
   # This replacement ensures that we run the same trivy image in client and server (obtained from server)
   - source:
