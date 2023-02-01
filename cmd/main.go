@@ -20,6 +20,7 @@ func main() {
 	opr := operator.Operator{}
 
 	opts.BindFlags(flag.CommandLine)
+
 	if err := opr.BindFlags(&cfg, flag.CommandLine); err != nil {
 		log.Fatal(err)
 	}
