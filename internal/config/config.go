@@ -4,8 +4,6 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/statnett/controller-runtime-viper/pkg/zap"
-
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
@@ -19,7 +17,6 @@ type Config struct {
 	ScanNamespaceIncludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
 	ScanWorkloadResources      []string       `mapstructure:"scan-workload-resources"`
 	TrivyImage                 string         `mapstructure:"trivy-image"`
-	Zap                        zap.Options    `mapstructure:"-"`
 }
 
 func (c Config) TimeUntilNextScan(cis *stasv1alpha1.ContainerImageScan) time.Duration {
