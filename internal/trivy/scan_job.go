@@ -197,7 +197,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 			Prefix: "TRIVY_",
 			ConfigMapRef: &corev1.ConfigMapEnvSource{
 				LocalObjectReference: corev1.LocalObjectReference{
-					Name: "trivy",
+					Name: "trivy-job",
 				},
 			},
 		},

@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../default
 configMapGenerator:
-  - name: config
+  - name: image-scanner
     behavior: merge
     literals:
       # Only include kuttl namespace pattern to reduce resource waste running e2e tests

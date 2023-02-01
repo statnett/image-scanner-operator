@@ -16,7 +16,7 @@ configMapGenerator:
       - ZAP_ENCODER=json
       - ZAP_LOG_LEVEL=info
       - ZAP_TIME_ENCODING=iso8601
-    name: config
+    name: image-scanner
 images:
   - name: controller
     newName: registry.dummy-domain.com/image-scanner/controller
