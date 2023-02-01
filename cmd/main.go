@@ -16,11 +16,9 @@ import (
 func main() {
 	cfg := config.Config{}
 	opts := zap.Options{Development: true}
-
-	opr := operator.Operator{}
-
 	opts.BindFlags(flag.CommandLine)
 
+	opr := operator.Operator{}
 	if err := opr.BindFlags(&cfg, flag.CommandLine); err != nil {
 		log.Fatal(err)
 	}
