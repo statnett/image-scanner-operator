@@ -13,7 +13,7 @@ spec:
             - --leader-elect
           envFrom:
             - configMapRef:
-                name: config
+                name: image-scanner
           ports:
             - containerPort: 8080
               protocol: TCP
