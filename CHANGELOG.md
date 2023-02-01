@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.2.0](https://github.com/statnett/image-scanner-operator/compare/v0.1.1...v0.2.0) (2023-02-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* move code out of main package ([#141](https://github.com/statnett/image-scanner-operator/issues/141))
+* **admin:** kustomizeable configmap for scan job default configuration ([#110](https://github.com/statnett/image-scanner-operator/issues/110))
+
+### Features
+
+* add Openshift anyuid SCC role binding ([#160](https://github.com/statnett/image-scanner-operator/issues/160)) ([03baa7d](https://github.com/statnett/image-scanner-operator/commit/03baa7dc05080e2ea1cdf0467d3b047d40986328))
+* **admin:** kustomizeable configmap for scan job default configuration ([#110](https://github.com/statnett/image-scanner-operator/issues/110)) ([d51e2a9](https://github.com/statnett/image-scanner-operator/commit/d51e2a977496dbbfd7ae22c3283ac3957bbe94d4))
+* **cli:** make regexp for excluded namespace configurable ([#79](https://github.com/statnett/image-scanner-operator/issues/79)) ([9a50838](https://github.com/statnett/image-scanner-operator/commit/9a50838dca99c5dcc59b36f1e4da82306b0cf13b))
+* **cli:** make regexp for included namespace configurable ([#157](https://github.com/statnett/image-scanner-operator/issues/157)) ([4b145ca](https://github.com/statnett/image-scanner-operator/commit/4b145caee2d1efa7c456d2216c440bc041e69c09))
+
+
+### Bug Fixes
+
+* init temporary logger to print errors during startup ([#143](https://github.com/statnett/image-scanner-operator/issues/143)) ([d9a6134](https://github.com/statnett/image-scanner-operator/commit/d9a613438f17936366a8b21b24d26c70cb6dfc6c))
+
+
+### refactor
+
+* move code out of main package ([#141](https://github.com/statnett/image-scanner-operator/issues/141)) ([b495881](https://github.com/statnett/image-scanner-operator/commit/b4958815c5260e1971147d319a0dc680626ba13b))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.7.0 to 2.7.1 ([#153](https://github.com/statnett/image-scanner-operator/issues/153)) ([73f3e81](https://github.com/statnett/image-scanner-operator/commit/73f3e8111e5d8af71d6091f8610ff36e6c675429))
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.7.1 to 2.8.0 ([#159](https://github.com/statnett/image-scanner-operator/issues/159)) ([9159cfc](https://github.com/statnett/image-scanner-operator/commit/9159cfc11170615466820fbafce304553f733172))
+* **deps:** bump github.com/onsi/gomega from 1.25.0 to 1.26.0 ([#122](https://github.com/statnett/image-scanner-operator/issues/122)) ([bcfbd53](https://github.com/statnett/image-scanner-operator/commit/bcfbd53171599a0f60d697c26bcbc26cd60d5d90))
+* **deps:** bump github.com/spf13/viper from 1.14.0 to 1.15.0 ([#107](https://github.com/statnett/image-scanner-operator/issues/107)) ([7d541cb](https://github.com/statnett/image-scanner-operator/commit/7d541cb2d63b3a1c233ad9a767b8cf3e5d625753))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.1 to 0.1.2 ([#161](https://github.com/statnett/image-scanner-operator/issues/161)) ([2c7ce33](https://github.com/statnett/image-scanner-operator/commit/2c7ce33ceb06807b54c7a9d4afbef2c5eb73d781))
+* **deps:** bump k8s.io/api from 0.26.0 to 0.26.1 ([#104](https://github.com/statnett/image-scanner-operator/issues/104)) ([1d17f1e](https://github.com/statnett/image-scanner-operator/commit/1d17f1efe5bb49d15bb33eb9bb94f31bd3accb4d))
+* **deps:** bump k8s.io/apimachinery from 0.26.0 to 0.26.1 ([#105](https://github.com/statnett/image-scanner-operator/issues/105)) ([74ac40e](https://github.com/statnett/image-scanner-operator/commit/74ac40e3b992d7d0b2c8999eb3a00d72bba520c0))
+* **deps:** bump k8s.io/client-go from 0.26.0 to 0.26.1 ([#106](https://github.com/statnett/image-scanner-operator/issues/106)) ([aca2d41](https://github.com/statnett/image-scanner-operator/commit/aca2d411809bc068ed4a7abaf635cf153d07beca))
+* **deps:** bump k8s.io/klog/v2 from 2.80.1 to 2.90.0 ([#123](https://github.com/statnett/image-scanner-operator/issues/123)) ([42c7eca](https://github.com/statnett/image-scanner-operator/commit/42c7eca1de1b35b0d54fd78b3898f24bd1d03320))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.14.1 to 0.14.2 ([#152](https://github.com/statnett/image-scanner-operator/issues/152)) ([e3e0a51](https://github.com/statnett/image-scanner-operator/commit/e3e0a51573e70752e8fbd0953fe8b6e5898b4bab))
+
 ## [0.1.1](https://github.com/statnett/image-scanner-operator/compare/v0.1.0...v0.1.1) (2023-01-18)
 
 
