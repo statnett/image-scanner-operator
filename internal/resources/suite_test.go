@@ -1,7 +1,6 @@
 package resources
 
 import (
-	"context"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -9,7 +8,6 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
 	"k8s.io/client-go/kubernetes/scheme"
-	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -20,7 +18,6 @@ import (
 var (
 	k8sClient client.Client
 	testEnv   *envtest.Environment
-	cancel    context.CancelFunc
 )
 
 func TestAPIs(t *testing.T) {
@@ -29,8 +26,6 @@ func TestAPIs(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	_, cancel = context.WithCancel(context.TODO())
-
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{}
 	restCfg, err := testEnv.Start()
@@ -43,15 +38,9 @@ var _ = BeforeSuite(func() {
 	k8sClient, err = client.New(restCfg, client.Options{Scheme: scheme.Scheme})
 	Expect(err).NotTo(HaveOccurred())
 	komega.SetClient(k8sClient)
-
-	go func() {
-		defer GinkgoRecover()
-		_, cancel = context.WithCancel(ctrl.SetupSignalHandler())
-	}()
 })
 
 var _ = AfterSuite(func() {
-	cancel()
 	By("tearing down the test environment")
 	Expect(testEnv.Stop()).To(Succeed())
 })
