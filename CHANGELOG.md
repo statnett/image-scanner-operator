@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/statnett/image-scanner-operator/compare/v0.2.0...v0.2.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* do not log DEBUG lines by default ([#165](https://github.com/statnett/image-scanner-operator/issues/165)) ([5ab234a](https://github.com/statnett/image-scanner-operator/commit/5ab234a57fa0e3f1ad6948133b6c8f8aea020ea4))
+* make logger configurable again ([#166](https://github.com/statnett/image-scanner-operator/issues/166)) ([45712ce](https://github.com/statnett/image-scanner-operator/commit/45712cee7803039e2095e6f15e4934c763d5dca8))
+
 ## [0.2.0](https://github.com/statnett/image-scanner-operator/compare/v0.1.1...v0.2.0) (2023-02-01)
 
 
