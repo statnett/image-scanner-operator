@@ -12,12 +12,10 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"github.com/statnett/controller-runtime-viper/pkg/zap"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
-	"k8s.io/klog/v2"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
@@ -65,8 +63,6 @@ func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
 	fs.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	fs.Bool("help", false, "print out usage and a summary of options")
 
-	cfg.Zap.BindFlags(fs)
-
 	pfs := &pflag.FlagSet{}
 	pfs.AddGoFlagSet(fs)
 
@@ -108,10 +104,6 @@ func (o Operator) ValidateConfig(cfg config.Config) error {
 }
 
 func (o Operator) Start(cfg config.Config) error {
-	logger := zap.New(zap.UseFlagOptions(&cfg.Zap))
-	ctrl.SetLogger(logger)
-	klog.SetLogger(logger)
-
 	metricsAddr := viper.GetString("metrics-bind-address")
 	probeAddr := viper.GetString("health-probe-bind-address")
 	enableLeaderElection := viper.GetBool("leader-elect")

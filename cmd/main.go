@@ -5,6 +5,9 @@ import (
 	"log"
 
 	"github.com/spf13/pflag"
+	"github.com/statnett/controller-runtime-viper/pkg/zap"
+	"k8s.io/klog/v2"
+	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/operator"
@@ -12,7 +15,8 @@ import (
 
 func main() {
 	cfg := config.Config{}
-	cfg.Zap.Development = true
+	opts := zap.Options{Development: true}
+	opts.BindFlags(flag.CommandLine)
 
 	opr := operator.Operator{}
 	if err := opr.BindFlags(&cfg, flag.CommandLine); err != nil {
@@ -21,6 +25,10 @@ func main() {
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
+
+	logger := zap.New(zap.UseFlagOptions(&opts))
+	ctrl.SetLogger(logger)
+	klog.SetLogger(logger)
 
 	if err := opr.UnmarshalConfig(&cfg); err != nil {
 		log.Fatal(err)
