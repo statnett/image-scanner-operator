@@ -9,4 +9,4 @@ testDirs:
 timeout: 240
 reportFormat: xml
 # FIXME: Reduced number of test in parallel to mend e2e test issues on GitHub runners
-parallel: 2
+parallel: 1
