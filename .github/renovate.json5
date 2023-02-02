@@ -17,7 +17,7 @@
     {
       "fileMatch": [".+\\.ya?ml$"],
       "matchStrings": [
-        "# renovate-image:( versioning=(?<versioning>.*?))?\\n\\s*(.+?_IMAGE|image): (?<depName>.+?):(?<currentValue>.+?)(\\s|$)",
+        "# renovate-image:( versioning=(?<versioning>.*?))?\\n\\s*(.+?_IMAGE|image)[=:]\\s*(?<depName>.+?):(?<currentValue>.+?)(\\s|$)",
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
