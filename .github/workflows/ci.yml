@@ -101,6 +101,7 @@ jobs:
       IMG: registry.dummy-domain.com/image-scanner/controller:latest
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
+      K3D_VERSION: v5.4.7
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@18bf8ad2ca49c14cbb28b91346d626ccfb00c518 # v2.1.0
@@ -121,6 +122,7 @@ jobs:
       - uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79 # v2.4.0
         with:
           cluster-name: ${{ env.K3D_CLUSTER }}
+          k3d-version: ${{ env.K3D_VERSION }}
           args: >-
             --config=test/e2e-config/k3d-config.yml
             --volume=/tmp/pod-logs:/var/log/pods
