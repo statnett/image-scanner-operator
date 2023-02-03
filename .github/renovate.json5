@@ -13,6 +13,14 @@
   "github-actions": {
     "enabled": false,
   },
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "ghcr.io/aquasecurity/trivy",
+      ],
+      "semanticCommitType": "build",
+    },
+  ],
   "regexManagers": [
     {
       "fileMatch": [".+\\.ya?ml$"],
