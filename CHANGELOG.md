@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.2](https://github.com/statnett/image-scanner-operator/compare/v0.2.1...v0.2.2) (2023-02-03)
+
+
+### Bug Fixes
+
+* don't override user logging configuration ([#178](https://github.com/statnett/image-scanner-operator/issues/178)) ([999ced3](https://github.com/statnett/image-scanner-operator/commit/999ced36d76bd3be2a2152f201cfc4b6690f04dc))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.2 to 0.1.3 ([#179](https://github.com/statnett/image-scanner-operator/issues/179)) ([e9ff6bf](https://github.com/statnett/image-scanner-operator/commit/e9ff6bf68dad9455fe3488283e44c865352e5497))
+
 ## [0.2.1](https://github.com/statnett/image-scanner-operator/compare/v0.2.0...v0.2.1) (2023-02-02)
 
 
