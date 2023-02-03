@@ -61,6 +61,10 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Run `make test` to run both unit and integrations (envtest) tests. [envtest][envtest] runs etcd and apiserver
    locally without the need for a real Kubernetes cluster. It helps to test the controller and the reconciliation logic.
+   Note: Requires `ginkgo` binary to run the tests:
+   ```shell
+   go install -v github.com/onsi/ginkgo/v2/ginkgo@v2.8.0
+   ```
 
 1. Optionally, run the e2e-tests. The e2e tests assumes that you have a working kubernetes cluster (e.g. kind or k3s cluster)
    and `KUBECONFIG` environment variable is pointing to that cluster configuration file. For example:
