@@ -101,6 +101,7 @@ jobs:
       IMG: registry.dummy-domain.com/image-scanner/controller:latest
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
+      # renovate: datasource=github-tags depName=k3d-io/k3d
       K3D_VERSION: v5.4.7
     steps:
       - name: Harden Runner
@@ -135,6 +136,7 @@ jobs:
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
           repo: kudobuilder/kuttl
+          # renovate: datasource=github-tags depName=kudobuilder/kuttl
           tag: v0.15.0
           cache: enable
       - run: |
