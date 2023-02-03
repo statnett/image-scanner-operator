@@ -20,7 +20,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
-	ctrlzap "sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -39,8 +38,6 @@ func init() {
 
 	//+kubebuilder:scaffold:scheme
 	utilruntime.Must(stasv1alpha1.AddToScheme(scheme))
-
-	ctrl.SetLogger(ctrlzap.New(ctrlzap.ConsoleEncoder()))
 }
 
 type Operator struct{}
