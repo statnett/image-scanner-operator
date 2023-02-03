@@ -23,6 +23,13 @@
   ],
   "regexManagers": [
     {
+      "fileMatch": [".*"],
+      "matchStrings": [
+        "renovate:\\s+datasource=(?<datasource>\\S+?) depName=(?<depName>\\S+?)( versioning=(?<versioning>\\S+?))?( registryUrl=(?<registryUrl>\\S+?))?\\s+(\\S+?_)?(VERSION|version|TAG|tag)\\s*[?]?[=:]\\s*(?<currentValue>\\S+)",
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+    },
+    {
       "fileMatch": [".+\\.ya?ml$"],
       "matchStrings": [
         "# renovate-image:( versioning=(?<versioning>.*?))?\\n\\s*(.+?_IMAGE|image)[=:]\\s*(?<depName>.+?):(?<currentValue>.+?)(\\s|$)",
