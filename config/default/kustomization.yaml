@@ -15,6 +15,6 @@ replacements:
     targets:
       - select:
           kind: ConfigMap
-          name: image-scanner
+          name: image-scanner-config
         fieldPaths:
           - data.TRIVY_IMAGE

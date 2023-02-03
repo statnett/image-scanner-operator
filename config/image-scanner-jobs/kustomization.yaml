@@ -7,7 +7,7 @@ resources:
   - resource_quota.yaml
   - service_account.yaml
 configMapGenerator:
-  - name: trivy-job
+  - name: trivy-job-config
     literals:
       - OFFLINE_SCAN=true
       - SERVER=http://trivy.image-scanner.svc.cluster.local

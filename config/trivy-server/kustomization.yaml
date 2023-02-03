@@ -10,7 +10,7 @@ commonLabels:
   app.kubernetes.io/name: trivy
   app.kubernetes.io/component: server
 configMapGenerator:
-  - name: trivy-server
+  - name: trivy-server-config
     literals:
       - LISTEN=0.0.0.0:4954
       - CACHE_DIR=/home/scanner/.cache/trivy
