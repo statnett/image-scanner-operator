@@ -91,6 +91,11 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+      - name: Install ginkgo
+        run: |
+          command -v ginkgo || go install -v github.com/onsi/ginkgo/v2/ginkgo@${{ env.GINKGO_VERSION }}
+        env:
+          GINKGO_VERSION: v2.8.0
       - run: make test
         env:
           KUBEBUILDER_ATTACH_CONTROL_PLANE_OUTPUT: true
