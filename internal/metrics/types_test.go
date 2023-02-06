@@ -11,7 +11,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/config/v1alpha1"
+	"sigs.k8s.io/controller-runtime/pkg/config/v1alpha1" //nolint:staticcheck
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -87,6 +87,7 @@ func (f fakeManager) GetLogger() logr.Logger {
 	return logr.Logger{}
 }
 
+//nolint:staticcheck
 func (f fakeManager) GetControllerOptions() v1alpha1.ControllerConfigurationSpec {
 	return v1alpha1.ControllerConfigurationSpec{}
 }
