@@ -170,7 +170,7 @@ from the ConfigMap in the default Image Scanner configuration using a
 
 ```yaml
 configMapGenerator:
-  - name: config
+  - name: image-scanner-config
     behavior: merge
     literals:
       - CIS_METRICS_LABELS=app.kubernetes.io/name

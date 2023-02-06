@@ -25,7 +25,7 @@ spec:
             - server
           envFrom:
             - configMapRef:
-                name: trivy
+                name: trivy-server-config
               prefix: TRIVY_
           ports:
             - name: http

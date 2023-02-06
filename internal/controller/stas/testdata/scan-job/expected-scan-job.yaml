@@ -68,7 +68,7 @@ spec:
           envFrom:
             - prefix: TRIVY_
               configMapRef:
-                name: trivy
+                name: trivy-job-config
           image: docker.io/nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4
           imagePullPolicy: IfNotPresent
           name: scan-image
