@@ -44,8 +44,7 @@ var _ = Describe("Workload controller", func() {
 			labels := map[string]string{"name": namespacedName.Name}
 
 			workload := workloadFactory(namespacedName, labels)
-			err := k8sClient.Create(ctx, workload)
-			Expect(err).To(Succeed())
+			Expect(k8sClient.Create(ctx, workload)).To(Succeed())
 
 			createPod(ctx, workload, k8sClient.Scheme())
 			expectedImage := stasv1alpha1.Image{

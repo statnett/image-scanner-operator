@@ -100,7 +100,7 @@ var managedByImageScanner = predicate.NewPredicateFuncs(func(object client.Objec
 
 var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool {
 	job := object.(*batchv1.Job)
-	return job.Status.Succeeded > 0 || job.Status.Failed > 0
+	return job.Status.Succeeded > 0 || job.Status.Failed >= *job.Spec.BackoffLimit
 })
 
 var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Object) bool {

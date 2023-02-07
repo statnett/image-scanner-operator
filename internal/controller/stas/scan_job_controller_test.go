@@ -6,13 +6,14 @@ import (
 	"io"
 	"os"
 	"path"
+	"sort"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
 	batchv1 "k8s.io/api/batch/v1"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -38,7 +39,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful", "successful-scan-cis.yaml"), cis)).To(Succeed())
-			Expect(k8sClient.Create(ctx, cis))
+			Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 			// Wait for CIS to get reconciled
 			Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -48,9 +49,9 @@ var _ = Describe("Scan Job controller", func() {
 			// Simulate scan job complete
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful", "successful-scan-job-pod.log.json"))
-			Eventually(komega.UpdateStatus(scanJob, func() {
+			Expect(komega.UpdateStatus(scanJob, func() {
 				scanJob.Status.Succeeded = 1
-			})).Should(Succeed())
+			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -79,7 +80,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful-long", "cis.yaml"), cis)).To(Succeed())
-				Expect(k8sClient.Create(ctx, cis))
+				Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 				// Wait for CIS to get reconciled
 				Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -89,9 +90,9 @@ var _ = Describe("Scan Job controller", func() {
 				// Simulate scan job complete
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful-long", "scan-job-pod.log.json"))
-				Eventually(komega.UpdateStatus(scanJob, func() {
+				Expect(komega.UpdateStatus(scanJob, func() {
 					scanJob.Status.Succeeded = 1
-				})).Should(Succeed())
+				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -112,7 +113,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-invalid-json", "cis.yaml"), cis)).To(Succeed())
-				Expect(k8sClient.Create(ctx, cis))
+				Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 				// Wait for CIS to get reconciled
 				Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -122,9 +123,9 @@ var _ = Describe("Scan Job controller", func() {
 				// Simulate scan job complete
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-invalid-json", "scan-job-pod.log.invalid.json"))
-				Eventually(komega.UpdateStatus(scanJob, func() {
+				Expect(komega.UpdateStatus(scanJob, func() {
 					scanJob.Status.Succeeded = 1
-				})).Should(Succeed())
+				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -146,7 +147,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-failed", "failed-scan-cis.yaml"), cis)).To(Succeed())
-			Expect(k8sClient.Create(ctx, cis))
+			Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 			// Wait for CIS to get reconciled
 			Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -155,10 +156,13 @@ var _ = Describe("Scan Job controller", func() {
 
 			// Simulate scan job complete
 			scanJob := getContainerImageScanJob(cis)
-			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-failed", "failed-scan-job-pod.log"))
-			Eventually(komega.UpdateStatus(scanJob, func() {
-				scanJob.Status.Failed = 1
-			})).Should(Succeed())
+			backoffLimit := *scanJob.Spec.BackoffLimit
+			for i := int32(0); i < backoffLimit; i++ {
+				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-failed", "failed-scan-job-pod.log"))
+			}
+			Expect(komega.UpdateStatus(scanJob, func() {
+				scanJob.Status.Failed = backoffLimit
+			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -185,6 +189,29 @@ var _ = DescribeTable("Converting to vulnerability summary (severity count)",
 	Entry("When severity outside scope", []stasv1alpha1.Vulnerability{{Severity: "LOW"}}, map[string]int32{"CRITICAL": 0, "HIGH": 0, "LOW": 1}),
 )
 
+var _ = Describe("Sorting pods", func() {
+	It("Should sort by startTime DESC", func() {
+		var pods []corev1.Pod
+		for i := 0; i < 3; i++ {
+			pod := corev1.Pod{}
+			now := metav1.Now()
+			pod.Status.StartTime = &now
+			pods = append(pods, pod)
+		}
+
+		expectedPods := make([]corev1.Pod, len(pods))
+		copy(expectedPods, pods)
+
+		sortByStartTimeDesc(pods)
+		Expect(pods).NotTo(Equal(expectedPods))
+
+		sort.SliceStable(expectedPods, func(i, j int) bool {
+			return i > j
+		})
+		Expect(pods).To(Equal(expectedPods))
+	})
+})
+
 func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job {
 	jobs := &batchv1.JobList{}
 	listOps := []client.ListOption{
@@ -201,7 +228,7 @@ func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	podLog, err := os.ReadFile(logFilePath)
 	Expect(err).NotTo(HaveOccurred())
 
-	pod := &v1.Pod{}
+	pod := &corev1.Pod{}
 	pod.Namespace = job.Namespace
 	pod.GenerateName = job.Name
 	pod.Labels = job.Spec.Template.Labels
@@ -212,4 +239,8 @@ func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	logsReader.EXPECT().
 		GetLogs(mock.Anything, client.ObjectKeyFromObject(pod), trivy.ScanJobContainerName).
 		Call.Return(io.NopCloser(bytes.NewReader(podLog)), nil)
+
+	now := metav1.Now()
+	pod.Status.StartTime = &now
+	Expect(k8sClient.Status().Update(ctx, pod)).To(Succeed())
 }

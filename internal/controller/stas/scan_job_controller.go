@@ -236,14 +236,12 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 		return nil, err
 	}
 
-	switch len(pods.Items) {
-	case 0:
+	if len(pods.Items) == 0 {
 		return nil, staserrors.NewJobPodNotFound(job.Name)
-	case 1:
-	default:
-		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods.Items))
 	}
 
+	// Sort pods by StartTime DESC
+	sortByStartTimeDesc(pods.Items)
 	jobPod := pods.Items[0]
 
 	var scanJobContainerStatus corev1.ContainerStatus
@@ -260,6 +258,12 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	}
 	// Get logs from Job pod
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
+}
+
+func sortByStartTimeDesc(pods []corev1.Pod) {
+	sort.SliceStable(pods, func(i, j int) bool {
+		return pods[i].Status.StartTime.After(pods[j].Status.StartTime.Time)
+	})
 }
 
 func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
