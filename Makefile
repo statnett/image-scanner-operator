@@ -64,8 +64,8 @@ vet: ## Run go vet against code.
 	go vet ./...
 
 .PHONY: test
-test: manifests generate fmt vet envtest ## Run tests.
-	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" ginkgo -v --trace --repeat 3 --race ./... -coverprofile cover.out
+test: manifests generate fmt vet envtest ginkgo ## Run tests.
+	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" $(GINKGO) -v --trace --repeat 3 --race ./... -coverprofile cover.out
 
 test-reports: test ## Run tests and generate reports (no reports for now)
 
@@ -167,11 +167,13 @@ KUSTOMIZE ?= $(LOCALBIN)/kustomize
 CONTROLLER_GEN ?= $(LOCALBIN)/controller-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
 GOIMPORTS ?= $(LOCALBIN)/goimports
+GINKGO ?=$(LOCALBIN)/ginkgo
 
 ## Tool Versions
 KUSTOMIZE_VERSION ?= v4.5.7
 CONTROLLER_TOOLS_VERSION ?= v0.11.1
 GOIMPORTS_VERSION ?= v0.3.0
+GINKGO_VERSION ?= v2.8.0
 
 .PHONY: kustomize
 kustomize: $(KUSTOMIZE) ## Download kustomize locally if necessary. If wrong version is installed, it will be removed before downloading.
@@ -197,6 +199,15 @@ $(ENVTEST): $(LOCALBIN)
 goimports: $(GOIMPORTS) ## Download goimports locally if necessary.
 $(GOIMPORTS):
 	test -s $(LOCALBIN)/goimports || GOBIN=$(LOCALBIN) go install golang.org/x/tools/cmd/goimports@$(GOIMPORTS_VERSION)
+
+.PHONY: ginkgo
+ginkgo: $(GINKGO) ## Download ginkgo locally if necessary. If wrong version is installed, it will be removed before downloading.
+$(GINKGO): $(LOCALBIN)
+	@if test -x $(LOCALBIN)/ginkgo && ! $(LOCALBIN)/ginkgo version | grep -q $(GINKGO_VERSION); then \
+		echo "$(LOCALBIN)/ginkgo version is not expected $(GINKGO_VERSION). Removing it before installing."; \
+		rm -rf $(LOCALBIN)/ginkgo; \
+	fi
+	test -s $(LOCALBIN)/ginkgo || GOBIN=$(LOCALBIN) go install github.com/onsi/ginkgo/v2/ginkgo@${GINKGO_VERSION}
 
 ##@ End-to-end (e2e) Testing
 
