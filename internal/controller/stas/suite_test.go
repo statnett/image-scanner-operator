@@ -85,8 +85,7 @@ var _ = BeforeSuite(func() {
 	for _, name := range namespaces {
 		namespace := &corev1.Namespace{}
 		namespace.Name = name
-		err := k8sClient.Create(ctx, namespace)
-		Expect(err).To(Succeed())
+		Expect(k8sClient.Create(ctx, namespace)).To(Succeed())
 	}
 
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
