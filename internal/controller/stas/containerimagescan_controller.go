@@ -49,12 +49,15 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
+		var err error
+
 		timeUntilNextScan := r.TimeUntilNextScan(cis)
-		if timeUntilNextScan > 0 {
-			return ctrl.Result{RequeueAfter: timeUntilNextScan}, nil
+		if timeUntilNextScan <= 0 {
+			err = r.reconcile(ctx, cis)
+			timeUntilNextScan = r.ScanInterval
 		}
 
-		return ctrl.Result{}, r.reconcile(ctx, cis)
+		return ctrl.Result{RequeueAfter: timeUntilNextScan}, err
 	}
 
 	return controller.Reconcile(ctx, fn)
