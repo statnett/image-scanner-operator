@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/statnett/image-scanner-operator/compare/v0.2.2...v0.3.0) (2023-02-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* should have unique config map names ([#163](https://github.com/statnett/image-scanner-operator/issues/163))
+
+### Bug Fixes
+
+* never retry scan job ([#194](https://github.com/statnett/image-scanner-operator/issues/194)) ([0198fc1](https://github.com/statnett/image-scanner-operator/commit/0198fc1da0b64ccbf327d4e739cbd3c8fd23648a))
+* should have unique config map names ([#163](https://github.com/statnett/image-scanner-operator/issues/163)) ([b7a8aa3](https://github.com/statnett/image-scanner-operator/commit/b7a8aa3fb805ac07c7906b0dde6c877c08a25d08))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.3 to 0.1.4 ([#190](https://github.com/statnett/image-scanner-operator/issues/190)) ([b2e152f](https://github.com/statnett/image-scanner-operator/commit/b2e152f0e3c4e956b617ab85a44ab97381959e77))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.16.0 to 2.18.0 ([#188](https://github.com/statnett/image-scanner-operator/issues/188)) ([7aa53e2](https://github.com/statnett/image-scanner-operator/commit/7aa53e2083a1619ab95e43c5d50340fab5282583))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.14.2 to 0.14.4 ([#187](https://github.com/statnett/image-scanner-operator/issues/187)) ([03fcc85](https://github.com/statnett/image-scanner-operator/commit/03fcc854e2c103777a44e3f257fce38db610ad06))
+
 ## [0.2.2](https://github.com/statnett/image-scanner-operator/compare/v0.2.1...v0.2.2) (2023-02-03)
 
 
