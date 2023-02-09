@@ -12,7 +12,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
 	batchv1 "k8s.io/api/batch/v1"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -38,7 +38,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful", "successful-scan-cis.yaml"), cis)).To(Succeed())
-			Expect(k8sClient.Create(ctx, cis))
+			Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 			// Wait for CIS to get reconciled
 			Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -48,9 +48,9 @@ var _ = Describe("Scan Job controller", func() {
 			// Simulate scan job complete
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful", "successful-scan-job-pod.log.json"))
-			Eventually(komega.UpdateStatus(scanJob, func() {
+			Expect(komega.UpdateStatus(scanJob, func() {
 				scanJob.Status.Succeeded = 1
-			})).Should(Succeed())
+			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -79,7 +79,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful-long", "cis.yaml"), cis)).To(Succeed())
-				Expect(k8sClient.Create(ctx, cis))
+				Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 				// Wait for CIS to get reconciled
 				Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -89,9 +89,9 @@ var _ = Describe("Scan Job controller", func() {
 				// Simulate scan job complete
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful-long", "scan-job-pod.log.json"))
-				Eventually(komega.UpdateStatus(scanJob, func() {
+				Expect(komega.UpdateStatus(scanJob, func() {
 					scanJob.Status.Succeeded = 1
-				})).Should(Succeed())
+				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -112,7 +112,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-invalid-json", "cis.yaml"), cis)).To(Succeed())
-				Expect(k8sClient.Create(ctx, cis))
+				Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 				// Wait for CIS to get reconciled
 				Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -122,9 +122,9 @@ var _ = Describe("Scan Job controller", func() {
 				// Simulate scan job complete
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-invalid-json", "scan-job-pod.log.invalid.json"))
-				Eventually(komega.UpdateStatus(scanJob, func() {
+				Expect(komega.UpdateStatus(scanJob, func() {
 					scanJob.Status.Succeeded = 1
-				})).Should(Succeed())
+				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -146,7 +146,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-failed", "failed-scan-cis.yaml"), cis)).To(Succeed())
-			Expect(k8sClient.Create(ctx, cis))
+			Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
 			// Wait for CIS to get reconciled
 			Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
@@ -156,9 +156,9 @@ var _ = Describe("Scan Job controller", func() {
 			// Simulate scan job complete
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-failed", "failed-scan-job-pod.log"))
-			Eventually(komega.UpdateStatus(scanJob, func() {
+			Expect(komega.UpdateStatus(scanJob, func() {
 				scanJob.Status.Failed = 1
-			})).Should(Succeed())
+			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
@@ -201,7 +201,7 @@ func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	podLog, err := os.ReadFile(logFilePath)
 	Expect(err).NotTo(HaveOccurred())
 
-	pod := &v1.Pod{}
+	pod := &corev1.Pod{}
 	pod.Namespace = job.Namespace
 	pod.GenerateName = job.Name
 	pod.Labels = job.Spec.Template.Labels
