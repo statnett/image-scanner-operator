@@ -17,7 +17,7 @@ metadata:
   name: echo-6bdfc76c56-8ae43-b63f8
 spec:
   activeDeadlineSeconds: 3600 # 1 hour
-  backoffLimit: 3
+  backoffLimit: 0
   completionMode: NonIndexed
   completions: 1
   parallelism: 1
@@ -117,7 +117,7 @@ spec:
           volumeMounts:
             - mountPath: /var/run/image-scanner
               name: image-scanner
-      restartPolicy: OnFailure
+      restartPolicy: Never
       schedulerName: default-scheduler
       securityContext: {}
       serviceAccount: image-scanner
