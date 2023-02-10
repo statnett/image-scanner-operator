@@ -53,12 +53,10 @@ func cisRescanDue(scanInterval time.Duration) predicate.Predicate {
 		cis := object.(*stasv1alpha1.ContainerImageScan)
 		lastScanTime := cis.Status.LastScanTime
 		if lastScanTime.IsZero() {
-			return true
+			// Never scanned; other logic will trigger initial scan
+			return false
 		}
-		if time.Since(lastScanTime.Time) > scanInterval {
-			return true
-		}
-		return false
+		return time.Since(lastScanTime.Time) > scanInterval
 	})
 }
 
