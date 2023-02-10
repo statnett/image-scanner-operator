@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/statnett/image-scanner-operator/compare/v0.3.0...v0.3.1) (2023-02-10)
+
+
+### Bug Fixes
+
+* always set RequeueAfter when reconciling CIS ([#198](https://github.com/statnett/image-scanner-operator/issues/198)) ([ad8d921](https://github.com/statnett/image-scanner-operator/commit/ad8d921a87f098917c6d2b04e7e22184428fa0be))
+
+
+### Dependency Updates
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.37.2 ([#199](https://github.com/statnett/image-scanner-operator/issues/199)) ([f330486](https://github.com/statnett/image-scanner-operator/commit/f33048618a1e5efc7e8606779dd069331e1e544c))
+
 ## [0.3.0](https://github.com/statnett/image-scanner-operator/compare/v0.2.2...v0.3.0) (2023-02-09)
 
 
