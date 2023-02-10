@@ -50,27 +50,16 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		var timeUntilNextScan time.Duration
+		timeUntilNextScan := r.ScanInterval
 
-		switch {
-		case cis.Status.ObservedGeneration != cis.Generation:
-			// Spec has changed; must scan
-		case cis.Status.LastScanTime.IsZero():
-			// New resource; must scan
-		default:
+		if !cis.Status.LastScanTime.IsZero() {
 			d := time.Until(cis.Status.LastScanTime.Add(r.ScanInterval))
 			if d > 0 {
 				timeUntilNextScan = d
 			}
 		}
 
-		var err error
-		if timeUntilNextScan == 0 {
-			err = r.reconcile(ctx, cis)
-			timeUntilNextScan = r.ScanInterval
-		}
-
-		return ctrl.Result{RequeueAfter: timeUntilNextScan}, err
+		return ctrl.Result{RequeueAfter: timeUntilNextScan}, r.reconcile(ctx, cis)
 	}
 
 	return controller.Reconcile(ctx, fn)
@@ -90,7 +79,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&stasv1alpha1.ContainerImageScan{},
 			builder.WithPredicates(
-				predicate.GenerationChangedPredicate{},
+				predicate.Or(predicate.GenerationChangedPredicate{}, cisRescanDue(r.ScanInterval)),
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
