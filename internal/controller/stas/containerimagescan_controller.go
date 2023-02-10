@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 	"fmt"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -49,12 +50,16 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		timeUntilNextScan := r.TimeUntilNextScan(cis)
-		if timeUntilNextScan > 0 {
-			return ctrl.Result{RequeueAfter: timeUntilNextScan}, nil
+		timeUntilNextScan := r.ScanInterval
+
+		if !cis.Status.LastScanTime.IsZero() {
+			d := time.Until(cis.Status.LastScanTime.Add(r.ScanInterval))
+			if d > 0 {
+				timeUntilNextScan = d
+			}
 		}
 
-		return ctrl.Result{}, r.reconcile(ctx, cis)
+		return ctrl.Result{RequeueAfter: timeUntilNextScan}, r.reconcile(ctx, cis)
 	}
 
 	return controller.Reconcile(ctx, fn)
@@ -74,7 +79,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&stasv1alpha1.ContainerImageScan{},
 			builder.WithPredicates(
-				predicate.GenerationChangedPredicate{},
+				predicate.Or(predicate.GenerationChangedPredicate{}, cisRescanDue(r.ScanInterval)),
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
