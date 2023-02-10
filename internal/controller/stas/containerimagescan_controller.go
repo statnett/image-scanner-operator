@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 	"fmt"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -49,10 +50,22 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		var err error
+		var timeUntilNextScan time.Duration
 
-		timeUntilNextScan := r.TimeUntilNextScan(cis)
-		if timeUntilNextScan <= 0 {
+		switch {
+		case cis.Status.ObservedGeneration != cis.Generation:
+			// Spec has changed; must scan
+		case cis.Status.LastScanTime.IsZero():
+			// New resource; must scan
+		default:
+			d := time.Until(cis.Status.LastScanTime.Add(r.ScanInterval))
+			if d > 0 {
+				timeUntilNextScan = d
+			}
+		}
+
+		var err error
+		if timeUntilNextScan == 0 {
 			err = r.reconcile(ctx, cis)
 			timeUntilNextScan = r.ScanInterval
 		}
