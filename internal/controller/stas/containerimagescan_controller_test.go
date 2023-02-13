@@ -3,11 +3,13 @@ package stas
 import (
 	"context"
 	"path"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -61,6 +63,45 @@ var _ = Describe("ContainerImageScan controller", func() {
 			}},
 		}
 		Expect(cis.Status).Should(WithTransform(normalizeContainerImageScanStatus, Equal(expectedStatus)))
+
+	})
+
+	It("should rescan when due", func() {
+		cis := &stasv1alpha1.ContainerImageScan{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "nginx-rescan",
+				Namespace: "default",
+			},
+			Spec: stasv1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "docker.io/nginxinc/nginx-unprivileged",
+						Digest: "sha256:38c2aa106718a39d89e27b2124402ff48bdf4ed582beae62e5a3ee23d8b41f80",
+					},
+				},
+			},
+		}
+		Expect(k8sClient.Create(ctx, cis)).To(Succeed())
+
+		// Wait for scan job to be created
+		scanJob := getContainerImageScanJob(cis)
+
+		// Delete scan job and verify it's actually removed
+		Expect(k8sClient.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationOrphan))).To(Succeed())
+		Expect(komega.Update(scanJob, func() {
+			// Must remove finalizers to REALLY get job deleted
+			scanJob.Finalizers = nil
+		})()).To(Succeed())
+		Eventually(komega.Get(scanJob)).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
+
+		// Modify LastScanTime to trigger rescan
+		Expect(komega.UpdateStatus(cis, func() {
+			cis.Status.LastScanTime = &metav1.Time{Time: time.Now().Add(-time.Hour * 12)}
+		})()).To(Succeed())
+
+		// Assert new scan job created
+		scanJob2 := getContainerImageScanJob(cis)
+		Expect(scanJob2.UID).To(Not(Equal(scanJob.UID)))
 	})
 
 	normalizeUntestableScanJobFields := func(job *batchv1.Job) *batchv1.Job {
@@ -109,14 +150,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		Expect(controllerutil.SetOwnerReference(workloadPod, cis, k8sScheme)).To(Succeed())
 		Expect(k8sClient.Create(ctx, cis)).To(Succeed())
 
-		jobs := &batchv1.JobList{}
-		listOps := []client.ListOption{
-			client.InNamespace(scanJobNamespace),
-			client.MatchingLabels(map[string]string{stasv1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
-		}
-		Eventually(komega.ObjectList(jobs, listOps...)).Should(HaveField("Items", HaveLen(1)))
-		scanJob := &jobs.Items[0]
-
+		scanJob := getContainerImageScanJob(cis)
 		expectedScanJob := &batchv1.Job{}
 		Expect(yaml.FromFile(path.Join("testdata", "scan-job", "expected-scan-job.yaml"), expectedScanJob)).To(Succeed())
 		Expect(scanJob).Should(WithTransform(normalizeUntestableScanJobFields, BeComparableTo(expectedScanJob)))

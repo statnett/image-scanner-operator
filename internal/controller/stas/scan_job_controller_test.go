@@ -191,8 +191,7 @@ func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job
 		client.InNamespace(scanJobNamespace),
 		client.MatchingLabels(map[string]string{stasv1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
 	}
-	Expect(k8sClient.List(ctx, jobs, listOps...)).To(Succeed())
-	Expect(jobs.Items).To(HaveLen(1))
+	Eventually(komega.ObjectList(jobs, listOps...)).Should(HaveField("Items", HaveLen(1)))
 
 	return &jobs.Items[0]
 }

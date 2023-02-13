@@ -104,6 +104,7 @@ var _ = BeforeSuite(func() {
 	config := config.Config{
 		ScanJobNamespace:      scanJobNamespace,
 		ScanJobServiceAccount: "image-scanner",
+		ScanInterval:          time.Hour,
 		TrivyImage:            "aquasecurity/trivy",
 	}
 
