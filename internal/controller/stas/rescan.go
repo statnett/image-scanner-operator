@@ -35,16 +35,13 @@ func (r *RescanTrigger) Start(ctx context.Context) error {
 				log.Error(err, "failed to list CISes")
 				continue
 			}
-			for _, cis := range cisList.Items {
+
+			for i := range cisList.Items {
+				cis := cisList.Items[i]
+
 				lastScanTime := cis.Status.LastScanTime
-				if lastScanTime.IsZero() {
-					continue
-				}
-				if time.Since(lastScanTime.Time) > r.ScanInterval {
-					eventCis := &stasv1alpha1.ContainerImageScan{}
-					eventCis.Namespace = cis.Namespace
-					eventCis.Name = cis.Name
-					r.EventChan <- event.GenericEvent{Object: eventCis}
+				if !lastScanTime.IsZero() && time.Since(lastScanTime.Time) > r.ScanInterval {
+					r.EventChan <- event.GenericEvent{Object: &cis}
 				}
 			}
 		}
