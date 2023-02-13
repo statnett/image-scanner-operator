@@ -3,7 +3,6 @@ package stas
 import (
 	"context"
 	"fmt"
-	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -15,8 +14,11 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -50,16 +52,7 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		timeUntilNextScan := r.ScanInterval
-
-		if !cis.Status.LastScanTime.IsZero() {
-			d := time.Until(cis.Status.LastScanTime.Add(r.ScanInterval))
-			if d > 0 {
-				timeUntilNextScan = d
-			}
-		}
-
-		return ctrl.Result{RequeueAfter: timeUntilNextScan}, r.reconcile(ctx, cis)
+		return ctrl.Result{}, r.reconcile(ctx, cis)
 	}
 
 	return controller.Reconcile(ctx, fn)
@@ -76,13 +69,16 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 		predicates = append(predicates, namespaceMatchRegexp(r.ScanNamespaceIncludeRegexp))
 	}
 
+	events := make(chan event.GenericEvent)
+
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&stasv1alpha1.ContainerImageScan{},
 			builder.WithPredicates(
-				predicate.Or(predicate.GenerationChangedPredicate{}, cisRescanDue(r.ScanInterval)),
+				predicate.GenerationChangedPredicate{},
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
+		Watches(&source.Channel{Source: events}, &handler.EnqueueRequestForObject{}).
 		Complete(r)
 }
 
