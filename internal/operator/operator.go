@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"sigs.k8s.io/controller-runtime/pkg/event"
+
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -159,15 +161,26 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to create %s controller: %w", "Job", err)
 	}
 
+	rescanEventChan := make(chan event.GenericEvent)
+
 	if err = (&stas.ContainerImageScanReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-		Config: cfg,
+		Client:    mgr.GetClient(),
+		Scheme:    mgr.GetScheme(),
+		Config:    cfg,
+		WatchChan: rescanEventChan,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "ContainerImageScan", err)
 	}
 
 	//+kubebuilder:scaffold:builder
+
+	if err := mgr.Add(&stas.RescanTrigger{
+		Client:        mgr.GetClient(),
+		EventChan:     rescanEventChan,
+		CheckInterval: time.Minute,
+	}); err != nil {
+		return fmt.Errorf("unable to create rescan trigger: %w", err)
+	}
 
 	enableProfiling := viper.GetBool("enable-profiling")
 	if enableProfiling {

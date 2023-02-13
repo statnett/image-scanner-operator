@@ -4,6 +4,9 @@ import (
 	"context"
 	"path/filepath"
 	"testing"
+	"time"
+
+	"sigs.k8s.io/controller-runtime/pkg/event"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -116,12 +119,20 @@ var _ = BeforeSuite(func() {
 	}
 	Expect(podReconciler.SetupWithManager(k8sManager)).To(Succeed())
 
+	rescanEventChan := make(chan event.GenericEvent)
 	containerImageScanReconciler := &ContainerImageScanReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sScheme,
-		Config: config,
+		Client:    k8sManager.GetClient(),
+		Scheme:    k8sScheme,
+		Config:    config,
+		WatchChan: rescanEventChan,
 	}
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
+	rescanTrigger := &RescanTrigger{
+		Client:        k8sManager.GetClient(),
+		EventChan:     rescanEventChan,
+		CheckInterval: time.Second,
+	}
+	Expect(k8sManager.Add(rescanTrigger)).To(Succeed())
 
 	scanJobReconciler := &ScanJobReconciler{
 		Client:     k8sManager.GetClient(),
