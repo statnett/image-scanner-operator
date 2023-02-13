@@ -166,7 +166,7 @@ func (o Operator) Start(cfg config.Config) error {
 		Client:    mgr.GetClient(),
 		Scheme:    mgr.GetScheme(),
 		Config:    cfg,
-		WatchChan: rescanEventChan,
+		EventChan: rescanEventChan,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "ContainerImageScan", err)
 	}

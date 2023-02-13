@@ -32,7 +32,7 @@ type ContainerImageScanReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 	config.Config
-	WatchChan chan event.GenericEvent
+	EventChan chan event.GenericEvent
 }
 
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans,verbs=get;list;watch;create;update;patch;delete
@@ -77,7 +77,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
-		Watches(&source.Channel{Source: r.WatchChan}, &handler.EnqueueRequestForObject{}).
+		Watches(&source.Channel{Source: r.EventChan}, &handler.EnqueueRequestForObject{}).
 		Complete(r)
 }
 

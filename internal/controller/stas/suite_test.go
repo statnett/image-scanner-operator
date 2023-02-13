@@ -119,18 +119,18 @@ var _ = BeforeSuite(func() {
 	}
 	Expect(podReconciler.SetupWithManager(k8sManager)).To(Succeed())
 
-	rescanEventChan := make(chan event.GenericEvent)
+	cisEventChan := make(chan event.GenericEvent)
 	containerImageScanReconciler := &ContainerImageScanReconciler{
 		Client:    k8sManager.GetClient(),
 		Scheme:    k8sScheme,
 		Config:    config,
-		WatchChan: rescanEventChan,
+		EventChan: cisEventChan,
 	}
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
 	rescanTrigger := &RescanTrigger{
 		Client:        k8sManager.GetClient(),
 		Config:        config,
-		EventChan:     rescanEventChan,
+		EventChan:     cisEventChan,
 		CheckInterval: time.Second,
 	}
 	Expect(k8sManager.Add(rescanTrigger)).To(Succeed())
