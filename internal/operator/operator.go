@@ -9,8 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"sigs.k8s.io/controller-runtime/pkg/event"
-
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -21,6 +19,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
@@ -176,6 +175,7 @@ func (o Operator) Start(cfg config.Config) error {
 
 	if err := mgr.Add(&stas.RescanTrigger{
 		Client:        mgr.GetClient(),
+		Config:        cfg,
 		EventChan:     rescanEventChan,
 		CheckInterval: time.Minute,
 	}); err != nil {

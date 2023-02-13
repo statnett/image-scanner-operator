@@ -6,8 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"sigs.k8s.io/controller-runtime/pkg/event"
-
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/format"
@@ -25,6 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
@@ -129,6 +128,7 @@ var _ = BeforeSuite(func() {
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
 	rescanTrigger := &RescanTrigger{
 		Client:        k8sManager.GetClient(),
+		Config:        config,
 		EventChan:     rescanEventChan,
 		CheckInterval: time.Second,
 	}
