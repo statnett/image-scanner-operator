@@ -55,7 +55,7 @@ spec:
           env:
             - name: HOME
               value: /tmp
-            - name: TRIVY_SECURITY_CHECKS
+            - name: TRIVY_SCANNERS
               value: vuln
             - name: TRIVY_CACHE_DIR
               value: /tmp
