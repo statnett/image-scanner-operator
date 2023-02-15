@@ -153,27 +153,27 @@ var _ = Describe("Naming ContainerImageScan", func() {
 		}
 		containerName = "app"
 		img = stasv1alpha1.Image{Name: "img-name", Digest: "img-digest"}
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-22073"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-88c48"))
 	})
 
 	It("should contain controller name", func() {
 		ctrl.SetName("other-workload")
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-other-workload-app-22073"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-other-workload-app-88c48"))
 	})
 
 	It("should be a function of image name", func() {
 		img.Name = "other-img"
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-ad649"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-91ac0"))
 	})
 
 	It("should be a function of image digest", func() {
 		img.Digest = "other-digest"
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-3d4f2"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-app-faf6e"))
 	})
 
 	It("should contain container name", func() {
 		containerName = "foo"
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-foo-22073"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("application-workload-foo-88c48"))
 	})
 
 	It("should contain controller kind", func() {
@@ -185,7 +185,7 @@ var _ = Describe("Naming ContainerImageScan", func() {
 				Name: ctrl.GetName(),
 			},
 		}
-		Expect(imageScanName(ctrl, containerName, img)).To(Equal("deployment-workload-app-22073"))
+		Expect(imageScanName(ctrl, containerName, img)).To(Equal("deployment-workload-app-88c48"))
 	})
 
 	It("should shorten controller name part", func() {
@@ -193,10 +193,11 @@ var _ = Describe("Naming ContainerImageScan", func() {
 		Expect(longName).To(HaveLen(KubernetesNameMaxLength))
 
 		ctrl.SetName(longName)
-		cisName := imageScanName(ctrl, containerName, img)
+		cisName, err := imageScanName(ctrl, containerName, img)
+		Expect(err).NotTo(HaveOccurred())
 		Expect(cisName).To(HaveLen(KubernetesNameMaxLength))
 		// Assert contains image short sha part
-		Expect(cisName).To(ContainSubstring("-22073"))
+		Expect(cisName).To(ContainSubstring("-88c48"))
 	})
 })
 

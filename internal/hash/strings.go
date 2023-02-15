@@ -1,15 +1,16 @@
 package hash
 
 import (
-	"crypto/md5" //#nosec G501 -- Weak cryptographic primitive only used for hashing
 	"fmt"
+
+	"github.com/mitchellh/hashstructure/v2"
 )
 
-func NewString(objs ...interface{}) string {
-	digester := md5.New() //#nosec G401 -- Weak cryptographic primitive only used for hashing
-	for _, v := range objs {
-		digester.Write([]byte(fmt.Sprintf("%s", v)))
+func NewString(objs ...interface{}) (string, error) {
+	hash, err := hashstructure.Hash(objs, hashstructure.FormatV2, nil)
+	if err != nil {
+		return "", err
 	}
 
-	return fmt.Sprintf("%x", digester.Sum(nil))
+	return fmt.Sprintf("%x", hash), nil
 }

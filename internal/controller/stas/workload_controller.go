@@ -135,7 +135,12 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	for containerName, image := range images {
 		cis := &stasv1alpha1.ContainerImageScan{}
 		cis.Namespace = pod.Namespace
-		cis.Name = imageScanName(podController, containerName, image.Image)
+
+		cis.Name, err = imageScanName(podController, containerName, image.Image)
+		if err != nil {
+			return err
+		}
+
 		mutateFn := func() error {
 			cis.Labels = pod.GetLabels()
 			cis.Spec.Workload.Group = podController.GetObjectKind().GroupVersionKind().Group
@@ -224,9 +229,15 @@ func (r *PodReconciler) getImageScansOwnedByPodContainer(ctx context.Context, po
 	return CISes, nil
 }
 
-func imageScanName(podController client.Object, containerName string, image stasv1alpha1.Image) string {
+func imageScanName(podController client.Object, containerName string, image stasv1alpha1.Image) (string, error) {
 	kindPart := strings.ToLower(podController.GetObjectKind().GroupVersionKind().Kind)
-	imagePart := hash.NewString(image.Name, image.Digest)[0:ImageShortSHALength]
+
+	imageHash, err := hash.NewString(image.Name, image.Digest)
+	if err != nil {
+		return "", err
+	}
+
+	imagePart := imageHash[0:ImageShortSHALength]
 	nameFn := func(controllerName string) string {
 		return fmt.Sprintf("%s-%s-%s-%s", kindPart, controllerName, containerName, imagePart)
 	}
@@ -239,7 +250,7 @@ func imageScanName(podController client.Object, containerName string, image stas
 		name = nameFn(shortenControllerName)
 	}
 
-	return name
+	return name, nil
 }
 
 func (r *PodReconciler) getControllerWorkloadOrSelf(ctx context.Context, controllee client.Object) (client.Object, error) {

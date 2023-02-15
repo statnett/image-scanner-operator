@@ -66,7 +66,7 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 	}
 
 	job.Namespace = f.ScanJobNamespace
-	job.Name = scanJobName(cis)
+	job.Name, _ = scanJobName(cis)
 	job.Labels = map[string]string{
 		stasv1alpha1.LabelK8sAppName:                  stasv1alpha1.AppNameTrivy,
 		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
@@ -89,8 +89,13 @@ func truncateString(name string, length int) string {
 	}
 }
 
-func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {
-	hashPart := hash.NewString(cis.Spec, cis.Namespace)[0:JobNameSpecHashPartLength]
+func scanJobName(cis *stasv1alpha1.ContainerImageScan) (string, error) {
+	hashString, err := hash.NewString(cis.Spec, cis.Namespace)
+	if err != nil {
+		return "", err
+	}
+
+	hashPart := hashString[0:JobNameSpecHashPartLength]
 	nameFn := func(cisName string) string {
 		return fmt.Sprintf("%s-%s", cisName, hashPart)
 	}
@@ -101,7 +106,7 @@ func scanJobName(cis *stasv1alpha1.ContainerImageScan) string {
 		name = nameFn(shortenCISName)
 	}
 
-	return name
+	return name, nil
 }
 
 func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerImageScanSpec) (*batchv1.Job, error) {
