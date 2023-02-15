@@ -66,7 +66,12 @@ func (f *filesystemScanJobBuilder) ForCIS(cis *stasv1alpha1.ContainerImageScan) 
 	}
 
 	job.Namespace = f.ScanJobNamespace
-	job.Name, _ = scanJobName(cis)
+
+	job.Name, err = scanJobName(cis)
+	if err != nil {
+		return nil, err
+	}
+
 	job.Labels = map[string]string{
 		stasv1alpha1.LabelK8sAppName:                  stasv1alpha1.AppNameTrivy,
 		stasv1alpha1.LabelK8SAppManagedBy:             stasv1alpha1.AppNameImageScanner,
