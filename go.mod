@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/distribution/distribution v2.8.1+incompatible
 	github.com/go-logr/logr v1.2.3
+	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/onsi/ginkgo/v2 v2.8.1
 	github.com/onsi/gomega v1.26.0

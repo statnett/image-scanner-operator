@@ -14,7 +14,7 @@ metadata:
     workload.statnett.no/name: echo
     workload.statnett.no/namespace: replica-set
   namespace: image-scanner-jobs
-  name: echo-6bdfc76c56-8ae43-b63f8
+  name: echo-6bdfc76c56-8ae43-738e6
 spec:
   activeDeadlineSeconds: 3600 # 1 hour
   backoffLimit: 0
