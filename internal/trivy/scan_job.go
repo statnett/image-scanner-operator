@@ -186,7 +186,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	}
 	container.Env = []corev1.EnvVar{
 		{Name: "HOME", Value: TempVolumeMountPath},
-		{Name: "TRIVY_SECURITY_CHECKS", Value: "vuln"},
+		{Name: "TRIVY_SCANNERS", Value: "vuln"},
 		{Name: "TRIVY_CACHE_DIR", Value: TempVolumeMountPath},
 		{Name: "TRIVY_QUIET", Value: "true"},
 		{Name: "TRIVY_FORMAT", Value: "template"},
