@@ -4,6 +4,7 @@ import (
 	"context"
 	"path/filepath"
 	"testing"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -22,6 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
@@ -102,6 +104,7 @@ var _ = BeforeSuite(func() {
 	config := config.Config{
 		ScanJobNamespace:      scanJobNamespace,
 		ScanJobServiceAccount: "image-scanner",
+		ScanInterval:          time.Hour,
 		TrivyImage:            "aquasecurity/trivy",
 	}
 
@@ -116,12 +119,21 @@ var _ = BeforeSuite(func() {
 	}
 	Expect(podReconciler.SetupWithManager(k8sManager)).To(Succeed())
 
+	cisEventChan := make(chan event.GenericEvent)
 	containerImageScanReconciler := &ContainerImageScanReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sScheme,
-		Config: config,
+		Client:    k8sManager.GetClient(),
+		Scheme:    k8sScheme,
+		Config:    config,
+		EventChan: cisEventChan,
 	}
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
+	rescanTrigger := &RescanTrigger{
+		Client:        k8sManager.GetClient(),
+		Config:        config,
+		EventChan:     cisEventChan,
+		CheckInterval: time.Second,
+	}
+	Expect(k8sManager.Add(rescanTrigger)).To(Succeed())
 
 	scanJobReconciler := &ScanJobReconciler{
 		Client:     k8sManager.GetClient(),

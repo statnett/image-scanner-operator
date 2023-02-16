@@ -19,6 +19,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
@@ -159,15 +160,27 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to create %s controller: %w", "Job", err)
 	}
 
+	rescanEventChan := make(chan event.GenericEvent)
+
 	if err = (&stas.ContainerImageScanReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-		Config: cfg,
+		Client:    mgr.GetClient(),
+		Scheme:    mgr.GetScheme(),
+		Config:    cfg,
+		EventChan: rescanEventChan,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "ContainerImageScan", err)
 	}
 
 	//+kubebuilder:scaffold:builder
+
+	if err := mgr.Add(&stas.RescanTrigger{
+		Client:        mgr.GetClient(),
+		Config:        cfg,
+		EventChan:     rescanEventChan,
+		CheckInterval: time.Minute,
+	}); err != nil {
+		return fmt.Errorf("unable to create rescan trigger: %w", err)
+	}
 
 	enableProfiling := viper.GetBool("enable-profiling")
 	if enableProfiling {

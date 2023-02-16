@@ -2,7 +2,6 @@ package stas
 
 import (
 	"regexp"
-	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -46,18 +45,6 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 			return false
 		},
 	}
-}
-
-func cisRescanDue(scanInterval time.Duration) predicate.Predicate {
-	return predicate.NewPredicateFuncs(func(object client.Object) bool {
-		cis := object.(*stasv1alpha1.ContainerImageScan)
-		lastScanTime := cis.Status.LastScanTime
-		if lastScanTime.IsZero() {
-			// Never scanned; other logic will trigger initial scan
-			return false
-		}
-		return time.Since(lastScanTime.Time) > scanInterval
-	})
 }
 
 func ignoreCreationPredicate() predicate.Predicate {
