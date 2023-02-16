@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/statnett/image-scanner-operator/compare/v0.3.1...v0.4.0) (2023-02-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* introduce mitchellh/hashstructure for hashing ([#212](https://github.com/statnett/image-scanner-operator/issues/212))
+
+### Bug Fixes
+
+* introduce mitchellh/hashstructure for hashing ([#212](https://github.com/statnett/image-scanner-operator/issues/212)) ([26eefd7](https://github.com/statnett/image-scanner-operator/commit/26eefd72fe623ba705e46035643b721cf6b64878))
+* rescan based on ticker ([#208](https://github.com/statnett/image-scanner-operator/issues/208)) ([bc87fcd](https://github.com/statnett/image-scanner-operator/commit/bc87fcdca5fff2ce35b91264c276bf4c430e2636))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.0 to 2.8.1 ([#209](https://github.com/statnett/image-scanner-operator/issues/209)) ([258b0d3](https://github.com/statnett/image-scanner-operator/commit/258b0d380d82e75280ec0d3121c8d50dab2552fb))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.18.0 to 2.20.0 ([#206](https://github.com/statnett/image-scanner-operator/issues/206)) ([a94425f](https://github.com/statnett/image-scanner-operator/commit/a94425fca6dbeb315cb673b9b6242456765c55e3))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.37.3 ([#211](https://github.com/statnett/image-scanner-operator/issues/211)) ([82d54d5](https://github.com/statnett/image-scanner-operator/commit/82d54d588edfe92200930ff0d3abc689512d0b53))
+
 ## [0.3.1](https://github.com/statnett/image-scanner-operator/compare/v0.3.0...v0.3.1) (2023-02-10)
 
 
