@@ -39,7 +39,7 @@ type ContainerImageScanReconciler struct {
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/finalizers,verbs=update
-//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=create
+//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=create;delete
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -102,7 +102,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 	if err != nil {
 		if apierrors.IsAlreadyExists(err) {
 			// Job already exists; delete it and requeue
-			err = r.Delete(ctx, scanJob)
+			err = r.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationBackground))
 			result.Requeue = true
 		}
 
