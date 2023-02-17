@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.1](https://github.com/statnett/image-scanner-operator/compare/v0.4.0...v0.4.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* add missing RBAC and ensure job pods are deleted ([#216](https://github.com/statnett/image-scanner-operator/issues/216)) ([fb29ba2](https://github.com/statnett/image-scanner-operator/commit/fb29ba2d04d07f74ca27c28e0c3525705db11dfe))
+* rescan machinery ([#213](https://github.com/statnett/image-scanner-operator/issues/213)) ([858f4a2](https://github.com/statnett/image-scanner-operator/commit/858f4a2c4f67d13a8b0f1cc712bef2e77fb58f9a))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.26.0 to 1.27.0 ([#214](https://github.com/statnett/image-scanner-operator/issues/214)) ([5b4d88a](https://github.com/statnett/image-scanner-operator/commit/5b4d88acce18bd2f8c0508e640ae9aab13244819))
+
 ## [0.4.0](https://github.com/statnett/image-scanner-operator/compare/v0.3.1...v0.4.0) (2023-02-16)
 
 
