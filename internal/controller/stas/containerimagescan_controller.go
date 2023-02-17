@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 	"fmt"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -53,7 +54,13 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		return ctrl.Result{}, r.reconcile(ctx, cis)
+		lastSuccessfulScanTime := cis.Status.LastSuccessfulScanTime
+		if !lastSuccessfulScanTime.IsZero() && time.Since(lastSuccessfulScanTime.Time) < r.ScanInterval {
+			// Successful scan within scan interval; nothing to do
+			return ctrl.Result{}, nil
+		}
+
+		return r.reconcile(ctx, cis)
 	}
 
 	return controller.Reconcile(ctx, fn)
@@ -81,23 +88,25 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 		Complete(r)
 }
 
-func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) error {
+func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (ctrl.Result, error) {
+	result := ctrl.Result{}
 	cleanCis := cis.DeepCopy()
 
 	scanJob, err := r.newScanJob(ctx, cis)
 	if err != nil {
-		return err
+		return result, err
 	}
 
 	// Jobs are highly immutable, so not attempting to update
 	err = r.Create(ctx, scanJob)
 	if err != nil {
 		if apierrors.IsAlreadyExists(err) {
-			// Don't create duplicate jobs
-			return nil
+			// Job already exists; delete it and requeue
+			err = r.Delete(ctx, scanJob)
+			result.Requeue = true
 		}
 
-		return err
+		return result, err
 	}
 
 	condition := metav1.Condition{
@@ -111,7 +120,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 
 	cis.Status.ObservedGeneration = cis.Generation
 
-	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+	return result, r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 }
 
 func (r *ContainerImageScanReconciler) newScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {
