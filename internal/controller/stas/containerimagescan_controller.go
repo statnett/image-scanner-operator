@@ -46,8 +46,6 @@ type ContainerImageScanReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logf.FromContext(ctx).Info("Reconciling")
-
 	fn := func(c context.Context) (ctrl.Result, error) {
 		cis := &stasv1alpha1.ContainerImageScan{}
 		if err := r.Get(ctx, req.NamespacedName, cis); err != nil {
@@ -60,10 +58,34 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, nil
 		}
 
+		count, err := r.activeScanJobCount(ctx)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+
+		if r.ActiveScanJobLimit > 0 && count >= r.ActiveScanJobLimit {
+			// Max number of active scan jobs reached. Requeue request
+			return ctrl.Result{Requeue: true}, nil
+		}
+
 		return r.reconcile(ctx, cis)
 	}
 
 	return controller.Reconcile(ctx, fn)
+}
+
+func (r *ContainerImageScanReconciler) activeScanJobCount(ctx context.Context) (int, error) {
+	listOps := []client.ListOption{
+		client.InNamespace(r.ScanJobNamespace),
+		client.MatchingFields{indexJobStatus: jobStatusNotFinished},
+	}
+
+	list := &batchv1.JobList{}
+	if err := r.List(ctx, list, listOps...); err != nil {
+		return 0, err
+	}
+
+	return len(list.Items), nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
@@ -89,6 +111,8 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 }
 
 func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (ctrl.Result, error) {
+	logf.FromContext(ctx).Info("Reconciling")
+
 	result := ctrl.Result{}
 	cleanCis := cis.DeepCopy()
 
