@@ -99,10 +99,27 @@ var managedByImageScanner = predicate.NewPredicateFuncs(func(object client.Objec
 })
 
 var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	job := object.(*batchv1.Job)
-	return job.Status.Succeeded > 0 || job.Status.Failed > 0
+	return isJobFinished(object.(*batchv1.Job))
 })
 
 var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Object) bool {
 	return object.(*stasv1alpha1.ContainerImageScan).HasVulnerabilityOverflow()
 })
+
+// isJobFinished checks whether the given Job has finished execution.
+// It does not discriminate between successful and failed terminations.
+// https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/job/utils.go#L24-L33
+func isJobFinished(j *batchv1.Job) bool {
+	s := jobStatus(j)
+	return s == batchv1.JobComplete || s == batchv1.JobFailed
+}
+
+func jobStatus(j *batchv1.Job) batchv1.JobConditionType {
+	for _, c := range j.Status.Conditions {
+		if c.Status == corev1.ConditionTrue {
+			return c.Type
+		}
+	}
+
+	return ""
+}
