@@ -49,7 +49,7 @@ var _ = Describe("Scan Job controller", func() {
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful", "successful-scan-job-pod.log.json"))
 			Expect(komega.UpdateStatus(scanJob, func() {
-				scanJob.Status.Succeeded = 1
+				setJobCondition(scanJob, batchv1.JobComplete)
 			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
@@ -90,7 +90,7 @@ var _ = Describe("Scan Job controller", func() {
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful-long", "scan-job-pod.log.json"))
 				Expect(komega.UpdateStatus(scanJob, func() {
-					scanJob.Status.Succeeded = 1
+					setJobCondition(scanJob, batchv1.JobComplete)
 				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
@@ -123,7 +123,7 @@ var _ = Describe("Scan Job controller", func() {
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-invalid-json", "scan-job-pod.log.invalid.json"))
 				Expect(komega.UpdateStatus(scanJob, func() {
-					scanJob.Status.Succeeded = 1
+					setJobCondition(scanJob, batchv1.JobComplete)
 				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
@@ -157,7 +157,7 @@ var _ = Describe("Scan Job controller", func() {
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-failed", "failed-scan-job-pod.log"))
 			Expect(komega.UpdateStatus(scanJob, func() {
-				scanJob.Status.Failed = 1
+				setJobCondition(scanJob, batchv1.JobFailed)
 			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
@@ -174,6 +174,13 @@ var _ = Describe("Scan Job controller", func() {
 		})
 	})
 })
+
+func setJobCondition(job *batchv1.Job, conditionType batchv1.JobConditionType) {
+	job.Status.Conditions = []batchv1.JobCondition{{
+		Type:   conditionType,
+		Status: corev1.ConditionTrue,
+	}}
+}
 
 var _ = DescribeTable("Converting to vulnerability summary (severity count)",
 	func(vulnerabilities []stasv1alpha1.Vulnerability, expectedSummary map[string]int32) {

@@ -215,12 +215,15 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 		}
 	}(logs)
 
-	if job.Status.Succeeded > 0 {
-		logf.FromContext(ctx).V(1).Info("Patching CIS status", "status", "Succeeded")
+	switch js := jobStatus(job); js {
+	case batchv1.JobComplete:
+		logf.FromContext(ctx).V(1).Info("Patching CIS status", "jobStatus", js)
 		return r.reconcileCompleteJob(ctx, job, logs, cis)
-	} else {
-		logf.FromContext(ctx).V(1).Info("Patching CIS status", "status", "Failed")
+	case batchv1.JobFailed:
+		logf.FromContext(ctx).V(1).Info("Patching CIS status", "jobStatus", js)
 		return r.reconcileFailedJob(ctx, job, logs, cis)
+	default:
+		return fmt.Errorf("I don't know how to handle job status %q", js)
 	}
 }
 
