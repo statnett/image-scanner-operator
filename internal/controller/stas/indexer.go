@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 
+	batchv1 "k8s.io/api/batch/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -10,8 +11,11 @@ import (
 )
 
 const (
-	indexOwnerUID = ".metadata.owner"
-	indexUID      = ".metadata.uid"
+	indexOwnerUID     = ".metadata.owner"
+	indexUID          = ".metadata.uid"
+	indexJobCondition = ".status.condition"
+
+	jobNotFinished = "NotFinished"
 )
 
 type Indexer struct{}
@@ -41,6 +45,26 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 	}
 	for _, object := range []client.Object{&stasv1alpha1.ContainerImageScan{}} {
 		if err := indexer.IndexField(context.TODO(), object, indexUID, UIDFn); err != nil {
+			return err
+		}
+	}
+
+	jobConditionFn := func(obj client.Object) []string {
+		job := obj.(*batchv1.Job)
+		// TODO: non-exact field matches are not supported by the cache
+		// https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cache/internal/cache_reader.go#L116-L121
+		// So mapping to [Complete, Failed, NotFinished] where the last is a composite condition
+		switch jc := jobCondition(job); jc {
+		case batchv1.JobComplete:
+			return []string{string(jc)}
+		case batchv1.JobFailed:
+			return []string{string(jc)}
+		default:
+			return []string{jobNotFinished}
+		}
+	}
+	for _, object := range []client.Object{&batchv1.Job{}} {
+		if err := indexer.IndexField(context.TODO(), object, indexJobCondition, jobConditionFn); err != nil {
 			return err
 		}
 	}
