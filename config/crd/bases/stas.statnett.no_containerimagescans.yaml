@@ -170,9 +170,9 @@ spec:
                   - type
                   type: object
                 type: array
-              lastScanJobName:
-                description: LastScanJobName is the name of the scan job that last
-                  (successfully) updated the status.
+              lastScanJobUID:
+                description: LastScanJobUID is the UID of the scan job that last updated
+                  the status.
                 type: string
               lastScanTime:
                 description: LastScanTime is the timestamp for the last attempt to

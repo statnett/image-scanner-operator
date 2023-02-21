@@ -5,6 +5,7 @@ import (
 	"github.com/opencontainers/go-digest"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 )
 
@@ -91,10 +92,10 @@ type ContainerImageScanSpec struct {
 type ContainerImageScanStatus struct {
 	// ObservedGeneration is the generation observed by the image scanner operator.
 	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
+	// LastScanJobUID is the UID of the scan job that last updated the status.
+	LastScanJobUID types.UID `json:"lastScanJobUID,omitempty"`
 	// LastScanTime is the timestamp for the last attempt to scan the image.
 	LastScanTime *metav1.Time `json:"lastScanTime,omitempty"`
-	// LastScanJobName is the name of the scan job that last (successfully) updated the status.
-	LastScanJobName string `json:"lastScanJobName,omitempty"`
 	// LastSuccessfulScanTime is the timestamp for the last successful scan of the image.
 	LastSuccessfulScanTime *metav1.Time `json:"lastSuccessfulScanTime,omitempty"`
 	// Conditions represent the latest available observations of an object's state.

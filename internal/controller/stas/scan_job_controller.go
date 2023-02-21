@@ -55,7 +55,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r.reconcile())
 }
 
-func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName string, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
+func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
 	var (
 		cleanCis        = cis.DeepCopy()
 		vulnerabilities []stasv1alpha1.Vulnerability
@@ -70,12 +70,12 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 			Type:    string(kstatus.ConditionStalled),
 			Status:  metav1.ConditionTrue,
 			Reason:  stasv1alpha1.ReasonScanReportDecodeError,
-			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", jobName, err),
+			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err),
 		}
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
 		cis.Status.LastScanTime = &now
-		cis.Status.LastScanJobName = jobName
+		cis.Status.LastScanJobUID = job.UID
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 		logf.FromContext(ctx).V(1).Info("Patched CIS status", "reason", condition.Reason, "error", err)
 
@@ -97,7 +97,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 	// Clear any conditions since we now have a successful scan report
 	cis.Status.Conditions = nil
 	cis.Status.LastScanTime = &now
-	cis.Status.LastScanJobName = jobName
+	cis.Status.LastScanJobUID = job.UID
 	cis.Status.LastSuccessfulScanTime = &now
 
 	err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
@@ -113,7 +113,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, jobName st
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
 		cis.Status.LastScanTime = &now
-		cis.Status.LastScanJobName = jobName
+		cis.Status.LastScanJobUID = job.UID
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 		logf.FromContext(ctx).V(1).Info("Patched CIS status", "reason", condition.Reason, "error", err)
 	}
@@ -127,7 +127,7 @@ func isResourceTooLargeError(err error) bool {
 			strings.Contains(err.Error(), "request is too large"))
 }
 
-func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName string, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
+func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
 	cleanCis := cis.DeepCopy()
 
 	logBytes, err := io.ReadAll(log)
@@ -146,7 +146,7 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, jobName stri
 
 	now := metav1.Now()
 	cis.Status.LastScanTime = &now
-	cis.Status.LastScanJobName = jobName
+	cis.Status.LastScanJobUID = job.UID
 
 	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
 }
@@ -192,7 +192,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 
 	cis := &cisList.Items[0]
 
-	if job.Name == cis.Status.LastScanJobName {
+	if job.UID == cis.Status.LastScanJobUID {
 		// We already reconciled this job; no point doing it again
 		return nil
 	}
@@ -202,7 +202,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 		switch {
 		case staserrors.IsJobPodNotFound(err), staserrors.IsScanJobContainerWaiting(err):
 			logf.FromContext(ctx).V(1).Info("Error while fetching logs", "error", err)
-			return r.reconcileFailedJob(ctx, job.Name, strings.NewReader(err.Error()), cis)
+			return r.reconcileFailedJob(ctx, job, strings.NewReader(err.Error()), cis)
 		default:
 			return err
 		}
@@ -217,10 +217,10 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 
 	if job.Status.Succeeded > 0 {
 		logf.FromContext(ctx).V(1).Info("Patching CIS status", "status", "Succeeded")
-		return r.reconcileCompleteJob(ctx, job.Name, logs, cis)
+		return r.reconcileCompleteJob(ctx, job, logs, cis)
 	} else {
 		logf.FromContext(ctx).V(1).Info("Patching CIS status", "status", "Failed")
-		return r.reconcileFailedJob(ctx, job.Name, logs, cis)
+		return r.reconcileFailedJob(ctx, job, logs, cis)
 	}
 }
 

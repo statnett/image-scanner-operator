@@ -55,7 +55,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
 			Expect(cis.Status.LastSuccessfulScanTime).To(Not(BeZero()))
-			Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
+			Expect(cis.Status.LastScanJobUID).To(Equal(scanJob.UID))
 			// Check no conditions
 			Expect(cis.Status.Conditions).To(BeEmpty())
 			// Check scan results available
@@ -96,7 +96,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
 				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-				Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
+				Expect(cis.Status.LastScanJobUID).To(Equal(scanJob.UID))
 				// Check conditions
 				Expect(cis.Status.Conditions).To(HaveLen(1))
 				condition := cis.Status.Conditions[0]
@@ -129,7 +129,7 @@ var _ = Describe("Scan Job controller", func() {
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
 				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-				Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
+				Expect(cis.Status.LastScanJobUID).To(Equal(scanJob.UID))
 				// Check conditions
 				Expect(cis.Status.Conditions).To(HaveLen(1))
 				condition := cis.Status.Conditions[0]
@@ -163,7 +163,7 @@ var _ = Describe("Scan Job controller", func() {
 			// Wait for Job to get reconciled
 			Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
 			Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
-			Expect(cis.Status.LastScanJobName).To(Equal(scanJob.Name))
+			Expect(cis.Status.LastScanJobUID).To(Equal(scanJob.UID))
 			// Check conditions
 			Expect(cis.Status.Conditions).To(HaveLen(1))
 			condition := cis.Status.Conditions[0]
