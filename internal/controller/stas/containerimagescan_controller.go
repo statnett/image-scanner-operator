@@ -77,7 +77,7 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 func (r *ContainerImageScanReconciler) activeScanJobCount(ctx context.Context) (int, error) {
 	listOps := []client.ListOption{
 		client.InNamespace(r.ScanJobNamespace),
-		client.MatchingFields{indexJobStatus: jobStatusNotFinished},
+		client.MatchingFields{indexJobCondition: jobNotFinished},
 	}
 
 	list := &batchv1.JobList{}

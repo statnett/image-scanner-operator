@@ -110,11 +110,11 @@ var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Ob
 // It does not discriminate between successful and failed terminations.
 // https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/job/utils.go#L24-L33
 func isJobFinished(j *batchv1.Job) bool {
-	s := jobStatus(j)
-	return s == batchv1.JobComplete || s == batchv1.JobFailed
+	c := jobCondition(j)
+	return c == batchv1.JobComplete || c == batchv1.JobFailed
 }
 
-func jobStatus(j *batchv1.Job) batchv1.JobConditionType {
+func jobCondition(j *batchv1.Job) batchv1.JobConditionType {
 	for _, c := range j.Status.Conditions {
 		if c.Status == corev1.ConditionTrue {
 			return c.Type

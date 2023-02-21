@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	indexOwnerUID  = ".metadata.owner"
-	indexUID       = ".metadata.uid"
-	indexJobStatus = ".status.type"
+	indexOwnerUID     = ".metadata.owner"
+	indexUID          = ".metadata.uid"
+	indexJobCondition = ".status.condition"
 
-	jobStatusNotFinished = ""
+	jobNotFinished = "NotFinished"
 )
 
 type Indexer struct{}
@@ -49,21 +49,22 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 		}
 	}
 
-	jobStatusFn := func(obj client.Object) []string {
+	jobConditionFn := func(obj client.Object) []string {
 		job := obj.(*batchv1.Job)
 		// TODO: non-exact field matches are not supported by the cache
 		// https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cache/internal/cache_reader.go#L116-L121
-		switch js := jobStatus(job); js {
+		// So mapping to [Complete, Failed, NotFinished] where the last is a composite condition
+		switch jc := jobCondition(job); jc {
 		case batchv1.JobComplete:
-			return []string{string(js)}
+			return []string{string(jc)}
 		case batchv1.JobFailed:
-			return []string{string(js)}
+			return []string{string(jc)}
 		default:
-			return []string{jobStatusNotFinished}
+			return []string{jobNotFinished}
 		}
 	}
 	for _, object := range []client.Object{&batchv1.Job{}} {
-		if err := indexer.IndexField(context.TODO(), object, indexJobStatus, jobStatusFn); err != nil {
+		if err := indexer.IndexField(context.TODO(), object, indexJobCondition, jobConditionFn); err != nil {
 			return err
 		}
 	}
