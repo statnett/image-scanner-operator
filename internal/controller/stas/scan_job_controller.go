@@ -70,7 +70,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 			Type:    string(kstatus.ConditionStalled),
 			Status:  metav1.ConditionTrue,
 			Reason:  stasv1alpha1.ReasonScanReportDecodeError,
-			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job, err),
+			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err),
 		}
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
