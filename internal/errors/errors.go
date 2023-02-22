@@ -34,11 +34,11 @@ func IsNamespaceTerminating(err error) bool {
 }
 
 type NotFoundError struct {
-	s string
+	text string
 }
 
 func (e *NotFoundError) Error() string {
-	return e.s
+	return e.text
 }
 
 func IsNotFound(err error) bool {
@@ -47,7 +47,7 @@ func IsNotFound(err error) bool {
 }
 
 func NewNotFound(text string) *NotFoundError {
-	return &NotFoundError{s: text}
+	return &NotFoundError{text: text}
 }
 
 type ScanJobContainerWaitingError struct {
