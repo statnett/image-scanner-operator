@@ -111,7 +111,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 			}
 
 			job := &batchv1.Job{}
-			if err := r.Get(ctx, req.NamespacedName, job); err != nil {
+			if err := r.Get(ctx, client.ObjectKey{Namespace: req.Namespace, Name: pc.Name}, job); err != nil {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
 
