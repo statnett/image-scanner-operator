@@ -129,7 +129,7 @@ func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv
 
 	cis, err := r.getScanJobCIS(ctx, job)
 	if err != nil {
-		return err
+		return staserrors.Ignore(err, staserrors.IsNotFound)
 	}
 
 	return r.reconcileFailedJob(ctx, job, strings.NewReader(errMsg), cis)
@@ -253,7 +253,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 
 	cis, err := r.getScanJobCIS(ctx, job)
 	if err != nil {
-		return err
+		return staserrors.Ignore(err, staserrors.IsNotFound)
 	}
 
 	if job.UID == cis.Status.LastScanJobUID {
@@ -264,7 +264,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	logs, err := r.getScanJobLogs(ctx, job)
 	if err != nil {
 		switch {
-		case staserrors.IsJobPodNotFound(err), staserrors.IsScanJobContainerWaiting(err):
+		case staserrors.IsNotFound(err), staserrors.IsScanJobContainerWaiting(err):
 			logf.FromContext(ctx).V(1).Info("Error while fetching logs", "error", err)
 			return r.reconcileFailedJob(ctx, job, strings.NewReader(err.Error()), cis)
 		default:
@@ -304,8 +304,7 @@ func (r *ScanJobReconciler) getScanJobCIS(ctx context.Context, job *batchv1.Job)
 
 	switch len(cisList.Items) {
 	case 0:
-		// CIS deleted; nothing more to do
-		return nil, nil
+		return nil, staserrors.NewNotFound(fmt.Sprintf("no CISes found for job %q", job.Name))
 	case 1:
 	default:
 		return nil, errors.New("expected number of container image scans to be 1")
@@ -328,7 +327,7 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 
 	switch len(pods.Items) {
 	case 0:
-		return nil, staserrors.NewJobPodNotFound(job.Name)
+		return nil, staserrors.NewNotFound(fmt.Sprintf("no pods found for job %q", job.Name))
 	case 1:
 	default:
 		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods.Items))

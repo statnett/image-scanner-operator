@@ -2,8 +2,6 @@ package errors
 
 import (
 	"errors"
-	"fmt"
-
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 )
@@ -35,21 +33,21 @@ func IsNamespaceTerminating(err error) bool {
 	return apierrors.HasStatusCause(err, corev1.NamespaceTerminatingCause)
 }
 
-type JobPodNotFoundError struct {
-	JobName string
+type NotFoundError struct {
+	s string
 }
 
-func (e *JobPodNotFoundError) Error() string {
-	return fmt.Sprintf("no pods found for job %q", e.JobName)
+func (e *NotFoundError) Error() string {
+	return e.s
 }
 
-func IsJobPodNotFound(err error) bool {
-	var notFoundErr *JobPodNotFoundError
+func IsNotFound(err error) bool {
+	var notFoundErr *NotFoundError
 	return errors.As(err, &notFoundErr)
 }
 
-func NewJobPodNotFound(jobName string) *JobPodNotFoundError {
-	return &JobPodNotFoundError{JobName: jobName}
+func NewNotFound(text string) *NotFoundError {
+	return &NotFoundError{s: text}
 }
 
 type ScanJobContainerWaitingError struct {
