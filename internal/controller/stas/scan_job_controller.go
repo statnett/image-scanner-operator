@@ -123,35 +123,16 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 }
 
 func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv1.Job, errMsg string) error {
-	cisList := &stasv1alpha1.ContainerImageScanList{}
-
-	logf.FromContext(ctx).V(1).Info("Reconciling", "status", job.Status)
-
-	listOps := []client.ListOption{
-		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
-		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
-	}
-	if err := r.List(ctx, cisList, listOps...); err != nil {
+	if err := r.Delete(ctx, job); err != nil {
 		return err
 	}
 
-	switch len(cisList.Items) {
-	case 0:
-		// CIS deleted; nothing more to do
-		return nil
-	case 1:
-	default:
-		return errors.New("expected number of container image scans to be 1")
-	}
-
-	cis := &cisList.Items[0]
-
-	err := r.reconcileFailedJob(ctx, job, strings.NewReader(errMsg), cis)
+	cis, err := r.getScanJobCIS(ctx, job)
 	if err != nil {
 		return err
 	}
 
-	return r.Delete(ctx, job)
+	return r.reconcileFailedJob(ctx, job, strings.NewReader(errMsg), cis)
 }
 
 func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
@@ -268,28 +249,12 @@ func (r *ScanJobReconciler) reconcile() reconcile.Func {
 }
 
 func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) error {
-	cisList := &stasv1alpha1.ContainerImageScanList{}
-
 	logf.FromContext(ctx).V(1).Info("Reconciling", "status", job.Status)
 
-	listOps := []client.ListOption{
-		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
-		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
-	}
-	if err := r.List(ctx, cisList, listOps...); err != nil {
+	cis, err := r.getScanJobCIS(ctx, job)
+	if err != nil {
 		return err
 	}
-
-	switch len(cisList.Items) {
-	case 0:
-		// CIS deleted; nothing more to do
-		return nil
-	case 1:
-	default:
-		return errors.New("expected number of container image scans to be 1")
-	}
-
-	cis := &cisList.Items[0]
 
 	if job.UID == cis.Status.LastScanJobUID {
 		// We already reconciled this job; no point doing it again
@@ -324,6 +289,29 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 	default:
 		return fmt.Errorf("I don't know how to handle job status %q", jc)
 	}
+}
+
+func (r *ScanJobReconciler) getScanJobCIS(ctx context.Context, job *batchv1.Job) (*stasv1alpha1.ContainerImageScan, error) {
+	cisList := &stasv1alpha1.ContainerImageScanList{}
+
+	listOps := []client.ListOption{
+		client.InNamespace(job.Labels[stasv1alpha1.LabelStatnettControllerNamespace]),
+		client.MatchingFields{indexUID: job.Labels[stasv1alpha1.LabelStatnettControllerUID]},
+	}
+	if err := r.List(ctx, cisList, listOps...); err != nil {
+		return nil, err
+	}
+
+	switch len(cisList.Items) {
+	case 0:
+		// CIS deleted; nothing more to do
+		return nil, nil
+	case 1:
+	default:
+		return nil, errors.New("expected number of container image scans to be 1")
+	}
+
+	return &cisList.Items[0], nil
 }
 
 func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job) (io.ReadCloser, error) {
