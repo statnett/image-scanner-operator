@@ -3,6 +3,7 @@ name: Delete obsolete container images
 on:
   schedule:
     - cron: "0 1 * * *"  # every day at midnight
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
