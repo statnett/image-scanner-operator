@@ -34,6 +34,11 @@ import (
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 )
 
+var backoffContainerStateReasons = map[string]struct{}{
+	"ImagePullBackOff": {},
+	"ErrImagePull":     {},
+}
+
 // ScanJobReconciler reconciles a finished image scan Job object.
 type ScanJobReconciler struct {
 	client.Client
@@ -94,15 +99,23 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
 
-			var errMsg string
+			var stateWaiting *corev1.ContainerStateWaiting
 
 			for _, cs := range p.Status.ContainerStatuses {
-				if w := cs.State.Waiting; w != nil {
-					if w.Reason == "ImagePullBackOff" || w.Reason == "ErrImagePull" {
-						errMsg = w.Message
+				if csw := cs.State.Waiting; csw != nil {
+					if _, ok := backoffContainerStateReasons[csw.Reason]; ok {
+						stateWaiting = csw
 						break
 					}
 				}
+			}
+
+			if stateWaiting == nil {
+				reasons := make([]string, 0, len(backoffContainerStateReasons))
+				for k := range backoffContainerStateReasons {
+					reasons = append(reasons, k)
+				}
+				return ctrl.Result{}, fmt.Errorf("no container-state waiting found with reasons %q in pod %q", reasons, p.Name)
 			}
 
 			pc := metav1.GetControllerOf(p)
@@ -115,7 +128,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
 
-			return ctrl.Result{}, r.reconcileBackOffJob(ctx, job, errMsg)
+			return ctrl.Result{}, r.reconcileBackOffJob(ctx, job, stateWaiting.Message)
 		}
 
 		return controller.Reconcile(ctx, fn)
