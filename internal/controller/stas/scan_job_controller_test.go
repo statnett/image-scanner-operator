@@ -207,6 +207,14 @@ func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	podLog, err := os.ReadFile(logFilePath)
 	Expect(err).NotTo(HaveOccurred())
 
+	pod := createScanJobPod(job)
+
+	logsReader.EXPECT().
+		GetLogs(mock.Anything, client.ObjectKeyFromObject(pod), trivy.ScanJobContainerName).
+		Call.Return(io.NopCloser(bytes.NewReader(podLog)), nil)
+}
+
+func createScanJobPod(job *batchv1.Job) *corev1.Pod {
 	pod := &corev1.Pod{}
 	pod.Namespace = job.Namespace
 	pod.GenerateName = job.Name
@@ -215,7 +223,5 @@ func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	Expect(controllerutil.SetControllerReference(job, pod, k8sScheme)).To(Succeed())
 	Expect(k8sClient.Create(ctx, pod)).To(Succeed())
 
-	logsReader.EXPECT().
-		GetLogs(mock.Anything, client.ObjectKeyFromObject(pod), trivy.ScanJobContainerName).
-		Call.Return(io.NopCloser(bytes.NewReader(podLog)), nil)
+	return pod
 }

@@ -1,0 +1,9 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: backoff-pod
+  namespace: default
+spec:
+  digest: 'sha256:f9fdea3b0bca9cf34456a49a821981a071809734a060ed25a87714cf888ac527'
+  name: docker.io/user/image-deleted
