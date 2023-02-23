@@ -115,6 +115,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 				for k := range backoffContainerStateReasons {
 					reasons = append(reasons, k)
 				}
+
 				return ctrl.Result{}, fmt.Errorf("no container-state waiting found with reasons %q in pod %q", reasons, p.Name)
 			}
 
