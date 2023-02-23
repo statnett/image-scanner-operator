@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.2](https://github.com/statnett/image-scanner-operator/compare/v0.4.1...v0.4.2) (2023-02-23)
+
+
+### Bug Fixes
+
+* ensure back-off scan jobs are deleted ([#229](https://github.com/statnett/image-scanner-operator/issues/229)) ([9b9a8d2](https://github.com/statnett/image-scanner-operator/commit/9b9a8d2c5101406d627871c22e8f7edc8c19ac91))
+* max active scan job limit ([#226](https://github.com/statnett/image-scanner-operator/issues/226)) ([6da1636](https://github.com/statnett/image-scanner-operator/commit/6da163659c787cd6842efa0bbfcc566872a17f56))
+* request smaller PV for trivy server cache ([#227](https://github.com/statnett/image-scanner-operator/issues/227)) ([26ee6cb](https://github.com/statnett/image-scanner-operator/commit/26ee6cb1e80ea2daec31287fbdb0b896439d5282))
+* use last scan job UID instead of name ([#217](https://github.com/statnett/image-scanner-operator/issues/217)) ([41a0a4b](https://github.com/statnett/image-scanner-operator/commit/41a0a4b3478fa0d183e77842fd36fe502e93be4c))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.1 to 2.8.3 ([#222](https://github.com/statnett/image-scanner-operator/issues/222)) ([ee67368](https://github.com/statnett/image-scanner-operator/commit/ee67368bf70e6776254b1dd18c00183da7595222))
+* **deps:** bump github.com/onsi/gomega from 1.27.0 to 1.27.1 ([#220](https://github.com/statnett/image-scanner-operator/issues/220)) ([ceaf6a0](https://github.com/statnett/image-scanner-operator/commit/ceaf6a05f453d3c731783f7c38005c5b718ec347))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.4 to 0.1.5 ([#221](https://github.com/statnett/image-scanner-operator/issues/221)) ([605164f](https://github.com/statnett/image-scanner-operator/commit/605164f4a8ee49e28a9b898ff75d2f21705646a2))
+
 ## [0.4.1](https://github.com/statnett/image-scanner-operator/compare/v0.4.0...v0.4.1) (2023-02-17)
 
 
