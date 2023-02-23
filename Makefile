@@ -1,6 +1,6 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= "registry.dummy-domain.com/image-scanner/controller:latest"
+IMG ?= "registry.dummy-domain.com/image-scanner/controller:dev"
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.26.0
 # Namespace to install operator into

@@ -20,4 +20,4 @@ configMapGenerator:
 images:
   - name: controller
     newName: registry.dummy-domain.com/image-scanner/controller
-    newTag: latest
+    newTag: dev
