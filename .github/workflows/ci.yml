@@ -103,7 +103,7 @@ jobs:
     needs: verify-generated
     runs-on: ubuntu-latest
     env:
-      IMG: registry.dummy-domain.com/image-scanner/controller:latest
+      IMG: registry.dummy-domain.com/image-scanner/controller:dev
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
       # renovate: datasource=github-tags depName=k3d-io/k3d
