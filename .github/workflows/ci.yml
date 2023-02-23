@@ -128,7 +128,7 @@ jobs:
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
-          microk8s ctr images ls
+          sudo microk8s ctr images ls
           ls ${{ env.IMG_FILE }}
           microk8s ctr image import ${{ env.IMG_FILE }}
           make deploy-dependencies deploy
