@@ -123,7 +123,7 @@ jobs:
       - uses: balchua/microk8s-actions@607dc38f1d8605ab60663a7b20ac2e4d7b404962 # v0.3.1
         with:
           channel: 1.25/stable
-          addons: ["dns", "rbac", "hostpath-storage", "registry", "prometheus"]
+          addons: '["dns", "rbac", "hostpath-storage", "registry", "prometheus"]'
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
