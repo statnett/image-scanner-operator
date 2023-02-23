@@ -122,14 +122,16 @@ jobs:
           cache-to: type=gha,mode=max
       - uses: balchua/microk8s-actions@607dc38f1d8605ab60663a7b20ac2e4d7b404962 # v0.3.1
         with:
-          channel: 1.25/stable
-          addons: '["dns", "rbac", "hostpath-storage", "registry", "prometheus"]'
+          channel: 1.26/stable
+          addons: '["dns", "rbac", "hostpath-storage", "registry"]'
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
+          microk8s ctr images ls
+          ls ${{ env.IMG_FILE }}
           microk8s ctr image import ${{ env.IMG_FILE }}
-          make deploy
+          make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
           repo: kudobuilder/kuttl
