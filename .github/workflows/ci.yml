@@ -103,23 +103,13 @@ jobs:
     needs: verify-generated
     runs-on: ubuntu-latest
     env:
-      IMG: registry.dummy-domain.com/image-scanner/controller:dev
-      IMG_FILE: operator-image.tar
+      IMG: localhost:32000/image-scanner/controller:latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57 # v2.2.0
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
-      - uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18 # v2.1.0
-      - uses: docker/setup-buildx-action@f03ac48505955848960e80bbb68046aa35c7b9e7 # v2.4.1
-      - uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
-        with:
-          context: .
-          outputs: type=docker,dest=${{ env.IMG_FILE }}
-          tags: ${{ env.IMG }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - uses: balchua/microk8s-actions@607dc38f1d8605ab60663a7b20ac2e4d7b404962 # v0.3.1
         with:
           channel: 1.26/stable
@@ -127,10 +117,16 @@ jobs:
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
+      - uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18 # v2.1.0
+      - uses: docker/setup-buildx-action@f03ac48505955848960e80bbb68046aa35c7b9e7 # v2.4.1
+      - uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - run: |
-          sudo microk8s ctr images ls
-          ls ${{ env.IMG_FILE }}
-          microk8s ctr image import ${{ env.IMG_FILE }}
           make deploy-dependencies deploy
       - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
         with:
