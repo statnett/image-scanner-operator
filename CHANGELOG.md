@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.3](https://github.com/statnett/image-scanner-operator/compare/v0.4.2...v0.4.3) (2023-02-24)
+
+
+### Bug Fixes
+
+* ensure job pod is deleted when deleting scan job ([#234](https://github.com/statnett/image-scanner-operator/issues/234)) ([380e3bd](https://github.com/statnett/image-scanner-operator/commit/380e3bd5711c7e66571a257c51dd55914a4ea712))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/vektra/mockery/v2 from 2.20.0 to 2.20.2 ([#233](https://github.com/statnett/image-scanner-operator/issues/233)) ([285e46b](https://github.com/statnett/image-scanner-operator/commit/285e46ba7c63faefaaa76a8b55a191ad50d87671))
+
 ## [0.4.2](https://github.com/statnett/image-scanner-operator/compare/v0.4.1...v0.4.2) (2023-02-23)
 
 
