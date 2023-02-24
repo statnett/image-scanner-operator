@@ -8,6 +8,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
@@ -59,8 +60,8 @@ var _ = Describe("Scan Job BackOff Pod controller", func() {
 			Expect(condition.Reason).To(Equal("Error"))
 			Expect(condition.Message).To(Equal("Image not found"))
 
-			// Check that scan job is "deleted"
-			Eventually(komega.Object(scanJob)).Should(HaveField("ObjectMeta.DeletionTimestamp", Not(BeZero())))
+			// Check that scan job is deleted
+			Eventually(komega.Get(scanJob)).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
 		})
 	})
 })

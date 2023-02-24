@@ -119,13 +119,17 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 				return ctrl.Result{}, fmt.Errorf("no container-state waiting found with reasons %q in pod %q", reasons, p.Name)
 			}
 
-			pc := metav1.GetControllerOf(p)
-			if pc.Kind != "Job" {
+			podController := metav1.GetControllerOf(p)
+			if podController == nil {
+				return ctrl.Result{}, fmt.Errorf("no controller found for pod %q", p.Name)
+			}
+
+			if podController.Kind != "Job" {
 				return ctrl.Result{}, nil
 			}
 
 			job := &batchv1.Job{}
-			if err := r.Get(ctx, client.ObjectKey{Namespace: req.Namespace, Name: pc.Name}, job); err != nil {
+			if err := r.Get(ctx, client.ObjectKey{Namespace: req.Namespace, Name: podController.Name}, job); err != nil {
 				return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 			}
 
@@ -137,7 +141,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 }
 
 func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv1.Job, errMsg string) error {
-	if err := r.Delete(ctx, job); err != nil {
+	if err := r.Delete(ctx, job, client.PropagationPolicy(metav1.DeletePropagationBackground)); err != nil {
 		return err
 	}
 
