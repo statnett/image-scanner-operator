@@ -115,6 +115,7 @@ jobs:
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
+          kubectl wait deployment -n container-registry registry --for condition=Available=True --timeout=90s
       - uses: haythem/public-ip@bdddd92c198b0955f0b494a8ebeac529754262ff # v1.3.0
         id: ip
       - name: Set IMG using public IP
