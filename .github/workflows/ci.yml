@@ -102,6 +102,8 @@ jobs:
   e2e-test:
     needs: verify-generated
     runs-on: ubuntu-latest
+    env:
+      IMG: localhost:32000/image-scanner/controller:latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57 # v2.2.0
@@ -116,10 +118,6 @@ jobs:
           kubectl cluster-info
           kubectl version --output=yaml
           kubectl wait deployment -n container-registry registry --for condition=Available=True --timeout=90s
-      - uses: haythem/public-ip@bdddd92c198b0955f0b494a8ebeac529754262ff # v1.3.0
-        id: ip
-      - name: Set IMG using public IP
-        run: echo "IMG=${{ steps.ip.outputs.ipv4 }}:32000/image-scanner/controller:latest" >> $GITHUB_ENV
       - uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18 # v2.1.0
       - uses: docker/setup-buildx-action@f03ac48505955848960e80bbb68046aa35c7b9e7 # v2.4.1
       - uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
