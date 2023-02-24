@@ -120,6 +120,9 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 			}
 
 			pc := metav1.GetControllerOf(p)
+			if pc == nil {
+				return ctrl.Result{}, fmt.Errorf("no owner found for pod %q", p.Name)
+			}
 			if pc.Kind != "Job" {
 				return ctrl.Result{}, nil
 			}
@@ -137,7 +140,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 }
 
 func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv1.Job, errMsg string) error {
-	if err := r.Delete(ctx, job); err != nil {
+	if err := r.Delete(ctx, job, client.PropagationPolicy(metav1.DeletePropagationBackground)); err != nil {
 		return err
 	}
 
