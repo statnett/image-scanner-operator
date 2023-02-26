@@ -116,7 +116,8 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 					reasons = append(reasons, k)
 				}
 
-				return ctrl.Result{}, fmt.Errorf("no container-state waiting found with reasons %q in pod %q", reasons, p.Name)
+				return ctrl.Result{}, fmt.Errorf("no waiting state found with reasons %q in pod %q with container statuses %+v",
+					reasons, p.Name, p.Status.ContainerStatuses)
 			}
 
 			podController := metav1.GetControllerOf(p)
