@@ -111,13 +111,14 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 			}
 
 			if stateWaiting == nil {
-				reasons := make([]string, 0, len(backoffContainerStateReasons))
+				expectedReasons := make([]string, 0, len(backoffContainerStateReasons))
 				for k := range backoffContainerStateReasons {
-					reasons = append(reasons, k)
+					expectedReasons = append(expectedReasons, k)
 				}
 
-				return ctrl.Result{}, fmt.Errorf("no waiting state found with reasons %q in pod %q with container statuses %+v",
-					reasons, p.Name, p.Status.ContainerStatuses)
+				logf.FromContext(ctx).V(1).Info("no waiting state found", "expectedReasons", expectedReasons)
+				// Pod (in controller cache) has not yet reached waiting state. Requeue event
+				return ctrl.Result{Requeue: true}, nil
 			}
 
 			podController := metav1.GetControllerOf(p)
