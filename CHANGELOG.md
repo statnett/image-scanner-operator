@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.4](https://github.com/statnett/image-scanner-operator/compare/v0.4.3...v0.4.4) (2023-02-27)
+
+
+### Bug Fixes
+
+* add debug logging for container state waiting ([#236](https://github.com/statnett/image-scanner-operator/issues/236)) ([3ce31e8](https://github.com/statnett/image-scanner-operator/commit/3ce31e86d70ef3580e7bf1851543d0ee60a6c9d5))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/stretchr/testify from 1.8.1 to 1.8.2 ([#240](https://github.com/statnett/image-scanner-operator/issues/240)) ([5d50b3d](https://github.com/statnett/image-scanner-operator/commit/5d50b3da1b49320cb0c74ab7b9a3d097a59bd534))
+
 ## [0.4.3](https://github.com/statnett/image-scanner-operator/compare/v0.4.2...v0.4.3) (2023-02-24)
 
 
