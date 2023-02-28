@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.5](https://github.com/statnett/image-scanner-operator/compare/v0.4.4...v0.4.5) (2023-02-28)
+
+
+### Bug Fixes
+
+* requeue event when no container state waiting found ([#241](https://github.com/statnett/image-scanner-operator/issues/241)) ([f8199b7](https://github.com/statnett/image-scanner-operator/commit/f8199b7868b1a845681dd48e21d470d652b86e02))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.3 to 2.8.4 ([#242](https://github.com/statnett/image-scanner-operator/issues/242)) ([f216a4d](https://github.com/statnett/image-scanner-operator/commit/f216a4d2e809f2917f4410fd7d9eb66b6b06487d))
+
 ## [0.4.4](https://github.com/statnett/image-scanner-operator/compare/v0.4.3...v0.4.4) (2023-02-27)
 
 
