@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.6](https://github.com/statnett/image-scanner-operator/compare/v0.4.5...v0.4.6) (2023-03-03)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.1 to 1.27.2 ([#244](https://github.com/statnett/image-scanner-operator/issues/244)) ([a6a2b39](https://github.com/statnett/image-scanner-operator/commit/a6a2b39600fd0335cdb0cb7619f8ec578d74d5c3))
+* **deps:** bump k8s.io/api from 0.26.1 to 0.26.2 ([#250](https://github.com/statnett/image-scanner-operator/issues/250)) ([e29297d](https://github.com/statnett/image-scanner-operator/commit/e29297d54f4dc00feb00b6d587b03109a506d6a6))
+* **deps:** bump k8s.io/apimachinery from 0.26.1 to 0.26.2 ([#247](https://github.com/statnett/image-scanner-operator/issues/247)) ([f9dd8f1](https://github.com/statnett/image-scanner-operator/commit/f9dd8f128b91fc57093e5b87e5aae3f105182072))
+* **deps:** bump k8s.io/client-go from 0.26.1 to 0.26.2 ([#248](https://github.com/statnett/image-scanner-operator/issues/248)) ([d13ade2](https://github.com/statnett/image-scanner-operator/commit/d13ade24be18e76738c8c8095e0034c86f0ff42a))
+* **deps:** bump k8s.io/klog/v2 from 2.90.0 to 2.90.1 ([#251](https://github.com/statnett/image-scanner-operator/issues/251)) ([67fb92d](https://github.com/statnett/image-scanner-operator/commit/67fb92dea31a4bfa8960b0c7dd4b319116244c0e))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.14.4 to 0.14.5 ([#249](https://github.com/statnett/image-scanner-operator/issues/249)) ([69cd4e8](https://github.com/statnett/image-scanner-operator/commit/69cd4e821d20ed1ed0eef8ac8eb560a5042a0f15))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.0 ([#245](https://github.com/statnett/image-scanner-operator/issues/245)) ([2370648](https://github.com/statnett/image-scanner-operator/commit/23706485ae54b198bbf8f1ed72c0ded3fe5e421f))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.1 ([#252](https://github.com/statnett/image-scanner-operator/issues/252)) ([5bfcf45](https://github.com/statnett/image-scanner-operator/commit/5bfcf458b9284df1ed69071c9c7f9a8ae6ab4998))
+
 ## [0.4.5](https://github.com/statnett/image-scanner-operator/compare/v0.4.4...v0.4.5) (2023-02-28)
 
 
