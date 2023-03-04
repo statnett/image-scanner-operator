@@ -70,6 +70,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - events.k8s.io
+  resources:
+  - events
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - stas.statnett.no
   resources:
   - containerimagescans
@@ -125,14 +133,6 @@ rules:
   verbs:
   - create
   - delete
-  - get
-  - list
-  - watch
-- apiGroups:
-  - events.k8s.io
-  resources:
-  - events
-  verbs:
   - get
   - list
   - watch
