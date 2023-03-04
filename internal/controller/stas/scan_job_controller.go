@@ -69,6 +69,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("backOffScanJobPod").
+		WithEventFilter(inNamespacePredicate(r.ScanJobNamespace)).
 		Watches(
 			&source.Kind{Type: &eventsv1.Event{}},
 			handler.EnqueueRequestsFromMapFunc(func(obj client.Object) []reconcile.Request {
@@ -81,7 +82,6 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				}
 			}),
 			builder.WithPredicates(
-				inNamespacePredicate(r.ScanJobNamespace),
 				eventRegardingKind("Pod"),
 				eventReason("BackOff"),
 			),
