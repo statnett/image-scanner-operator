@@ -107,7 +107,7 @@ jobs:
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
       # renovate: datasource=github-tags depName=k3d-io/k3d
-      K3D_VERSION: v5.4.7
+      K3D_VERSION: v5.4.8
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57 # v2.2.0
