@@ -7,7 +7,7 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/onsi/ginkgo/v2 v2.8.4
+	github.com/onsi/ginkgo/v2 v2.9.0
 	github.com/onsi/gomega v1.27.2
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/prometheus/client_golang v1.14.0
