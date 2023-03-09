@@ -10,8 +10,8 @@ configMapGenerator:
       - SCAN_INTERVAL=12h
       # renovate-image:
       - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.38.3
-      - SCAN_JOB_NAMESPACE=image-scanner-jobs
-      - SCAN_JOB_SERVICE_ACCOUNT=image-scanner
+      - SCAN_JOB_NAMESPACE=image-scanner
+      - SCAN_JOB_SERVICE_ACCOUNT=image-scanner-job
       - SCAN_WORKLOAD_RESOURCES=deployments.apps,replicasets.apps,statefulsets.apps,daemonsets.apps,cronjobs.batch,jobs.batch,replicationcontrollers
       - ZAP_ENCODER=json
       - ZAP_LOG_LEVEL=info
