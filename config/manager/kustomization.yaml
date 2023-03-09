@@ -9,7 +9,7 @@ configMapGenerator:
       - CIS_METRICS_LABELS=app.kubernetes.io/name
       - SCAN_INTERVAL=12h
       # renovate-image:
-      - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.38.1
+      - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.38.2
       - SCAN_JOB_NAMESPACE=image-scanner-jobs
       - SCAN_JOB_SERVICE_ACCOUNT=image-scanner
       - SCAN_WORKLOAD_RESOURCES=deployments.apps,replicasets.apps,statefulsets.apps,daemonsets.apps,cronjobs.batch,jobs.batch,replicationcontrollers
