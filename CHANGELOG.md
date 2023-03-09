@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.7](https://github.com/statnett/image-scanner-operator/compare/v0.4.6...v0.4.7) (2023-03-09)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.4 to 2.9.0 ([#258](https://github.com/statnett/image-scanner-operator/issues/258)) ([90a4a3a](https://github.com/statnett/image-scanner-operator/commit/90a4a3a90412fff8bc4585f5841bca10eeabb857))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.20.2 to 2.21.4 ([#262](https://github.com/statnett/image-scanner-operator/issues/262)) ([e888f71](https://github.com/statnett/image-scanner-operator/commit/e888f71f55a911eab902ab508ba934746a58928f))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.2 ([#261](https://github.com/statnett/image-scanner-operator/issues/261)) ([3fdbffc](https://github.com/statnett/image-scanner-operator/commit/3fdbffc3789e3301ba7e9836c1894d241cd34d76))
+
 ## [0.4.6](https://github.com/statnett/image-scanner-operator/compare/v0.4.5...v0.4.6) (2023-03-03)
 
 
