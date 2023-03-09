@@ -10,6 +10,7 @@ configMapGenerator:
       # Only include kuttl namespace pattern to reduce resource waste running e2e tests
       - SCAN_NAMESPACE_INCLUDE_REGEXP=^kuttl-.*
   - name: trivy-job-config
+    namespace: image-scanner
     behavior: merge
     literals:
       # See if "slow" config can improve stability
