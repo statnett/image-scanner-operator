@@ -4,13 +4,11 @@ on:
   push:
     branches:
       - main
-permissions: # added using https://github.com/step-security/secure-workflows
-  contents: read
+permissions:
+  contents: write # for google-github-actions/release-please-action to create release commit
+  pull-requests: write # for google-github-actions/release-please-action to create release PR
 jobs:
   release-please:
-    permissions:
-      contents: write # for google-github-actions/release-please-action to create release commit
-      pull-requests: write # for google-github-actions/release-please-action to create release PR
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
