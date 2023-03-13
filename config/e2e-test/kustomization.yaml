@@ -7,13 +7,10 @@ configMapGenerator:
   - name: image-scanner-config
     behavior: merge
     literals:
+      # Only one scan job active - to avoid Trivy concurrency issues
+      - ACTIVE_SCAN_JOB_LIMIT=1
       # Only include kuttl namespace pattern to reduce resource waste running e2e tests
       - SCAN_NAMESPACE_INCLUDE_REGEXP=^kuttl-.*
-  - name: trivy-job-config
-    behavior: merge
-    literals:
-      # See if "slow" config can improve stability
-      - SLOW=true
 patches:
   # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
   # Disable trivy server sessionAffinity; not really needed when running a single replica
