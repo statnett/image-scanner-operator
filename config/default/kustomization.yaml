@@ -2,10 +2,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../image-scanner-jobs
   - ../operator
   - ../trivy-server
   - scc_anyuid_role_binding.yaml
+  - service_account.yaml
+configMapGenerator:
+  - name: trivy-job-config
+    namespace: image-scanner
+    literals:
+      - OFFLINE_SCAN=true
+      - SERVER=http://trivy.image-scanner.svc.cluster.local
+      - TIMEOUT=30m
+generatorOptions:
+  disableNameSuffixHash: true
 replacements:
   # This replacement ensures that we run the same trivy image in client and server (obtained from server)
   - source:

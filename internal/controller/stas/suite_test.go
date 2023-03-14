@@ -34,7 +34,7 @@ import (
 	//+kubebuilder:scaffold:imports
 )
 
-const scanJobNamespace = "image-scanner-jobs"
+const scanJobNamespace = "image-scanner"
 
 var (
 	cfg              *rest.Config
@@ -108,7 +108,7 @@ var _ = BeforeSuite(func() {
 
 	config := config.Config{
 		ScanJobNamespace:      scanJobNamespace,
-		ScanJobServiceAccount: "image-scanner",
+		ScanJobServiceAccount: "image-scanner-job",
 		ScanInterval:          time.Hour,
 		TrivyImage:            "aquasecurity/trivy",
 	}
