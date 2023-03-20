@@ -25,7 +25,6 @@ jobs:
       - uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
         with:
           go-version-file: go.mod
-          cache: true
       - uses: golangci/golangci-lint-action@08e2f20817b15149a52b5b3ebe7de50aff2ba8c5 # v3.4.0
         with:
           version: v1.50.1
@@ -61,7 +60,6 @@ jobs:
       - uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
         with:
           go-version-file: go.mod
-          cache: true
       - name: Generate all
         run: |
           make generate-all
@@ -90,7 +88,6 @@ jobs:
       - uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
         with:
           go-version-file: go.mod
-          cache: true
       - name: Install ginkgo
         run: |
           command -v ginkgo || go install -v github.com/onsi/ginkgo/v2/ginkgo@${{ env.GINKGO_VERSION }}
