@@ -13,5 +13,10 @@ jobs:
   trigger-api-docs-indexing:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776 # v2.2.1
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
       - run: |
           curl https://doc.crds.dev/github.com/${{ github.event.repository.full_name }}@${{ github.event.release.tag_name }}
