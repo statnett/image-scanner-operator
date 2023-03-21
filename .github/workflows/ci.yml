@@ -135,7 +135,7 @@ jobs:
       - run: |
           k3d image import ${{ env.IMG_FILE }} --cluster ${{ env.K3D_CLUSTER }}
           make deploy-dependencies deploy
-      - uses: jaxxstorm/action-install-gh-release@f2bcf7617d36fea65f0a9d261d4947b19947956e # v1.9.0
+      - uses: jaxxstorm/action-install-gh-release@c5ead9a448b4660cf1e7866ee22e4dc56538031a # v1.10.0
         with:
           repo: kudobuilder/kuttl
           # renovate: datasource=github-tags depName=kudobuilder/kuttl
