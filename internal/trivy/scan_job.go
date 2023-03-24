@@ -142,7 +142,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 	job.Spec.Parallelism = pointer.Int32(1)
 	job.Spec.Completions = pointer.Int32(1)
 	job.Spec.ActiveDeadlineSeconds = pointer.Int64(int64(3600))
-	job.Spec.BackoffLimit = pointer.Int32(0)
+	job.Spec.BackoffLimit = pointer.Int32(3)
 	job.Spec.TTLSecondsAfterFinished = pointer.Int32(7200)
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
 
@@ -169,7 +169,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 	}
 
 	job.Spec.Template.Spec.AutomountServiceAccountToken = pointer.Bool(false)
-	job.Spec.Template.Spec.RestartPolicy = corev1.RestartPolicyNever
+	job.Spec.Template.Spec.RestartPolicy = corev1.RestartPolicyOnFailure
 
 	return job, nil
 }
