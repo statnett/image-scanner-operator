@@ -5,6 +5,7 @@ import (
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
+	eventsv1 "k8s.io/api/events/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -122,4 +123,18 @@ func jobCondition(j *batchv1.Job) batchv1.JobConditionType {
 	}
 
 	return ""
+}
+
+func eventRegardingKind(kind string) predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		e := object.(*eventsv1.Event)
+		return e.Regarding.Kind == kind
+	})
+}
+
+func eventReason(reason string) predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		e := object.(*eventsv1.Event)
+		return e.Reason == reason
+	})
 }

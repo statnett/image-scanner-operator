@@ -4,20 +4,18 @@ on:
   push:
     branches:
       - main
-permissions: # added using https://github.com/step-security/secure-workflows
-  contents: read
+permissions:
+  contents: write # for google-github-actions/release-please-action to create release commit
+  pull-requests: write # for google-github-actions/release-please-action to create release PR
 jobs:
   release-please:
-    permissions:
-      contents: write # for google-github-actions/release-please-action to create release commit
-      pull-requests: write # for google-github-actions/release-please-action to create release PR
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@18bf8ad2ca49c14cbb28b91346d626ccfb00c518 # v2.1.0
+        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776 # v2.2.1
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-      - uses: google-github-actions/release-please-action@d3c71f9a0a55385580de793de58da057b3560862 # v3.7.4
+      - uses: google-github-actions/release-please-action@e0b9d1885d92e9a93d5ce8656de60e3b806e542c # v3.7.5
         with:
           token: ${{ secrets.BOT_PAT }}
           # TODO: Eventually remove this, when we are ready for GA (version 1.0.0)

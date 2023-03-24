@@ -1,5 +1,91 @@
 # Changelog
 
+## [0.4.8](https://github.com/statnett/image-scanner-operator/compare/v0.4.7...v0.4.8) (2023-03-14)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.2 to 1.27.4 ([#277](https://github.com/statnett/image-scanner-operator/issues/277)) ([517804f](https://github.com/statnett/image-scanner-operator/commit/517804f81525d8721a371a3803d1c2678614d887))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.5 to 0.1.6 ([#264](https://github.com/statnett/image-scanner-operator/issues/264)) ([0d20cc1](https://github.com/statnett/image-scanner-operator/commit/0d20cc16121d48a189526c1a96b941155b61b20c))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.21.4 to 2.22.1 ([#265](https://github.com/statnett/image-scanner-operator/issues/265)) ([e3b9c80](https://github.com/statnett/image-scanner-operator/commit/e3b9c80792fb8f0cd49b7174a51d5d237779b1e7))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.3 ([#279](https://github.com/statnett/image-scanner-operator/issues/279)) ([7f2e089](https://github.com/statnett/image-scanner-operator/commit/7f2e0892e1fcfdf8bbc1a072131c8a4426885c36))
+
+## [0.4.7](https://github.com/statnett/image-scanner-operator/compare/v0.4.6...v0.4.7) (2023-03-09)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.4 to 2.9.0 ([#258](https://github.com/statnett/image-scanner-operator/issues/258)) ([90a4a3a](https://github.com/statnett/image-scanner-operator/commit/90a4a3a90412fff8bc4585f5841bca10eeabb857))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.20.2 to 2.21.4 ([#262](https://github.com/statnett/image-scanner-operator/issues/262)) ([e888f71](https://github.com/statnett/image-scanner-operator/commit/e888f71f55a911eab902ab508ba934746a58928f))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.2 ([#261](https://github.com/statnett/image-scanner-operator/issues/261)) ([3fdbffc](https://github.com/statnett/image-scanner-operator/commit/3fdbffc3789e3301ba7e9836c1894d241cd34d76))
+
+## [0.4.6](https://github.com/statnett/image-scanner-operator/compare/v0.4.5...v0.4.6) (2023-03-03)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.1 to 1.27.2 ([#244](https://github.com/statnett/image-scanner-operator/issues/244)) ([a6a2b39](https://github.com/statnett/image-scanner-operator/commit/a6a2b39600fd0335cdb0cb7619f8ec578d74d5c3))
+* **deps:** bump k8s.io/api from 0.26.1 to 0.26.2 ([#250](https://github.com/statnett/image-scanner-operator/issues/250)) ([e29297d](https://github.com/statnett/image-scanner-operator/commit/e29297d54f4dc00feb00b6d587b03109a506d6a6))
+* **deps:** bump k8s.io/apimachinery from 0.26.1 to 0.26.2 ([#247](https://github.com/statnett/image-scanner-operator/issues/247)) ([f9dd8f1](https://github.com/statnett/image-scanner-operator/commit/f9dd8f128b91fc57093e5b87e5aae3f105182072))
+* **deps:** bump k8s.io/client-go from 0.26.1 to 0.26.2 ([#248](https://github.com/statnett/image-scanner-operator/issues/248)) ([d13ade2](https://github.com/statnett/image-scanner-operator/commit/d13ade24be18e76738c8c8095e0034c86f0ff42a))
+* **deps:** bump k8s.io/klog/v2 from 2.90.0 to 2.90.1 ([#251](https://github.com/statnett/image-scanner-operator/issues/251)) ([67fb92d](https://github.com/statnett/image-scanner-operator/commit/67fb92dea31a4bfa8960b0c7dd4b319116244c0e))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.14.4 to 0.14.5 ([#249](https://github.com/statnett/image-scanner-operator/issues/249)) ([69cd4e8](https://github.com/statnett/image-scanner-operator/commit/69cd4e821d20ed1ed0eef8ac8eb560a5042a0f15))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.0 ([#245](https://github.com/statnett/image-scanner-operator/issues/245)) ([2370648](https://github.com/statnett/image-scanner-operator/commit/23706485ae54b198bbf8f1ed72c0ded3fe5e421f))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.38.1 ([#252](https://github.com/statnett/image-scanner-operator/issues/252)) ([5bfcf45](https://github.com/statnett/image-scanner-operator/commit/5bfcf458b9284df1ed69071c9c7f9a8ae6ab4998))
+
+## [0.4.5](https://github.com/statnett/image-scanner-operator/compare/v0.4.4...v0.4.5) (2023-02-28)
+
+
+### Bug Fixes
+
+* requeue event when no container state waiting found ([#241](https://github.com/statnett/image-scanner-operator/issues/241)) ([f8199b7](https://github.com/statnett/image-scanner-operator/commit/f8199b7868b1a845681dd48e21d470d652b86e02))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.3 to 2.8.4 ([#242](https://github.com/statnett/image-scanner-operator/issues/242)) ([f216a4d](https://github.com/statnett/image-scanner-operator/commit/f216a4d2e809f2917f4410fd7d9eb66b6b06487d))
+
+## [0.4.4](https://github.com/statnett/image-scanner-operator/compare/v0.4.3...v0.4.4) (2023-02-27)
+
+
+### Bug Fixes
+
+* add debug logging for container state waiting ([#236](https://github.com/statnett/image-scanner-operator/issues/236)) ([3ce31e8](https://github.com/statnett/image-scanner-operator/commit/3ce31e86d70ef3580e7bf1851543d0ee60a6c9d5))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/stretchr/testify from 1.8.1 to 1.8.2 ([#240](https://github.com/statnett/image-scanner-operator/issues/240)) ([5d50b3d](https://github.com/statnett/image-scanner-operator/commit/5d50b3da1b49320cb0c74ab7b9a3d097a59bd534))
+
+## [0.4.3](https://github.com/statnett/image-scanner-operator/compare/v0.4.2...v0.4.3) (2023-02-24)
+
+
+### Bug Fixes
+
+* ensure job pod is deleted when deleting scan job ([#234](https://github.com/statnett/image-scanner-operator/issues/234)) ([380e3bd](https://github.com/statnett/image-scanner-operator/commit/380e3bd5711c7e66571a257c51dd55914a4ea712))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/vektra/mockery/v2 from 2.20.0 to 2.20.2 ([#233](https://github.com/statnett/image-scanner-operator/issues/233)) ([285e46b](https://github.com/statnett/image-scanner-operator/commit/285e46ba7c63faefaaa76a8b55a191ad50d87671))
+
+## [0.4.2](https://github.com/statnett/image-scanner-operator/compare/v0.4.1...v0.4.2) (2023-02-23)
+
+
+### Bug Fixes
+
+* ensure back-off scan jobs are deleted ([#229](https://github.com/statnett/image-scanner-operator/issues/229)) ([9b9a8d2](https://github.com/statnett/image-scanner-operator/commit/9b9a8d2c5101406d627871c22e8f7edc8c19ac91))
+* max active scan job limit ([#226](https://github.com/statnett/image-scanner-operator/issues/226)) ([6da1636](https://github.com/statnett/image-scanner-operator/commit/6da163659c787cd6842efa0bbfcc566872a17f56))
+* request smaller PV for trivy server cache ([#227](https://github.com/statnett/image-scanner-operator/issues/227)) ([26ee6cb](https://github.com/statnett/image-scanner-operator/commit/26ee6cb1e80ea2daec31287fbdb0b896439d5282))
+* use last scan job UID instead of name ([#217](https://github.com/statnett/image-scanner-operator/issues/217)) ([41a0a4b](https://github.com/statnett/image-scanner-operator/commit/41a0a4b3478fa0d183e77842fd36fe502e93be4c))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.8.1 to 2.8.3 ([#222](https://github.com/statnett/image-scanner-operator/issues/222)) ([ee67368](https://github.com/statnett/image-scanner-operator/commit/ee67368bf70e6776254b1dd18c00183da7595222))
+* **deps:** bump github.com/onsi/gomega from 1.27.0 to 1.27.1 ([#220](https://github.com/statnett/image-scanner-operator/issues/220)) ([ceaf6a0](https://github.com/statnett/image-scanner-operator/commit/ceaf6a05f453d3c731783f7c38005c5b718ec347))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.4 to 0.1.5 ([#221](https://github.com/statnett/image-scanner-operator/issues/221)) ([605164f](https://github.com/statnett/image-scanner-operator/commit/605164f4a8ee49e28a9b898ff75d2f21705646a2))
+
 ## [0.4.1](https://github.com/statnett/image-scanner-operator/compare/v0.4.0...v0.4.1) (2023-02-17)
 
 
