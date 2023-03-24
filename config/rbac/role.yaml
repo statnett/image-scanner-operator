@@ -109,7 +109,7 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: manager-role
-  namespace: image-scanner-jobs
+  namespace: image-scanner
 rules:
 - apiGroups:
   - ""

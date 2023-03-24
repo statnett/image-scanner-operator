@@ -47,9 +47,9 @@ type ScanJobReconciler struct {
 	pod.LogsReader
 }
 
-//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch,namespace=image-scanner-jobs
-//+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch,namespace=image-scanner-jobs
-//+kubebuilder:rbac:groups="",resources=pods/log,verbs=get;list,namespace=image-scanner-jobs
+//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch,namespace=image-scanner
+//+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch,namespace=image-scanner
+//+kubebuilder:rbac:groups="",resources=pods/log,verbs=get;list,namespace=image-scanner
 //+kubebuilder:rbac:groups="events.k8s.io",resources=events,verbs=get;list;watch
 
 // SetupWithManager sets up the controller with the Manager.
