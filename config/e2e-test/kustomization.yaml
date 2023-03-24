@@ -15,26 +15,3 @@ configMapGenerator:
     literals:
       # See if "slow" config can improve stability
       - SLOW=true
-patches:
-  # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
-  # Disable trivy server sessionAffinity; not really needed when running a single replica
-  - patch: |-
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: trivy
-      spec:
-        sessionAffinity: None
-  # Replace PVC with emptyDir for e2e-tests
-  - patch: |-
-      apiVersion: apps/v1
-      kind: StatefulSet
-      metadata:
-        name: trivy
-      spec:
-        volumeClaimTemplates: []
-        template:
-          spec:
-            volumes:
-              - name: data
-                emptyDir: {}
