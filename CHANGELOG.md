@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.5.0](https://github.com/statnett/image-scanner-operator/compare/v0.4.8...v0.5.0) (2023-03-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* run scan jobs in own namespace by default ([#256](https://github.com/statnett/image-scanner-operator/issues/256))
+
+### Features
+
+* run scan jobs in own namespace by default ([#256](https://github.com/statnett/image-scanner-operator/issues/256)) ([9259144](https://github.com/statnett/image-scanner-operator/commit/92591446a8cee6bf4b0fe3a03b4b0ac36a1eb8d9))
+
+
+### Bug Fixes
+
+* tighten cluster-wide RBAC ([#253](https://github.com/statnett/image-scanner-operator/issues/253)) ([2d4014f](https://github.com/statnett/image-scanner-operator/commit/2d4014f1982843014c1b0506e7010a6350d60c17))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.9.1 to 2.9.2 ([#295](https://github.com/statnett/image-scanner-operator/issues/295)) ([4fe6739](https://github.com/statnett/image-scanner-operator/commit/4fe6739b68dd211d04489990a0061edcbacfcf0b))
+* **deps:** bump github.com/onsi/gomega from 1.27.4 to 1.27.5 ([#296](https://github.com/statnett/image-scanner-operator/issues/296)) ([e9b37a7](https://github.com/statnett/image-scanner-operator/commit/e9b37a7f0eadd772259e554fa34f873fa29d435e))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.22.1 to 2.23.0 ([#286](https://github.com/statnett/image-scanner-operator/issues/286)) ([a53f876](https://github.com/statnett/image-scanner-operator/commit/a53f87630c449d04f83612766341965fda7019d5))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.23.0 to 2.23.1 ([#292](https://github.com/statnett/image-scanner-operator/issues/292)) ([576f74e](https://github.com/statnett/image-scanner-operator/commit/576f74ea6f74a6b6147f8bebd947cb378c5a1972))
+* **deps:** bump k8s.io/api from 0.26.2 to 0.26.3 ([#288](https://github.com/statnett/image-scanner-operator/issues/288)) ([68b6931](https://github.com/statnett/image-scanner-operator/commit/68b6931caf65a223087249ef4b0eaf43af21e983))
+* **deps:** bump k8s.io/apimachinery from 0.26.2 to 0.26.3 ([#287](https://github.com/statnett/image-scanner-operator/issues/287)) ([b9f1c57](https://github.com/statnett/image-scanner-operator/commit/b9f1c574e404bdd4653edb1d595feb1fd434f7f6))
+* **deps:** bump k8s.io/client-go from 0.26.2 to 0.26.3 ([#289](https://github.com/statnett/image-scanner-operator/issues/289)) ([cd5fbd1](https://github.com/statnett/image-scanner-operator/commit/cd5fbd128fd98be7bdae7f5bddd0b102614ba1ae))
+
 ## [0.4.8](https://github.com/statnett/image-scanner-operator/compare/v0.4.7...v0.4.8) (2023-03-14)
 
 
