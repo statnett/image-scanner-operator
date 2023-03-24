@@ -47,9 +47,9 @@ type ScanJobReconciler struct {
 	pod.LogsReader
 }
 
-//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch
-//+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
-//+kubebuilder:rbac:groups="",resources=pods/log,verbs=get;list
+//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch,namespace=image-scanner
+//+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch,namespace=image-scanner
+//+kubebuilder:rbac:groups="",resources=pods/log,verbs=get;list,namespace=image-scanner
 //+kubebuilder:rbac:groups="events.k8s.io",resources=events,verbs=get;list;watch
 
 // SetupWithManager sets up the controller with the Manager.
@@ -69,6 +69,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("backOffScanJobPod").
+		WithEventFilter(inNamespacePredicate(r.ScanJobNamespace)).
 		Watches(
 			&source.Kind{Type: &eventsv1.Event{}},
 			handler.EnqueueRequestsFromMapFunc(func(obj client.Object) []reconcile.Request {
@@ -81,7 +82,6 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				}
 			}),
 			builder.WithPredicates(
-				inNamespacePredicate(r.ScanJobNamespace),
 				eventRegardingKind("Pod"),
 				eventReason("BackOff"),
 			),

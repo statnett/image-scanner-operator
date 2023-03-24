@@ -39,7 +39,7 @@ type ContainerImageScanReconciler struct {
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/finalizers,verbs=update
-//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=create;delete
+//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=create;delete,namespace=image-scanner
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
