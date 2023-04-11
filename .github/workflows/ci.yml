@@ -48,7 +48,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
-      - uses: nosborn/github-action-markdown-cli@5cfe13755d7cdc2d0d01b69c7900cfd3fa37f4a4 # v3.2.0
+      - uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
         with:
           files: .
   verify-generated:
