@@ -26,12 +26,3 @@ jobs:
           org-name: statnett
           untagged-only: true
           token: ${{ secrets.BOT_PAT }}
-      - name: Delete PR container images older than a month, using a wildcard
-        uses: snok/container-retention-policy@482ce28159f65a8bfad986da1fedcef40169aa75 # v2.0.0
-        with:
-          image-names: image-scanner-operator
-          cut-off: One month ago UTC
-          account-type: org
-          org-name: statnett
-          filter-tags: pr-*
-          token: ${{ secrets.BOT_PAT }}
