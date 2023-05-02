@@ -176,8 +176,11 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
 		cis.Status.LastScanTime = &now
 		cis.Status.LastScanJobUID = job.UID
+
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-		logf.FromContext(ctx).V(1).Info("Patched CIS status", "reason", condition.Reason, "error", err)
+		if err != nil {
+			logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
+		}
 
 		return err
 	}
@@ -214,8 +217,11 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
 		cis.Status.LastScanTime = &now
 		cis.Status.LastScanJobUID = job.UID
+
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-		logf.FromContext(ctx).V(1).Info("Patched CIS status", "reason", condition.Reason, "error", err)
+		if err != nil {
+			logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
+		}
 	}
 
 	return err
@@ -248,7 +254,12 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1
 	cis.Status.LastScanTime = &now
 	cis.Status.LastScanJobUID = job.UID
 
-	return r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+	err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+	if err != nil {
+		logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
+	}
+
+	return err
 }
 
 func (r *ScanJobReconciler) reconcile() reconcile.Func {
