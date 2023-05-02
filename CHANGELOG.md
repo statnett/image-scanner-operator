@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.3](https://github.com/statnett/image-scanner-operator/compare/v0.5.2...v0.5.3) (2023-05-02)
+
+
+### Bug Fixes
+
+* improve logging when CIS .status.conditions patch fails ([#357](https://github.com/statnett/image-scanner-operator/issues/357)) ([beece44](https://github.com/statnett/image-scanner-operator/commit/beece443a47e8002fcef6c8bc36ee054b87e454c))
+
+
+### Dependency Updates
+
+* **deps:** bump k8s.io/klog/v2 from 2.90.1 to 2.100.1 ([#355](https://github.com/statnett/image-scanner-operator/issues/355)) ([d486f1d](https://github.com/statnett/image-scanner-operator/commit/d486f1d7a05c13c728de8231ecdba66c73f48304))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.41.0 ([#348](https://github.com/statnett/image-scanner-operator/issues/348)) ([9aa6626](https://github.com/statnett/image-scanner-operator/commit/9aa6626d4d9b95975acd0072485ba40595e0e2ab))
+
 ## [0.5.2](https://github.com/statnett/image-scanner-operator/compare/v0.5.1...v0.5.2) (2023-04-26)
 
 
