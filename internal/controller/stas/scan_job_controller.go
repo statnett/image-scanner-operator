@@ -351,20 +351,27 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 		return nil, err
 	}
 
-	pods := &corev1.PodList{}
-	if err = r.List(ctx, pods, client.MatchingLabelsSelector{Selector: selector}); err != nil {
+	podList := &corev1.PodList{}
+	if err = r.List(ctx, podList, client.MatchingLabelsSelector{Selector: selector}); err != nil {
 		return nil, err
 	}
 
-	switch len(pods.Items) {
+	var pods []corev1.Pod
+	for _, p := range podList.Items {
+		if p.Status.Reason != "Evicted" {
+			pods = append(pods, p)
+		}
+	}
+
+	switch len(pods) {
 	case 0:
 		return nil, staserrors.NewNotFound(fmt.Sprintf("no pods found for job %q", job.Name))
 	case 1:
 	default:
-		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods.Items))
+		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods))
 	}
 
-	jobPod := pods.Items[0]
+	jobPod := pods[0]
 
 	var scanJobContainerStatus corev1.ContainerStatus
 
