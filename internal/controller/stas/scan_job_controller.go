@@ -364,12 +364,8 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 		}
 	}
 
-	switch len(pods) {
-	case 0:
-		return nil, staserrors.NewNotFound(fmt.Sprintf("no pods found for job %q", job.Name))
-	case 1:
-	default:
-		return nil, fmt.Errorf("expected number of job pods to be 1, got %d ", len(pods))
+	if len(pods) != 1 {
+		return nil, fmt.Errorf("expected number of job pods to be 1, got %d", len(pods))
 	}
 
 	jobPod := pods[0]
