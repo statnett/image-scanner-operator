@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/statnett/image-scanner-operator/compare/v0.5.4...v0.5.5) (2023-05-10)
+
+
+### Bug Fixes
+
+* don't consider evicted pods when looking for scan job pods ([#369](https://github.com/statnett/image-scanner-operator/issues/369)) ([3b0578b](https://github.com/statnett/image-scanner-operator/commit/3b0578bccaabeb2f3eb3d84b419d7eb9958cd719))
+
 ## [0.5.4](https://github.com/statnett/image-scanner-operator/compare/v0.5.3...v0.5.4) (2023-05-04)
 
 
