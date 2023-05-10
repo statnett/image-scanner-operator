@@ -357,6 +357,7 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	}
 
 	var pods []corev1.Pod
+
 	for _, p := range podList.Items {
 		if p.Status.Reason != "Evicted" {
 			pods = append(pods, p)
