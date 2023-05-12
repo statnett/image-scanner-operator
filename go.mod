@@ -3,7 +3,7 @@ module github.com/statnett/image-scanner-operator
 go 1.19
 
 require (
-	github.com/distribution/distribution v2.8.1+incompatible
+	github.com/distribution/distribution v2.8.2+incompatible
 	github.com/go-logr/logr v1.2.4
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
