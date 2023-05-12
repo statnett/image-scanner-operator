@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.6](https://github.com/statnett/image-scanner-operator/compare/v0.5.5...v0.5.6) (2023-05-12)
+
+
+### Bug Fixes
+
+* revert change in scan job pod error handling ([#371](https://github.com/statnett/image-scanner-operator/issues/371)) ([6bc7359](https://github.com/statnett/image-scanner-operator/commit/6bc7359dc2051bc6fe1a26179ce3633e31707d2d))
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/distribution/distribution from 2.8.1+incompatible to 2.8.2+incompatible ([#374](https://github.com/statnett/image-scanner-operator/issues/374)) ([9834d9f](https://github.com/statnett/image-scanner-operator/commit/9834d9fd44b5c36d7bb15ee06de64fdea36a2268))
+* **deps:** bump github.com/docker/distribution from 2.8.1+incompatible to 2.8.2+incompatible ([#373](https://github.com/statnett/image-scanner-operator/issues/373)) ([d869eaf](https://github.com/statnett/image-scanner-operator/commit/d869eaf8c5381f3c132c08a9c54978105e58b4ba))
+
 ## [0.5.5](https://github.com/statnett/image-scanner-operator/compare/v0.5.4...v0.5.5) (2023-05-10)
 
 
