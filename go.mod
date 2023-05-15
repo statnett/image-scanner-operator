@@ -13,7 +13,7 @@ require (
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0
-	github.com/statnett/controller-runtime-viper v0.1.8
+	github.com/statnett/controller-runtime-viper v0.1.9
 	github.com/stretchr/testify v1.8.2
 	github.com/vektra/mockery/v2 v2.27.1
 	k8s.io/api v0.26.3
@@ -37,7 +37,7 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/go-logr/zapr v1.2.3 // indirect
+	github.com/go-logr/zapr v1.2.4 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
