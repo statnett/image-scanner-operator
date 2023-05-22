@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.7](https://github.com/statnett/image-scanner-operator/compare/v0.5.6...v0.5.7) (2023-05-22)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.9.4 to 2.9.5 ([#378](https://github.com/statnett/image-scanner-operator/issues/378)) ([43ce334](https://github.com/statnett/image-scanner-operator/commit/43ce3345310005c7ae170fefc770a6dfc626a2c0))
+* **deps:** bump github.com/onsi/gomega from 1.27.6 to 1.27.7 ([#382](https://github.com/statnett/image-scanner-operator/issues/382)) ([328ae39](https://github.com/statnett/image-scanner-operator/commit/328ae39517a87149a1e9f6b7a59fb9ab3b8779ff))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.1.8 to 0.1.9 ([#376](https://github.com/statnett/image-scanner-operator/issues/376)) ([fc97b58](https://github.com/statnett/image-scanner-operator/commit/fc97b5893984da8c421588224e3b20c4e061c859))
+* **deps:** bump github.com/stretchr/testify from 1.8.2 to 1.8.3 ([#383](https://github.com/statnett/image-scanner-operator/issues/383)) ([5486fee](https://github.com/statnett/image-scanner-operator/commit/5486fee6a7f719c58836ec3b15bb82c2f3add731))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.26.1 to 2.27.1 ([#375](https://github.com/statnett/image-scanner-operator/issues/375)) ([e3b1551](https://github.com/statnett/image-scanner-operator/commit/e3b1551e61f2014813c5ec69d84bca77db331e30))
+
 ## [0.5.6](https://github.com/statnett/image-scanner-operator/compare/v0.5.5...v0.5.6) (2023-05-12)
 
 
