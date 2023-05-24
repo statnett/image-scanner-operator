@@ -6,6 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/client_golang/prometheus/testutil"
+	"github.com/stretchr/testify/mock"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -24,7 +25,9 @@ var _ = Describe("ContainerImageScan Collector", func() {
 			Client: c,
 			Config: config.Config{MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"}},
 		}
-		Expect(imageMetricsCollector.SetupWithManager(&fakeManager{})).To(Succeed())
+		mgr := &MockManager{}
+		mgr.EXPECT().Add(mock.Anything).Call.Return(nil)
+		Expect(imageMetricsCollector.SetupWithManager(mgr)).To(Succeed())
 	})
 
 	AssertNoLintIssues := func() {
