@@ -21,7 +21,6 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -35,7 +34,7 @@ const (
 	KubernetesNameMaxLength = validation.DNS1123SubdomainMaxLength
 )
 
-var noEventsEventHandler = handler.EnqueueRequestsFromMapFunc(func(o client.Object) []reconcile.Request {
+var noEventsEventHandler = handler.EnqueueRequestsFromMapFunc(func(context.Context, client.Object) []reconcile.Request {
 	return nil
 })
 
@@ -81,8 +80,8 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
-		Watches(&source.Kind{Type: &stasv1alpha1.ContainerImageScan{}},
-			&handler.EnqueueRequestForOwner{OwnerType: &corev1.Pod{}},
+		Watches(&stasv1alpha1.ContainerImageScan{},
+			handler.EnqueueRequestForOwner(mgr.GetScheme(), mgr.GetRESTMapper(), &corev1.Pod{}),
 			builder.WithPredicates(
 				predicate.Or(predicate.GenerationChangedPredicate{}, cisVulnerabilityOverflow),
 				ignoreCreationPredicate(),
@@ -91,7 +90,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	for _, kind := range r.WorkloadKinds {
 		obj := &metav1.PartialObjectMetadata{}
 		obj.SetGroupVersionKind(kind)
-		bldr.Watches(&source.Kind{Type: obj}, noEventsEventHandler, builder.OnlyMetadata)
+		bldr.Watches(obj, noEventsEventHandler, builder.OnlyMetadata)
 	}
 
 	return bldr.Complete(r.reconcilePod())
