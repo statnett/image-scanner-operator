@@ -7,7 +7,10 @@ import (
 	. "github.com/onsi/gomega"
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
+	"k8s.io/client-go/discovery"
+	memcached "k8s.io/client-go/discovery/cached/memory"
 	"k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/restmapper"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -35,7 +38,10 @@ var _ = BeforeSuite(func() {
 	Expect(appsv1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(batchv1.AddToScheme(scheme.Scheme)).To(Succeed())
 
-	k8sClient, err = client.New(restCfg, client.Options{Scheme: scheme.Scheme})
+	discoveryClient := memcached.NewMemCacheClient(discovery.NewDiscoveryClientForConfigOrDie(restCfg))
+	mapper := restmapper.NewDeferredDiscoveryRESTMapper(discoveryClient)
+
+	k8sClient, err = client.New(restCfg, client.Options{Scheme: scheme.Scheme, Mapper: mapper})
 	Expect(err).NotTo(HaveOccurred())
 	komega.SetClient(k8sClient)
 })
