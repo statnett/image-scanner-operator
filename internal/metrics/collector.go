@@ -50,7 +50,14 @@ type ImageMetricsCollector struct {
 	patchStatusDesc *prometheus.Desc
 }
 
-func (c *ImageMetricsCollector) SetupWithManager(mgr manager.Manager) error {
+// Manager is an interface defined for functions actually used in manager.Manager to make it easier to mock.
+//
+//go:generate go run -tags generate github.com/vektra/mockery/v2 --name Manager --filename zz_generated.metrics_mocks_test.go --inpackage --with-expecter
+type Manager interface {
+	Add(manager.Runnable) error
+}
+
+func (c *ImageMetricsCollector) SetupWithManager(mgr Manager) error {
 	labels := make(cisLabels, 0, len(c.MetricsLabels)+len(cisResourceLabels)+1)
 
 	if len(c.MetricsLabels) > 0 {
