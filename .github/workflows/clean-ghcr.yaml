@@ -9,6 +9,7 @@ permissions:
 jobs:
   clean-ghcr:
     name: Delete obsolete container images
+    if: ${{ github.repository == ‘statnett/image-scanner-operator’ }}
     permissions:
       packages: write # for snok/container-retention-policy to delete images
     runs-on: ubuntu-latest
