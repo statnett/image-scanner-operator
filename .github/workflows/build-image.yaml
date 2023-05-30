@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-push-image:
-    if: ${{ github.repository == ‘statnett/image-scanner-operator’ }}
+    if: ${{ github.repository == 'statnett/image-scanner-operator' }}
     permissions:
       contents: read # for actions/checkout to fetch code
       packages: write # for docker/build-push-action to push images
