@@ -9,6 +9,7 @@ permissions:
   pull-requests: write # for google-github-actions/release-please-action to create release PR
 jobs:
   release-please:
+    if: ${{ github.repository == 'statnett/image-scanner-operator' }}
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
