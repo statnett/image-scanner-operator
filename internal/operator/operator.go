@@ -13,14 +13,16 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	eventsv1 "k8s.io/api/events/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/cluster"
+	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 
@@ -109,22 +111,19 @@ func (o Operator) Start(cfg config.Config) error {
 	probeAddr := viper.GetString("health-probe-bind-address")
 	enableLeaderElection := viper.GetBool("leader-elect")
 	options := ctrl.Options{
-		NewClient: cluster.ClientBuilderWithOptions(
-			cluster.ClientOptions{
-				CacheUnstructured: true,
-				UncachedObjects:   []client.Object{&eventsv1.Event{}},
-			},
-		),
-		Scheme:                 scheme,
+		Client: client.Options{Cache: &client.CacheOptions{
+			Unstructured: true,
+			DisableFor:   []client.Object{&eventsv1.Event{}},
+		}},
+		Scheme: scheme,
+		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
+			return apiutil.NewDiscoveryRESTMapper(c, httpClient)
+		},
+		Cache:                  cache.Options{Namespaces: cfg.ScanNamespaces},
 		MetricsBindAddress:     metricsAddr,
-		Port:                   9443,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "398aa7bc.statnett.no",
-	}
-
-	if len(cfg.ScanNamespaces) > 0 {
-		options.NewCache = cache.MultiNamespacedCacheBuilder(cfg.ScanNamespaces)
 	}
 
 	kubeConfig := ctrl.GetConfigOrDie()

@@ -20,7 +20,6 @@ import (
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -93,8 +92,8 @@ var _ = BeforeSuite(func() {
 	}
 
 	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
-		NewClient: cluster.ClientBuilderWithOptions(cluster.ClientOptions{CacheUnstructured: true}),
-		Scheme:    scheme.Scheme,
+		Client: client.Options{Cache: &client.CacheOptions{Unstructured: true}},
+		Scheme: scheme.Scheme,
 	})
 	Expect(err).NotTo(HaveOccurred())
 

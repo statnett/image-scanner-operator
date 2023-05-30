@@ -106,7 +106,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 				ignoreDeletionPredicate(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
-		Watches(&source.Channel{Source: r.EventChan}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(&source.Channel{Source: r.EventChan}, &handler.EnqueueRequestForObject{}).
 		Complete(r)
 }
 

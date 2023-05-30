@@ -23,7 +23,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/json"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
@@ -71,8 +70,8 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Named("backOffScanJobPod").
 		WithEventFilter(inNamespacePredicate(r.ScanJobNamespace)).
 		Watches(
-			&source.Kind{Type: &eventsv1.Event{}},
-			handler.EnqueueRequestsFromMapFunc(func(obj client.Object) []reconcile.Request {
+			&eventsv1.Event{},
+			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
 				e := obj.(*eventsv1.Event)
 				return []reconcile.Request{
 					{NamespacedName: types.NamespacedName{
