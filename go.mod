@@ -11,7 +11,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.15.0
+	github.com/spf13/viper v1.16.0
 	github.com/statnett/controller-runtime-viper v0.2.0
 	github.com/stretchr/testify v1.8.3
 	github.com/vektra/mockery/v2 v2.28.1
