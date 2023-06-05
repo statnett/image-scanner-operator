@@ -6,7 +6,7 @@ require (
 	github.com/distribution/distribution v2.8.2+incompatible
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/onsi/ginkgo/v2 v2.9.5
+	github.com/onsi/ginkgo/v2 v2.9.7
 	github.com/onsi/gomega v1.27.7
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/prometheus/client_golang v1.15.1
