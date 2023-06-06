@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
-	github.com/statnett/controller-runtime-viper v0.2.0
+	github.com/statnett/controller-runtime-viper v0.2.1
 	github.com/stretchr/testify v1.8.4
 	github.com/vektra/mockery/v2 v2.28.2
 	k8s.io/api v0.27.2
