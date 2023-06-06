@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.8](https://github.com/statnett/image-scanner-operator/compare/v0.5.7...v0.5.8) (2023-06-06)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.9.5 to 2.9.7 ([#407](https://github.com/statnett/image-scanner-operator/issues/407)) ([2cd4fa9](https://github.com/statnett/image-scanner-operator/commit/2cd4fa918b0ca6d248b5e27dc32a8271ec363d9c))
+* **deps:** bump github.com/spf13/viper from 1.15.0 to 1.16.0 ([#404](https://github.com/statnett/image-scanner-operator/issues/404)) ([c558a1d](https://github.com/statnett/image-scanner-operator/commit/c558a1dcb52c443c2ed59a6873b78b9471abe885))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.2.0 to 0.2.1 ([#415](https://github.com/statnett/image-scanner-operator/issues/415)) ([403ade6](https://github.com/statnett/image-scanner-operator/commit/403ade6c16f45616bc597e6dcd51c0b3dc2181e5))
+* **deps:** bump github.com/stretchr/testify from 1.8.3 to 1.8.4 ([#405](https://github.com/statnett/image-scanner-operator/issues/405)) ([9bb7662](https://github.com/statnett/image-scanner-operator/commit/9bb7662b8c1527a23305c3f535bddc2f5b8a9665))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.27.1 to 2.28.0 ([#392](https://github.com/statnett/image-scanner-operator/issues/392)) ([6331164](https://github.com/statnett/image-scanner-operator/commit/633116414a506e1edc9ceda4820738f162544496))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.28.0 to 2.28.1 ([#397](https://github.com/statnett/image-scanner-operator/issues/397)) ([c0d796c](https://github.com/statnett/image-scanner-operator/commit/c0d796c98ab64f3bedb9604619e20e5094961d84))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.28.1 to 2.28.2 ([#414](https://github.com/statnett/image-scanner-operator/issues/414)) ([898e142](https://github.com/statnett/image-scanner-operator/commit/898e142a55021628a56fc2bda0a7d92fc342d627))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.42.0 ([#409](https://github.com/statnett/image-scanner-operator/issues/409)) ([b586b9d](https://github.com/statnett/image-scanner-operator/commit/b586b9dad77e464ff7c5feae0d90609cfb941d2b))
+
 ## [0.5.7](https://github.com/statnett/image-scanner-operator/compare/v0.5.6...v0.5.7) (2023-05-22)
 
 
