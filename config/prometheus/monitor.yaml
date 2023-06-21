@@ -1,7 +1,7 @@
 ---
 # Prometheus Monitor Service (Metrics)
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   labels:
     control-plane: controller-manager
@@ -14,9 +14,9 @@ metadata:
   name: controller-manager-metrics-monitor
   namespace: system
 spec:
-  endpoints:
+  podMetricsEndpoints:
     - honorLabels: true
-      metricRelabelings:
+      relabelings:
         - sourceLabels:
             - namespace
           targetLabel: kubernetes_namespace
@@ -24,12 +24,7 @@ spec:
             - name
           targetLabel: kubernetes_name
         - action: labeldrop
-          regex: name|namespace
-        - action: labeldrop
-          regex: endpoint|service|pod|container
+          regex: endpoint|pod|container
       path: /metrics
       port: metrics
       scheme: http
-  selector:
-    matchLabels:
-      control-plane: controller-manager

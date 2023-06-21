@@ -1,6 +1,6 @@
-# This file is for teaching kustomize how to substitute label matching in ServiceMonitor
+# This file is for teaching kustomize how to substitute label matching in PodMonitor
 commonLabels:
   - path: spec/selector/matchLabels
     create: true
     group: monitoring.coreos.com
-    kind: ServiceMonitor
+    kind: PodMonitor
