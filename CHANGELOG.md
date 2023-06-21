@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/statnett/image-scanner-operator/compare/v0.5.10...v0.6.0) (2023-06-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* use podmonitor for scraping metrics ([#442](https://github.com/statnett/image-scanner-operator/issues/442))
+
+### Features
+
+* use podmonitor for scraping metrics ([#442](https://github.com/statnett/image-scanner-operator/issues/442)) ([cc8cd49](https://github.com/statnett/image-scanner-operator/commit/cc8cd49d644cc098e45a534b53df2750a9c5438b))
+
 ## [0.5.10](https://github.com/statnett/image-scanner-operator/compare/v0.5.9...v0.5.10) (2023-06-19)
 
 
