@@ -16,7 +16,7 @@ metadata:
 spec:
   podMetricsEndpoints:
     - honorLabels: true
-      relabelings:
+      metricRelabelings:
         - sourceLabels:
             - namespace
           targetLabel: kubernetes_namespace
