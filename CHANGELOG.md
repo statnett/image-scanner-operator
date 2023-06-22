@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/statnett/image-scanner-operator/compare/v0.6.0...v0.6.1) (2023-06-22)
+
+
+### Bug Fixes
+
+* do relabeling after scraping ([#445](https://github.com/statnett/image-scanner-operator/issues/445)) ([0e2715e](https://github.com/statnett/image-scanner-operator/commit/0e2715eb6e294ac19b52c900c061e354f6c8fc5e))
+
 ## [0.6.0](https://github.com/statnett/image-scanner-operator/compare/v0.5.10...v0.6.0) (2023-06-21)
 
 
