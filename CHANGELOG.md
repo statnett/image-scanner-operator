@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.2](https://github.com/statnett/image-scanner-operator/compare/v0.6.1...v0.6.2) (2023-07-17)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/vektra/mockery/v2 from 2.30.1 to 2.30.16 ([#453](https://github.com/statnett/image-scanner-operator/issues/453)) ([55030c0](https://github.com/statnett/image-scanner-operator/commit/55030c0d45bdb6b960dfe8ed0f23298f16140445))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.30.16 to 2.32.0 ([#466](https://github.com/statnett/image-scanner-operator/issues/466)) ([7d4d6e9](https://github.com/statnett/image-scanner-operator/commit/7d4d6e9f72476ec9be2654163d48e28c47ba9332))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.43.0 ([#455](https://github.com/statnett/image-scanner-operator/issues/455)) ([0b62829](https://github.com/statnett/image-scanner-operator/commit/0b6282948022cfeabfffcad7130d2032c893a4b5))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.43.1 ([#460](https://github.com/statnett/image-scanner-operator/issues/460)) ([82e3ad5](https://github.com/statnett/image-scanner-operator/commit/82e3ad5e6117febd91f3a5bc479013d190fc20b5))
+
 ## [0.6.1](https://github.com/statnett/image-scanner-operator/compare/v0.6.0...v0.6.1) (2023-06-22)
 
 
