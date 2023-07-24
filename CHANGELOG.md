@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.3](https://github.com/statnett/image-scanner-operator/compare/v0.6.2...v0.6.3) (2023-07-24)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.8 to 1.27.9 ([#475](https://github.com/statnett/image-scanner-operator/issues/475)) ([bf4e931](https://github.com/statnett/image-scanner-operator/commit/bf4e9318daa32830cea0c0a72c2445bf030f4452))
+* **deps:** bump k8s.io/api from 0.27.3 to 0.27.4 ([#471](https://github.com/statnett/image-scanner-operator/issues/471)) ([5cb8dfa](https://github.com/statnett/image-scanner-operator/commit/5cb8dfaf5b6aa0f8a7bb44237da7ffdbef01bdfb))
+* **deps:** bump k8s.io/apimachinery from 0.27.3 to 0.27.4 ([#469](https://github.com/statnett/image-scanner-operator/issues/469)) ([3a8adea](https://github.com/statnett/image-scanner-operator/commit/3a8adea049e5a00d0114428d66a8c011a7a9b6ca))
+* **deps:** bump k8s.io/client-go from 0.27.3 to 0.27.4 ([#470](https://github.com/statnett/image-scanner-operator/issues/470)) ([a48c3d2](https://github.com/statnett/image-scanner-operator/commit/a48c3d26bab8132384f93f9b09811c1409c85554))
+
 ## [0.6.2](https://github.com/statnett/image-scanner-operator/compare/v0.6.1...v0.6.2) (2023-07-17)
 
 
