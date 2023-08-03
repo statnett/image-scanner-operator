@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.4](https://github.com/statnett/image-scanner-operator/compare/v0.6.3...v0.6.4) (2023-08-03)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.9 to 1.27.10 ([#477](https://github.com/statnett/image-scanner-operator/issues/477)) ([f37cce2](https://github.com/statnett/image-scanner-operator/commit/f37cce22e35e4aae7e37083a6546bf32e7a39070))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.2.1 to 0.2.2 ([#487](https://github.com/statnett/image-scanner-operator/issues/487)) ([e568200](https://github.com/statnett/image-scanner-operator/commit/e568200512fccc352e23b5b894c760dcebf6d535))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.32.0 to 2.32.2 ([#486](https://github.com/statnett/image-scanner-operator/issues/486)) ([5686211](https://github.com/statnett/image-scanner-operator/commit/5686211f51d28eb5b63d8b4fe879e8ddfaa11ac5))
+* **deps:** bump sigs.k8s.io/cli-utils from 0.34.0 to 0.35.0 ([#478](https://github.com/statnett/image-scanner-operator/issues/478)) ([daae812](https://github.com/statnett/image-scanner-operator/commit/daae81253e124c63b9e1f0c8a8c5553498488074))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.44.0 ([#484](https://github.com/statnett/image-scanner-operator/issues/484)) ([c5bc05b](https://github.com/statnett/image-scanner-operator/commit/c5bc05b6c6291cce5824305bde8169dd1ccb3d0e))
+
 ## [0.6.3](https://github.com/statnett/image-scanner-operator/compare/v0.6.2...v0.6.3) (2023-07-24)
 
 
