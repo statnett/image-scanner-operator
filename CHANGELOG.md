@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.5](https://github.com/statnett/image-scanner-operator/compare/v0.6.4...v0.6.5) (2023-08-10)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.2.2 to 0.2.3 ([#505](https://github.com/statnett/image-scanner-operator/issues/505)) ([0c6915d](https://github.com/statnett/image-scanner-operator/commit/0c6915d7f1348374d34e4edd2d23f0d019fb7216))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.32.2 to 2.32.3 ([#489](https://github.com/statnett/image-scanner-operator/issues/489)) ([1ced865](https://github.com/statnett/image-scanner-operator/commit/1ced865d31b51a2d091098e555e4bf7d53a2037d))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.32.3 to 2.32.4 ([#499](https://github.com/statnett/image-scanner-operator/issues/499)) ([56c7e86](https://github.com/statnett/image-scanner-operator/commit/56c7e86212d0cb850925dd1233767d41002f7ee4))
+* **deps:** bump library/golang from `a0e3e68` to `ec457a2` ([#498](https://github.com/statnett/image-scanner-operator/issues/498)) ([6139e87](https://github.com/statnett/image-scanner-operator/commit/6139e87648cda20bdf948e6d5114946bd9045f4e))
+* **deps:** bump library/golang from 1.20 to 1.21 ([#493](https://github.com/statnett/image-scanner-operator/issues/493)) ([5771ca1](https://github.com/statnett/image-scanner-operator/commit/5771ca18160b13de1f5911a06ed7fbb9dcd97d39))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.15.0 to 0.15.1 ([#491](https://github.com/statnett/image-scanner-operator/issues/491)) ([24b7e07](https://github.com/statnett/image-scanner-operator/commit/24b7e07f3cdeca241cab595b6ceb8aa1a5a1bd46))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.44.1 ([#500](https://github.com/statnett/image-scanner-operator/issues/500)) ([3a1881a](https://github.com/statnett/image-scanner-operator/commit/3a1881a0f19f687b2543b20955e2da74d03768d4))
+
 ## [0.6.4](https://github.com/statnett/image-scanner-operator/compare/v0.6.3...v0.6.4) (2023-08-03)
 
 
