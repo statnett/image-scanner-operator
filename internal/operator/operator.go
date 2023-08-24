@@ -126,17 +126,17 @@ func (o Operator) Start(cfg config.Config) error {
 		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
 			return apiutil.NewDiscoveryRESTMapper(c, httpClient)
 		},
-		Cache: cache.Options{
-			DefaultNamespaces: make(map[string]cache.Config),
-		},
 		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
-	for _, n := range cfg.ScanNamespaces {
-		options.Cache.DefaultNamespaces[n] = cache.Config{}
+	if len(cfg.ScanNamespaces) > 0 {
+		options.Cache.DefaultNamespaces = make(map[string]cache.Config)
+		for _, n := range cfg.ScanNamespaces {
+			options.Cache.DefaultNamespaces[n] = cache.Config{}
+		}
 	}
 
 	kubeConfig := ctrl.GetConfigOrDie()
