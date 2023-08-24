@@ -173,7 +173,7 @@ GOIMPORTS ?= $(LOCALBIN)/goimports
 KUSTOMIZE_VERSION ?= v5.0.3
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.12.0
-# renovate: datasource=go depName=golang.org/x/tools/cmd/goimports
+# renovate: datasource=go depName=golang.org/x/tools/cmd/goimports packageName=golang.org/x/tools
 GOIMPORTS_VERSION ?= v0.3.0
 
 .PHONY: kustomize
