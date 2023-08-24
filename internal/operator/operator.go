@@ -133,7 +133,7 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	if len(cfg.ScanNamespaces) > 0 {
-		options.Cache.DefaultNamespaces = make(map[string]cache.Config)
+		options.Cache.DefaultNamespaces = make(map[string]cache.Config, len(cfg.ScanNamespaces))
 		for _, n := range cfg.ScanNamespaces {
 			options.Cache.DefaultNamespaces[n] = cache.Config{}
 		}
