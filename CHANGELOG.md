@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.6](https://github.com/statnett/image-scanner-operator/compare/v0.6.5...v0.6.6) (2023-08-24)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/ginkgo/v2 from 2.11.0 to 2.12.0 ([#528](https://github.com/statnett/image-scanner-operator/issues/528)) ([18d0397](https://github.com/statnett/image-scanner-operator/commit/18d0397c659e1edaa564bd6d84a0bdc192aafd4a))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.2.3 to 0.3.0 ([#524](https://github.com/statnett/image-scanner-operator/issues/524)) ([9a6f52c](https://github.com/statnett/image-scanner-operator/commit/9a6f52cce71522f4245eba927af13318167d5f2b))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.32.4 to 2.33.0 ([#521](https://github.com/statnett/image-scanner-operator/issues/521)) ([bbaadbc](https://github.com/statnett/image-scanner-operator/commit/bbaadbc8b8d788c7c66d0af3be78d397926ef2a4))
+* **deps:** bump k8s.io/client-go from 0.27.4 to 0.28.0 ([#510](https://github.com/statnett/image-scanner-operator/issues/510)) ([ff6c20b](https://github.com/statnett/image-scanner-operator/commit/ff6c20b6a2c0ce85e105dc5058c356d24608b664))
+
 ## [0.6.5](https://github.com/statnett/image-scanner-operator/compare/v0.6.4...v0.6.5) (2023-08-10)
 
 
