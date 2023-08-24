@@ -3,9 +3,11 @@ package operator
 import (
 	"flag"
 	"fmt"
+	"github.com/statnett/image-scanner-operator/internal/metrics"
 	"net/http"
 	"net/http/pprof"
 	"os"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"strings"
 	"time"
 
@@ -29,7 +31,6 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller/stas"
-	"github.com/statnett/image-scanner-operator/internal/metrics"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 	"github.com/statnett/image-scanner-operator/internal/resources"
 )
@@ -110,6 +111,11 @@ func (o Operator) Start(cfg config.Config) error {
 	metricsAddr := viper.GetString("metrics-bind-address")
 	probeAddr := viper.GetString("health-probe-bind-address")
 	enableLeaderElection := viper.GetBool("leader-elect")
+
+	metricsOpts := server.Options{BindAddress: metricsAddr}
+	if viper.GetBool("enable-profiling") {
+		metricsOpts.ExtraHandlers = map[string]http.Handler{"/debug/pprof/": http.HandlerFunc(pprof.Index)}
+	}
 	options := ctrl.Options{
 		Client: client.Options{Cache: &client.CacheOptions{
 			Unstructured: true,
@@ -119,11 +125,18 @@ func (o Operator) Start(cfg config.Config) error {
 		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
 			return apiutil.NewDiscoveryRESTMapper(c, httpClient)
 		},
-		Cache:                  cache.Options{Namespaces: cfg.ScanNamespaces},
-		MetricsBindAddress:     metricsAddr,
+		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "398aa7bc.statnett.no",
+	}
+
+	if len(cfg.ScanNamespaces) > 0 {
+		watched := make(map[string]cache.Config)
+		for _, n := range cfg.ScanNamespaces {
+			watched[n] = cache.Config{}
+		}
+		options.Cache.DefaultNamespaces = watched
 	}
 
 	kubeConfig := ctrl.GetConfigOrDie()
@@ -187,14 +200,6 @@ func (o Operator) Start(cfg config.Config) error {
 		CheckInterval: time.Minute,
 	}); err != nil {
 		return fmt.Errorf("unable to create rescan trigger: %w", err)
-	}
-
-	enableProfiling := viper.GetBool("enable-profiling")
-	if enableProfiling {
-		err = mgr.AddMetricsExtraHandler("/debug/pprof/", http.HandlerFunc(pprof.Index))
-		if err != nil {
-			return fmt.Errorf("unable to attach pprof to webserver: %w", err)
-		}
 	}
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
