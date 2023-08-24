@@ -169,7 +169,7 @@ ENVTEST ?= $(LOCALBIN)/setup-envtest
 GOIMPORTS ?= $(LOCALBIN)/goimports
 
 ## Tool Versions
-# renovate: datasource=repology depName=kustomize packageName=scoop/kustomize versioning=loose
+# renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
 KUSTOMIZE_VERSION ?= v5.0.3
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.12.0
