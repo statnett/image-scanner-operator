@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/validation"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -150,9 +150,9 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			cis.Spec.Tag = image.Tag
 
 			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
-				cis.Spec.IgnoreUnfixed = pointer.Bool(true)
+				cis.Spec.IgnoreUnfixed = ptr.To(true)
 			} else {
-				cis.Spec.IgnoreUnfixed = pointer.Bool(false)
+				cis.Spec.IgnoreUnfixed = ptr.To(false)
 			}
 
 			if cis.HasVulnerabilityOverflow() {
@@ -166,7 +166,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 
 				if minSeverity < stasv1alpha1.MaxSeverity {
 					minSeverity++
-					cis.Spec.MinSeverity = pointer.String(minSeverity.String())
+					cis.Spec.MinSeverity = ptr.To(minSeverity.String())
 				}
 			}
 
