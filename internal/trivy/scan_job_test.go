@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
@@ -28,7 +28,7 @@ var _ = Describe("Creating scan Job container", func() {
 		})
 
 		It("should set severity when minSeverity set", func() {
-			cisSpec.ScanConfig.MinSeverity = pointer.String("MEDIUM")
+			cisSpec.ScanConfig.MinSeverity = ptr.To("MEDIUM")
 			container, err := jobBuilder.container(cisSpec)
 			Expect(err).ToNot(HaveOccurred())
 			expectedSeverityEnv := corev1.EnvVar{
@@ -39,7 +39,7 @@ var _ = Describe("Creating scan Job container", func() {
 		})
 
 		It("should set ignore-unfixed when ignoreUnfixed set", func() {
-			cisSpec.ScanConfig.IgnoreUnfixed = pointer.Bool(true)
+			cisSpec.ScanConfig.IgnoreUnfixed = ptr.To(true)
 			container, err := jobBuilder.container(cisSpec)
 			Expect(err).ToNot(HaveOccurred())
 			expectedSeverityEnv := corev1.EnvVar{

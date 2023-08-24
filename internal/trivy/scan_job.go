@@ -9,7 +9,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/util/validation"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -139,11 +139,11 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 		},
 	}
 
-	job.Spec.Parallelism = pointer.Int32(1)
-	job.Spec.Completions = pointer.Int32(1)
-	job.Spec.ActiveDeadlineSeconds = pointer.Int64(int64(3600))
-	job.Spec.BackoffLimit = pointer.Int32(3)
-	job.Spec.TTLSecondsAfterFinished = pointer.Int32(7200)
+	job.Spec.Parallelism = ptr.To(int32(1))
+	job.Spec.Completions = ptr.To(int32(1))
+	job.Spec.ActiveDeadlineSeconds = ptr.To(int64(3600))
+	job.Spec.BackoffLimit = ptr.To(int32(3))
+	job.Spec.TTLSecondsAfterFinished = ptr.To(int32(7200))
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
 
 	if len(f.preferredNodeNames) > 0 {
@@ -168,7 +168,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 		}
 	}
 
-	job.Spec.Template.Spec.AutomountServiceAccountToken = pointer.Bool(false)
+	job.Spec.Template.Spec.AutomountServiceAccountToken = ptr.To(false)
 	job.Spec.Template.Spec.RestartPolicy = corev1.RestartPolicyOnFailure
 
 	return job, nil
@@ -232,7 +232,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		container.Env = append(container.Env, envVar)
 	}
 
-	if pointer.BoolDeref(spec.IgnoreUnfixed, false) {
+	if ptr.Deref(spec.IgnoreUnfixed, false) {
 		container.Env = append(container.Env, corev1.EnvVar{
 			Name:  "TRIVY_IGNORE_UNFIXED",
 			Value: "true",
@@ -250,13 +250,13 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		},
 	}
 	container.SecurityContext = &corev1.SecurityContext{
-		Privileged:               pointer.Bool(false),
-		AllowPrivilegeEscalation: pointer.Bool(false),
+		Privileged:               ptr.To(false),
+		AllowPrivilegeEscalation: ptr.To(false),
 		Capabilities: &corev1.Capabilities{
 			Drop: []corev1.Capability{"all"},
 		},
-		ReadOnlyRootFilesystem: pointer.Bool(true),
-		RunAsUser:              pointer.Int64(0),
+		ReadOnlyRootFilesystem: ptr.To(true),
+		RunAsUser:              ptr.To(int64(0)),
 	}
 	container.TerminationMessagePolicy = corev1.TerminationMessageFallbackToLogsOnError
 	container.VolumeMounts = []corev1.VolumeMount{

@@ -11,7 +11,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
@@ -92,7 +92,7 @@ var _ = Describe("Workload controller", func() {
 			client.MatchingLabels(pod.Labels),
 		}
 		Eventually(komega.ObjectList(imageScans, listOps...), timeout, interval).Should(HaveField("Items", HaveLen(1)))
-		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(pointer.Bool(true)))
+		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(ptr.To(true)))
 	})
 
 	It("should delete obsolete ContainerImageScan", func() {
