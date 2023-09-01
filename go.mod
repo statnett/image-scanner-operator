@@ -1,6 +1,6 @@
 module github.com/statnett/image-scanner-operator
 
-go 1.20
+go 1.21
 
 toolchain go1.21.0
 
