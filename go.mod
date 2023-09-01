@@ -1,6 +1,6 @@
 module github.com/statnett/image-scanner-operator
 
-go 1.21
+go 1.20
 
 require (
 	github.com/distribution/distribution v2.8.2+incompatible
