@@ -2,6 +2,8 @@ module github.com/statnett/image-scanner-operator
 
 go 1.20
 
+toolchain go1.21.0
+
 require (
 	github.com/distribution/distribution v2.8.2+incompatible
 	github.com/mitchellh/hashstructure/v2 v2.0.2
