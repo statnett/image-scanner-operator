@@ -23,19 +23,3 @@ spec:
             - name: app
               containerPort: 8080
               protocol: TCP
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  # Single node k3s cluster
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: In
-                    values:
-                      - "true"
-              - matchExpressions:
-                  # Openshift workers
-                  - key: node-role.kubernetes.io/worker
-                    operator: In
-                    values:
-                      - ''
