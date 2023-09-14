@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.8](https://github.com/statnett/image-scanner-operator/compare/v0.6.7...v0.6.8) (2023-09-14)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.3.1 to 0.3.2 ([#581](https://github.com/statnett/image-scanner-operator/issues/581)) ([0678abc](https://github.com/statnett/image-scanner-operator/commit/0678abcc5c77a734b10a1627f259fd7d2177e96d))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.33.1 to 2.33.2 ([#555](https://github.com/statnett/image-scanner-operator/issues/555)) ([ead6d8c](https://github.com/statnett/image-scanner-operator/commit/ead6d8cd75c2265d8e326d3774bc69429a087fe3))
+* **deps:** bump k8s.io/api from 0.28.1 to 0.28.2 ([#572](https://github.com/statnett/image-scanner-operator/issues/572)) ([b29755a](https://github.com/statnett/image-scanner-operator/commit/b29755a36f3c83a546f911aec9c843dbb6edde2a))
+* **deps:** bump k8s.io/apimachinery from 0.28.1 to 0.28.2 ([#574](https://github.com/statnett/image-scanner-operator/issues/574)) ([c52884f](https://github.com/statnett/image-scanner-operator/commit/c52884fc8949cf372dab73d37bdbd9a28d855d0d))
+* **deps:** bump k8s.io/client-go from 0.28.1 to 0.28.2 ([#573](https://github.com/statnett/image-scanner-operator/issues/573)) ([a10ec96](https://github.com/statnett/image-scanner-operator/commit/a10ec96029fb67a2e7f1ff26ff43a5ba395dcd9b))
+* **deps:** bump sigs.k8s.io/controller-runtime from 0.16.1 to 0.16.2 ([#569](https://github.com/statnett/image-scanner-operator/issues/569)) ([0cf7c38](https://github.com/statnett/image-scanner-operator/commit/0cf7c387fbbefa4d9ef4a5d5333a658a46135adf))
+
 ## [0.6.7](https://github.com/statnett/image-scanner-operator/compare/v0.6.6...v0.6.7) (2023-09-01)
 
 
