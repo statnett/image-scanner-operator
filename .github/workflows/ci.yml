@@ -95,40 +95,37 @@ jobs:
           KUBEBUILDER_ATTACH_CONTROL_PLANE_OUTPUT: true
   e2e-test:
     needs: verify-generated
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest
     env:
       IMG: registry.dummy-domain.com/image-scanner/controller:dev
-      IMG_FILE: operator-image.tar
-      K3D_CLUSTER: image-scanner
-      # renovate: datasource=github-tags depName=k3d-io/k3d
-      K3D_VERSION: v5.6.0
+      IMG_PATH: images
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+      - run: |
+          mkdir -p $IMG_PATH
       - uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
       - uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
       - uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
-          outputs: type=docker,dest=${{ env.IMG_FILE }}
+          outputs: type=docker,dest=${{ env.IMG_PATH }}/operator-image.tar
           tags: ${{ env.IMG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79 # v2.4.0
+      - uses: balchua/microk8s-actions@1e8e626239c2befe7cd5d258c96ae152a7259c74 # v0.4.0
         with:
-          cluster-name: ${{ env.K3D_CLUSTER }}
-          k3d-version: ${{ env.K3D_VERSION }}
-          args: >-
-            --config=test/e2e-config/k3d-config.yml
+          channel: 1.28/stable
+          addons: '["dns", "rbac", "registry", "prometheus"]'
+          sideload-images-path: ${{ env.IMG_PATH }}
       - run: |
           kubectl cluster-info
           kubectl version --output=yaml
       - run: |
-          k3d image import ${{ env.IMG_FILE }} --cluster ${{ env.K3D_CLUSTER }}
-          make deploy-dependencies deploy
+          make deploy
       - uses: jaxxstorm/action-install-gh-release@c5ead9a448b4660cf1e7866ee22e4dc56538031a # v1.10.0
         with:
           repo: kudobuilder/kuttl
