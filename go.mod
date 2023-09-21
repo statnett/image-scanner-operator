@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.16.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
-	github.com/statnett/controller-runtime-viper v0.3.2
+	github.com/statnett/controller-runtime-viper v0.3.3
 	github.com/stretchr/testify v1.8.4
 	github.com/vektra/mockery/v2 v2.33.3
 	k8s.io/api v0.28.2
@@ -80,7 +80,7 @@ require (
 	github.com/stretchr/objx v0.5.1 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.25.0 // indirect
+	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
