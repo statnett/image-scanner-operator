@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.10](https://github.com/statnett/image-scanner-operator/compare/v0.6.9...v0.6.10) (2023-09-29)
+
+
+### Dependency Updates
+
+* **deps:** bump github.com/onsi/gomega from 1.27.10 to 1.28.0 ([#601](https://github.com/statnett/image-scanner-operator/issues/601)) ([e628b7a](https://github.com/statnett/image-scanner-operator/commit/e628b7abdef5982250344a8ac8138789a417dd49))
+* **deps:** bump github.com/prometheus/client_golang from 1.16.0 to 1.17.0 ([#600](https://github.com/statnett/image-scanner-operator/issues/600)) ([120c3dd](https://github.com/statnett/image-scanner-operator/commit/120c3dd43fb9df3131c223e3451feef1f9854701))
+* **deps:** bump github.com/statnett/controller-runtime-viper from 0.3.2 to 0.3.3 ([#590](https://github.com/statnett/image-scanner-operator/issues/590)) ([5c5401b](https://github.com/statnett/image-scanner-operator/commit/5c5401b738dbda50dea0a667fb16f49524cdb136))
+* **deps:** bump github.com/vektra/mockery/v2 from 2.33.3 to 2.34.2 ([#599](https://github.com/statnett/image-scanner-operator/issues/599)) ([13a4122](https://github.com/statnett/image-scanner-operator/commit/13a4122a2d0309d987c5a428dfb22905f4303dfa))
+
 ## [0.6.9](https://github.com/statnett/image-scanner-operator/compare/v0.6.8...v0.6.9) (2023-09-20)
 
 
