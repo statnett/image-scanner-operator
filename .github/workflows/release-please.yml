@@ -13,10 +13,6 @@ jobs:
     if: ${{ github.repository == 'statnett/image-scanner-operator' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: google-github-actions/release-please-action@4c5670f886fe259db4d11222f7dff41c1382304d # v3.7.12
         with:
           token: ${{ secrets.BOT_PAT }}
