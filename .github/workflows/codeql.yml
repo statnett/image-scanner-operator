@@ -22,7 +22,7 @@ on:
 concurrency:
   group: codeql-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
-permissions: # added using https://github.com/step-security/secure-workflows
+permissions:
   contents: read
 jobs:
   analyze:
@@ -39,10 +39,6 @@ jobs:
         # CodeQL supports [ $supported-codeql-languages ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - name: Checkout repository
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       # Initializes the CodeQL tools for scanning.
@@ -84,9 +80,6 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - uses: aquasecurity/trivy-action@fbd16365eb88e12433951383f5e99bd901fc618f # v0.12.0
         with:
