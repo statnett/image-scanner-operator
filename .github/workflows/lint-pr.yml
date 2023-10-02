@@ -5,46 +5,10 @@ on:
     types:
       - opened
       - edited
-permissions:
-  contents: read
+
 jobs:
-  pr-title-lint:
+  trigger:
+    uses: statnett/workflows/.github/workflows/lint-pr.yml@main
     permissions:
-      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
-      statuses: write # for amannn/action-semantic-pull-request to mark status of analyzed PR
-    runs-on: ubuntu-latest
-    steps:
-      - uses: amannn/action-semantic-pull-request@47b15d52c5c30e94a17ec87eb8dd51ff5221fed9 # v5.3.0
-        with:
-          # Ensure the subject doesn't start with an uppercase character.
-          subjectPattern: ^(?![A-Z]).+$
-          subjectPatternError: |
-            Please ensure the subject in the pull request title ("{subject}")
-            doesn't start with an uppercase character.
-        id: lint_pr_title
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
-        # When the previous steps fail, the workflow would stop. By adding this
-        # condition you can continue the execution with the populated error message.
-        if: always() && (steps.lint_pr_title.outputs.error_message != null)
-        with:
-          header: pr-title-lint-error
-          # yamllint disable rule:line-length
-          message: |
-            Hey there and thank you for opening this pull request! :wave:
-
-            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
-
-            Details:
-
-            ```
-            ${{ steps.lint_pr_title.outputs.error_message }}
-            ```
-          # yamllint enable rule:line-length
-      # Delete a previous comment when the issue has been resolved
-      - if: ${{ steps.lint_pr_title.outputs.error_message == null }}
-        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
-        with:
-          header: pr-title-lint-error
-          delete: true
+      pull-requests: write
+      statuses: write
