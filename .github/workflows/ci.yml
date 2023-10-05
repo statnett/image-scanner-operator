@@ -26,7 +26,6 @@ jobs:
           # renovate: datasource=go depName=github.com/golangci/golangci-lint
           version: v1.54.2
           args: --timeout 5m
-          only-new-issues: true
   yaml-lint:
     runs-on: ubuntu-latest
     steps:
