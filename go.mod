@@ -14,7 +14,7 @@ require (
 	github.com/spf13/viper v1.16.0
 	github.com/statnett/controller-runtime-viper v0.3.3
 	github.com/stretchr/testify v1.8.4
-	github.com/vektra/mockery/v2 v2.34.2
+	github.com/vektra/mockery/v2 v2.35.1
 	k8s.io/api v0.28.2
 	k8s.io/apimachinery v0.28.2
 	k8s.io/client-go v0.28.2
@@ -51,6 +51,7 @@ require (
 	github.com/google/pprof v0.0.0-20230821062121-407c9e7a662f // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/imdario/mergo v0.3.15 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
