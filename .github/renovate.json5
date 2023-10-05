@@ -1,8 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>statnett/renovate-presets",
+    "config:base",
     ":semanticCommitTypeAll(ci)",
+    "regexManagers:dockerfileVersions",
   ],
   "labels": ["dependencies"],
   "ignorePaths": [],
@@ -18,6 +19,23 @@
         "ghcr.io/aquasecurity/trivy",
       ],
       "semanticCommitType": "build",
+    },
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [".*"],
+      "matchStrings": [
+        "renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>\\S+?)(?: (packageName)=(?<packageName>\\S+?))?(?: versioning=(?<versioning>\\S+?))?(?: registryUrl=(?<registryUrl>\\S+?))?\\s+(?:\\S+?_)?(?:VERSION|version|TAG|tag)\\s*[?]?[=:]\\s*\"?(?<currentValue>\\S+?)\"?\\s",
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+    },
+    {
+      "fileMatch": [".+\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate-image:( versioning=(?<versioning>.*?))?\\n\\s*(.+?_IMAGE|image)[=:]\\s*(?<depName>.+?):(?<currentValue>.+?)(\\s|$)",
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
     },
   ],
 }
