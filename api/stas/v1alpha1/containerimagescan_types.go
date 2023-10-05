@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"github.com/distribution/distribution/reference"
+	"github.com/distribution/reference"
 	"github.com/opencontainers/go-digest"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
