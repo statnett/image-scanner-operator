@@ -8,16 +8,6 @@
   "ignorePaths": [],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "ghcr.io/aquasecurity/trivy",
-      ],
-      "semanticCommitType": "build",
-    },
-    {
-      "matchManagers": ["gomod"],
-      "semanticCommitType": "build",
-    },
-    {
       "matchUpdateTypes": ["patch"],
       "automerge": true,
     },
