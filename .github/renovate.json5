@@ -6,18 +6,10 @@
   ],
   "labels": ["dependencies"],
   "ignorePaths": [],
-  "golang": {
-    "enabled": false,
-  },
-  "github-actions": {
-    "enabled": false,
-  },
   "packageRules": [
     {
-      "matchPackageNames": [
-        "ghcr.io/aquasecurity/trivy",
-      ],
-      "semanticCommitType": "build",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
     },
   ],
 }
