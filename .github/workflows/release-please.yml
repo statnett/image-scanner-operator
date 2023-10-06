@@ -5,26 +5,17 @@ on:
     branches:
       - main
   workflow_dispatch:
-permissions:
-  contents: write # for google-github-actions/release-please-action to create release commit
-  pull-requests: write # for google-github-actions/release-please-action to create release PR
+
 jobs:
-  release-please:
-    if: ${{ github.repository == 'statnett/image-scanner-operator' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: google-github-actions/release-please-action@4c5670f886fe259db4d11222f7dff41c1382304d # v3.7.12
-        with:
-          token: ${{ secrets.BOT_PAT }}
-          # TODO: Eventually remove this, when we are ready for GA (version 1.0.0)
-          bump-minor-pre-major: true
-          changelog-types: >
-            [
-              { "type": "feat", "section": "Features" },
-              { "type": "fix", "section": "Bug Fixes" },
-              { "type": "build", "scope": "deps", "section": "Dependency Updates" }
-            ]
-          release-type: simple
-          extra-files: |
-            kustomization.yaml
-            README.md
+  trigger:
+    uses: statnett/github-workflows/.github/workflows/release-please.yaml@main
+    with:
+      # TODO: Eventually remove this, when we are ready for GA (version 1.0.0)
+      bump-minor-pre-major: true
+      extra-files: |
+        kustomization.yaml
+        README.md
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
