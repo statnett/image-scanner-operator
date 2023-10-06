@@ -6,12 +6,6 @@
   ],
   "labels": ["dependencies"],
   "ignorePaths": [],
-  "golang": {
-    "enabled": false,
-  },
-  "github-actions": {
-    "enabled": false,
-  },
   "packageRules": [
     {
       "matchPackageNames": [
@@ -19,5 +13,9 @@
       ],
       "semanticCommitType": "build",
     },
+    {
+      "matchManagers": ["gomod"],
+      "semanticCommitType": "build",
+    }
   ],
 }
