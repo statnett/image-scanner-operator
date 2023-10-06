@@ -16,6 +16,10 @@
     {
       "matchManagers": ["gomod"],
       "semanticCommitType": "build",
-    }
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+    },
   ],
 }
