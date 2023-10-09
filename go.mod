@@ -14,7 +14,7 @@ require (
 	github.com/spf13/viper v1.17.0
 	github.com/statnett/controller-runtime-viper v0.3.4
 	github.com/stretchr/testify v1.8.4
-	github.com/vektra/mockery/v2 v2.35.2
+	github.com/vektra/mockery/v2 v2.35.3
 	k8s.io/api v0.28.2
 	k8s.io/apimachinery v0.28.2
 	k8s.io/client-go v0.28.2
