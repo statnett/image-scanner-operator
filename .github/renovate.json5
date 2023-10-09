@@ -12,4 +12,9 @@
       "automerge": true,
     },
   ],
+  "postUpdateOptions": [
+    "gomodMassage",
+    "gomodTidy",
+    "gomodUpdateImportPaths",
+  ],
 }
