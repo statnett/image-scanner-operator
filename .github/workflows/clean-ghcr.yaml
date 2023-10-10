@@ -5,6 +5,8 @@ on:
     - cron: "0 1 * * *"  # every day at midnight
   workflow_dispatch:
 
+permissions:
+  contents: read
 jobs:
   trigger:
     uses: statnett/workflows/.github/workflows/clean-ghcr.yaml@main

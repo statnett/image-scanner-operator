@@ -7,6 +7,8 @@ on:
       - edited
       - synchronize
 
+permissions:
+  contents: read
 jobs:
   trigger:
     uses: statnett/github-workflows/.github/workflows/lint-pr.yaml@main
