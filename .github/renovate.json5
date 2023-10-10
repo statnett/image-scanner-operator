@@ -1,20 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>statnett/renovate-config",
-    ":semanticCommitTypeAll(ci)",
-  ],
-  "labels": ["dependencies"],
-  "ignorePaths": [],
+  "extends": ["github>statnett/renovate-config"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true,
     },
-  ],
-  "postUpdateOptions": [
-    "gomodMassage",
-    "gomodTidy",
-    "gomodUpdateImportPaths",
   ],
 }
