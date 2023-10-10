@@ -1,0 +1,20 @@
+---
+name: Scorecard supply-chain security
+on:
+  branch_protection_rule:
+  schedule:
+    - cron: "20 7 * * 2"
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+jobs:
+  trigger:
+    uses: statnett/github-workflows/.github/workflows/scorecard.yaml@main
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read

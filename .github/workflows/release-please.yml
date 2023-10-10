@@ -6,6 +6,8 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
 jobs:
   trigger:
     uses: statnett/github-workflows/.github/workflows/release-please.yaml@main
