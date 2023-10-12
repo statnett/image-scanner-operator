@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.11](https://github.com/statnett/image-scanner-operator/compare/v0.6.10...v0.6.11) (2023-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.5 ([#645](https://github.com/statnett/image-scanner-operator/issues/645)) ([96169a0](https://github.com/statnett/image-scanner-operator/commit/96169a07eb6ea97c02c262d49c7c29b8502ab906))
+* golangci-lint issues ([#616](https://github.com/statnett/image-scanner-operator/issues/616)) ([2e49a87](https://github.com/statnett/image-scanner-operator/commit/2e49a870e4933737d91ea3fba4a03b3eb0a2381f))
+
+
+### Reverts
+
+* "ci: try GHCR cleanup with Statnett BOT token" ([#607](https://github.com/statnett/image-scanner-operator/issues/607)) ([c41a5a4](https://github.com/statnett/image-scanner-operator/commit/c41a5a47fd8e6770b10da8702f784e14aeed23a0))
+
 ## [0.6.10](https://github.com/statnett/image-scanner-operator/compare/v0.6.9...v0.6.10) (2023-09-29)
 
 
