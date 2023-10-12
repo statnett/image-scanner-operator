@@ -1,0 +1,15 @@
+---
+with-expecter: true
+dir: "{{.InterfaceDir}}"
+inpackage: true
+packages:
+  github.com/statnett/image-scanner-operator/internal/metrics:
+    config:
+      filename: "zz_generated.metrics_mocks_test.go"
+    interfaces:
+      Manager:
+  github.com/statnett/image-scanner-operator/internal/pod:
+    config:
+      filename: "zz_generated.pod_mocks.go"
+    interfaces:
+      LogsReader:
