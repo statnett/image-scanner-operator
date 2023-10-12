@@ -51,8 +51,6 @@ type ImageMetricsCollector struct {
 }
 
 // Manager is an interface defined for functions actually used in manager.Manager to make it easier to mock.
-//
-//go:generate go run -tags generate github.com/vektra/mockery/v2 --name Manager --filename zz_generated.metrics_mocks_test.go --inpackage --with-expecter
 type Manager interface {
 	Add(manager.Runnable) error
 }

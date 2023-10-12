@@ -9,12 +9,11 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-//go:generate go run -tags generate github.com/vektra/mockery/v2 --name LogsReader --filename zz_generated.pod_mocks.go --inpackage --with-expecter
 type LogsReader interface {
 	GetLogs(ctx context.Context, pod types.NamespacedName, container string) (io.ReadCloser, error)
 }
 
-func NewLogsReader(clientset kubernetes.Interface) *logsReader {
+func NewLogsReader(clientset kubernetes.Interface) LogsReader {
 	return &logsReader{clientset: clientset}
 }
 
