@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.13](https://github.com/statnett/image-scanner-operator/compare/v0.6.12...v0.6.13) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/onsi/gomega to v1.28.1 ([#661](https://github.com/statnett/image-scanner-operator/issues/661)) ([0d8667d](https://github.com/statnett/image-scanner-operator/commit/0d8667d6926e73429fc9ef46ac1d4e55fd6f535e))
+* **trivy:** set default server cache TTL ([#660](https://github.com/statnett/image-scanner-operator/issues/660)) ([97fe479](https://github.com/statnett/image-scanner-operator/commit/97fe479c32d67cca53c0021467a4cbff6535011b))
+
 ## [0.6.12](https://github.com/statnett/image-scanner-operator/compare/v0.6.11...v0.6.12) (2023-10-20)
 
 
