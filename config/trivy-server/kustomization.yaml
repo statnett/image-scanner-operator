@@ -14,4 +14,6 @@ configMapGenerator:
     literals:
       - LISTEN=0.0.0.0:4954
       - CACHE_DIR=/home/scanner/.cache/trivy
+      # Approximately 6 months
+      - CACHE_TTL=4320h
       - DB_REPOSITORY=ghcr.io/aquasecurity/trivy-db
