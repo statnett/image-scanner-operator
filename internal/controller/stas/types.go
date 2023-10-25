@@ -61,7 +61,8 @@ func containerImages(pod *corev1.Pod) (map[string]*podContainerImage, error) {
 			continue
 		}
 
-		ref, err := reference.ParseAnyReference(container.Image)
+		// Using ParseDockerRef instead of ParseAnyReference to handle latest tag better
+		ref, err := reference.ParseDockerRef(container.Image)
 		if err != nil {
 			return nil, err
 		}
