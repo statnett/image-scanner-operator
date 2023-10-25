@@ -21,9 +21,10 @@ type Image struct {
 }
 
 type Workload struct {
-	metav1.GroupKind `json:",inline"`
-	Name             string `json:"name"`
-	ContainerName    string `json:"containerName"`
+	Group         string `json:"group"`
+	Kind          string `json:"kind"`
+	Name          string `json:"name"`
+	ContainerName string `json:"containerName"`
 }
 
 type ScanConfig struct {
@@ -110,6 +111,7 @@ type ContainerImageScanStatus struct {
 	VulnerabilitySummary *VulnerabilitySummary `json:"vulnerabilitySummary,omitempty"`
 }
 
+//+genclient
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 //+kubebuilder:resource:shortName={cis}
