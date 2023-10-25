@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.14](https://github.com/statnett/image-scanner-operator/compare/v0.6.13...v0.6.14) (2023-10-25)
+
+
+### Bug Fixes
+
+* **deps:** update module sigs.k8s.io/yaml to v1.4.0 ([#663](https://github.com/statnett/image-scanner-operator/issues/663)) ([0084aae](https://github.com/statnett/image-scanner-operator/commit/0084aae48a6c6d7f45f5d8c129d10e23b17a5b32))
+* should set tag to latest if no tag on image ([#665](https://github.com/statnett/image-scanner-operator/issues/665)) ([ae33c2e](https://github.com/statnett/image-scanner-operator/commit/ae33c2e9bf89d725670d708a718f3ff28937c37a))
+
 ## [0.6.13](https://github.com/statnett/image-scanner-operator/compare/v0.6.12...v0.6.13) (2023-10-23)
 
 
