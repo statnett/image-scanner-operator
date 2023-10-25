@@ -120,8 +120,12 @@ var _ = Describe("ContainerImageScan controller", func() {
 		for k := range job.Spec.Template.Labels {
 			switch k {
 			case "controller-uid":
+				fallthrough
+			case "batch.kubernetes.io/controller-uid":
 				job.Spec.Template.Labels[k] = "<CONTROLLER-UID>"
 			case "job-name":
+				fallthrough
+			case "batch.kubernetes.io/job-name":
 				job.Spec.Template.Labels[k] = "<JOB-NAME>"
 			case stasv1alpha1.LabelStatnettControllerUID:
 				job.Spec.Template.Labels[k] = "<CIS-UID>"
