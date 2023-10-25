@@ -30,7 +30,6 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/pod"
-	//+kubebuilder:scaffold:imports
 )
 
 const scanJobNamespace = "image-scanner"

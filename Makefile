@@ -52,12 +52,8 @@ generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and
 fmt: ## Run go fmt against code.
 	go fmt ./...
 
-GO_SOURCE_FILES = $(shell find . -type f -name '*.go' -not -name 'zz_generated*')
-LOCAL_GO_MODULE = $(shell head -n 1 go.mod | awk '{print $$2}')
-fmt-imports: goimports ## Format imports in code using goimports.
-	# Between patterns 'import (' and ')', delete lines matching '^[[:space:]]*$' (lines only containing whitespace)
-	sed -i -e '/import (/,/)/{/^[[:space:]]*$$/d}' ${GO_SOURCE_FILES}
-	$(GOIMPORTS) -w --local ${LOCAL_GO_MODULE} ${GO_SOURCE_FILES}
+fmt-imports: gci ## Run gci against code.
+	$(GCI) write --skip-generated -s standard -s default -s "prefix($(shell go list -m))" .
 
 .PHONY: vet
 vet: ## Run go vet against code.
@@ -166,7 +162,8 @@ $(LOCALBIN):
 KUSTOMIZE ?= $(LOCALBIN)/kustomize
 CONTROLLER_GEN ?= $(LOCALBIN)/controller-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
-GOIMPORTS ?= $(LOCALBIN)/goimports
+# renovate: datasource=go depName=github.com/daixiang0/gci
+GCI_VERSION ?= v0.11.2
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
@@ -196,10 +193,10 @@ envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
 
-.PHONY: goimports
-goimports: $(GOIMPORTS) ## Download goimports locally if necessary.
-$(GOIMPORTS):
-	test -s $(LOCALBIN)/goimports || GOBIN=$(LOCALBIN) go install golang.org/x/tools/cmd/goimports@$(GOIMPORTS_VERSION)
+GCI = $(LOCALBIN)/gci
+gci: $(GCI) ## Download gci locally if necessary.
+$(GCI):
+	GOBIN=$(LOCALBIN) go install github.com/daixiang0/gci@${GCI_VERSION}
 
 ##@ End-to-end (e2e) Testing
 
