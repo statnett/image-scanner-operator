@@ -149,6 +149,7 @@ var _ = Describe("ImageReference", func() {
 					Name:   "dummy.registry.mycorp.com/mysql",
 					Digest: "sha256:83469837189400492f32d23cadbfc97fae3dc019871337a841609f0b71a34907",
 				},
+				Tag: "latest",
 			}),
 	)
 })
