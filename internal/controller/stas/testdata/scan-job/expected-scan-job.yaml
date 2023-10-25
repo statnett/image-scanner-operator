@@ -2,8 +2,6 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  annotations:
-    batch.kubernetes.io/job-tracking: ""
   generation: 1
   labels:
     app.kubernetes.io/managed-by: image-scanner
@@ -28,7 +26,9 @@ spec:
         app.kubernetes.io/managed-by: image-scanner
         app.kubernetes.io/name: trivy
         controller-uid: <CONTROLLER-UID>
+        batch.kubernetes.io/controller-uid: <CONTROLLER-UID>
         job-name: <JOB-NAME>
+        batch.kubernetes.io/job-name: <JOB-NAME>
         controller.statnett.no/namespace: replica-set
         controller.statnett.no/uid: <CIS-UID>
         workload.statnett.no/kind: Pod
