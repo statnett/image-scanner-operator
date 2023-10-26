@@ -45,8 +45,21 @@ manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and Cust
 	$(CONTROLLER_GEN) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 
 .PHONY: generate
-generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
+generate: controller-gen k8s-client-gen ## Generate code required for K8s API and clients
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
+
+GO_MODULE = $(shell go list -m)
+API_DIRS = $(shell find api -mindepth 2 -type d | sed "s|^|$(shell go list -m)/|" | paste -sd ",")
+.PHONY: k8s-client-gen
+k8s-client-gen: applyconfiguration-gen
+	rm -rf internal/client/applyconfiguration
+	@echo ">> generating internal/client/applyconfiguration..."
+	$(APPLYCONFIGURATION_GEN) \
+		--go-header-file 	hack/boilerplate.go.txt \
+		--input-dirs		"$(API_DIRS)" \
+		--output-package  	"$(GO_MODULE)/internal/client/applyconfiguration" \
+		--trim-path-prefix 	"$(GO_MODULE)" \
+		--output-base    	"."
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
@@ -159,6 +172,7 @@ $(LOCALBIN):
 	mkdir -p $(LOCALBIN)
 
 ## Tool Binaries
+APPLYCONFIGURATION_GEN ?= $(LOCALBIN)/applyconfiguration-gen
 KUSTOMIZE ?= $(LOCALBIN)/kustomize
 CONTROLLER_GEN ?= $(LOCALBIN)/controller-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
@@ -168,10 +182,19 @@ GCI_VERSION ?= v0.11.2
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
 KUSTOMIZE_VERSION ?= v5.2.1
+# renovate: datasource=go depName=github.com/kubernetes/code-generator
+CODE_GENERATOR_VERSION ?= v0.28.3
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.13.0
 # renovate: datasource=go depName=golang.org/x/tools/cmd/goimports packageName=golang.org/x/tools
 GOIMPORTS_VERSION ?= v0.14.0
+
+.PHONY: applyconfiguration-gen
+applyconfiguration-gen: $(APPLYCONFIGURATION_GEN) ## Download applyconfiguration-gen locally if necessary.
+$(APPLYCONFIGURATION_GEN): $(LOCALBIN)
+	# FIXME: applyconfiguration-gen does not currently support any flag for obtaining version
+	test -s $(LOCALBIN)/applyconfiguration-gen || \
+	GOBIN=$(LOCALBIN) go install k8s.io/code-generator/cmd/applyconfiguration-gen@$(CODE_GENERATOR_VERSION)
 
 .PHONY: kustomize
 kustomize: $(KUSTOMIZE) ## Download kustomize locally if necessary. If wrong version is installed, it will be removed before downloading.
