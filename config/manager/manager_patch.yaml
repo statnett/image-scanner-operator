@@ -9,6 +9,8 @@ spec:
     spec:
       containers:
         - name: manager
+          command:
+            - /image-scanner-operator
           args:
             - --leader-elect
           envFrom:
