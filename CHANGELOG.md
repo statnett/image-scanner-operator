@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.15](https://github.com/statnett/image-scanner-operator/compare/v0.6.14...v0.6.15) (2023-10-26)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/onsi/gomega to v1.29.0 ([#669](https://github.com/statnett/image-scanner-operator/issues/669)) ([cc3efb8](https://github.com/statnett/image-scanner-operator/commit/cc3efb8adff716d9740a4a4f9c0d31cf6c3c1adf))
+* **deps:** update module sigs.k8s.io/structured-merge-diff/v4 to v4.3.0 ([#672](https://github.com/statnett/image-scanner-operator/issues/672)) ([7d62331](https://github.com/statnett/image-scanner-operator/commit/7d6233138e5e3fc6fb86873a37744189973ee225))
+
 ## [0.6.14](https://github.com/statnett/image-scanner-operator/compare/v0.6.13...v0.6.14) (2023-10-25)
 
 
