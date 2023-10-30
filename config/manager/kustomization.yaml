@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - manager.yaml
-patchesStrategicMerge:
-  - manager_patch.yaml
+patches:
+  - path: manager_patch.yaml
 configMapGenerator:
   - literals:
       - CIS_METRICS_LABELS=app.kubernetes.io/name
