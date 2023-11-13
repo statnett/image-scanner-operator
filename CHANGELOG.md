@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.18](https://github.com/statnett/image-scanner-operator/compare/v0.6.17...v0.6.18) (2023-11-13)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.47.0 ([#687](https://github.com/statnett/image-scanner-operator/issues/687)) ([23372d8](https://github.com/statnett/image-scanner-operator/commit/23372d8ab7c072f413f7cdeca04ecda09162df25))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.13.1 ([#693](https://github.com/statnett/image-scanner-operator/issues/693)) ([193915c](https://github.com/statnett/image-scanner-operator/commit/193915c065307e6f136fe05dcdf632c69e617734))
+* **deps:** update module github.com/onsi/gomega to v1.30.0 ([#691](https://github.com/statnett/image-scanner-operator/issues/691)) ([0af2669](https://github.com/statnett/image-scanner-operator/commit/0af2669876826a1728d12b8187e83083e1fd328a))
+
 ## [0.6.17](https://github.com/statnett/image-scanner-operator/compare/v0.6.16...v0.6.17) (2023-11-03)
 
 
