@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.19](https://github.com/statnett/image-scanner-operator/compare/v0.6.18...v0.6.19) (2023-11-21)
+
+
+### Bug Fixes
+
+* **deps:** update k8s.io/utils digest to cf03d44 ([#701](https://github.com/statnett/image-scanner-operator/issues/701)) ([96275ba](https://github.com/statnett/image-scanner-operator/commit/96275ba48ca1a9b933873cc159a912c25bdf167a))
+* **deps:** update kubernetes packages to v0.28.4 ([#696](https://github.com/statnett/image-scanner-operator/issues/696)) ([6d00a55](https://github.com/statnett/image-scanner-operator/commit/6d00a55c173ff702e4e7a447f2985b81f6fe6350))
+
 ## [0.6.18](https://github.com/statnett/image-scanner-operator/compare/v0.6.17...v0.6.18) (2023-11-13)
 
 
