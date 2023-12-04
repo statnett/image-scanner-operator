@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.20](https://github.com/statnett/image-scanner-operator/compare/v0.6.19...v0.6.20) (2023-12-04)
+
+
+### Bug Fixes
+
+* **deps:** update k8s.io/utils digest to b307cd5 ([#704](https://github.com/statnett/image-scanner-operator/issues/704)) ([3f6f667](https://github.com/statnett/image-scanner-operator/commit/3f6f667943a5ad444cf9e072b7ae849f0ca34630))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.13.2 ([#707](https://github.com/statnett/image-scanner-operator/issues/707)) ([24447b3](https://github.com/statnett/image-scanner-operator/commit/24447b332fb554a7c75624522211812ebf944de4))
+
 ## [0.6.19](https://github.com/statnett/image-scanner-operator/compare/v0.6.18...v0.6.19) (2023-11-21)
 
 
