@@ -10,9 +10,5 @@ permissions:
 jobs:
   trigger:
     uses: statnett/workflows/.github/workflows/clean-ghcr.yaml@main
-    with:
-      image-names: ${{ github.event.repository.name }}
-    secrets:
-      PAT: ${{ secrets.BOT_PAT }}
     permissions:
       packages: write
