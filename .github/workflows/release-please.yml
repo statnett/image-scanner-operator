@@ -11,12 +11,6 @@ permissions:
 jobs:
   trigger:
     uses: statnett/github-workflows/.github/workflows/release-please.yaml@main
-    with:
-      # TODO: Eventually remove this, when we are ready for GA (version 1.0.0)
-      bump-minor-pre-major: true
-      extra-files: |
-        kustomization.yaml
-        README.md
     secrets: inherit
     permissions:
       contents: write

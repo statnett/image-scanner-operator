@@ -1,0 +1,12 @@
+{
+  "release-type": "go",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "extra-files": [
+    "kustomization.yaml",
+    "README.md"
+  ],
+  "packages": {
+    ".": {}
+  }
+}
