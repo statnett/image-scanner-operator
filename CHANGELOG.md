@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.25](https://github.com/statnett/image-scanner-operator/compare/v0.6.24...v0.6.25) (2023-12-19)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.48.1 ([#735](https://github.com/statnett/image-scanner-operator/issues/735)) ([9850eb9](https://github.com/statnett/image-scanner-operator/commit/9850eb9ce8635c80e8172aae1b8d587aa6bc5e3f))
+* **deps:** update module github.com/spf13/viper to v1.18.2 ([#737](https://github.com/statnett/image-scanner-operator/issues/737)) ([1cbfca5](https://github.com/statnett/image-scanner-operator/commit/1cbfca554734ff05cae1c6156814ae865b9c39b7))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.11 ([#742](https://github.com/statnett/image-scanner-operator/issues/742)) ([b9b1ed5](https://github.com/statnett/image-scanner-operator/commit/b9b1ed5435cef074f827950df5a216d914e051fe))
+
 ## [0.6.24](https://github.com/statnett/image-scanner-operator/compare/v0.6.23...v0.6.24) (2023-12-14)
 
 
