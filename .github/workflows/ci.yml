@@ -50,18 +50,16 @@ jobs:
         run: |
           make generate-all
       - name: Verify changed files
-        uses: tj-actions/verify-changed-files@9ed3155b72ba709881c967f75611fc5852f773b9 # v13.1
+        uses: tj-actions/verify-changed-files@b742fc9c8c613945ae7ee756f8d2bb3bd2d1f7dd # v17.0.2
         id: verify-changed-files
         with:
           files: |
             **/*
       - name: Fail job is any changed files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
-        env:
-          CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
         run: |
           errorMsg="::error::\
-            Changed files: $CHANGED_FILES\
+            Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}\
             \nPlease run 'make generate-all' locally and commit the changes"
           echo -e "$errorMsg" && exit 1
   test:
