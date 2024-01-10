@@ -50,7 +50,7 @@ jobs:
         run: |
           make generate-all
       - name: Verify changed files
-        uses: tj-actions/verify-changed-files@9ed3155b72ba709881c967f75611fc5852f773b9 # v13.1
+        uses: tj-actions/verify-changed-files@f557547e643700f439745119efed5aac390db75d # v13.2.0
         id: verify-changed-files
         with:
           files: |
