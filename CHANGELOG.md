@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.29](https://github.com/statnett/image-scanner-operator/compare/v0.6.28...v0.6.29) (2024-01-11)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.48.3 ([#767](https://github.com/statnett/image-scanner-operator/issues/767)) ([382a1b1](https://github.com/statnett/image-scanner-operator/commit/382a1b1803a2604983e2e82b286a7293040ced31))
+* **deps:** update module k8s.io/klog/v2 to v2.120.0 ([#765](https://github.com/statnett/image-scanner-operator/issues/765)) ([b3e7952](https://github.com/statnett/image-scanner-operator/commit/b3e7952e14e7bbf8541a61b9cc12b8f22772b6ea))
+
+
+### Reverts
+
+* "ci: fix verify-changed-files GHA security advisory" ([#763](https://github.com/statnett/image-scanner-operator/issues/763)) ([61bd0a9](https://github.com/statnett/image-scanner-operator/commit/61bd0a9a4f887a1d01a5508a5b517fc27cc6b063))
+
 ## [0.6.28](https://github.com/statnett/image-scanner-operator/compare/v0.6.27...v0.6.28) (2024-01-05)
 
 
