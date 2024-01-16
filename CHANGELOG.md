@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.30](https://github.com/statnett/image-scanner-operator/compare/v0.6.29...v0.6.30) (2024-01-16)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.14.0 ([#771](https://github.com/statnett/image-scanner-operator/issues/771)) ([012060e](https://github.com/statnett/image-scanner-operator/commit/012060e283f456dd6da76698634663b631eb9398))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.14 ([#775](https://github.com/statnett/image-scanner-operator/issues/775)) ([25cc373](https://github.com/statnett/image-scanner-operator/commit/25cc373e5651b396f30e5d22649e6e6dfa8ba006))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.17.0 ([#774](https://github.com/statnett/image-scanner-operator/issues/774)) ([8190479](https://github.com/statnett/image-scanner-operator/commit/819047984e7aeafa9f07ff22374088aaad17ba49))
+
 ## [0.6.29](https://github.com/statnett/image-scanner-operator/compare/v0.6.28...v0.6.29) (2024-01-11)
 
 
