@@ -40,7 +40,7 @@ var _ = BeforeSuite(func() {
 	httpClient, err := rest.HTTPClientFor(restCfg)
 	Expect(err).NotTo(HaveOccurred())
 
-	mapper, err := apiutil.NewDiscoveryRESTMapper(restCfg, httpClient)
+	mapper, err := apiutil.NewDynamicRESTMapper(restCfg, httpClient)
 	Expect(err).NotTo(HaveOccurred())
 
 	k8sClient, err = client.New(restCfg, client.Options{Scheme: scheme.Scheme, Mapper: mapper})

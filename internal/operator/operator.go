@@ -124,7 +124,7 @@ func (o Operator) Start(cfg config.Config) error {
 		}},
 		Scheme: scheme,
 		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
-			return apiutil.NewDiscoveryRESTMapper(c, httpClient)
+			return apiutil.NewDynamicRESTMapper(c, httpClient)
 		},
 		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
