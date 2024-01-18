@@ -17,7 +17,7 @@ require (
 	k8s.io/api v0.29.1
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
-	k8s.io/klog/v2 v2.120.0
+	k8s.io/klog/v2 v2.120.1
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e
 	sigs.k8s.io/cli-utils v0.35.0
 	sigs.k8s.io/controller-runtime v0.17.0
