@@ -5,4 +5,4 @@ resources:
 images:
   - name: registry.dummy-domain.com/image-scanner/controller
     newName: ghcr.io/statnett/image-scanner-operator
-    newTag: 0.6.32 # x-release-please-version
+    newTag: 0.6.33 # x-release-please-version
