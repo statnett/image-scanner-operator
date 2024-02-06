@@ -7,8 +7,8 @@ configMapGenerator:
   - name: image-scanner-config
     behavior: merge
     literals:
-      # Only include kuttl namespace pattern to reduce resource waste running e2e tests
-      - SCAN_NAMESPACE_INCLUDE_REGEXP=^kuttl-.*
+      # Only include chainsaw namespace pattern to reduce resource waste running e2e tests
+      - SCAN_NAMESPACE_INCLUDE_REGEXP=^chainsaw-.*
   - name: trivy-job-config
     namespace: image-scanner
     behavior: merge
