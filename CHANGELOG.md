@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.34](https://github.com/statnett/image-scanner-operator/compare/v0.6.33...v0.6.34) (2024-02-09)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.15 ([#806](https://github.com/statnett/image-scanner-operator/issues/806)) ([12493f2](https://github.com/statnett/image-scanner-operator/commit/12493f2c15bb54f24e3cb07ff58a4053379670d4))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.17.1 ([#804](https://github.com/statnett/image-scanner-operator/issues/804)) ([51d03eb](https://github.com/statnett/image-scanner-operator/commit/51d03ebb22fddfd80fa3253e036092fdfcdd2a18))
+
 ## [0.6.33](https://github.com/statnett/image-scanner-operator/compare/v0.6.32...v0.6.33) (2024-02-06)
 
 
