@@ -76,12 +76,14 @@ func controllerInKinds(groupKinds ...schema.GroupKind) predicate.Predicate {
 			if err != nil {
 				return false
 			}
+
 			for _, groupKind := range groupKinds {
 				if controller.Kind == groupKind.Kind && controllerGV.Group == groupKind.Group {
 					return true
 				}
 			}
 		}
+
 		return false
 	})
 }
