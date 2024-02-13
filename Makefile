@@ -186,8 +186,6 @@ KUSTOMIZE_VERSION ?= v5.3.0
 CODE_GENERATOR_VERSION ?= v0.29.1
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.14.0
-# renovate: datasource=go depName=golang.org/x/tools/cmd/goimports packageName=golang.org/x/tools
-GOIMPORTS_VERSION ?= v0.18.0
 
 .PHONY: applyconfiguration-gen
 applyconfiguration-gen: $(APPLYCONFIGURATION_GEN) ## Download applyconfiguration-gen locally if necessary.
