@@ -177,7 +177,7 @@ KUSTOMIZE ?= $(LOCALBIN)/kustomize
 CONTROLLER_GEN ?= $(LOCALBIN)/controller-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
 # renovate: datasource=go depName=github.com/daixiang0/gci
-GCI_VERSION ?= v0.12.1
+GCI_VERSION ?= v0.12.3
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
