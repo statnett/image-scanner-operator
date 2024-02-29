@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.36](https://github.com/statnett/image-scanner-operator/compare/v0.6.35...v0.6.36) (2024-02-29)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/prometheus/client_golang to v1.19.0 ([#828](https://github.com/statnett/image-scanner-operator/issues/828)) ([e58394f](https://github.com/statnett/image-scanner-operator/commit/e58394fa6c161f38487c1f305070a0403f109455))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.17 ([#832](https://github.com/statnett/image-scanner-operator/issues/832)) ([055a6e3](https://github.com/statnett/image-scanner-operator/commit/055a6e3a9b2b74ba904fdda2065909e0dc8596c5))
+
 ## [0.6.35](https://github.com/statnett/image-scanner-operator/compare/v0.6.34...v0.6.35) (2024-02-19)
 
 
