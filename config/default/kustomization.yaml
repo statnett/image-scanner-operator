@@ -10,7 +10,6 @@ configMapGenerator:
   - name: trivy-job-config
     namespace: image-scanner
     literals:
-      - OFFLINE_SCAN=true
       - SERVER=http://trivy.image-scanner.svc.cluster.local
       - TIMEOUT=30m
 generatorOptions:
