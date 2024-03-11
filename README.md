@@ -204,7 +204,6 @@ to be picked up by Trivy. Example:
       - NO_PROGRESS=true # enabling offline mode for air-gapped environments
 ```
 
-
 ### Upgrade
 
 At this early stage, we might introduce breaking changes. But when we do,
