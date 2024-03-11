@@ -182,6 +182,29 @@ This example will override the default configuration to:
 - add metric labels with values obtained from `app.kubernetes.io/name` Pod labels
 - rescan workload images with an interval of 24 hours
 
+#### Configure Trivy scan jobs
+
+A workload container image is scanned by scheduling a Kubernetes _Job_ running
+on the scan target container image. The image is scanned using the
+[trivy filesystem](https://aquasecurity.github.io/trivy/v0.49/docs/references/configuration/cli/trivy_filesystem/)
+command inside the workload image.
+
+You can customize the settings for this command by modifying the
+`trivy-job-config` _ConfigMap_. All entries in the _ConfigMap_ are mounted
+as environment variables with the `TRIVY_` prefix - which will allow them
+to be picked up by Trivy. Example:
+
+```yaml
+  - name: trivy-job-config
+    namespace: image-scanner
+    behavior: merge
+    literals:
+      - DB_REPOSITORY=<company-ghcr-registry-proxy>/aquasecurity/trivy-db
+      - JAVA_DB_REPOSITORY=<company-ghcr-registry-proxy>/aquasecurity/trivy-java-db
+      - NO_PROGRESS=true # enabling offline mode for air-gapped environments
+```
+
+
 ### Upgrade
 
 At this early stage, we might introduce breaking changes. But when we do,
