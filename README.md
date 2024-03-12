@@ -189,7 +189,7 @@ on the scan target container image. The image is scanned using the
 [trivy filesystem](https://aquasecurity.github.io/trivy/latest/docs/references/configuration/cli/trivy_filesystem/)
 command inside the workload image.
 
-You can customize the settings for this command by modifying the
+The `trivy filesystem` scan command can be customized by modifying the
 `trivy-job-config` _ConfigMap_. All entries in the _ConfigMap_ are mounted
 as environment variables with the `TRIVY_` prefix - which will allow them
 to be picked up by Trivy. Example:
