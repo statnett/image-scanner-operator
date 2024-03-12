@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/statnett/image-scanner-operator/compare/v0.6.36...v0.7.0) (2024-03-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* don't run scan jobs in offline mode by default ([#841](https://github.com/statnett/image-scanner-operator/issues/841))
+
+### Features
+
+* don't run scan jobs in offline mode by default ([#841](https://github.com/statnett/image-scanner-operator/issues/841)) ([e4316ab](https://github.com/statnett/image-scanner-operator/commit/e4316aba9d80c183000f4dbc8f79beded2b41c62))
+
+
+### Bug Fixes
+
+* **deps:** update k8s.io/utils digest to 4693a02 ([#840](https://github.com/statnett/image-scanner-operator/issues/840)) ([ef4df57](https://github.com/statnett/image-scanner-operator/commit/ef4df57010d10ccadba2fc97a0e1219320e8b146))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.16.0 ([#836](https://github.com/statnett/image-scanner-operator/issues/836)) ([33b0d27](https://github.com/statnett/image-scanner-operator/commit/33b0d2770c10958e196e2692f5dd78c1ccd6e0d7))
+* **deps:** update module github.com/stretchr/testify to v1.9.0 ([#834](https://github.com/statnett/image-scanner-operator/issues/834)) ([7bfa1ef](https://github.com/statnett/image-scanner-operator/commit/7bfa1ef1a4ccd10783d4d21faa60ddee70a45dba))
+
 ## [0.6.36](https://github.com/statnett/image-scanner-operator/compare/v0.6.35...v0.6.36) (2024-02-29)
 
 
