@@ -201,7 +201,7 @@ to be picked up by Trivy. Example:
     literals:
       - DB_REPOSITORY=<company-ghcr-registry-proxy>/aquasecurity/trivy-db
       - JAVA_DB_REPOSITORY=<company-ghcr-registry-proxy>/aquasecurity/trivy-java-db
-      - NO_PROGRESS=true # enabling offline mode for air-gapped environments
+      - OFFLINE_SCAN=true # enabling offline mode for air-gapped environments
 ```
 
 ### Upgrade
