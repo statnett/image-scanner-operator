@@ -35,6 +35,7 @@ func (c *TrivyCommand) UnmarshalText(text []byte) error {
 	if c == nil {
 		return errUnmarshalNilLevel
 	}
+
 	if !c.unmarshalText(text) {
 		return fmt.Errorf("unrecognized trivy command: %q", text)
 	}
