@@ -187,7 +187,7 @@ This example will override the default configuration to:
 A workload container image is scanned by scheduling a Kubernetes _Job_ running
 on the scan target container image. The image is scanned using the
 [`trivy filesystem`](https://aquasecurity.github.io/trivy/latest/docs/references/configuration/cli/trivy_filesystem/)
-command inside the workload image.
+command inside the job's container.
 
 The `trivy filesystem` scan command can be customized by modifying the
 `trivy-job-config` _ConfigMap_. All entries in the _ConfigMap_ are mounted
