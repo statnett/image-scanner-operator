@@ -191,7 +191,7 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	container.Image = canonical.String()
 	container.Command = []string{FsScanTrivyBinaryPath}
 	container.Args = []string{
-		"filesystem",
+		string(f.TrivyCommand),
 		"/",
 	}
 	container.Env = []corev1.EnvVar{
