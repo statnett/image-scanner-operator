@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/statnett/image-scanner-operator/compare/v0.7.0...v0.7.1) (2024-03-13)
+
+
+### Features
+
+* add rootfs as an alternative to default filesystem Trivy scanning ([#846](https://github.com/statnett/image-scanner-operator/issues/846)) ([79a79fd](https://github.com/statnett/image-scanner-operator/commit/79a79fdc1d3201e5b6641c742ca45b520474db35))
+
 ## [0.7.0](https://github.com/statnett/image-scanner-operator/compare/v0.6.36...v0.7.0) (2024-03-12)
 
 
