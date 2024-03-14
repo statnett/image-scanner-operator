@@ -192,6 +192,8 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	container.Command = []string{FsScanTrivyBinaryPath}
 	container.Args = []string{
 		string(f.TrivyCommand),
+		"--skip-files",
+		FsScanTrivyBinaryPath,
 		"/",
 	}
 	container.Env = []corev1.EnvVar{

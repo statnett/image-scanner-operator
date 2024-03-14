@@ -48,7 +48,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - args:
-            - filesystem
+            - rootfs
+            - --skip-files
+            - /var/run/image-scanner/trivy
             - /
           command:
             - /var/run/image-scanner/trivy
