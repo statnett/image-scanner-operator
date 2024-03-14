@@ -63,7 +63,7 @@ func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
 	fs.String("scan-workload-resources", "", "A comma-separated list of workload resources to scan. Format used for resource is \"resource.group\", i.e. \"deployments.apps\".")
 	fs.String("scan-namespace-exclude-regexp", "^(kube-|openshift-).*", "regexp for namespace to exclude from scanning")
 	fs.String("scan-namespace-include-regexp", "", "regexp for namespace to include for scanning")
-	fs.String("trivy-command", string(config.FilesystemTrivyCommand), "The trivy command used to scan filesystem in image; can be 'filesystem' or 'rootfs'")
+	fs.String("trivy-command", string(config.RootfsTrivyCommand), "The trivy command used to scan filesystem in image; can be 'filesystem' or 'rootfs'")
 	fs.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	fs.Int("active-scan-job-limit", 8, "The maximum number of active scan jobs. Setting it to 0 will disable the limit.")
 	fs.Bool("help", false, "print out usage and a summary of options")

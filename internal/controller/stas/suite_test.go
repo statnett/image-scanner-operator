@@ -108,7 +108,7 @@ var _ = BeforeSuite(func() {
 		ScanJobNamespace:      scanJobNamespace,
 		ScanJobServiceAccount: "image-scanner-job",
 		ScanInterval:          time.Hour,
-		TrivyCommand:          config.FilesystemTrivyCommand,
+		TrivyCommand:          config.RootfsTrivyCommand,
 		TrivyImage:            "aquasecurity/trivy",
 	}
 
