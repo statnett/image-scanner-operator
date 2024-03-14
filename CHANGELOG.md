@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/statnett/image-scanner-operator/compare/v0.7.1...v0.8.0) (2024-03-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch to rootfs scanning as new default ([#850](https://github.com/statnett/image-scanner-operator/issues/850))
+
+### Features
+
+* switch to rootfs scanning as new default ([#850](https://github.com/statnett/image-scanner-operator/issues/850)) ([0f4399b](https://github.com/statnett/image-scanner-operator/commit/0f4399bff6a9fb379862f2b80741b10e8e7fb193))
+
 ## [0.7.1](https://github.com/statnett/image-scanner-operator/compare/v0.7.0...v0.7.1) (2024-03-13)
 
 
