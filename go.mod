@@ -23,6 +23,7 @@ require (
 	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1
+	sigs.k8s.io/wg-policy-prototypes v0.0.0-20240314011751-d30e4c34bb09
 	sigs.k8s.io/yaml v1.4.0
 )
 

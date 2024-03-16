@@ -61,6 +61,18 @@ k8s-client-gen: applyconfiguration-gen
 		--trim-path-prefix 	"$(GO_MODULE)" \
 		--output-base    	"."
 
+.PHONY: wg-policy-client-gen
+wg-policy-client-gen: applyconfiguration-gen
+	rm -rf internal/wg-policy/applyconfiguration
+	@echo ">> generating internal/wg-policy/applyconfiguration..."
+	cd wg-policy-prototypes
+	$(APPLYCONFIGURATION_GEN) \
+		--go-header-file 	hack/boilerplate.go.txt \
+		--input-dirs		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2" \
+		--output-package  	"$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
+		--trim-path-prefix 	"$(GO_MODULE)" \
+		--output-base    	"."
+
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
