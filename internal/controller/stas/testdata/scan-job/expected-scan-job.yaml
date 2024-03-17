@@ -50,7 +50,7 @@ spec:
         - args:
             - rootfs
             - --skip-files
-            - /var/run/image-scanner/trivy
+            - run/image-scanner/trivy
             - /
           command:
             - /var/run/image-scanner/trivy

@@ -193,7 +193,9 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	container.Args = []string{
 		string(f.TrivyCommand),
 		"--skip-files",
-		FsScanTrivyBinaryPath,
+		// FIXME: Somehow Trivy strips off the first part of the path
+		"run/image-scanner/trivy",
+		// FsScanTrivyBinaryPath,
 		"/",
 	}
 	container.Env = []corev1.EnvVar{
