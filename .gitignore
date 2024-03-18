@@ -26,6 +26,5 @@ Dockerfile.cross
 *.swo
 *~
 
-# Kuttl
-/kuttl-report.xml
-/kubeconfig
+# Chainsaw
+/chainsaw-report.xml
