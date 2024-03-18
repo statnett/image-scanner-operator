@@ -75,7 +75,7 @@ var _ = Describe("Scan Job controller", func() {
 		})
 
 		Context("and scan report is too big", func() {
-			It("should report correct conditions", func() {
+			It("should filter report by minimum severity", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful-long", "cis.yaml"), cis)).To(Succeed())
@@ -95,15 +95,34 @@ var _ = Describe("Scan Job controller", func() {
 
 				// Wait for Job to get reconciled
 				Eventually(komega.Object(cis), timeout, interval).Should(HaveField("Status.LastScanTime", Not(BeZero())))
-				Expect(cis.Status.LastSuccessfulScanTime).To(BeZero())
+				Expect(cis.Status.LastSuccessfulScanTime).To(Not(BeZero()))
 				Expect(cis.Status.LastScanJobUID).To(Equal(scanJob.UID))
-				// Check conditions
-				Expect(cis.Status.Conditions).To(HaveLen(1))
-				condition := cis.Status.Conditions[0]
-				Expect(condition.Type).To(Equal("Stalled"))
-				Expect(condition.Status).To(Equal(metav1.ConditionTrue))
-				Expect(condition.Reason).To(Equal("VulnerabilityOverflow"))
-				Expect(condition.Message).To(Not(BeEmpty()))
+				// Check no conditions
+				Expect(cis.Status.Conditions).To(BeEmpty())
+				// Check scan results available and filtered
+				Expect(cis.Status.Vulnerabilities).To(Not(BeEmpty()))
+				Expect(cis.Status.Vulnerabilities).Should(HaveEach(
+					WithTransform(func(vulnerability stasv1alpha1.Vulnerability) string {
+						return string(vulnerability.Severity)
+					},
+						SatisfyAny(
+							Equal("CRITICAL"),
+							Equal("HIGH"),
+						),
+					),
+				))
+				expectedVulnSummary := &stasv1alpha1.VulnerabilitySummary{
+					SeverityCount: map[string]int32{
+						"CRITICAL": 653,
+						"HIGH":     2606,
+						"MEDIUM":   3881,
+						"LOW":      3178,
+						"UNKNOWN":  77,
+					},
+					FixedCount:   5267,
+					UnfixedCount: 5128,
+				}
+				Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
 			})
 		})
 

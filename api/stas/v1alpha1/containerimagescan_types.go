@@ -3,14 +3,11 @@ package v1alpha1
 import (
 	"github.com/distribution/reference"
 	"github.com/opencontainers/go-digest"
-	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 )
 
 const (
-	ReasonVulnerabilityOverflow        = "VulnerabilityOverflow"
 	ReasonScanReportDecodeError        = "ScanReportDecodeError"
 	WorkloadAnnotationKeyIgnoreUnfixed = "image-scanner.statnett.no/ignore-unfixed"
 )
@@ -28,7 +25,8 @@ type Workload struct {
 }
 
 type ScanConfig struct {
-	// MinSeverity sets the minimum vulnerability severity included when scanning the image.
+	// MinSeverity sets the minimum vulnerability severity included the vulnerabilities report after scanning the image.
+	// Note: If the report is too large to make the resource fit in the api-server, the actual minimum reported vulnerability severity might be higher.
 	//+kubebuilder:validation:Enum={UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL}
 	MinSeverity *string `json:"minSeverity,omitempty"`
 	// IgnoreUnfixed set to true will report only fixed vulnerabilities when scanning the image.
@@ -60,20 +58,6 @@ func (in *Image) Canonical() (reference.Canonical, error) {
 	}
 
 	return reference.WithDigest(named, in.Digest)
-}
-
-func (cis ContainerImageScan) HasVulnerabilityOverflow() bool {
-	if cis.Status.ObservedGeneration != cis.Generation {
-		// CIS is still under reconciliation
-		return false
-	}
-
-	stalledCondition := meta.FindStatusCondition(cis.Status.Conditions, string(kstatus.ConditionStalled))
-	if stalledCondition == nil {
-		return false
-	}
-
-	return stalledCondition.Reason == ReasonVulnerabilityOverflow
 }
 
 // ImageScanSpec represents the specification for the container image scan.

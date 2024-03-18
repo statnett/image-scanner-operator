@@ -67,8 +67,9 @@ spec:
                   when scanning the image.
                 type: boolean
               minSeverity:
-                description: MinSeverity sets the minimum vulnerability severity included
-                  when scanning the image.
+                description: |-
+                  MinSeverity sets the minimum vulnerability severity included the vulnerabilities report after scanning the image.
+                  Note: If the report is too large to make the resource fit in the api-server, the actual minimum reported vulnerability severity might be higher.
                 enum:
                 - UNKNOWN
                 - LOW
