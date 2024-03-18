@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.1](https://github.com/statnett/image-scanner-operator/compare/v0.8.0...v0.8.1) (2024-03-18)
+
+
+### Bug Fixes
+
+* **deps:** update kubernetes packages to v0.29.3 ([#858](https://github.com/statnett/image-scanner-operator/issues/858)) ([a187e4d](https://github.com/statnett/image-scanner-operator/commit/a187e4da82b8437da01389f96e4bee750ba59c4d))
+* use additional skip-files arg in scan job understood by Trivy ([#860](https://github.com/statnett/image-scanner-operator/issues/860)) ([a33f4a6](https://github.com/statnett/image-scanner-operator/commit/a33f4a601d4eab51346270e7be79b8f5e7502831))
+
 ## [0.8.0](https://github.com/statnett/image-scanner-operator/compare/v0.7.1...v0.8.0) (2024-03-14)
 
 
