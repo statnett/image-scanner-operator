@@ -386,6 +386,7 @@ func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1
 		if err != nil {
 			return filtered, err
 		}
+
 		if severity >= minSeverity {
 			filtered = append(filtered, v)
 		}
