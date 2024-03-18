@@ -201,20 +201,20 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	cis.Status.LastScanJobUID = job.UID
 	cis.Status.LastSuccessfulScanTime = &now
 
-	for {
-		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, minSeverity)
+	// Repeat until resource fits in api-server by increasing minimum severity on failure.
+	for severity := minSeverity; severity < stasv1alpha1.MaxSeverity; severity++ {
+		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
 		if err != nil {
 			return err
 		}
 
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-		if err == nil || !isResourceTooLargeError(err) || minSeverity == stasv1alpha1.MaxSeverity {
+		if err == nil || !isResourceTooLargeError(err) {
 			return err
 		}
-
-		// Resource is too large to fit in api-server, try increasing minimum severity.
-		minSeverity++
 	}
+
+	return err
 }
 
 func isResourceTooLargeError(err error) bool {
@@ -380,11 +380,13 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
-func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) (filtered []stasv1alpha1.Vulnerability, err error) {
+func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) ([]stasv1alpha1.Vulnerability, error) {
+	var filtered []stasv1alpha1.Vulnerability
+
 	for _, v := range orig {
 		severity, err := stasv1alpha1.NewSeverity(v.Severity)
 		if err != nil {
-			return filtered, err
+			return nil, err
 		}
 
 		if severity >= minSeverity {
@@ -392,7 +394,7 @@ func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1
 		}
 	}
 
-	return
+	return filtered, nil
 }
 
 func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
