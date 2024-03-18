@@ -222,8 +222,9 @@ $(GCI):
 ##@ End-to-end (e2e) Testing
 
 e2e-test: ## Run e2e tests
-	chainsaw test --test-dir test/e2e/scenario --config test/e2e-config/.chainsaw.yaml
-	chainsaw test --test-dir test/e2e/workload-scan --config test/e2e-config/.chainsaw.yaml
+	chainsaw test --config test/e2e-config/.chainsaw.yaml \
+	--test-dir test/e2e/scenario \
+	--test-dir test/e2e/workload-scan
 
 ##@ K3d
 
