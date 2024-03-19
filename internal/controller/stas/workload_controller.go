@@ -149,6 +149,8 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			cis.Spec.Image = image.Image
 			cis.Spec.Tag = image.Tag
 
+			// Ensure MinSeverity unset until we eventually make use of it
+			cis.Spec.MinSeverity = nil
 			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
 				cis.Spec.IgnoreUnfixed = ptr.To(true)
 			} else {
