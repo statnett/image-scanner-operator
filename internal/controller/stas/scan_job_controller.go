@@ -185,9 +185,8 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	}
 
 	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
-	cis.Status.Vulnerabilities = vulnerabilities
 
-	minSeverity := stasv1alpha1.SeverityUnknown
+	minSeverity := stasv1alpha1.MinSeverity
 	if cis.Spec.MinSeverity != nil {
 		minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
 		if err != nil {
@@ -202,24 +201,16 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	cis.Status.LastScanJobUID = job.UID
 	cis.Status.LastSuccessfulScanTime = &now
 
-	err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-	if err != nil && isResourceTooLargeError(err) {
-		cis = cleanCis.DeepCopy()
-
-		condition := metav1.Condition{
-			Type:    string(kstatus.ConditionStalled),
-			Status:  metav1.ConditionTrue,
-			Reason:  stasv1alpha1.ReasonVulnerabilityOverflow,
-			Message: fmt.Sprintf("vulnerability report is too large to fit in API: %s", err),
+	// Repeat until resource fits in api-server by increasing minimum severity on failure.
+	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
+		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
+		if err != nil {
+			return err
 		}
-		meta.SetStatusCondition(&cis.Status.Conditions, condition)
-		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
-		cis.Status.LastScanTime = &now
-		cis.Status.LastScanJobUID = job.UID
 
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
-		if err != nil {
-			logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
+		if err == nil || !isResourceTooLargeError(err) {
+			return err
 		}
 	}
 
@@ -389,9 +380,26 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
+func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) ([]stasv1alpha1.Vulnerability, error) {
+	var filtered []stasv1alpha1.Vulnerability
+
+	for _, v := range orig {
+		severity, err := stasv1alpha1.NewSeverity(v.Severity)
+		if err != nil {
+			return nil, err
+		}
+
+		if severity >= minSeverity {
+			filtered = append(filtered, v)
+		}
+	}
+
+	return filtered, nil
+}
+
 func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
 	severityCount := make(map[string]int32)
-	for severity := minSeverity; severity <= stasv1alpha1.SeverityCritical; severity++ {
+	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 		severityCount[severity.String()] = 0
 	}
 

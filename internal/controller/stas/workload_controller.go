@@ -83,7 +83,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Watches(&stasv1alpha1.ContainerImageScan{},
 			handler.EnqueueRequestForOwner(mgr.GetScheme(), mgr.GetRESTMapper(), &corev1.Pod{}),
 			builder.WithPredicates(
-				predicate.Or(predicate.GenerationChangedPredicate{}, cisVulnerabilityOverflow),
+				predicate.GenerationChangedPredicate{},
 				ignoreCreationPredicate(),
 			))
 
@@ -153,21 +153,6 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				cis.Spec.IgnoreUnfixed = ptr.To(true)
 			} else {
 				cis.Spec.IgnoreUnfixed = ptr.To(false)
-			}
-
-			if cis.HasVulnerabilityOverflow() {
-				minSeverity := stasv1alpha1.MinSeverity
-				if cis.Spec.MinSeverity != nil {
-					minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
-					if err != nil {
-						return err
-					}
-				}
-
-				if minSeverity < stasv1alpha1.MaxSeverity {
-					minSeverity++
-					cis.Spec.MinSeverity = ptr.To(minSeverity.String())
-				}
 			}
 
 			return controllerutil.SetOwnerReference(pod, cis, r.Scheme)

@@ -105,10 +105,6 @@ var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool 
 	return isJobFinished(object.(*batchv1.Job))
 })
 
-var cisVulnerabilityOverflow = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	return object.(*stasv1alpha1.ContainerImageScan).HasVulnerabilityOverflow()
-})
-
 // isJobFinished checks whether the given Job has finished execution.
 // It does not discriminate between successful and failed terminations.
 // https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/job/utils.go#L24-L33
