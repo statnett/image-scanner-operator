@@ -107,8 +107,9 @@ func scanJobName(cis *stasv1alpha1.ContainerImageScan) (string, error) {
 
 	name := nameFn(cis.Name)
 	if len(name) > KubernetesJobNameMaxLength {
+		shortenCISName := cis.Name[:len(cis.Name)-(len(name)-KubernetesJobNameMaxLength)]
 		// Must ensure the shortened name does not end with a '.' - which makes the job name invalid
-		shortenCISName := strings.Trim(cis.Name[0:len(cis.Name)-(len(name)-KubernetesJobNameMaxLength)], ".")
+		shortenCISName = strings.Trim(shortenCISName, ".")
 		name = nameFn(shortenCISName)
 	}
 
