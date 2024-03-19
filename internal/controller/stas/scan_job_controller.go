@@ -202,7 +202,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	cis.Status.LastSuccessfulScanTime = &now
 
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
-	for severity := minSeverity; severity < stasv1alpha1.MaxSeverity; severity++ {
+	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
 		if err != nil {
 			return err
