@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/statnett/image-scanner-operator/compare/v0.8.2...v0.8.3) (2024-03-20)
+
+
+### Bug Fixes
+
+* move Trivy skip-files to job configmap ([#869](https://github.com/statnett/image-scanner-operator/issues/869)) ([35d3372](https://github.com/statnett/image-scanner-operator/commit/35d33728d1b5eeb3dd98be01cebfbb73a389991a))
+
 ## [0.8.2](https://github.com/statnett/image-scanner-operator/compare/v0.8.1...v0.8.2) (2024-03-19)
 
 
