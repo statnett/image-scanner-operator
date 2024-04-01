@@ -19,7 +19,7 @@ type PolicyReportResultApplyConfiguration struct {
 	Timestamp       *v1.Timestamp                  `json:"timestamp,omitempty"`
 	Result          *v1alpha2.PolicyResult         `json:"result,omitempty"`
 	Scored          *bool                          `json:"scored,omitempty"`
-	Subjects        []*corev1.ObjectReference      `json:"resources,omitempty"`
+	Subjects        []corev1.ObjectReference       `json:"resources,omitempty"`
 	SubjectSelector *v1.LabelSelector              `json:"resourceSelector,omitempty"`
 	Description     *string                        `json:"message,omitempty"`
 	Properties      map[string]string              `json:"properties,omitempty"`
@@ -98,12 +98,9 @@ func (b *PolicyReportResultApplyConfiguration) WithScored(value bool) *PolicyRep
 // WithSubjects adds the given value to the Subjects field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Subjects field.
-func (b *PolicyReportResultApplyConfiguration) WithSubjects(values ...*corev1.ObjectReference) *PolicyReportResultApplyConfiguration {
+func (b *PolicyReportResultApplyConfiguration) WithSubjects(values ...corev1.ObjectReference) *PolicyReportResultApplyConfiguration {
 	for i := range values {
-		if values[i] == nil {
-			panic("nil value passed to WithSubjects")
-		}
-		b.Subjects = append(b.Subjects, *values[i])
+		b.Subjects = append(b.Subjects, values[i])
 	}
 	return b
 }

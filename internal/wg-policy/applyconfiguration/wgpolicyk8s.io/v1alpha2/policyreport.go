@@ -7,7 +7,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
-	wgpolicyk8siov1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 )
 
 // PolicyReportApplyConfiguration represents an declarative configuration of the PolicyReport type for use
@@ -15,10 +14,10 @@ import (
 type PolicyReportApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Scope                            *corev1.ObjectReference                     `json:"scope,omitempty"`
-	ScopeSelector                    *metav1.LabelSelector                       `json:"scopeSelector,omitempty"`
-	Summary                          *PolicyReportSummaryApplyConfiguration      `json:"summary,omitempty"`
-	Results                          []*wgpolicyk8siov1alpha2.PolicyReportResult `json:"results,omitempty"`
+	Scope                            *corev1.ObjectReference                `json:"scope,omitempty"`
+	ScopeSelector                    *metav1.LabelSelector                  `json:"scopeSelector,omitempty"`
+	Summary                          *PolicyReportSummaryApplyConfiguration `json:"summary,omitempty"`
+	Results                          []PolicyReportResultApplyConfiguration `json:"results,omitempty"`
 }
 
 // PolicyReport constructs an declarative configuration of the PolicyReport type for use with
@@ -217,7 +216,7 @@ func (b *PolicyReportApplyConfiguration) WithSummary(value *PolicyReportSummaryA
 // WithResults adds the given value to the Results field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Results field.
-func (b *PolicyReportApplyConfiguration) WithResults(values ...**wgpolicyk8siov1alpha2.PolicyReportResult) *PolicyReportApplyConfiguration {
+func (b *PolicyReportApplyConfiguration) WithResults(values ...*PolicyReportResultApplyConfiguration) *PolicyReportApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithResults")
