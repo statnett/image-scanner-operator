@@ -3,28 +3,28 @@
 package applyconfiguration
 
 import (
-	wgpolicyk8siov1beta1 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/wgpolicyk8s.io/v1beta1"
+	reportsxk8siov1beta2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/reports.x-k8s.io/v1beta2"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	v1beta1 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1beta1"
+	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 )
 
 // ForKind returns an apply configuration type for the given GroupVersionKind, or nil if no
 // apply configuration type exists for the given GroupVersionKind.
 func ForKind(kind schema.GroupVersionKind) interface{} {
 	switch kind {
-	// Group=wgpolicyk8s.io, Version=v1beta1
-	case v1beta1.SchemeGroupVersion.WithKind("ClusterPolicyReport"):
-		return &wgpolicyk8siov1beta1.ClusterPolicyReportApplyConfiguration{}
-	case v1beta1.SchemeGroupVersion.WithKind("Limits"):
-		return &wgpolicyk8siov1beta1.LimitsApplyConfiguration{}
-	case v1beta1.SchemeGroupVersion.WithKind("PolicyReport"):
-		return &wgpolicyk8siov1beta1.PolicyReportApplyConfiguration{}
-	case v1beta1.SchemeGroupVersion.WithKind("PolicyReportConfiguration"):
-		return &wgpolicyk8siov1beta1.PolicyReportConfigurationApplyConfiguration{}
-	case v1beta1.SchemeGroupVersion.WithKind("PolicyReportResult"):
-		return &wgpolicyk8siov1beta1.PolicyReportResultApplyConfiguration{}
-	case v1beta1.SchemeGroupVersion.WithKind("PolicyReportSummary"):
-		return &wgpolicyk8siov1beta1.PolicyReportSummaryApplyConfiguration{}
+	// Group=reports.x-k8s.io, Version=v1beta2
+	case v1beta2.SchemeGroupVersion.WithKind("ClusterPolicyReport"):
+		return &reportsxk8siov1beta2.ClusterPolicyReportApplyConfiguration{}
+	case v1beta2.SchemeGroupVersion.WithKind("Limits"):
+		return &reportsxk8siov1beta2.LimitsApplyConfiguration{}
+	case v1beta2.SchemeGroupVersion.WithKind("PolicyReport"):
+		return &reportsxk8siov1beta2.PolicyReportApplyConfiguration{}
+	case v1beta2.SchemeGroupVersion.WithKind("PolicyReportConfiguration"):
+		return &reportsxk8siov1beta2.PolicyReportConfigurationApplyConfiguration{}
+	case v1beta2.SchemeGroupVersion.WithKind("PolicyReportResult"):
+		return &reportsxk8siov1beta2.PolicyReportResultApplyConfiguration{}
+	case v1beta2.SchemeGroupVersion.WithKind("PolicyReportSummary"):
+		return &reportsxk8siov1beta2.PolicyReportSummaryApplyConfiguration{}
 
 	}
 	return nil
