@@ -67,7 +67,7 @@ wg-policy-client-gen: applyconfiguration-gen
 	@echo ">> generating internal/wg-policy/applyconfiguration..."
 	$(APPLYCONFIGURATION_GEN) \
 		--go-header-file 	hack/boilerplate.go.txt \
-		--input-dirs		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2" \
+		--input-dirs		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1beta1" \
 		--output-package  	"$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
 		--trim-path-prefix 	"$(GO_MODULE)" \
 		--output-base    	"."
