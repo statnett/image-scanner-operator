@@ -205,10 +205,9 @@ func (r *ScanJobReconciler) updateCISStatus(ctx context.Context, job *batchv1.Jo
 	cis.Status.LastScanJobUID = job.UID
 	cis.Status.LastSuccessfulScanTime = &now
 
+	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
-		var err error
-
 		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
 		if err != nil {
 			return err
@@ -220,7 +219,7 @@ func (r *ScanJobReconciler) updateCISStatus(ctx context.Context, job *batchv1.Jo
 		}
 	}
 
-	return nil
+	return err
 }
 
 func isResourceTooLargeError(err error) bool {
