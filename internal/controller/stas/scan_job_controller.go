@@ -16,6 +16,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/utils/ptr"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -155,15 +156,11 @@ func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv
 }
 
 func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
-	var (
-		cleanCis        = cis.DeepCopy()
-		vulnerabilities []stasv1alpha1.Vulnerability
-		now             = metav1.Now()
-	)
+	var vulnerabilities []stasv1alpha1.Vulnerability
 
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
 	if err != nil {
-		cis = cleanCis.DeepCopy()
+		cleanCis := cis.DeepCopy()
 
 		condition := metav1.Condition{
 			Type:    string(kstatus.ConditionStalled),
@@ -173,7 +170,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		}
 		meta.SetStatusCondition(&cis.Status.Conditions, condition)
 		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
-		cis.Status.LastScanTime = &now
+		cis.Status.LastScanTime = ptr.To(metav1.Now())
 		cis.Status.LastScanJobUID = job.UID
 
 		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
@@ -194,6 +191,13 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		}
 	}
 
+	return r.updateCISStatus(ctx, job, cis, vulnerabilities, minSeverity)
+}
+
+func (r *ScanJobReconciler) updateCISStatus(ctx context.Context, job *batchv1.Job, cis *stasv1alpha1.ContainerImageScan, vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) error {
+	cleanCis := cis.DeepCopy()
+	now := metav1.Now()
+
 	cis.Status.VulnerabilitySummary = vulnerabilitySummary(vulnerabilities, minSeverity)
 	// Clear any conditions since we now have a successful scan report
 	cis.Status.Conditions = nil
@@ -201,6 +205,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	cis.Status.LastScanJobUID = job.UID
 	cis.Status.LastSuccessfulScanTime = &now
 
+	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
