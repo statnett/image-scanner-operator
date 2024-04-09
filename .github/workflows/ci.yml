@@ -81,7 +81,7 @@ jobs:
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
       # renovate: datasource=github-tags depName=k3d-io/k3d
-      K3D_VERSION: v5.6.0
+      K3D_VERSION: v5.6.2
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
