@@ -2,6 +2,7 @@ extends: default
 ignore: |
   /config/crd/bases/
   /config/rbac/role.yaml
+  /config/wg-policy/crd/
 rules:
   comments:
     require-starting-space: false
