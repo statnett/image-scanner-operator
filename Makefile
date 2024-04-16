@@ -72,6 +72,11 @@ wg-policy-client-gen: applyconfiguration-gen
 		--trim-path-prefix 	"$(GO_MODULE)" \
 		--output-base    	"."
 
+.PHONY: wg-policy-crd-update
+wg-policy-crd-update:
+	curl -O --output-dir config/wg-policy/crd/ --remote-name-all \
+		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/master/policy-report/crd/v1beta2/reports.x-k8s.io_{clusterpolicyreports,policyreports}.yaml
+
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
