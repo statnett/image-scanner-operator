@@ -52,25 +52,23 @@ GO_MODULE = $(shell go list -m)
 API_DIRS = $(shell find api -mindepth 2 -type d | sed "s|^|$(shell go list -m)/|" | paste -sd ",")
 .PHONY: k8s-client-gen
 k8s-client-gen: applyconfiguration-gen
-	rm -rf internal/client/applyconfiguration
 	@echo ">> generating internal/client/applyconfiguration..."
 	$(APPLYCONFIGURATION_GEN) \
-		--go-header-file 	hack/boilerplate.go.txt \
-		--input-dirs		"$(API_DIRS)" \
-		--output-package  	"$(GO_MODULE)/internal/client/applyconfiguration" \
-		--trim-path-prefix 	"$(GO_MODULE)" \
-		--output-base    	"."
+		--output-dir "internal/client/applyconfiguration" \
+		--output-pkg "$(GO_MODULE)/internal/client/applyconfiguration" \
+		$(API_DIRS)
 
+# FIXME: This target does not generate something that compiles after upgrade to v0.30.0
+# The following issue might be relevant: https://github.com/kubernetes/code-generator/issues/168
+# For now I (erikgb) updated the command, but kept the files generated with v0.29.3
 .PHONY: wg-policy-client-gen
 wg-policy-client-gen: applyconfiguration-gen
 	rm -rf internal/wg-policy/applyconfiguration
 	@echo ">> generating internal/wg-policy/applyconfiguration..."
 	$(APPLYCONFIGURATION_GEN) \
-		--go-header-file 	hack/boilerplate.go.txt \
-		--input-dirs		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2" \
-		--output-package  	"$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
-		--trim-path-prefix 	"$(GO_MODULE)" \
-		--output-base    	"."
+		--output-dir "internal/wg-policy/applyconfiguration" \
+		--output-pkg "$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
+		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 
 .PHONY: wg-policy-crd-update
 wg-policy-crd-update:
@@ -199,7 +197,7 @@ GCI_VERSION ?= v0.13.4
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
 KUSTOMIZE_VERSION ?= v5.4.1
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
-CODE_GENERATOR_VERSION ?= v0.29.3
+CODE_GENERATOR_VERSION ?= v0.30.0
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.15.0
 
