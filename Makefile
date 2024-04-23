@@ -63,7 +63,6 @@ k8s-client-gen: applyconfiguration-gen
 # For now I (erikgb) updated the command, but kept the files generated with v0.29.3
 .PHONY: wg-policy-client-gen
 wg-policy-client-gen: applyconfiguration-gen
-	rm -rf internal/wg-policy/applyconfiguration
 	@echo ">> generating internal/wg-policy/applyconfiguration..."
 	$(APPLYCONFIGURATION_GEN) \
 		--output-dir "internal/wg-policy/applyconfiguration" \
