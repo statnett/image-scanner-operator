@@ -49,7 +49,7 @@ generate: controller-gen k8s-client-gen ## Generate code required for K8s API an
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
 GO_MODULE = $(shell go list -m)
-API_DIRS = $(shell find api -mindepth 2 -type d | sed "s|^|$(shell go list -m)/|" | paste -sd ",")
+API_DIRS = $(shell find api -mindepth 2 -type d | sed "s|^|$(shell go list -m)/|" | paste -sd " ")
 .PHONY: k8s-client-gen
 k8s-client-gen: applyconfiguration-gen
 	@echo ">> generating internal/client/applyconfiguration..."
