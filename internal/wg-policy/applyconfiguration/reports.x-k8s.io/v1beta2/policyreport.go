@@ -3,7 +3,6 @@
 package v1beta2
 
 import (
-	v1beta2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/reports.x-k8s.io/v1beta2"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
@@ -15,12 +14,12 @@ import (
 type PolicyReportApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Source                           *string                                              `json:"source,omitempty"`
-	Scope                            *corev1.ObjectReference                              `json:"scope,omitempty"`
-	ScopeSelector                    *v1.LabelSelectorApplyConfiguration                  `json:"scopeSelector,omitempty"`
-	Configuration                    *v1beta2.PolicyReportConfigurationApplyConfiguration `json:"configuration,omitempty"`
-	Summary                          *v1beta2.PolicyReportSummaryApplyConfiguration       `json:"summary,omitempty"`
-	Results                          []v1beta2.PolicyReportResultApplyConfiguration       `json:"results,omitempty"`
+	Source                           *string                                      `json:"source,omitempty"`
+	Scope                            *corev1.ObjectReference                      `json:"scope,omitempty"`
+	ScopeSelector                    *v1.LabelSelectorApplyConfiguration          `json:"scopeSelector,omitempty"`
+	Configuration                    *PolicyReportConfigurationApplyConfiguration `json:"configuration,omitempty"`
+	Summary                          *PolicyReportSummaryApplyConfiguration       `json:"summary,omitempty"`
+	Results                          []PolicyReportResultApplyConfiguration       `json:"results,omitempty"`
 }
 
 // PolicyReport constructs an declarative configuration of the PolicyReport type for use with
@@ -219,7 +218,7 @@ func (b *PolicyReportApplyConfiguration) WithScopeSelector(value *v1.LabelSelect
 // WithConfiguration sets the Configuration field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Configuration field is set to the value of the last call.
-func (b *PolicyReportApplyConfiguration) WithConfiguration(value *v1beta2.PolicyReportConfigurationApplyConfiguration) *PolicyReportApplyConfiguration {
+func (b *PolicyReportApplyConfiguration) WithConfiguration(value *PolicyReportConfigurationApplyConfiguration) *PolicyReportApplyConfiguration {
 	b.Configuration = value
 	return b
 }
@@ -227,7 +226,7 @@ func (b *PolicyReportApplyConfiguration) WithConfiguration(value *v1beta2.Policy
 // WithSummary sets the Summary field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Summary field is set to the value of the last call.
-func (b *PolicyReportApplyConfiguration) WithSummary(value *v1beta2.PolicyReportSummaryApplyConfiguration) *PolicyReportApplyConfiguration {
+func (b *PolicyReportApplyConfiguration) WithSummary(value *PolicyReportSummaryApplyConfiguration) *PolicyReportApplyConfiguration {
 	b.Summary = value
 	return b
 }
@@ -235,7 +234,7 @@ func (b *PolicyReportApplyConfiguration) WithSummary(value *v1beta2.PolicyReport
 // WithResults adds the given value to the Results field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Results field.
-func (b *PolicyReportApplyConfiguration) WithResults(values ...*v1beta2.PolicyReportResultApplyConfiguration) *PolicyReportApplyConfiguration {
+func (b *PolicyReportApplyConfiguration) WithResults(values ...*PolicyReportResultApplyConfiguration) *PolicyReportApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithResults")

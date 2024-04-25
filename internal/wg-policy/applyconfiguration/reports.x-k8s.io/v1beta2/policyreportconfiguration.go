@@ -2,14 +2,10 @@
 
 package v1beta2
 
-import (
-	v1beta2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/reports.x-k8s.io/v1beta2"
-)
-
 // PolicyReportConfigurationApplyConfiguration represents an declarative configuration of the PolicyReportConfiguration type for use
 // with apply.
 type PolicyReportConfigurationApplyConfiguration struct {
-	Limits *v1beta2.LimitsApplyConfiguration `json:"limits,omitempty"`
+	Limits *LimitsApplyConfiguration `json:"limits,omitempty"`
 }
 
 // PolicyReportConfigurationApplyConfiguration constructs an declarative configuration of the PolicyReportConfiguration type for use with
@@ -21,7 +17,7 @@ func PolicyReportConfiguration() *PolicyReportConfigurationApplyConfiguration {
 // WithLimits sets the Limits field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Limits field is set to the value of the last call.
-func (b *PolicyReportConfigurationApplyConfiguration) WithLimits(value *v1beta2.LimitsApplyConfiguration) *PolicyReportConfigurationApplyConfiguration {
+func (b *PolicyReportConfigurationApplyConfiguration) WithLimits(value *LimitsApplyConfiguration) *PolicyReportConfigurationApplyConfiguration {
 	b.Limits = value
 	return b
 }
