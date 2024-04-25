@@ -58,9 +58,6 @@ k8s-client-gen: applyconfiguration-gen
 		--output-pkg "$(GO_MODULE)/internal/client/applyconfiguration" \
 		$(API_DIRS)
 
-# FIXME: This target does not generate something that compiles after upgrade to v0.30.0
-# The following issue might be relevant: https://github.com/kubernetes/code-generator/issues/168
-# For now I (erikgb) updated the command, but kept the files generated with v0.29.3
 .PHONY: wg-policy-client-gen
 wg-policy-client-gen: applyconfiguration-gen
 	@echo ">> generating internal/wg-policy/applyconfiguration..."
@@ -195,6 +192,7 @@ GCI_VERSION ?= v0.13.4
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
 KUSTOMIZE_VERSION ?= v5.4.1
+# TODO: Waiting for v0.30.1
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
 CODE_GENERATOR_VERSION ?= master
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
