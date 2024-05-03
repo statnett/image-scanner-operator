@@ -9,6 +9,6 @@ permissions:
   contents: read
 jobs:
   trigger:
-    uses: statnett/workflows/.github/workflows/clean-ghcr.yaml@main
+    uses: statnett/github-workflows/.github/workflows/clean-ghcr.yaml@main
     permissions:
       packages: write
