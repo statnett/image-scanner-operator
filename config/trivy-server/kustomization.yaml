@@ -6,9 +6,11 @@ resources:
   - network_policy.yaml
   - service.yaml
   - stateful_set.yaml
-commonLabels:
-  app.kubernetes.io/name: trivy
-  app.kubernetes.io/component: server
+labels:
+  - pairs:
+      app.kubernetes.io/name: trivy
+      app.kubernetes.io/component: server
+    includeSelectors: true
 configMapGenerator:
   - name: trivy-server-config
     literals:
