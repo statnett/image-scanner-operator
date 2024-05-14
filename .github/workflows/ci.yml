@@ -57,9 +57,11 @@ jobs:
             **/*
       - name: Fail job is any changed files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
         run: |
           errorMsg="::error::\
-            Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}\
+            Changed files: $CHANGED_FILES\
             \nPlease run 'make generate-all' locally and commit the changes"
           echo -e "$errorMsg" && exit 1
   test:
