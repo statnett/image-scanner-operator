@@ -5,24 +5,25 @@ package v1beta2
 import (
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
 	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 )
 
 // PolicyReportResultApplyConfiguration represents an declarative configuration of the PolicyReportResult type for use
 // with apply.
 type PolicyReportResultApplyConfiguration struct {
-	Source           *string                       `json:"source,omitempty"`
-	Policy           *string                       `json:"policy,omitempty"`
-	Rule             *string                       `json:"rule,omitempty"`
-	Category         *string                       `json:"category,omitempty"`
-	Severity         *v1beta2.PolicyResultSeverity `json:"severity,omitempty"`
-	Timestamp        *v1.Timestamp                 `json:"timestamp,omitempty"`
-	Result           *v1beta2.PolicyResult         `json:"result,omitempty"`
-	Scored           *bool                         `json:"scored,omitempty"`
-	Subjects         []corev1.ObjectReference      `json:"resources,omitempty"`
-	ResourceSelector *v1.LabelSelector             `json:"resourceSelector,omitempty"`
-	Description      *string                       `json:"message,omitempty"`
-	Properties       map[string]string             `json:"properties,omitempty"`
+	Source           *string                                 `json:"source,omitempty"`
+	Policy           *string                                 `json:"policy,omitempty"`
+	Rule             *string                                 `json:"rule,omitempty"`
+	Category         *string                                 `json:"category,omitempty"`
+	Severity         *v1beta2.PolicyResultSeverity           `json:"severity,omitempty"`
+	Timestamp        *v1.Timestamp                           `json:"timestamp,omitempty"`
+	Result           *v1beta2.PolicyResult                   `json:"result,omitempty"`
+	Scored           *bool                                   `json:"scored,omitempty"`
+	Subjects         []corev1.ObjectReference                `json:"resources,omitempty"`
+	ResourceSelector *metav1.LabelSelectorApplyConfiguration `json:"resourceSelector,omitempty"`
+	Description      *string                                 `json:"message,omitempty"`
+	Properties       map[string]string                       `json:"properties,omitempty"`
 }
 
 // PolicyReportResultApplyConfiguration constructs an declarative configuration of the PolicyReportResult type for use with
@@ -108,8 +109,8 @@ func (b *PolicyReportResultApplyConfiguration) WithSubjects(values ...corev1.Obj
 // WithResourceSelector sets the ResourceSelector field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ResourceSelector field is set to the value of the last call.
-func (b *PolicyReportResultApplyConfiguration) WithResourceSelector(value v1.LabelSelector) *PolicyReportResultApplyConfiguration {
-	b.ResourceSelector = &value
+func (b *PolicyReportResultApplyConfiguration) WithResourceSelector(value *metav1.LabelSelectorApplyConfiguration) *PolicyReportResultApplyConfiguration {
+	b.ResourceSelector = value
 	return b
 }
 

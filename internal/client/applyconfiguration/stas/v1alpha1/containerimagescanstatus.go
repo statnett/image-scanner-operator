@@ -5,6 +5,7 @@ package v1alpha1
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
+	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
 // ContainerImageScanStatusApplyConfiguration represents an declarative configuration of the ContainerImageScanStatus type for use
@@ -14,7 +15,7 @@ type ContainerImageScanStatusApplyConfiguration struct {
 	LastScanJobUID         *types.UID                              `json:"lastScanJobUID,omitempty"`
 	LastScanTime           *v1.Time                                `json:"lastScanTime,omitempty"`
 	LastSuccessfulScanTime *v1.Time                                `json:"lastSuccessfulScanTime,omitempty"`
-	Conditions             []v1.Condition                          `json:"conditions,omitempty"`
+	Conditions             []metav1.ConditionApplyConfiguration    `json:"conditions,omitempty"`
 	Vulnerabilities        []VulnerabilityApplyConfiguration       `json:"vulnerabilities,omitempty"`
 	VulnerabilitySummary   *VulnerabilitySummaryApplyConfiguration `json:"vulnerabilitySummary,omitempty"`
 }
@@ -60,9 +61,12 @@ func (b *ContainerImageScanStatusApplyConfiguration) WithLastSuccessfulScanTime(
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *ContainerImageScanStatusApplyConfiguration) WithConditions(values ...v1.Condition) *ContainerImageScanStatusApplyConfiguration {
+func (b *ContainerImageScanStatusApplyConfiguration) WithConditions(values ...*metav1.ConditionApplyConfiguration) *ContainerImageScanStatusApplyConfiguration {
 	for i := range values {
-		b.Conditions = append(b.Conditions, values[i])
+		if values[i] == nil {
+			panic("nil value passed to WithConditions")
+		}
+		b.Conditions = append(b.Conditions, *values[i])
 	}
 	return b
 }

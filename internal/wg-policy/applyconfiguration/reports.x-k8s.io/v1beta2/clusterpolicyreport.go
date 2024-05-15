@@ -16,7 +16,7 @@ type ClusterPolicyReportApplyConfiguration struct {
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
 	Source                           *string                                      `json:"source,omitempty"`
 	Scope                            *corev1.ObjectReference                      `json:"scope,omitempty"`
-	ScopeSelector                    *metav1.LabelSelector                        `json:"scopeSelector,omitempty"`
+	ScopeSelector                    *v1.LabelSelectorApplyConfiguration          `json:"scopeSelector,omitempty"`
 	Configuration                    *PolicyReportConfigurationApplyConfiguration `json:"configuration,omitempty"`
 	Summary                          *PolicyReportSummaryApplyConfiguration       `json:"summary,omitempty"`
 	Results                          []PolicyReportResultApplyConfiguration       `json:"results,omitempty"`
@@ -209,8 +209,8 @@ func (b *ClusterPolicyReportApplyConfiguration) WithScope(value corev1.ObjectRef
 // WithScopeSelector sets the ScopeSelector field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ScopeSelector field is set to the value of the last call.
-func (b *ClusterPolicyReportApplyConfiguration) WithScopeSelector(value metav1.LabelSelector) *ClusterPolicyReportApplyConfiguration {
-	b.ScopeSelector = &value
+func (b *ClusterPolicyReportApplyConfiguration) WithScopeSelector(value *v1.LabelSelectorApplyConfiguration) *ClusterPolicyReportApplyConfiguration {
+	b.ScopeSelector = value
 	return b
 }
 
