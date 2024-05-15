@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.9](https://github.com/statnett/image-scanner-operator/compare/v0.8.8...v0.8.9) (2024-05-15)
+
+
+### Bug Fixes
+
+* **deps:** update kubernetes packages to v0.30.1 ([#956](https://github.com/statnett/image-scanner-operator/issues/956)) ([3580ed9](https://github.com/statnett/image-scanner-operator/commit/3580ed9339f0f7de0c7a2ac491e3654fd09c08fc))
+* **deps:** update module github.com/prometheus/client_golang to v1.19.1 ([#946](https://github.com/statnett/image-scanner-operator/issues/946)) ([c01fdea](https://github.com/statnett/image-scanner-operator/commit/c01fdeadaf8a1392e21921543432a91df6ecd593))
+
 ## [0.8.8](https://github.com/statnett/image-scanner-operator/compare/v0.8.7...v0.8.8) (2024-05-08)
 
 
