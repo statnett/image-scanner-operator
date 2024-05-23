@@ -62,7 +62,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	}
 
 	predicates := []predicate.Predicate{
-		predicate.Not(managedByImageScanner),
+		predicate.Not[client.Object](managedByImageScanner),
 	}
 	if r.ScanNamespaceExcludeRegexp != nil {
 		predicates = append(predicates, predicate.Not(namespaceMatchRegexp(r.ScanNamespaceExcludeRegexp)))
