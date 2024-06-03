@@ -138,6 +138,7 @@ func (r *PodReconciler) imagePodIndex(ctx context.Context, pod *corev1.Pod) (map
 			if err != nil {
 				return nil, err
 			}
+			
 			index[id] = append(index[id], sibling)
 		}
 	}
