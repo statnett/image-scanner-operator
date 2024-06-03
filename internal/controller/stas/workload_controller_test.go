@@ -24,7 +24,7 @@ type TestWorkloadFactory func(namespacedName types.NamespacedName, labels map[st
 
 var _ = Describe("Workload controller", func() {
 	const (
-		timeout  = 20 * time.Minute
+		timeout  = 1 * time.Minute
 		interval = 100 * time.Millisecond
 	)
 
@@ -119,23 +119,28 @@ var _ = Describe("Workload controller", func() {
 			return rs
 		}
 
-		newPod := func(rs *appsv1.ReplicaSet, name string, sha string) *corev1.Pod {
+		newPod := func(rs *appsv1.ReplicaSet, name string, sha string, containerSuffix string) *corev1.Pod {
 			pod := &corev1.Pod{}
 			pod.Namespace = rs.Namespace
 			pod.Name = name
 			pod.Labels = rs.Spec.Selector.MatchLabels
-			pod.Spec.Containers = rs.Spec.Template.Spec.Containers
-			pod.Status.ContainerStatuses = []corev1.ContainerStatus{
-				{
-					Name:    rs.Spec.Template.Spec.Containers[0].Name,
-					Image:   "quay.io/oauth2-proxy/oauth2-proxy:latest",
-					ImageID: "quay.io/oauth2-proxy/oauth2-proxy@" + sha,
-				},
-				{
-					Name:    rs.Spec.Template.Spec.Containers[1].Name,
-					Image:   "quay.io/oauth2-proxy/oauth2-proxy:latest",
-					ImageID: "quay.io/oauth2-proxy/oauth2-proxy@" + sha,
-				},
+			// containerSuffix allows simulating changing container names in
+			// ReplicaSet and having Pods with same owner and differende
+			// container names.
+			for _, c := range rs.Spec.Template.Spec.Containers {
+				pod.Spec.Containers = append(pod.Spec.Containers,
+					corev1.Container{
+						Name:  c.Name + containerSuffix,
+						Image: c.Image,
+					},
+				)
+				pod.Status.ContainerStatuses = append(pod.Status.ContainerStatuses,
+					corev1.ContainerStatus{
+						Name:    c.Name + containerSuffix,
+						Image:   c.Image + ":latest",
+						ImageID: c.Image + "@" + sha,
+					},
+				)
 			}
 
 			Expect(controllerutil.SetControllerReference(rs, pod, testEnv.Scheme)).To(Succeed())
@@ -148,65 +153,59 @@ var _ = Describe("Workload controller", func() {
 		Expect(k8sClient.Create(ctx, rs1)).To(Succeed())
 		Expect(k8sClient.Create(ctx, rs2)).To(Succeed())
 
-		pod1 := newPod(rs1, "controlled-1", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f")
-		pod2 := newPod(rs1, "controlled-2", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f")
-		pod3 := newPod(rs1, "controlled-3", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255")
-		pod4 := newPod(rs2, "controlled-4", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255")
+		pod1 := newPod(rs1, "controlled-1", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "")
+		pod2 := newPod(rs1, "controlled-2", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "")
+		// This pod simulates the ReplicaSet previously having different
+		// container names. As the Replica set's container names differ in
+		// differnt pods, multiple ContainerImageScans should be created.
+		pod3 := newPod(rs1, "controlled-3", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "-old-rs")
+		pod4 := newPod(rs1, "controlled-4", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255", "")
+		pod5 := newPod(rs2, "controlled-5", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255", "")
 
 		Expect(k8sClient.Create(ctx, pod1.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Create(ctx, pod2.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Create(ctx, pod3.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Create(ctx, pod4.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod5.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod1)).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod2)).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod3)).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod4)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod5)).To(Succeed())
 
-		imageScans := &stasv1alpha1.ContainerImageScanList{}
+		ownerRefTransform := func(imageScans *stasv1alpha1.ContainerImageScanList) [][]types.UID {
+			ownerRefs := make([][]types.UID, 0, len(imageScans.Items))
+			sort.Slice(imageScans.Items, func(i, j int) bool {
+				return imageScans.Items[i].Name < imageScans.Items[j].Name
+			})
+			for i := range imageScans.Items {
+				sort.Slice(imageScans.Items[i].OwnerReferences, func(j, k int) bool {
+					return imageScans.Items[i].OwnerReferences[j].Name < imageScans.Items[i].OwnerReferences[k].Name
+				})
+				ors := make([]types.UID, 0, len(imageScans.Items[i].OwnerReferences))
+				for _, or := range imageScans.Items[i].OwnerReferences {
+					ors = append(ors, or.UID)
+				}
+				ownerRefs = append(ownerRefs, ors)
+			}
+			return ownerRefs
+		}
+
 		Eventually(
-			komega.ObjectList(imageScans,
+			komega.ObjectList(&stasv1alpha1.ContainerImageScanList{},
 				client.InNamespace(rs1.Namespace),
 				client.MatchingLabels(map[string]string{"test": "controller"}),
 			), timeout, interval,
-		).Should(HaveField("Items", HaveLen(6)))
-
-		ownerRefs := make([][]metav1.OwnerReference, 0, len(imageScans.Items))
-		sort.Slice(imageScans.Items, func(i, j int) bool {
-			return imageScans.Items[i].Name < imageScans.Items[j].Name
-		})
-		for i := range imageScans.Items {
-			sort.Slice(imageScans.Items[i].OwnerReferences, func(j, k int) bool {
-				return imageScans.Items[i].OwnerReferences[j].Name < imageScans.Items[j].OwnerReferences[k].Name
-			})
-			ors := make([]metav1.OwnerReference, 0, len(imageScans.Items[i].OwnerReferences))
-			for _, or := range imageScans.Items[i].OwnerReferences {
-				ors = append(ors, metav1.OwnerReference{Name: or.Name, UID: or.UID})
-			}
-			ownerRefs = append(ownerRefs, ors)
-		}
-
-		Expect(ownerRefs).To(Equal([][]metav1.OwnerReference{
-			{
-				{Name: pod3.Name, UID: pod3.UID},
-			},
-			{
-				{Name: pod1.Name, UID: pod1.UID},
-				{Name: pod2.Name, UID: pod2.UID},
-			},
-			{
-				{Name: pod3.Name, UID: pod3.UID},
-			},
-			{
-				{Name: pod1.Name, UID: pod1.UID},
-				{Name: pod2.Name, UID: pod2.UID},
-			},
-			{
-				{Name: pod4.Name, UID: pod4.UID},
-			},
-			{
-				{Name: pod4.Name, UID: pod4.UID},
-			},
-		}))
+		).Should(WithTransform(ownerRefTransform, Equal([][]types.UID{
+			{pod4.UID},
+			{pod1.UID, pod2.UID}, // 2 and not 3 due to pod3 having different container names
+			{pod3.UID},
+			{pod4.UID},
+			{pod1.UID, pod2.UID},
+			{pod3.UID},
+			{pod5.UID},
+			{pod5.UID},
+		})))
 	})
 
 	It("should delete obsolete ContainerImageScan", func() {
