@@ -200,7 +200,7 @@ var _ = Describe("Workload controller", func() {
 			), timeout, interval,
 		).Should(WithTransform(ownerRefTransform, Equal([][]types.UID{
 			{pod4.UID},
-			{pod1.UID, pod2.UID}, // 2 and not 3 due to pod3 having different container names
+			{pod1.UID, pod2.UID}, // Not pod3 due to it having different container names
 			{pod3.UID},
 			{pod4.UID},
 			{pod1.UID, pod2.UID},
