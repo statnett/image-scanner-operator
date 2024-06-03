@@ -20,6 +20,8 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
+const DefaultNamespaceName = "default"
+
 type TestWorkloadFactory func(namespacedName types.NamespacedName, labels map[string]string) client.Object
 
 var _ = Describe("Workload controller", func() {
@@ -69,7 +71,7 @@ var _ = Describe("Workload controller", func() {
 
 	It("should pick up ignore-unfixed annotation from workload", func() {
 		pod := &corev1.Pod{}
-		pod.Namespace = "default"
+		pod.Namespace = DefaultNamespaceName
 		pod.Name = "ignore-unfixed"
 		pod.Annotations = map[string]string{"image-scanner.statnett.no/ignore-unfixed": "true"}
 		pod.Labels = map[string]string{"app": "oauth2-proxy"}
@@ -100,7 +102,7 @@ var _ = Describe("Workload controller", func() {
 	It("should add all Pods from same workload with same image as CIS owners", func() {
 		newReplicaset := func(name string) *appsv1.ReplicaSet {
 			rs := &appsv1.ReplicaSet{}
-			rs.Namespace = "default"
+			rs.Namespace = DefaultNamespaceName
 			rs.Name = name
 			rs.Spec.Template.Labels = map[string]string{"app": name, "test": "controller"}
 			rs.Spec.Template.Spec.Containers = []corev1.Container{
@@ -210,7 +212,7 @@ var _ = Describe("Workload controller", func() {
 
 	It("should delete obsolete ContainerImageScan", func() {
 		pod := &corev1.Pod{}
-		pod.Namespace = "default"
+		pod.Namespace = DefaultNamespaceName
 		pod.Name = "crashing-pod"
 		pod.Labels = map[string]string{"app": "crashing-pod"}
 		pod.Spec.Containers = []corev1.Container{
