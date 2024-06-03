@@ -118,10 +118,38 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 	}
 }
 
+func (r *PodReconciler) imagePodIndex(ctx context.Context, pod *corev1.Pod) (map[podContainerImage][]corev1.Pod, error) {
+	siblings := corev1.PodList{Items: []corev1.Pod{*pod}}
+	if c := metav1.GetControllerOfNoCopy(pod); c != nil {
+		if err := r.List(ctx, &siblings,
+			client.InNamespace(pod.Namespace),
+			client.MatchingFields{indexControllerUID: string(c.UID)},
+		); err != nil {
+			return nil, err
+		}
+	}
+
+	index := map[podContainerImage][]corev1.Pod{}
+
+	for _, sibling := range siblings.Items {
+		images, _ := containerImages(&sibling)
+		for _, image := range images {
+			index[*image] = append(index[*image], sibling)
+		}
+	}
+
+	return index, nil
+}
+
 func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	logf.FromContext(ctx).Info("Reconciling")
 
 	podController, err := r.getControllerWorkloadOrSelf(ctx, pod)
+	if err != nil {
+		return err
+	}
+
+	imageOwners, err := r.imagePodIndex(ctx, pod)
 	if err != nil {
 		return err
 	}
@@ -157,7 +185,13 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				cis.Spec.IgnoreUnfixed = ptr.To(false)
 			}
 
-			return controllerutil.SetOwnerReference(pod, cis, r.Scheme)
+			for _, owner := range imageOwners[*image] {
+				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
+					return err
+				}
+			}
+
+			return nil
 		}
 
 		_, err = controllerutil.CreateOrUpdate(ctx, r.Client, cis, mutateFn)

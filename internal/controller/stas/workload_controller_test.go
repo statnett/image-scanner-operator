@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -13,6 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
@@ -93,6 +95,118 @@ var _ = Describe("Workload controller", func() {
 		}
 		Eventually(komega.ObjectList(imageScans, listOps...), timeout, interval).Should(HaveField("Items", HaveLen(1)))
 		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(ptr.To(true)))
+	})
+
+	It("should add all Pods from same workload with same image as CIS owners", func() {
+		newReplicaset := func(name string) *appsv1.ReplicaSet {
+			rs := &appsv1.ReplicaSet{}
+			rs.Namespace = "default"
+			rs.Name = name
+			rs.Spec.Template.Labels = map[string]string{"app": name, "test": "controller"}
+			rs.Spec.Template.Spec.Containers = []corev1.Container{
+				{
+					Name:  "oauth-proxy-1",
+					Image: "quay.io/oauth2-proxy/oauth2-proxy",
+				},
+				{
+					Name:  "oauth-proxy-2",
+					Image: "quay.io/oauth2-proxy/oauth2-proxy",
+				},
+			}
+			rs.Spec.Selector = &metav1.LabelSelector{
+				MatchLabels: rs.Spec.Template.Labels,
+			}
+			return rs
+		}
+
+		newPod := func(rs *appsv1.ReplicaSet, name string, sha string) *corev1.Pod {
+			pod := &corev1.Pod{}
+			pod.Namespace = rs.Namespace
+			pod.Name = name
+			pod.Labels = rs.Spec.Selector.MatchLabels
+			pod.Spec.Containers = rs.Spec.Template.Spec.Containers
+			pod.Status.ContainerStatuses = []corev1.ContainerStatus{
+				{
+					Name:    rs.Spec.Template.Spec.Containers[0].Name,
+					Image:   "quay.io/oauth2-proxy/oauth2-proxy:latest",
+					ImageID: "quay.io/oauth2-proxy/oauth2-proxy@" + sha,
+				},
+				{
+					Name:    rs.Spec.Template.Spec.Containers[1].Name,
+					Image:   "quay.io/oauth2-proxy/oauth2-proxy:latest",
+					ImageID: "quay.io/oauth2-proxy/oauth2-proxy@" + sha,
+				},
+			}
+
+			Expect(controllerutil.SetControllerReference(rs, pod, testEnv.Scheme)).To(Succeed())
+			return pod
+		}
+
+		rs1 := newReplicaset("controller-1")
+		rs2 := newReplicaset("controller-2")
+
+		Expect(k8sClient.Create(ctx, rs1)).To(Succeed())
+		Expect(k8sClient.Create(ctx, rs2)).To(Succeed())
+
+		pod1 := newPod(rs1, "controlled-1", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f")
+		pod2 := newPod(rs1, "controlled-2", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f")
+		pod3 := newPod(rs1, "controlled-3", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255")
+		pod4 := newPod(rs2, "controlled-4", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255")
+
+		Expect(k8sClient.Create(ctx, pod1.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod2.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod3.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod4.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod1)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod2)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod3)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod4)).To(Succeed())
+
+		imageScans := &stasv1alpha1.ContainerImageScanList{}
+		Eventually(
+			komega.ObjectList(imageScans,
+				client.InNamespace(rs1.Namespace),
+				client.MatchingLabels(map[string]string{"test": "controller"}),
+			), timeout, interval,
+		).Should(HaveField("Items", HaveLen(6)))
+
+		ownerRefs := make([][]metav1.OwnerReference, 0, len(imageScans.Items))
+		sort.Slice(imageScans.Items, func(i, j int) bool {
+			return imageScans.Items[i].Name < imageScans.Items[j].Name
+		})
+		for i := range imageScans.Items {
+			sort.Slice(imageScans.Items[i].OwnerReferences, func(j, k int) bool {
+				return imageScans.Items[i].OwnerReferences[j].Name < imageScans.Items[j].OwnerReferences[k].Name
+			})
+			ors := make([]metav1.OwnerReference, 0, len(imageScans.Items[i].OwnerReferences))
+			for _, or := range imageScans.Items[i].OwnerReferences {
+				ors = append(ors, metav1.OwnerReference{Name: or.Name, UID: or.UID})
+			}
+			ownerRefs = append(ownerRefs, ors)
+		}
+
+		Expect(ownerRefs).To(Equal([][]metav1.OwnerReference{
+			{
+				{Name: pod3.Name, UID: pod3.UID},
+			},
+			{
+				{Name: pod1.Name, UID: pod1.UID},
+				{Name: pod2.Name, UID: pod2.UID},
+			},
+			{
+				{Name: pod3.Name, UID: pod3.UID},
+			},
+			{
+				{Name: pod1.Name, UID: pod1.UID},
+				{Name: pod2.Name, UID: pod2.UID},
+			},
+			{
+				{Name: pod4.Name, UID: pod4.UID},
+			},
+			{
+				{Name: pod4.Name, UID: pod4.UID},
+			},
+		}))
 	})
 
 	It("should delete obsolete ContainerImageScan", func() {
