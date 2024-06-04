@@ -118,7 +118,7 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 	}
 }
 
-func (r *PodReconciler) imagePodIndex(ctx context.Context, pod *corev1.Pod) (map[string][]corev1.Pod, error) {
+func (r *PodReconciler) cisOwnerLookup(ctx context.Context, pod *corev1.Pod) (func(string, *podContainerImage) []corev1.Pod, error) {
 	siblings := corev1.PodList{Items: []corev1.Pod{*pod}}
 	if c := metav1.GetControllerOfNoCopy(pod); c != nil {
 		if err := r.List(ctx, &siblings,
@@ -129,21 +129,23 @@ func (r *PodReconciler) imagePodIndex(ctx context.Context, pod *corev1.Pod) (map
 		}
 	}
 
+	key := func(containerName string, image *podContainerImage) string {
+		return strings.Join([]string{containerName, image.Image.Name, image.Image.Digest.Encoded()}, "/")
+	}
 	index := map[string][]corev1.Pod{}
 
 	for _, sibling := range siblings.Items {
+		// Ignore errors to not fail when parsing images of sibling Pod fails
 		images, _ := containerImages(&sibling)
 		for containerName, image := range images {
-			id, err := imageScanName(pod, containerName, image.Image)
-			if err != nil {
-				return nil, err
-			}
-
-			index[id] = append(index[id], sibling)
+			k := key(containerName, image)
+			index[k] = append(index[k], sibling)
 		}
 	}
 
-	return index, nil
+	return func(containerName string, image *podContainerImage) []corev1.Pod {
+		return index[key(containerName, image)]
+	}, nil
 }
 
 func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
@@ -154,7 +156,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 		return err
 	}
 
-	imageOwners, err := r.imagePodIndex(ctx, pod)
+	getCISOwners, err := r.cisOwnerLookup(ctx, pod)
 	if err != nil {
 		return err
 	}
@@ -190,12 +192,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				cis.Spec.IgnoreUnfixed = ptr.To(false)
 			}
 
-			id, err := imageScanName(pod, containerName, image.Image)
-			if err != nil {
-				return err
-			}
-
-			for _, owner := range imageOwners[id] {
+			for _, owner := range getCISOwners(containerName, image) {
 				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
 					return err
 				}
