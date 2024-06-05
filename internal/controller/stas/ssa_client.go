@@ -64,6 +64,7 @@ func (fieldValidationStrict) ApplyToPatch(opts *client.PatchOptions) {
 	if opts.Raw == nil {
 		opts.Raw = &metav1.PatchOptions{}
 	}
+
 	opts.Raw.FieldValidation = "Strict"
 }
 
@@ -71,6 +72,7 @@ func (fieldValidationStrict) ApplyToSubResourcePatch(opts *client.SubResourcePat
 	if opts.Raw == nil {
 		opts.Raw = &metav1.PatchOptions{}
 	}
+
 	opts.Raw.FieldValidation = "Strict"
 }
 
@@ -83,6 +85,7 @@ func SetOwnerReference(owner metav1.Object, owned *metav1ac.ObjectMetaApplyConfi
 	if !ok {
 		return fmt.Errorf("%T is not a runtime.Object, cannot call SetOwnerReference", owner)
 	}
+
 	if err := validateOwner(owner, owned); err != nil {
 		return err
 	}
@@ -91,6 +94,7 @@ func SetOwnerReference(owner metav1.Object, owned *metav1ac.ObjectMetaApplyConfi
 	if err != nil {
 		return err
 	}
+
 	owned.WithOwnerReferences(
 		metav1ac.OwnerReference().
 			WithAPIVersion(gvk.GroupVersion().String()).
@@ -98,6 +102,7 @@ func SetOwnerReference(owner metav1.Object, owned *metav1ac.ObjectMetaApplyConfi
 			WithName(owner.GetName()).
 			WithUID(owner.GetUID()),
 	)
+
 	return nil
 }
 
@@ -108,10 +113,12 @@ func validateOwner(owner metav1.Object, object *metav1ac.ObjectMetaApplyConfigur
 		if objNs == "" {
 			return fmt.Errorf("cluster-scoped resource must not have a namespace-scoped owner, owner's namespace %s", ownerNs)
 		}
+
 		if ownerNs != objNs {
 			return fmt.Errorf("cross-namespace owner references are disallowed, owner's namespace %s, obj's namespace %s", owner.GetNamespace(), objNs)
 		}
 	}
+
 	return nil
 }
 
@@ -123,12 +130,15 @@ func upgradeManagedFields(ctx context.Context, r client.Client, obj client.Objec
 
 	csaManagers := sets.New(string(fieldOwner), crRegressionFieldManager, beforeFirstApplyFieldManager)
 	patch, err := csaupgrade.UpgradeManagedFieldsPatch(obj, csaManagers, string(fieldOwner), opts...)
+
 	if err != nil {
 		return err
 	}
+
 	if patch != nil {
 		return r.Patch(ctx, obj, client.RawPatch(types.JSONPatchType, patch))
 	}
+
 	// No work to be done - already upgraded
 	return nil
 }
