@@ -100,6 +100,9 @@ var _ = Describe("Workload controller", func() {
 	})
 
 	It("should add all Pods from same workload with same image as CIS owners", func() {
+		const FirstSHA = "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f"
+		const SecondSHA = "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255"
+
 		newReplicaset := func(name string) *appsv1.ReplicaSet {
 			rs := &appsv1.ReplicaSet{}
 			rs.Namespace = DefaultNamespaceName
@@ -155,14 +158,14 @@ var _ = Describe("Workload controller", func() {
 		Expect(k8sClient.Create(ctx, rs1)).To(Succeed())
 		Expect(k8sClient.Create(ctx, rs2)).To(Succeed())
 
-		pod1 := newPod(rs1, "controlled-1", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "")
-		pod2 := newPod(rs1, "controlled-2", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "")
+		pod1 := newPod(rs1, "controlled-1", FirstSHA, "")
+		pod2 := newPod(rs1, "controlled-2", FirstSHA, "")
 		// This pod simulates the ReplicaSet previously having different
 		// container names. As the Replica set's container names differ in
 		// differnt pods, multiple ContainerImageScans should be created.
-		pod3 := newPod(rs1, "controlled-3", "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f", "-old-rs")
-		pod4 := newPod(rs1, "controlled-4", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255", "")
-		pod5 := newPod(rs2, "controlled-5", "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255", "")
+		pod3 := newPod(rs1, "controlled-3", FirstSHA, "-old-rs")
+		pod4 := newPod(rs1, "controlled-4", SecondSHA, "")
+		pod5 := newPod(rs2, "controlled-5", SecondSHA, "")
 
 		Expect(k8sClient.Create(ctx, pod1.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Create(ctx, pod2.DeepCopy())).To(Succeed())
