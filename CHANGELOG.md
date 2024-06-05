@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.11](https://github.com/statnett/image-scanner-operator/compare/v0.8.10...v0.8.11) (2024-06-05)
+
+
+### Features
+
+* reconcile cis with all owning pods ([#978](https://github.com/statnett/image-scanner-operator/issues/978)) ([c5c4ac1](https://github.com/statnett/image-scanner-operator/commit/c5c4ac18ed83c2e756753751ca3be2b6362eb94f))
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.52.0 ([#977](https://github.com/statnett/image-scanner-operator/issues/977)) ([bdaec85](https://github.com/statnett/image-scanner-operator/commit/bdaec856a8414c9e761e328f2fcf43d97f6508bd))
+* **deps:** update module github.com/spf13/viper to v1.19.0 ([#975](https://github.com/statnett/image-scanner-operator/issues/975)) ([d9a4f14](https://github.com/statnett/image-scanner-operator/commit/d9a4f14ff35de776a4b6cd9b588013b05117ffe5))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.23 ([#979](https://github.com/statnett/image-scanner-operator/issues/979)) ([a5b863a](https://github.com/statnett/image-scanner-operator/commit/a5b863a650da4d81ba03cd8eb3f0e4f0d12ee09d))
+
 ## [0.8.10](https://github.com/statnett/image-scanner-operator/compare/v0.8.9...v0.8.10) (2024-05-24)
 
 
