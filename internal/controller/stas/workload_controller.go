@@ -195,7 +195,12 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				cis.Spec.IgnoreUnfixed = ptr.To(false)
 			}
 
-			for _, owner := range getCISOwners(containerName, image) {
+			owners := getCISOwners(containerName, image)
+			if len(owners) == 0 {
+				// Safeguard to validate assumption in `cisOwnerLookup`.
+				return fmt.Errorf("Found no owners for CIS", pod.Name)
+			}
+			for _, owner := range owners {
 				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
 					return err
 				}
