@@ -175,10 +175,6 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			return err
 		}
 
-		cisObj := &stasv1alpha1.ContainerImageScan{}
-		cisObj.Namespace = pod.Namespace
-		cisObj.Name = name
-
 		cis := stasv1alpha1ac.ContainerImageScan(name, pod.Namespace).
 			WithLabels(pod.GetLabels()).
 			WithSpec(
@@ -207,6 +203,10 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				return err
 			}
 		}
+
+		cisObj := &stasv1alpha1.ContainerImageScan{}
+		cisObj.Namespace = pod.Namespace
+		cisObj.Name = name
 
 		if err := upgradeManagedFields(ctx, r.Client, cisObj, fieldOwner); err != nil {
 			return err
