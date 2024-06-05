@@ -135,7 +135,10 @@ func (r *PodReconciler) cisOwnerLookup(ctx context.Context, pod *corev1.Pod) (fu
 	index := map[string][]corev1.Pod{}
 
 	for _, sibling := range siblings.Items {
-		// Ignore errors to not fail when parsing images of sibling Pod fails
+		// For the Pod being reconciled, `containerImages` errors are caught in
+		// `reconcile` (assuming the Pod is fetched identically by Get and
+		// List). Ignoring errors here to simply skip all sibling who's image
+		// cannot be parsed, as those Pods will fail in their own `reconcile`.
 		images, _ := containerImages(&sibling)
 		for containerName, image := range images {
 			k := key(containerName, image)
