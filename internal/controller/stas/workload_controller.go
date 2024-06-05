@@ -208,8 +208,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			}
 		}
 
-		// Deep copy of object to avoid pollution with managed fields not accepted by the following patch.
-		if err := upgradeManagedFields(ctx, r.Client, cisObj.DeepCopyObject().(client.Object), fieldOwner); err != nil {
+		if err := upgradeManagedFields(ctx, r.Client, cisObj, fieldOwner); err != nil {
 			return err
 		}
 
