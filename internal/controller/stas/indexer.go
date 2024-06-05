@@ -4,6 +4,8 @@ import (
 	"context"
 
 	batchv1 "k8s.io/api/batch/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -11,9 +13,10 @@ import (
 )
 
 const (
-	indexOwnerUID     = ".metadata.owner"
-	indexUID          = ".metadata.uid"
-	indexJobCondition = ".status.condition"
+	indexControllerUID = ".metadata.controller"
+	indexOwnerUID      = ".metadata.owner"
+	indexUID           = ".metadata.uid"
+	indexJobCondition  = ".status.condition"
 
 	jobNotFinished = "NotFinished"
 )
@@ -23,6 +26,20 @@ type Indexer struct{}
 // SetupWithManager sets up the indexer with the Manager.
 func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 	indexer := mgr.GetFieldIndexer()
+
+	controllerUIDFn := func(obj client.Object) []string {
+		controller := metav1.GetControllerOfNoCopy(obj)
+		if controller == nil {
+			return nil
+		}
+
+		return []string{string(controller.UID)}
+	}
+	for _, object := range []client.Object{&corev1.Pod{}} {
+		if err := indexer.IndexField(context.TODO(), object, indexControllerUID, controllerUIDFn); err != nil {
+			return err
+		}
+	}
 
 	ownerUIDFn := func(obj client.Object) []string {
 		ownerReferences := obj.GetOwnerReferences()

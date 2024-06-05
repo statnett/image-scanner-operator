@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -118,10 +119,48 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 	}
 }
 
+func (r *PodReconciler) cisOwnerLookup(ctx context.Context, pod *corev1.Pod) (func(string, *podContainerImage) []corev1.Pod, error) {
+	siblings := corev1.PodList{Items: []corev1.Pod{*pod}}
+	if c := metav1.GetControllerOfNoCopy(pod); c != nil {
+		if err := r.List(ctx, &siblings,
+			client.InNamespace(pod.Namespace),
+			client.MatchingFields{indexControllerUID: string(c.UID)},
+		); err != nil {
+			return nil, err
+		}
+	}
+
+	key := func(containerName string, image *podContainerImage) string {
+		return strings.Join([]string{containerName, image.Image.Name, image.Image.Digest.Encoded()}, "/")
+	}
+	index := map[string][]corev1.Pod{}
+
+	for _, sibling := range siblings.Items {
+		// For the Pod being reconciled, `containerImages` errors are caught in
+		// `reconcile` (assuming the Pod is fetched identically by Get and
+		// List). Ignoring errors here to simply skip all sibling who's image
+		// cannot be parsed, as those Pods will fail in their own `reconcile`.
+		images, _ := containerImages(&sibling)
+		for containerName, image := range images {
+			k := key(containerName, image)
+			index[k] = append(index[k], sibling)
+		}
+	}
+
+	return func(containerName string, image *podContainerImage) []corev1.Pod {
+		return index[key(containerName, image)]
+	}, nil
+}
+
 func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	logf.FromContext(ctx).Info("Reconciling")
 
 	podController, err := r.getControllerWorkloadOrSelf(ctx, pod)
+	if err != nil {
+		return err
+	}
+
+	getCISOwners, err := r.cisOwnerLookup(ctx, pod)
 	if err != nil {
 		return err
 	}
@@ -157,7 +196,19 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				cis.Spec.IgnoreUnfixed = ptr.To(false)
 			}
 
-			return controllerutil.SetOwnerReference(pod, cis, r.Scheme)
+			owners := getCISOwners(containerName, image)
+			if len(owners) == 0 {
+				// Safeguard to validate assumption in `cisOwnerLookup`.
+				return errors.New("Found no owners for CIS")
+			}
+
+			for _, owner := range owners {
+				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
+					return err
+				}
+			}
+
+			return nil
 		}
 
 		_, err = controllerutil.CreateOrUpdate(ctx, r.Client, cis, mutateFn)

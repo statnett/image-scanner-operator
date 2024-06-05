@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -13,16 +14,19 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
+const DefaultNamespaceName = "default"
+
 type TestWorkloadFactory func(namespacedName types.NamespacedName, labels map[string]string) client.Object
 
 var _ = Describe("Workload controller", func() {
 	const (
-		timeout  = 20 * time.Minute
+		timeout  = 1 * time.Minute
 		interval = 100 * time.Millisecond
 	)
 
@@ -67,7 +71,7 @@ var _ = Describe("Workload controller", func() {
 
 	It("should pick up ignore-unfixed annotation from workload", func() {
 		pod := &corev1.Pod{}
-		pod.Namespace = "default"
+		pod.Namespace = DefaultNamespaceName
 		pod.Name = "ignore-unfixed"
 		pod.Annotations = map[string]string{"image-scanner.statnett.no/ignore-unfixed": "true"}
 		pod.Labels = map[string]string{"app": "oauth2-proxy"}
@@ -95,9 +99,122 @@ var _ = Describe("Workload controller", func() {
 		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(ptr.To(true)))
 	})
 
+	It("should add all Pods from same workload with same image as CIS owners", func() {
+		newReplicaset := func(name string) *appsv1.ReplicaSet {
+			rs := &appsv1.ReplicaSet{}
+			rs.Namespace = DefaultNamespaceName
+			rs.Name = name
+			rs.Spec.Template.Labels = map[string]string{"app": name, "test": "controller"}
+			rs.Spec.Template.Spec.Containers = []corev1.Container{
+				{
+					Name:  "oauth-proxy-1",
+					Image: "quay.io/oauth2-proxy/oauth2-proxy",
+				},
+				{
+					Name:  "oauth-proxy-2",
+					Image: "quay.io/oauth2-proxy/oauth2-proxy",
+				},
+			}
+			rs.Spec.Selector = &metav1.LabelSelector{
+				MatchLabels: rs.Spec.Template.Labels,
+			}
+			return rs
+		}
+
+		newPod := func(rs *appsv1.ReplicaSet, name string, sha string, containerSuffix string) *corev1.Pod {
+			pod := &corev1.Pod{}
+			pod.Namespace = rs.Namespace
+			pod.Name = name
+			pod.Labels = rs.Spec.Selector.MatchLabels
+			// containerSuffix allows simulating changing container names in
+			// ReplicaSet and having Pods with same owner and differende
+			// container names.
+			for _, c := range rs.Spec.Template.Spec.Containers {
+				pod.Spec.Containers = append(pod.Spec.Containers,
+					corev1.Container{
+						Name:  c.Name + containerSuffix,
+						Image: c.Image,
+					},
+				)
+				pod.Status.ContainerStatuses = append(pod.Status.ContainerStatuses,
+					corev1.ContainerStatus{
+						Name:    c.Name + containerSuffix,
+						Image:   c.Image + ":latest",
+						ImageID: c.Image + "@" + sha,
+					},
+				)
+			}
+
+			Expect(controllerutil.SetControllerReference(rs, pod, testEnv.Scheme)).To(Succeed())
+			return pod
+		}
+
+		rs1 := newReplicaset("controller-1")
+		rs2 := newReplicaset("controller-2")
+
+		Expect(k8sClient.Create(ctx, rs1)).To(Succeed())
+		Expect(k8sClient.Create(ctx, rs2)).To(Succeed())
+
+		const FirstSHA = "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f"
+		const SecondSHA = "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255"
+		pod1 := newPod(rs1, "controlled-1", FirstSHA, "")
+		pod2 := newPod(rs1, "controlled-2", FirstSHA, "")
+		// This pod simulates the ReplicaSet previously having different
+		// container names. As the Replica set's container names differ in
+		// differnt pods, multiple ContainerImageScans should be created.
+		pod3 := newPod(rs1, "controlled-3", FirstSHA, "-old-rs")
+		pod4 := newPod(rs1, "controlled-4", SecondSHA, "")
+		pod5 := newPod(rs2, "controlled-5", SecondSHA, "")
+
+		Expect(k8sClient.Create(ctx, pod1.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod2.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod3.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod4.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Create(ctx, pod5.DeepCopy())).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod1)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod2)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod3)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod4)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, pod5)).To(Succeed())
+
+		ownerRefTransform := func(imageScans *stasv1alpha1.ContainerImageScanList) [][]types.UID {
+			ownerRefs := make([][]types.UID, 0, len(imageScans.Items))
+			sort.Slice(imageScans.Items, func(i, j int) bool {
+				return imageScans.Items[i].Name < imageScans.Items[j].Name
+			})
+			for i := range imageScans.Items {
+				sort.Slice(imageScans.Items[i].OwnerReferences, func(j, k int) bool {
+					return imageScans.Items[i].OwnerReferences[j].Name < imageScans.Items[i].OwnerReferences[k].Name
+				})
+				ors := make([]types.UID, 0, len(imageScans.Items[i].OwnerReferences))
+				for _, or := range imageScans.Items[i].OwnerReferences {
+					ors = append(ors, or.UID)
+				}
+				ownerRefs = append(ownerRefs, ors)
+			}
+			return ownerRefs
+		}
+
+		Eventually(
+			komega.ObjectList(&stasv1alpha1.ContainerImageScanList{},
+				client.InNamespace(rs1.Namespace),
+				client.MatchingLabels(map[string]string{"test": "controller"}),
+			), timeout, interval,
+		).Should(WithTransform(ownerRefTransform, Equal([][]types.UID{
+			{pod4.UID},
+			{pod1.UID, pod2.UID}, // Not pod3 due to it having different container names
+			{pod3.UID},
+			{pod4.UID},
+			{pod1.UID, pod2.UID},
+			{pod3.UID},
+			{pod5.UID},
+			{pod5.UID},
+		})))
+	})
+
 	It("should delete obsolete ContainerImageScan", func() {
 		pod := &corev1.Pod{}
-		pod.Namespace = "default"
+		pod.Namespace = DefaultNamespaceName
 		pod.Name = "crashing-pod"
 		pod.Labels = map[string]string{"app": "crashing-pod"}
 		pod.Spec.Containers = []corev1.Container{
