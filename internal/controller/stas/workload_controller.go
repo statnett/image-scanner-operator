@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -198,8 +199,9 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			owners := getCISOwners(containerName, image)
 			if len(owners) == 0 {
 				// Safeguard to validate assumption in `cisOwnerLookup`.
-				return fmt.Errorf("Found no owners for CIS", pod.Name)
+				return errors.New("Found no owners for CIS")
 			}
+
 			for _, owner := range owners {
 				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
 					return err
