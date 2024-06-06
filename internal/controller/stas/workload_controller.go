@@ -205,8 +205,8 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 		}
 
 		cisObj := &stasv1alpha1.ContainerImageScan{}
-		cisObj.Namespace = pod.Namespace
-		cisObj.Name = name
+		cisObj.Namespace = *cis.Namespace
+		cisObj.Name = *cis.Name
 
 		if err := upgradeManagedFields(ctx, r.Client, cisObj, fieldOwner); err != nil {
 			return err
