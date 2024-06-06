@@ -13,17 +13,16 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/validation"
-	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1ac "github.com/statnett/image-scanner-operator/internal/client/applyconfiguration/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
@@ -171,52 +170,53 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	}
 
 	for containerName, image := range images {
-		cis := &stasv1alpha1.ContainerImageScan{}
-		cis.Namespace = pod.Namespace
-
-		cis.Name, err = imageScanName(podController, containerName, image.Image)
+		name, err := imageScanName(podController, containerName, image.Image)
 		if err != nil {
 			return err
 		}
 
-		mutateFn := func() error {
-			cis.Labels = pod.GetLabels()
-			cis.Spec.Workload.Group = podController.GetObjectKind().GroupVersionKind().Group
-			cis.Spec.Workload.Kind = podController.GetObjectKind().GroupVersionKind().Kind
-			cis.Spec.Workload.Name = podController.GetName()
-			cis.Spec.Workload.ContainerName = containerName
-			cis.Spec.Image = image.Image
-			cis.Spec.Tag = image.Tag
-			// Ensure MinSeverity unset until we eventually make use of it
-			cis.Spec.MinSeverity = nil
+		cis := stasv1alpha1ac.ContainerImageScan(name, pod.Namespace).
+			WithLabels(pod.GetLabels()).
+			WithSpec(
+				stasv1alpha1ac.ContainerImageScanSpec().
+					WithWorkload(
+						stasv1alpha1ac.Workload().
+							WithGroup(podController.GetObjectKind().GroupVersionKind().Group).
+							WithKind(podController.GetObjectKind().GroupVersionKind().Kind).
+							WithName(podController.GetName()).
+							WithContainerName(containerName),
+					).
+					WithName(image.Image.Name).
+					WithDigest(image.Image.Digest).
+					WithTag(image.Tag).
+					WithIgnoreUnfixed(podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed] == "true"),
+			)
 
-			if v := podController.GetAnnotations()[stasv1alpha1.WorkloadAnnotationKeyIgnoreUnfixed]; v == "true" {
-				cis.Spec.IgnoreUnfixed = ptr.To(true)
-			} else {
-				cis.Spec.IgnoreUnfixed = ptr.To(false)
-			}
-
-			owners := getCISOwners(containerName, image)
-			if len(owners) == 0 {
-				// Safeguard to validate assumption in `cisOwnerLookup`.
-				return errors.New("Found no owners for CIS")
-			}
-
-			for _, owner := range owners {
-				if err := controllerutil.SetOwnerReference(&owner, cis, r.Scheme); err != nil {
-					return err
-				}
-			}
-
-			return nil
+		owners := getCISOwners(containerName, image)
+		if len(owners) == 0 {
+			// Safeguard to validate assumption in `cisOwnerLookup`.
+			return errors.New("Found no owners for CIS")
 		}
 
-		_, err = controllerutil.CreateOrUpdate(ctx, r.Client, cis, mutateFn)
-		if err != nil {
+		for _, owner := range owners {
+			if err := SetOwnerReference(&owner, cis.ObjectMetaApplyConfiguration, r.Scheme); err != nil {
+				return err
+			}
+		}
+
+		cisObj := &stasv1alpha1.ContainerImageScan{}
+		cisObj.Namespace = *cis.Namespace
+		cisObj.Name = *cis.Name
+
+		if err := upgradeManagedFields(ctx, r.Client, cisObj, fieldOwner); err != nil {
 			return err
 		}
 
-		err = r.garbageCollectObsoleteImageScans(ctx, pod, cis)
+		if err := r.Patch(ctx, cisObj, applyPatch{cis}, FieldValidationStrict, client.ForceOwnership, fieldOwner); err != nil {
+			return err
+		}
+
+		err = r.garbageCollectObsoleteImageScans(ctx, pod, cisObj)
 		if err != nil {
 			return err
 		}
