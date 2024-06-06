@@ -129,8 +129,8 @@ func upgradeManagedFields(ctx context.Context, r client.Client, obj client.Objec
 	}
 
 	csaManagers := sets.New(string(fieldOwner), crRegressionFieldManager, beforeFirstApplyFieldManager)
-	patch, err := csaupgrade.UpgradeManagedFieldsPatch(obj, csaManagers, string(fieldOwner), opts...)
 
+	patch, err := csaupgrade.UpgradeManagedFieldsPatch(obj, csaManagers, string(fieldOwner), opts...)
 	if err != nil {
 		return err
 	}
