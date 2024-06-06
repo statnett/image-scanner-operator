@@ -216,7 +216,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			return err
 		}
 
-		err = r.garbageCollectObsoleteImageScans(ctx, pod, name, containerName)
+		err = r.garbageCollectObsoleteImageScans(ctx, pod, cisObj)
 		if err != nil {
 			return err
 		}
@@ -225,8 +225,8 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 	return nil
 }
 
-func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, pod *corev1.Pod, cisName string, cisContainer string) error {
-	CISes, err := r.getImageScansOwnedByPodContainer(ctx, pod, cisContainer)
+func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, pod *corev1.Pod, wantCIS *stasv1alpha1.ContainerImageScan) error {
+	CISes, err := r.getImageScansOwnedByPodContainer(ctx, pod, wantCIS.Spec.Workload.ContainerName)
 	if err != nil {
 		return err
 	}
@@ -234,7 +234,7 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 	for _, cis := range CISes {
 		// Done to avoid "Implicit memory aliasing in for loop"
 		cis := cis
-		if cis.Name != cisName {
+		if cis.Name != wantCIS.Name {
 			if err := r.Delete(ctx, &cis); err != nil {
 				return err
 			}
