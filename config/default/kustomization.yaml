@@ -11,8 +11,7 @@ configMapGenerator:
     namespace: image-scanner
     literals:
       - SERVER=http://trivy.image-scanner.svc.cluster.local
-      # FIXME: The second skip path is needed since Trivy somehow removes leading parts from the actual path
-      - SKIP_FILES=/var/run/image-scanner/trivy,run/image-scanner/trivy
+      - SKIP_FILES=/run/image-scanner/trivy
       - TIMEOUT=30m
 generatorOptions:
   disableNameSuffixHash: true

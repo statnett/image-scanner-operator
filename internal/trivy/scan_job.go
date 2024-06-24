@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	FsScanSharedVolumeMountPath   = "/var/run/image-scanner"
+	FsScanSharedVolumeMountPath   = "/run/image-scanner"
 	FsScanSharedVolumeName        = "image-scanner"
 	FsScanTrivyBinaryPath         = FsScanSharedVolumeMountPath + "/trivy"
 	JobNameSpecHashPartLength     = 5

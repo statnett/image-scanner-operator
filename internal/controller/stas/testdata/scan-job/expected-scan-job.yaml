@@ -51,7 +51,7 @@ spec:
             - rootfs
             - /
           command:
-            - /var/run/image-scanner/trivy
+            - /run/image-scanner/trivy
           env:
             - name: HOME
               value: /tmp
@@ -90,7 +90,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: FallbackToLogsOnError
           volumeMounts:
-            - mountPath: /var/run/image-scanner
+            - mountPath: /run/image-scanner
               name: image-scanner
             - mountPath: /tmp
               name: tmp
@@ -101,7 +101,7 @@ spec:
             - cp
             - -v
             - /usr/local/bin/trivy
-            - /var/run/image-scanner/trivy
+            - /run/image-scanner/trivy
           image: aquasecurity/trivy
           imagePullPolicy: IfNotPresent
           name: trivy
@@ -115,7 +115,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: FallbackToLogsOnError
           volumeMounts:
-            - mountPath: /var/run/image-scanner
+            - mountPath: /run/image-scanner
               name: image-scanner
       restartPolicy: OnFailure
       schedulerName: default-scheduler
