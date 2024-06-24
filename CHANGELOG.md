@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.12](https://github.com/statnett/image-scanner-operator/compare/v0.8.11...v0.8.12) (2024-06-24)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.52.1 ([#989](https://github.com/statnett/image-scanner-operator/issues/989)) ([581891e](https://github.com/statnett/image-scanner-operator/commit/581891e356570fe272b5bbfaf303c1e2cdcc7538))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.52.2 ([#995](https://github.com/statnett/image-scanner-operator/issues/995)) ([1f62163](https://github.com/statnett/image-scanner-operator/commit/1f62163b28c959161b950c0a2ceb72458870745d))
+* **deps:** update kubernetes packages to v0.30.2 ([#992](https://github.com/statnett/image-scanner-operator/issues/992)) ([732d609](https://github.com/statnett/image-scanner-operator/commit/732d6090524d9a410b72623c4227cd49644b7d39))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.24 ([#996](https://github.com/statnett/image-scanner-operator/issues/996)) ([413dee6](https://github.com/statnett/image-scanner-operator/commit/413dee6891de1cf07cca995e07965257cfd55804))
+* **deps:** update module k8s.io/klog/v2 to v2.130.0 ([#998](https://github.com/statnett/image-scanner-operator/issues/998)) ([4fb7b74](https://github.com/statnett/image-scanner-operator/commit/4fb7b742958a981d2b39dadbe5b8fb188b5e27ca))
+* **deps:** update module k8s.io/klog/v2 to v2.130.1 ([#1000](https://github.com/statnett/image-scanner-operator/issues/1000)) ([e5d69a2](https://github.com/statnett/image-scanner-operator/commit/e5d69a29a13522bd9a040ee947ebb9e14bb8d418))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.18.4 ([#984](https://github.com/statnett/image-scanner-operator/issues/984)) ([bbcd26a](https://github.com/statnett/image-scanner-operator/commit/bbcd26aedf21563f84b7226bd2d3a3a5255d16ca))
+
 ## [0.8.11](https://github.com/statnett/image-scanner-operator/compare/v0.8.10...v0.8.11) (2024-06-05)
 
 
