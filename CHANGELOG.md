@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.13](https://github.com/statnett/image-scanner-operator/compare/v0.8.12...v0.8.13) (2024-06-24)
+
+
+### Bug Fixes
+
+* move mount of trivy binary to /run/image-scanner/trivy ([#1005](https://github.com/statnett/image-scanner-operator/issues/1005)) ([efca93b](https://github.com/statnett/image-scanner-operator/commit/efca93b285559933ea2a9205e251dd9391ab8f5f))
+
 ## [0.8.12](https://github.com/statnett/image-scanner-operator/compare/v0.8.11...v0.8.12) (2024-06-24)
 
 
