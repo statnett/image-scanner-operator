@@ -83,7 +83,7 @@ jobs:
       IMG_FILE: operator-image.tar
       K3D_CLUSTER: image-scanner
       # renovate: datasource=github-tags depName=k3d-io/k3d
-      K3D_VERSION: v5.6.3
+      K3D_VERSION: v5.7.1
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
