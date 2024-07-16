@@ -8,9 +8,9 @@ import (
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -114,7 +114,6 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 	logf.FromContext(ctx).Info("Reconciling")
 
 	result := ctrl.Result{}
-	cleanCis := cis.DeepCopy()
 
 	scanJob, err := r.newScanJob(ctx, cis)
 	if err != nil {
@@ -133,18 +132,20 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 		return result, err
 	}
 
-	condition := metav1.Condition{
-		Type:    string(kstatus.ConditionReconciling),
-		Status:  metav1.ConditionTrue,
-		Reason:  "ScanJobCreated",
-		Message: fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name),
+	condition := metav1ac.Condition().
+		WithType(string(kstatus.ConditionReconciling)).
+		WithStatus(metav1.ConditionTrue).
+		WithReason("ScanJobCreated").
+		WithMessage(fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name))
+	patch := newContainerImageStatusPatch(cis)
+	patch.Status.
+		WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...)
+
+	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
+		return result, err
 	}
-	meta.SetStatusCondition(&cis.Status.Conditions, condition)
-	meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionStalled))
 
-	cis.Status.ObservedGeneration = cis.Generation
-
-	return result, r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+	return result, r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 }
 
 func (r *ContainerImageScanReconciler) newScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {

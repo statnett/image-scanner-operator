@@ -12,11 +12,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/utils/ptr"
+	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -27,6 +26,7 @@ import (
 	"sigs.k8s.io/json"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	stasv1alpha1ac "github.com/statnett/image-scanner-operator/internal/client/applyconfiguration/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
@@ -160,20 +160,22 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
 	if err != nil {
-		cleanCis := cis.DeepCopy()
+		condition := metav1ac.Condition().
+			WithType(string(kstatus.ConditionStalled)).
+			WithStatus(metav1.ConditionTrue).
+			WithReason(stasv1alpha1.ReasonScanReportDecodeError).
+			WithMessage(fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err))
+		patch := newContainerImageStatusPatch(cis)
+		patch.Status.
+			WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...).
+			WithLastScanTime(metav1.Now()).
+			WithLastScanJobUID(job.UID)
 
-		condition := metav1.Condition{
-			Type:    string(kstatus.ConditionStalled),
-			Status:  metav1.ConditionTrue,
-			Reason:  stasv1alpha1.ReasonScanReportDecodeError,
-			Message: fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err),
+		if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
+			return err
 		}
-		meta.SetStatusCondition(&cis.Status.Conditions, condition)
-		meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
-		cis.Status.LastScanTime = ptr.To(metav1.Now())
-		cis.Status.LastScanJobUID = job.UID
 
-		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+		err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 		if err != nil {
 			logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
 		}
@@ -195,25 +197,28 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 }
 
 func (r *ScanJobReconciler) updateCISStatus(ctx context.Context, job *batchv1.Job, cis *stasv1alpha1.ContainerImageScan, vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) error {
-	cleanCis := cis.DeepCopy()
 	now := metav1.Now()
 
-	cis.Status.VulnerabilitySummary = vulnerabilitySummary(vulnerabilities, minSeverity)
-	// Clear any conditions since we now have a successful scan report
-	cis.Status.Conditions = nil
-	cis.Status.LastScanTime = &now
-	cis.Status.LastScanJobUID = job.UID
-	cis.Status.LastSuccessfulScanTime = &now
+	patch := newContainerImageStatusPatch(cis)
+	patch.Status.
+		WithVulnerabilitySummary(vulnerabilitySummary(vulnerabilities, minSeverity)).
+		WithLastScanTime(now).
+		WithLastScanJobUID(job.UID).
+		WithLastSuccessfulScanTime(now)
+
+	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
+		return err
+	}
 
 	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
-		cis.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
+		patch.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
 		if err != nil {
 			return err
 		}
 
-		err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+		err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 		if err == nil || !isResourceTooLargeError(err) {
 			return err
 		}
@@ -229,27 +234,27 @@ func isResourceTooLargeError(err error) bool {
 }
 
 func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
-	cleanCis := cis.DeepCopy()
-
 	logBytes, err := io.ReadAll(log)
 	if err != nil {
 		return err
 	}
 
-	condition := metav1.Condition{
-		Type:    string(kstatus.ConditionStalled),
-		Status:  metav1.ConditionTrue,
-		Reason:  "Error",
-		Message: string(logBytes),
+	condition := metav1ac.Condition().
+		WithType(string(kstatus.ConditionStalled)).
+		WithStatus(metav1.ConditionTrue).
+		WithReason("Error").
+		WithMessage(string(logBytes))
+	patch := newContainerImageStatusPatch(cis)
+	patch.Status.
+		WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...).
+		WithLastScanTime(metav1.Now()).
+		WithLastScanJobUID(job.UID)
+
+	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
+		return err
 	}
-	meta.SetStatusCondition(&cis.Status.Conditions, condition)
-	meta.RemoveStatusCondition(&cis.Status.Conditions, string(kstatus.ConditionReconciling))
 
-	now := metav1.Now()
-	cis.Status.LastScanTime = &now
-	cis.Status.LastScanJobUID = job.UID
-
-	err = r.Status().Patch(ctx, cis, client.MergeFrom(cleanCis))
+	err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 	if err != nil {
 		logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
 	}
@@ -385,8 +390,8 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
-func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) ([]stasv1alpha1.Vulnerability, error) {
-	var filtered []stasv1alpha1.Vulnerability
+func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) ([]stasv1alpha1ac.VulnerabilityApplyConfiguration, error) {
+	var filtered []stasv1alpha1ac.VulnerabilityApplyConfiguration
 
 	for _, v := range orig {
 		severity, err := stasv1alpha1.NewSeverity(v.Severity)
@@ -395,14 +400,14 @@ func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1
 		}
 
 		if severity >= minSeverity {
-			filtered = append(filtered, v)
+			filtered = append(filtered, *vulnerabilityPatch(v))
 		}
 	}
 
 	return filtered, nil
 }
 
-func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
+func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1ac.VulnerabilitySummaryApplyConfiguration {
 	severityCount := make(map[string]int32)
 	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 		severityCount[severity.String()] = 0
@@ -420,9 +425,8 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 		}
 	}
 
-	return &stasv1alpha1.VulnerabilitySummary{
-		SeverityCount: severityCount,
-		FixedCount:    fixedCount,
-		UnfixedCount:  unfixedCount,
-	}
+	return stasv1alpha1ac.VulnerabilitySummary().
+		WithSeverityCount(severityCount).
+		WithFixedCount(fixedCount).
+		WithUnfixedCount(unfixedCount)
 }
