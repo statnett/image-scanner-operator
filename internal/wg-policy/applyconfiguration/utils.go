@@ -4,8 +4,10 @@ package applyconfiguration
 
 import (
 	reportsxk8siov1beta2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/reports.x-k8s.io/v1beta2"
+	wgpolicyk8siov1alpha2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/wgpolicyk8s.io/v1alpha2"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
+	v1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 )
 
 // ForKind returns an apply configuration type for the given GroupVersionKind, or nil if no
@@ -25,6 +27,16 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &reportsxk8siov1beta2.PolicyReportResultApplyConfiguration{}
 	case v1beta2.SchemeGroupVersion.WithKind("PolicyReportSummary"):
 		return &reportsxk8siov1beta2.PolicyReportSummaryApplyConfiguration{}
+
+		// Group=wgpolicyk8s.io, Version=v1alpha2
+	case v1alpha2.SchemeGroupVersion.WithKind("ClusterPolicyReport"):
+		return &wgpolicyk8siov1alpha2.ClusterPolicyReportApplyConfiguration{}
+	case v1alpha2.SchemeGroupVersion.WithKind("PolicyReport"):
+		return &wgpolicyk8siov1alpha2.PolicyReportApplyConfiguration{}
+	case v1alpha2.SchemeGroupVersion.WithKind("PolicyReportResult"):
+		return &wgpolicyk8siov1alpha2.PolicyReportResultApplyConfiguration{}
+	case v1alpha2.SchemeGroupVersion.WithKind("PolicyReportSummary"):
+		return &wgpolicyk8siov1alpha2.PolicyReportSummaryApplyConfiguration{}
 
 	}
 	return nil
