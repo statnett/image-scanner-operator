@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
   - reports.x-k8s.io_clusterpolicyreports.yaml
   - reports.x-k8s.io_policyreports.yaml
+  - wgpolicyk8s.io_clusterpolicyreports.yaml
+  - wgpolicyk8s.io_policyreports.yaml
