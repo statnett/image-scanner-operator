@@ -18,8 +18,10 @@ spec:
   backoffLimit: 3
   completionMode: NonIndexed
   completions: 1
+  manualSelector: false
   parallelism: 1
   suspend: false
+  podReplacementPolicy: TerminatingOrFailed
   template:
     metadata:
       labels:
