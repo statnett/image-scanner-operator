@@ -13,10 +13,12 @@ import (
 	"github.com/stretchr/testify/mock"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
+	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
@@ -34,7 +36,7 @@ var _ = Describe("Scan Job controller", func() {
 	})
 
 	Context("When scan job is complete", func() {
-		It("should write scan results back to CIS status", func() {
+		It("should write scan results back to CIS status and create policy report", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful", "successful-scan-cis.yaml"), cis)).To(Succeed())
@@ -72,10 +74,28 @@ var _ = Describe("Scan Job controller", func() {
 				UnfixedCount: 19,
 			}
 			Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
+
+			// Check policy report exists with expected content
+			report := &policyv1alpha2.PolicyReport{}
+			report.Name = cis.Name
+			report.Namespace = cis.Namespace
+			Expect(komega.Get(report)()).To(Succeed())
+			Expect(report.Results).To(Not(BeEmpty()))
+			Expect(report.Results).Should(HaveEach(
+				WithTransform(func(vulnerability policyv1alpha2.PolicyReportResult) map[string]string {
+					return vulnerability.Properties
+				},
+					Not(BeEmpty()),
+				),
+			))
+			expectedSummary := policyv1alpha2.PolicyReportSummary{
+				Fail: 19,
+			}
+			Expect(report.Summary).To(Equal(expectedSummary))
 		})
 
 		Context("and scan report is too big", func() {
-			It("should filter report by minimum severity", func() {
+			It("should filter report by minimum severity and create policy report", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
 				Expect(yaml.FromFile(path.Join("testdata", "scan-job-successful-long", "cis.yaml"), cis)).To(Succeed())
@@ -123,10 +143,33 @@ var _ = Describe("Scan Job controller", func() {
 					UnfixedCount: 5128,
 				}
 				Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
+
+				// Check policy report exists with expected content
+				report := &policyv1alpha2.PolicyReport{}
+				report.Name = cis.Name
+				report.Namespace = cis.Namespace
+				Expect(komega.Get(report)()).To(Succeed())
+				Expect(report.Results).To(Not(BeEmpty()))
+				Expect(report.Results).Should(HaveEach(
+					WithTransform(func(vulnerability policyv1alpha2.PolicyReportResult) string {
+						return string(vulnerability.Severity)
+					},
+						SatisfyAny(
+							Equal("critical"),
+							Equal("high"),
+						),
+					),
+				))
+				expectedSummary := policyv1alpha2.PolicyReportSummary{
+					Fail: 3259,
+					Warn: 7059,
+					Skip: 77,
+				}
+				Expect(report.Summary).To(Equal(expectedSummary))
 			})
 		})
 
-		Context("but scan report is invalid JSON", func() {
+		Context("but scan report is invalid JSON and NOT create policy report", func() {
 			It("should report stalled condition", func() {
 				// Create CIS
 				cis := &stasv1alpha1.ContainerImageScan{}
@@ -156,12 +199,18 @@ var _ = Describe("Scan Job controller", func() {
 				Expect(condition.Status).To(Equal(metav1.ConditionTrue))
 				Expect(condition.Reason).To(Equal("ScanReportDecodeError"))
 				Expect(condition.Message).To(Not(BeEmpty()))
+
+				// Check policy report does NOT exist
+				report := &policyv1alpha2.PolicyReport{}
+				report.Name = cis.Name
+				report.Namespace = cis.Namespace
+				Expect(komega.Get(report)()).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
 			})
 		})
 	})
 
 	Context("When scan job is failed", func() {
-		It("should write scan results back to CIS status", func() {
+		It("should write scan results back to CIS status and NOT create policy report", func() {
 			// Create CIS
 			cis := &stasv1alpha1.ContainerImageScan{}
 			Expect(yaml.FromFile(path.Join("testdata", "scan-job-failed", "failed-scan-cis.yaml"), cis)).To(Succeed())
@@ -190,6 +239,12 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(condition.Status).To(Equal(metav1.ConditionTrue))
 			Expect(condition.Reason).To(Equal("Error"))
 			Expect(condition.Message).To(Not(BeEmpty()))
+
+			// Check policy report does NOT exist
+			report := &policyv1alpha2.PolicyReport{}
+			report.Name = cis.Name
+			report.Namespace = cis.Namespace
+			Expect(komega.Get(report)()).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
 		})
 	})
 })

@@ -24,6 +24,7 @@ func main() {
 	}
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	config.DefaultMutableFeatureGate.AddFlag(pflag.CommandLine)
 	pflag.Parse()
 
 	logger := zap.New(zap.UseFlagOptions(&opts))

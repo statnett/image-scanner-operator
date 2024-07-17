@@ -24,6 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
+	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -39,9 +40,8 @@ var (
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
-
-	//+kubebuilder:scaffold:scheme
 	utilruntime.Must(stasv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(policyv1alpha2.AddToScheme(scheme))
 }
 
 type Operator struct{}

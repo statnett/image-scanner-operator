@@ -27,6 +27,7 @@ import (
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/pod"
@@ -178,16 +179,28 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		minSeverity = *cis.Spec.MinSeverity
 	}
 
+	summary := vulnerabilitySummary(vulnerabilities, minSeverity)
+
+	if config.DefaultFeatureGate.Enabled(feature.PolicyReport) {
+		err = newPolicyReportPatch(cis).
+			withResults(vulnerabilities, summary, minSeverity).
+			apply(ctx, r.Client, r.Scheme)
+		if err != nil {
+			return err
+		}
+	}
+
 	return newContainerImageStatusPatch(cis).
 		withScanJob(job, true).
-		withResults(vulnerabilities, minSeverity).
+		withResults(vulnerabilities, summary, minSeverity).
 		apply(ctx, r.Client)
 }
 
 func isResourceTooLargeError(err error) bool {
-	return apierrors.IsInternalError(err) &&
-		(strings.Contains(err.Error(), "ResourceExhausted") ||
-			strings.Contains(err.Error(), "request is too large"))
+	return apierrors.IsRequestEntityTooLargeError(err) ||
+		apierrors.IsInternalError(err) &&
+			(strings.Contains(err.Error(), "ResourceExhausted") ||
+				strings.Contains(err.Error(), "request is too large"))
 }
 
 func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
