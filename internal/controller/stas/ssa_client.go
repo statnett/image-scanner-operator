@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -76,6 +78,21 @@ func (fieldValidationStrict) ApplyToSubResourcePatch(opts *client.SubResourcePat
 	opts.Raw.FieldValidation = "Strict"
 }
 
+func NewConditionsPatch(existingConditions []metav1.Condition, conditions ...*metav1ac.ConditionApplyConfiguration) []*metav1ac.ConditionApplyConfiguration {
+	for _, condition := range conditions {
+		if condition.LastTransitionTime.IsZero() {
+			existingCondition := meta.FindStatusCondition(existingConditions, *condition.Type)
+			if existingCondition != nil && existingCondition.Status == *condition.Status {
+				condition.WithLastTransitionTime(existingCondition.LastTransitionTime)
+			} else {
+				condition.WithLastTransitionTime(metav1.NewTime(time.Now()))
+			}
+		}
+	}
+
+	return conditions
+}
+
 // SetOwnerReference is a helper method to make sure the given object contains an object reference to the object provided.
 // This allows you to declare that owner has a dependency on the object without specifying it as a controller.
 // If a reference to the same object already exists, it'll be overwritten with the newly provided version.
@@ -122,8 +139,9 @@ func validateOwner(owner metav1.Object, object *metav1ac.ObjectMetaApplyConfigur
 	return nil
 }
 
-func upgradeManagedFields(ctx context.Context, r client.Client, obj client.Object, fieldOwner client.FieldOwner, opts ...csaupgrade.Option) error {
-	if err := r.Get(ctx, client.ObjectKeyFromObject(obj), obj); err != nil {
+// upgradeManagedFields upgrades the managed fields owned by fieldOwner from CSA to SSA.
+func upgradeManagedFields(ctx context.Context, c client.Client, obj client.Object, opts ...csaupgrade.Option) error {
+	if err := c.Get(ctx, client.ObjectKeyFromObject(obj), obj); err != nil {
 		// If not found, there is nothing to patch
 		return ctrlerrors.Ignore(err, errors.IsNotFound)
 	}
@@ -136,9 +154,14 @@ func upgradeManagedFields(ctx context.Context, r client.Client, obj client.Objec
 	}
 
 	if patch != nil {
-		return r.Patch(ctx, obj, client.RawPatch(types.JSONPatchType, patch))
+		return c.Patch(ctx, obj, client.RawPatch(types.JSONPatchType, patch))
 	}
 
 	// No work to be done - already upgraded
 	return nil
+}
+
+// upgradeStatusManagedFields upgrades the status subresource managed fields owned by fieldOwner from CSA to SSA.
+func upgradeStatusManagedFields(ctx context.Context, c client.Client, obj client.Object) error {
+	return upgradeManagedFields(ctx, c, obj, csaupgrade.Subresource("status"))
 }
