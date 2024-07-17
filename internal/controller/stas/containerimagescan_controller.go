@@ -132,20 +132,15 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 		return result, err
 	}
 
-	condition := metav1ac.Condition().
-		WithType(string(kstatus.ConditionReconciling)).
-		WithStatus(metav1.ConditionTrue).
-		WithReason("ScanJobCreated").
-		WithMessage(fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name))
-	patch := newContainerImageStatusPatch(cis)
-	patch.Status.
-		WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...)
-
-	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
-		return result, err
-	}
-
-	return result, r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
+	return result, newContainerImageStatusPatch(cis).
+		withCondition(
+			metav1ac.Condition().
+				WithType(string(kstatus.ConditionReconciling)).
+				WithStatus(metav1.ConditionTrue).
+				WithReason("ScanJobCreated").
+				WithMessage(fmt.Sprintf("Job '%s' created to scan image.", scanJob.Name)),
+		).
+		apply(ctx, r.Client)
 }
 
 func (r *ContainerImageScanReconciler) newScanJob(ctx context.Context, cis *stasv1alpha1.ContainerImageScan) (*batchv1.Job, error) {

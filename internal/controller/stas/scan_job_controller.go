@@ -160,27 +160,16 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 
 	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
 	if err != nil {
-		condition := metav1ac.Condition().
-			WithType(string(kstatus.ConditionStalled)).
-			WithStatus(metav1.ConditionTrue).
-			WithReason(stasv1alpha1.ReasonScanReportDecodeError).
-			WithMessage(fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err))
-		patch := newContainerImageStatusPatch(cis)
-		patch.Status.
-			WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...).
-			WithLastScanTime(metav1.Now()).
-			WithLastScanJobUID(job.UID)
-
-		if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
-			return err
-		}
-
-		err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
-		if err != nil {
-			logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
-		}
-
-		return err
+		return newContainerImageStatusPatch(cis).
+			withCondition(
+				metav1ac.Condition().
+					WithType(string(kstatus.ConditionStalled)).
+					WithStatus(metav1.ConditionTrue).
+					WithReason(stasv1alpha1.ReasonScanReportDecodeError).
+					WithMessage(fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err)),
+			).
+			withScanJob(job).
+			apply(ctx, r.Client)
 	}
 
 	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
@@ -193,38 +182,9 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		}
 	}
 
-	return r.updateCISStatus(ctx, job, cis, vulnerabilities, minSeverity)
-}
-
-func (r *ScanJobReconciler) updateCISStatus(ctx context.Context, job *batchv1.Job, cis *stasv1alpha1.ContainerImageScan, vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) error {
-	now := metav1.Now()
-
-	patch := newContainerImageStatusPatch(cis)
-	patch.Status.
-		WithVulnerabilitySummary(vulnerabilitySummary(vulnerabilities, minSeverity)).
-		WithLastScanTime(now).
-		WithLastScanJobUID(job.UID).
-		WithLastSuccessfulScanTime(now)
-
-	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
-		return err
-	}
-
-	var err error
-	// Repeat until resource fits in api-server by increasing minimum severity on failure.
-	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
-		patch.Status.Vulnerabilities, err = filterVulnerabilities(vulnerabilities, severity)
-		if err != nil {
-			return err
-		}
-
-		err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
-		if err == nil || !isResourceTooLargeError(err) {
-			return err
-		}
-	}
-
-	return err
+	return newContainerImageStatusPatch(cis).
+		withCompletedScanJob(job, vulnerabilities, minSeverity).
+		apply(ctx, r.Client)
 }
 
 func isResourceTooLargeError(err error) bool {
@@ -239,27 +199,16 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1
 		return err
 	}
 
-	condition := metav1ac.Condition().
-		WithType(string(kstatus.ConditionStalled)).
-		WithStatus(metav1.ConditionTrue).
-		WithReason("Error").
-		WithMessage(string(logBytes))
-	patch := newContainerImageStatusPatch(cis)
-	patch.Status.
-		WithConditions(NewConditionsPatch(cis.Status.Conditions, condition)...).
-		WithLastScanTime(metav1.Now()).
-		WithLastScanJobUID(job.UID)
-
-	if err := upgradeStatusManagedFields(ctx, r.Client, cis); err != nil {
-		return err
-	}
-
-	err = r.Status().Patch(ctx, cis, applyPatch{patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
-	if err != nil {
-		logf.FromContext(ctx).Error(err, "when patching status", "condition", condition)
-	}
-
-	return err
+	return newContainerImageStatusPatch(cis).
+		withCondition(
+			metav1ac.Condition().
+				WithType(string(kstatus.ConditionStalled)).
+				WithStatus(metav1.ConditionTrue).
+				WithReason("Error").
+				WithMessage(string(logBytes)),
+		).
+		withScanJob(job).
+		apply(ctx, r.Client)
 }
 
 func (r *ScanJobReconciler) reconcile() reconcile.Func {
