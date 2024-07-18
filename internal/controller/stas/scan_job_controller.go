@@ -26,7 +26,6 @@ import (
 	"sigs.k8s.io/json"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	stasv1alpha1ac "github.com/statnett/image-scanner-operator/internal/client/applyconfiguration/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
@@ -168,7 +167,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 					WithReason(stasv1alpha1.ReasonScanReportDecodeError).
 					WithMessage(fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err)),
 			).
-			withScanJob(job).
+			withScanJob(job, false).
 			apply(ctx, r.Client)
 	}
 
@@ -180,7 +179,8 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	}
 
 	return newContainerImageStatusPatch(cis).
-		withCompletedScanJob(job, vulnerabilities, minSeverity).
+		withScanJob(job, true).
+		withResults(vulnerabilities, minSeverity).
 		apply(ctx, r.Client)
 }
 
@@ -204,7 +204,7 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1
 				WithReason("Error").
 				WithMessage(string(logBytes)),
 		).
-		withScanJob(job).
+		withScanJob(job, false).
 		apply(ctx, r.Client)
 }
 
@@ -336,19 +336,7 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
-func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) []stasv1alpha1ac.VulnerabilityApplyConfiguration {
-	var filtered []stasv1alpha1ac.VulnerabilityApplyConfiguration
-
-	for _, v := range orig {
-		if v.Severity >= minSeverity {
-			filtered = append(filtered, *vulnerabilityPatch(v))
-		}
-	}
-
-	return filtered
-}
-
-func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1ac.VulnerabilitySummaryApplyConfiguration {
+func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1.VulnerabilitySummary {
 	severityCount := make(map[string]int32)
 	for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 		severityCount[severity.String()] = 0
@@ -366,8 +354,9 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 		}
 	}
 
-	return stasv1alpha1ac.VulnerabilitySummary().
-		WithSeverityCount(severityCount).
-		WithFixedCount(fixedCount).
-		WithUnfixedCount(unfixedCount)
+	return &stasv1alpha1.VulnerabilitySummary{
+		SeverityCount: severityCount,
+		FixedCount:    fixedCount,
+		UnfixedCount:  unfixedCount,
+	}
 }
