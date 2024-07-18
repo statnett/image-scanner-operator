@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -44,10 +45,9 @@ func newContainerImageStatusPatch(cis *stasv1alpha1.ContainerImageScan) *contain
 }
 
 type containerImageScanStatusPatch struct {
-	cis             *stasv1alpha1.ContainerImageScan
-	patch           *stasv1alpha1ac.ContainerImageScanApplyConfiguration
-	vulnerabilities []stasv1alpha1.Vulnerability
-	minSeverity     *stasv1alpha1.Severity
+	cis         *stasv1alpha1.ContainerImageScan
+	patch       *stasv1alpha1ac.ContainerImageScanApplyConfiguration
+	minSeverity *stasv1alpha1.Severity
 }
 
 func (p *containerImageScanStatusPatch) withCondition(c *metav1ac.ConditionApplyConfiguration) *containerImageScanStatusPatch {
@@ -56,24 +56,35 @@ func (p *containerImageScanStatusPatch) withCondition(c *metav1ac.ConditionApply
 	return p
 }
 
-func (p *containerImageScanStatusPatch) withScanJob(job *batchv1.Job) *containerImageScanStatusPatch {
+func (p *containerImageScanStatusPatch) withScanJob(job *batchv1.Job, successful bool) *containerImageScanStatusPatch {
+	now := metav1.Now()
+
 	p.patch.Status.
-		WithLastScanTime(metav1.Now()).
-		WithLastScanJobUID(job.UID)
+		WithLastScanJobUID(job.UID).
+		WithLastScanTime(now)
+
+	if successful {
+		p.patch.Status.
+			WithLastSuccessfulScanTime(now)
+	}
 
 	return p
 }
 
-func (p *containerImageScanStatusPatch) withCompletedScanJob(job *batchv1.Job, vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *containerImageScanStatusPatch {
+func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *containerImageScanStatusPatch {
 	p.minSeverity = &minSeverity
-	p.vulnerabilities = vulnerabilities
 
-	now := metav1.Now()
+	p.patch.Status.Vulnerabilities = make([]stasv1alpha1ac.VulnerabilityApplyConfiguration, len(vulnerabilities))
+	for i, v := range vulnerabilities {
+		p.patch.Status.Vulnerabilities[i] = *vulnerabilityPatch(v)
+	}
+
+	summary := vulnerabilitySummary(vulnerabilities, minSeverity)
 	p.patch.Status.
-		WithVulnerabilitySummary(vulnerabilitySummary(vulnerabilities, minSeverity)).
-		WithLastScanTime(now).
-		WithLastScanJobUID(job.UID).
-		WithLastSuccessfulScanTime(now)
+		WithVulnerabilitySummary(stasv1alpha1ac.VulnerabilitySummary().
+			WithSeverityCount(summary.SeverityCount).
+			WithFixedCount(summary.FixedCount).
+			WithUnfixedCount(summary.UnfixedCount))
 
 	return p
 }
@@ -94,7 +105,9 @@ func (p *containerImageScanStatusPatch) apply(ctx context.Context, c client.Clie
 	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := *p.minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
-		p.patch.Status.Vulnerabilities = filterVulnerabilities(p.vulnerabilities, severity)
+		p.patch.Status.Vulnerabilities = slices.DeleteFunc(p.patch.Status.Vulnerabilities, func(v stasv1alpha1ac.VulnerabilityApplyConfiguration) bool {
+			return *v.Severity < severity
+		})
 
 		err = c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 		if !isResourceTooLargeError(err) {
