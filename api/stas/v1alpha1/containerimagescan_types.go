@@ -27,8 +27,7 @@ type Workload struct {
 type ScanConfig struct {
 	// MinSeverity sets the minimum vulnerability severity included the vulnerabilities report after scanning the image.
 	// Note: If the report is too large to make the resource fit in the api-server, the actual minimum reported vulnerability severity might be higher.
-	//+kubebuilder:validation:Enum={UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL}
-	MinSeverity *string `json:"minSeverity,omitempty"`
+	MinSeverity *Severity `json:"minSeverity,omitempty"`
 	// IgnoreUnfixed set to true will report only fixed vulnerabilities when scanning the image.
 	IgnoreUnfixed *bool `json:"ignoreUnfixed,omitempty"`
 }

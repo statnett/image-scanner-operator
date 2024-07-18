@@ -31,7 +31,7 @@ var _ = Describe("Scan Job", func() {
 			})
 
 			It("should set severity when minSeverity set", func() {
-				cisSpec.ScanConfig.MinSeverity = ptr.To("MEDIUM")
+				cisSpec.ScanConfig.MinSeverity = ptr.To(stasv1alpha1.SeverityMedium)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
 				expectedSeverityEnv := corev1.EnvVar{

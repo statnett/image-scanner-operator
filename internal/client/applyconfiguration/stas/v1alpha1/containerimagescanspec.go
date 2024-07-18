@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	godigest "github.com/opencontainers/go-digest"
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
 // ContainerImageScanSpecApplyConfiguration represents an declarative configuration of the ContainerImageScanSpec type for use
@@ -39,7 +40,7 @@ func (b *ContainerImageScanSpecApplyConfiguration) WithDigest(value godigest.Dig
 // WithMinSeverity sets the MinSeverity field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the MinSeverity field is set to the value of the last call.
-func (b *ContainerImageScanSpecApplyConfiguration) WithMinSeverity(value string) *ContainerImageScanSpecApplyConfiguration {
+func (b *ContainerImageScanSpecApplyConfiguration) WithMinSeverity(value stasv1alpha1.Severity) *ContainerImageScanSpecApplyConfiguration {
 	b.MinSeverity = &value
 	return b
 }
