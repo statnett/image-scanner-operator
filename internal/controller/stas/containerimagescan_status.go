@@ -94,10 +94,7 @@ func (p *containerImageScanStatusPatch) apply(ctx context.Context, c client.Clie
 	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := *p.minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
-		p.patch.Status.Vulnerabilities, err = filterVulnerabilities(p.vulnerabilities, severity)
-		if err != nil {
-			return err
-		}
+		p.patch.Status.Vulnerabilities = filterVulnerabilities(p.vulnerabilities, severity)
 
 		err = c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
 		if !isResourceTooLargeError(err) {

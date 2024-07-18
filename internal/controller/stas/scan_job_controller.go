@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"sort"
+	"slices"
 	"strings"
 
 	batchv1 "k8s.io/api/batch/v1"
@@ -172,14 +172,11 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 			apply(ctx, r.Client)
 	}
 
-	sort.Sort(stasv1alpha1.BySeverity(vulnerabilities))
+	slices.SortFunc(vulnerabilities, stasv1alpha1.BySeverity)
 
 	minSeverity := stasv1alpha1.MinSeverity
 	if cis.Spec.MinSeverity != nil {
-		minSeverity, err = stasv1alpha1.NewSeverity(*cis.Spec.MinSeverity)
-		if err != nil {
-			return err
-		}
+		minSeverity = *cis.Spec.MinSeverity
 	}
 
 	return newContainerImageStatusPatch(cis).
@@ -339,21 +336,16 @@ func (r *ScanJobReconciler) getScanJobLogs(ctx context.Context, job *batchv1.Job
 	return r.GetLogs(ctx, client.ObjectKeyFromObject(&jobPod), trivy.ScanJobContainerName)
 }
 
-func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) ([]stasv1alpha1ac.VulnerabilityApplyConfiguration, error) {
+func filterVulnerabilities(orig []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) []stasv1alpha1ac.VulnerabilityApplyConfiguration {
 	var filtered []stasv1alpha1ac.VulnerabilityApplyConfiguration
 
 	for _, v := range orig {
-		severity, err := stasv1alpha1.NewSeverity(v.Severity)
-		if err != nil {
-			return nil, err
-		}
-
-		if severity >= minSeverity {
+		if v.Severity >= minSeverity {
 			filtered = append(filtered, *vulnerabilityPatch(v))
 		}
 	}
 
-	return filtered, nil
+	return filtered
 }
 
 func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSeverity stasv1alpha1.Severity) *stasv1alpha1ac.VulnerabilitySummaryApplyConfiguration {
@@ -365,7 +357,7 @@ func vulnerabilitySummary(vulnerabilities []stasv1alpha1.Vulnerability, minSever
 	var fixedCount, unfixedCount int32
 
 	for _, vuln := range vulnerabilities {
-		severityCount[vuln.Severity] += 1
+		severityCount[vuln.Severity.String()] += 1
 
 		if vuln.FixedVersion != "" {
 			fixedCount++

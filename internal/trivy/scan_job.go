@@ -216,14 +216,9 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 	}
 
 	if spec.MinSeverity != nil {
-		minSeverity, err := stasv1alpha1.NewSeverity(*spec.MinSeverity)
-		if err != nil {
-			return container, err
-		}
-
 		var severityNames []string
 
-		for severity := minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
+		for severity := *spec.MinSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
 			severityNames = append(severityNames, severity.String())
 		}
 

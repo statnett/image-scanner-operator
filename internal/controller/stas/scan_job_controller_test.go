@@ -102,12 +102,12 @@ var _ = Describe("Scan Job controller", func() {
 				// Check scan results available and filtered
 				Expect(cis.Status.Vulnerabilities).To(Not(BeEmpty()))
 				Expect(cis.Status.Vulnerabilities).Should(HaveEach(
-					WithTransform(func(vulnerability stasv1alpha1.Vulnerability) string {
-						return string(vulnerability.Severity)
+					WithTransform(func(vulnerability stasv1alpha1.Vulnerability) stasv1alpha1.Severity {
+						return vulnerability.Severity
 					},
 						SatisfyAny(
-							Equal("CRITICAL"),
-							Equal("HIGH"),
+							Equal(stasv1alpha1.SeverityCritical),
+							Equal(stasv1alpha1.SeverityHigh),
 						),
 					),
 				))
@@ -207,8 +207,8 @@ var _ = DescribeTable("Converting to vulnerability summary (severity count)",
 		Expect(summary.SeverityCount).To(Equal(expectedSummary))
 	},
 	Entry("When no vulnerabilities", nil, map[string]int32{"CRITICAL": 0, "HIGH": 0}),
-	Entry("When single severity", []stasv1alpha1.Vulnerability{{Severity: "CRITICAL"}}, map[string]int32{"CRITICAL": 1, "HIGH": 0}),
-	Entry("When severity outside scope", []stasv1alpha1.Vulnerability{{Severity: "LOW"}}, map[string]int32{"CRITICAL": 0, "HIGH": 0, "LOW": 1}),
+	Entry("When single severity", []stasv1alpha1.Vulnerability{{Severity: stasv1alpha1.SeverityCritical}}, map[string]int32{"CRITICAL": 1, "HIGH": 0}),
+	Entry("When severity outside scope", []stasv1alpha1.Vulnerability{{Severity: stasv1alpha1.SeverityLow}}, map[string]int32{"CRITICAL": 0, "HIGH": 0, "LOW": 1}),
 )
 
 func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job {

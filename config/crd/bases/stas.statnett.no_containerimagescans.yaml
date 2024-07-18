@@ -213,6 +213,12 @@ spec:
                     primaryURL:
                       type: string
                     severity:
+                      enum:
+                      - UNKNOWN
+                      - LOW
+                      - MEDIUM
+                      - HIGH
+                      - CRITICAL
                       type: string
                     title:
                       type: string
