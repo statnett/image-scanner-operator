@@ -93,6 +93,38 @@ func NewConditionsPatch(existingConditions []metav1.Condition, conditions ...*me
 	return conditions
 }
 
+// SetControllerReference sets owner as a Controller OwnerReference on controlled.
+// This is used for garbage collection of the controlled object and for
+// reconciling the owner object on changes to controlled (with a Watch + EnqueueRequestForOwner).
+func SetControllerReference(owner metav1.Object, controlled *metav1ac.ObjectMetaApplyConfiguration, scheme *runtime.Scheme) error {
+	// Validate the owner.
+	ro, ok := owner.(runtime.Object)
+	if !ok {
+		return fmt.Errorf("%T is not a runtime.Object, cannot call SetControllerReference", owner)
+	}
+
+	if err := validateOwner(owner, controlled); err != nil {
+		return err
+	}
+
+	gvk, err := apiutil.GVKForObject(ro, scheme)
+	if err != nil {
+		return err
+	}
+
+	controlled.WithOwnerReferences(
+		metav1ac.OwnerReference().
+			WithAPIVersion(gvk.GroupVersion().String()).
+			WithKind(gvk.Kind).
+			WithName(owner.GetName()).
+			WithUID(owner.GetUID()).
+			WithBlockOwnerDeletion(true).
+			WithController(true),
+	)
+
+	return nil
+}
+
 // SetOwnerReference is a helper method to make sure the given object contains an object reference to the object provided.
 // This allows you to declare that owner has a dependency on the object without specifying it as a controller.
 // If a reference to the same object already exists, it'll be overwritten with the newly provided version.

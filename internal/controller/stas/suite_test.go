@@ -26,9 +26,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 	"github.com/statnett/image-scanner-operator/internal/pod"
 )
 
@@ -61,9 +63,14 @@ var _ = BeforeSuite(func() {
 
 	ctx, cancel = context.WithCancel(context.TODO())
 
+	Expect(config.DefaultMutableFeatureGate.OverrideDefault(feature.PolicyReport, true)).To(Succeed())
+
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
-		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
+		CRDDirectoryPaths: []string{
+			filepath.Join("..", "..", "..", "config", "crd", "bases"),
+			filepath.Join("..", "..", "..", "config", "wg-policy", "crd"),
+		},
 		ErrorIfCRDPathMissing: true,
 	}
 
@@ -76,7 +83,7 @@ var _ = BeforeSuite(func() {
 	Expect(appsv1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(stasv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(batchv1.AddToScheme(scheme.Scheme)).To(Succeed())
-	//+kubebuilder:scaffold:scheme
+	Expect(policyv1alpha2.AddToScheme(scheme.Scheme)).To(Succeed())
 
 	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
 	Expect(err).NotTo(HaveOccurred())
