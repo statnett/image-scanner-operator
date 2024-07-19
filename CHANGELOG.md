@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.15](https://github.com/statnett/image-scanner-operator/compare/v0.8.14...v0.8.15) (2024-07-19)
+
+
+### Features
+
+* opt-in creating wg-policy PolicyReport ([#1030](https://github.com/statnett/image-scanner-operator/issues/1030)) ([ba74679](https://github.com/statnett/image-scanner-operator/commit/ba746793e1c4787dd6f8727c3c2c31eedfaca470))
+
+
+### Bug Fixes
+
+* **deps:** update k8s.io/utils digest to 18e509b ([#1021](https://github.com/statnett/image-scanner-operator/issues/1021)) ([5873feb](https://github.com/statnett/image-scanner-operator/commit/5873febd573acbaa326c62b8d487e648794d1d9e))
+* **deps:** update kubernetes packages to v0.30.3 ([#1033](https://github.com/statnett/image-scanner-operator/issues/1033)) ([7acf1dc](https://github.com/statnett/image-scanner-operator/commit/7acf1dcbd4b8ebe9ea702b2ca9463fb219eef951))
+
 ## [0.8.14](https://github.com/statnett/image-scanner-operator/compare/v0.8.13...v0.8.14) (2024-07-10)
 
 
