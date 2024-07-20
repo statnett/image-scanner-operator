@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.16](https://github.com/statnett/image-scanner-operator/compare/v0.8.15...v0.8.16) (2024-07-20)
+
+
+### Bug Fixes
+
+* mapping of severity UNKNOWN to policy report ([#1037](https://github.com/statnett/image-scanner-operator/issues/1037)) ([a5a6b74](https://github.com/statnett/image-scanner-operator/commit/a5a6b7441aa04edb96ec46161d26841a8feeb6cc))
+
 ## [0.8.15](https://github.com/statnett/image-scanner-operator/compare/v0.8.14...v0.8.15) (2024-07-19)
 
 
