@@ -97,22 +97,28 @@ func policyReportResultPatch(v stasv1alpha1.Vulnerability) *policyv1alpha2ac.Pol
 		return len(v) == 0
 	})
 
-	return policyv1alpha2ac.PolicyReportResult().
+	report := policyv1alpha2ac.PolicyReportResult().
 		WithCategory("vulnerability scan").
 		WithSource("image-scanner").
 		WithPolicy(v.VulnerabilityID).
 		WithResult(severityToPolicyResult(v.Severity)).
-		WithSeverity(severityToPolicyResultSeverity(v.Severity)).
 		WithDescription(v.Title).
 		WithProperties(properties)
+
+	if s, ok := severityToPolicyResultSeverity(v.Severity); ok {
+		report = report.
+			WithSeverity(s)
+	}
+
+	return report
 }
 
-func severityToPolicyResultSeverity(severity stasv1alpha1.Severity) policyv1alpha2.PolicyResultSeverity {
+func severityToPolicyResultSeverity(severity stasv1alpha1.Severity) (policyv1alpha2.PolicyResultSeverity, bool) {
 	switch severity {
 	case stasv1alpha1.SeverityUnknown:
-		return ""
+		return "", false
 	default:
-		return policyv1alpha2.PolicyResultSeverity(strings.ToLower(severity.String()))
+		return policyv1alpha2.PolicyResultSeverity(strings.ToLower(severity.String())), true
 	}
 }
 
