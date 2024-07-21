@@ -9,12 +9,6 @@ configMapGenerator:
     literals:
       # Only include chainsaw namespace pattern to reduce resource waste running e2e tests
       - SCAN_NAMESPACE_INCLUDE_REGEXP=^chainsaw-.*
-  - name: trivy-job-config
-    namespace: image-scanner
-    behavior: merge
-    literals:
-      # See if "slow" config can improve stability
-      - SLOW=true
 patches:
   # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
   # Disable trivy server sessionAffinity; not really needed when running a single replica
