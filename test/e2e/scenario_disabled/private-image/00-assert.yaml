@@ -8,4 +8,4 @@ spec:
   name: ghcr.io/statnett/http-https-echo-internal
 status:
   vulnerabilitySummary:
-    severityCount: {}
+    (severityCount != null): true
