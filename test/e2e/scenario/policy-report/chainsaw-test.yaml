@@ -2,7 +2,7 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: scan-pod
+  name: policy-report
 spec:
   steps:
     - name: step-00
