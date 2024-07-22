@@ -51,7 +51,10 @@ type ScanJobReconciler struct {
 //+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch,namespace=image-scanner
 //+kubebuilder:rbac:groups="",resources=pods/log,verbs=get;list,namespace=image-scanner
 //+kubebuilder:rbac:groups="events.k8s.io",resources=events,verbs=get;list;watch
-//+kubebuilder:rbac:groups="wgpolicyk8s.io",resources=policyreports,verbs=create;patch
+// Must add policyreports delete verb and containerimagescans/finalizers update verb to satisfy
+// https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#ownerreferencespermissionenforcement
+//+kubebuilder:rbac:groups="wgpolicyk8s.io",resources=policyreports,verbs=create;patch;delete
+//+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/finalizers,verbs=update
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
