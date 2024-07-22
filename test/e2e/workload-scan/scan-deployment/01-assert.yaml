@@ -8,4 +8,4 @@ spec:
   name: docker.io/nginxinc/nginx-unprivileged
 status:
   vulnerabilitySummary:
-    severityCount: {}
+    (severityCount != null): true
