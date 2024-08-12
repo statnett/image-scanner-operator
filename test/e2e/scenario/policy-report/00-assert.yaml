@@ -1,0 +1,12 @@
+---
+apiVersion: stas.statnett.no/v1alpha1
+kind: ContainerImageScan
+metadata:
+  name: pod-echo-app-ab50d
+spec:
+  digest: 'sha256:1645798310a56491acb75d750ed6a4693a35506c9860503d21a877cc54d95191'
+  name: docker.io/nginxinc/nginx-unprivileged
+  workload:
+    containerName: app
+    kind: Pod
+    name: echo
