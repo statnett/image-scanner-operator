@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.17](https://github.com/statnett/image-scanner-operator/compare/v0.8.16...v0.8.17) (2024-08-12)
+
+
+### Bug Fixes
+
+* add missing PolicyReport RBAC ([#1039](https://github.com/statnett/image-scanner-operator/issues/1039)) ([8422154](https://github.com/statnett/image-scanner-operator/commit/8422154a588a0bb13b707381a77c6b3929b1dbfb))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.54.0 ([#1059](https://github.com/statnett/image-scanner-operator/issues/1059)) ([6229fdb](https://github.com/statnett/image-scanner-operator/commit/6229fdbdd96e2e670c8870a16d663ee43f1ae683))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.54.1 ([#1061](https://github.com/statnett/image-scanner-operator/issues/1061)) ([fb00bcd](https://github.com/statnett/image-scanner-operator/commit/fb00bcda22c3e216989fc5664989cf3d1f911a9a))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.19.1 ([#1054](https://github.com/statnett/image-scanner-operator/issues/1054)) ([3e2820c](https://github.com/statnett/image-scanner-operator/commit/3e2820cde9a9498256387f8213aa95dbea200723))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.20.0 ([#1065](https://github.com/statnett/image-scanner-operator/issues/1065)) ([0f8f3ef](https://github.com/statnett/image-scanner-operator/commit/0f8f3efe027166526e18a9e5dd34d1e0de70d221))
+* **deps:** update module github.com/onsi/gomega to v1.34.0 ([#1052](https://github.com/statnett/image-scanner-operator/issues/1052)) ([f20d439](https://github.com/statnett/image-scanner-operator/commit/f20d4393775a5b05087a91a7d457218fdf346871))
+* **deps:** update module github.com/onsi/gomega to v1.34.1 ([#1057](https://github.com/statnett/image-scanner-operator/issues/1057)) ([2266735](https://github.com/statnett/image-scanner-operator/commit/2266735325b52cd8ec2693c6f9f928f879cd1650))
+
 ## [0.8.16](https://github.com/statnett/image-scanner-operator/compare/v0.8.15...v0.8.16) (2024-07-20)
 
 
