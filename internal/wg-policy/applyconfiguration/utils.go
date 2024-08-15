@@ -3,9 +3,12 @@
 package applyconfiguration
 
 import (
+	internal "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/internal"
 	reportsxk8siov1beta2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/reports.x-k8s.io/v1beta2"
 	wgpolicyk8siov1alpha2 "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/wgpolicyk8s.io/v1alpha2"
+	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
+	testing "k8s.io/client-go/testing"
 	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 	v1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
 )
@@ -40,4 +43,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 
 	}
 	return nil
+}
+
+func NewTypeConverter(scheme *runtime.Scheme) *testing.TypeConverter {
+	return &testing.TypeConverter{Scheme: scheme, TypeResolver: internal.Parser()}
 }

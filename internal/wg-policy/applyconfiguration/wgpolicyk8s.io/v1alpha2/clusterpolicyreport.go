@@ -9,7 +9,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// ClusterPolicyReportApplyConfiguration represents an declarative configuration of the ClusterPolicyReport type for use
+// ClusterPolicyReportApplyConfiguration represents a declarative configuration of the ClusterPolicyReport type for use
 // with apply.
 type ClusterPolicyReportApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -20,7 +20,7 @@ type ClusterPolicyReportApplyConfiguration struct {
 	Results                          []PolicyReportResultApplyConfiguration `json:"results,omitempty"`
 }
 
-// ClusterPolicyReport constructs an declarative configuration of the ClusterPolicyReport type for use with
+// ClusterPolicyReport constructs a declarative configuration of the ClusterPolicyReport type for use with
 // apply.
 func ClusterPolicyReport(name string) *ClusterPolicyReportApplyConfiguration {
 	b := &ClusterPolicyReportApplyConfiguration{}
@@ -223,4 +223,10 @@ func (b *ClusterPolicyReportApplyConfiguration) WithResults(values ...*PolicyRep
 		b.Results = append(b.Results, *values[i])
 	}
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *ClusterPolicyReportApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

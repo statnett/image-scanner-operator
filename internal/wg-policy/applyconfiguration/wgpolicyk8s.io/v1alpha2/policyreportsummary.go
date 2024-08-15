@@ -2,7 +2,7 @@
 
 package v1alpha2
 
-// PolicyReportSummaryApplyConfiguration represents an declarative configuration of the PolicyReportSummary type for use
+// PolicyReportSummaryApplyConfiguration represents a declarative configuration of the PolicyReportSummary type for use
 // with apply.
 type PolicyReportSummaryApplyConfiguration struct {
 	Pass  *int `json:"pass,omitempty"`
@@ -12,7 +12,7 @@ type PolicyReportSummaryApplyConfiguration struct {
 	Skip  *int `json:"skip,omitempty"`
 }
 
-// PolicyReportSummaryApplyConfiguration constructs an declarative configuration of the PolicyReportSummary type for use with
+// PolicyReportSummaryApplyConfiguration constructs a declarative configuration of the PolicyReportSummary type for use with
 // apply.
 func PolicyReportSummary() *PolicyReportSummaryApplyConfiguration {
 	return &PolicyReportSummaryApplyConfiguration{}

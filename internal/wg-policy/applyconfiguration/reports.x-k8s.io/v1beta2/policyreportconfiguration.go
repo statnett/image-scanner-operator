@@ -2,13 +2,13 @@
 
 package v1beta2
 
-// PolicyReportConfigurationApplyConfiguration represents an declarative configuration of the PolicyReportConfiguration type for use
+// PolicyReportConfigurationApplyConfiguration represents a declarative configuration of the PolicyReportConfiguration type for use
 // with apply.
 type PolicyReportConfigurationApplyConfiguration struct {
 	Limits *LimitsApplyConfiguration `json:"limits,omitempty"`
 }
 
-// PolicyReportConfigurationApplyConfiguration constructs an declarative configuration of the PolicyReportConfiguration type for use with
+// PolicyReportConfigurationApplyConfiguration constructs a declarative configuration of the PolicyReportConfiguration type for use with
 // apply.
 func PolicyReportConfiguration() *PolicyReportConfigurationApplyConfiguration {
 	return &PolicyReportConfigurationApplyConfiguration{}

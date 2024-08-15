@@ -7,7 +7,7 @@ import (
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
-// ContainerImageScanSpecApplyConfiguration represents an declarative configuration of the ContainerImageScanSpec type for use
+// ContainerImageScanSpecApplyConfiguration represents a declarative configuration of the ContainerImageScanSpec type for use
 // with apply.
 type ContainerImageScanSpecApplyConfiguration struct {
 	ImageScanSpecApplyConfiguration `json:",inline"`
@@ -15,7 +15,7 @@ type ContainerImageScanSpecApplyConfiguration struct {
 	Workload                        *WorkloadApplyConfiguration `json:"workload,omitempty"`
 }
 
-// ContainerImageScanSpecApplyConfiguration constructs an declarative configuration of the ContainerImageScanSpec type for use with
+// ContainerImageScanSpecApplyConfiguration constructs a declarative configuration of the ContainerImageScanSpec type for use with
 // apply.
 func ContainerImageScanSpec() *ContainerImageScanSpecApplyConfiguration {
 	return &ContainerImageScanSpecApplyConfiguration{}

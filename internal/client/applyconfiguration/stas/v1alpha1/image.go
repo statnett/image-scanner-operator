@@ -6,14 +6,14 @@ import (
 	godigest "github.com/opencontainers/go-digest"
 )
 
-// ImageApplyConfiguration represents an declarative configuration of the Image type for use
+// ImageApplyConfiguration represents a declarative configuration of the Image type for use
 // with apply.
 type ImageApplyConfiguration struct {
 	Name   *string          `json:"name,omitempty"`
 	Digest *godigest.Digest `json:"digest,omitempty"`
 }
 
-// ImageApplyConfiguration constructs an declarative configuration of the Image type for use with
+// ImageApplyConfiguration constructs a declarative configuration of the Image type for use with
 // apply.
 func Image() *ImageApplyConfiguration {
 	return &ImageApplyConfiguration{}
