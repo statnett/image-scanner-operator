@@ -8,7 +8,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// ContainerImageScanApplyConfiguration represents an declarative configuration of the ContainerImageScan type for use
+// ContainerImageScanApplyConfiguration represents a declarative configuration of the ContainerImageScan type for use
 // with apply.
 type ContainerImageScanApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -17,7 +17,7 @@ type ContainerImageScanApplyConfiguration struct {
 	Status                           *ContainerImageScanStatusApplyConfiguration `json:"status,omitempty"`
 }
 
-// ContainerImageScan constructs an declarative configuration of the ContainerImageScan type for use with
+// ContainerImageScan constructs a declarative configuration of the ContainerImageScan type for use with
 // apply.
 func ContainerImageScan(name, namespace string) *ContainerImageScanApplyConfiguration {
 	b := &ContainerImageScanApplyConfiguration{}
@@ -200,4 +200,10 @@ func (b *ContainerImageScanApplyConfiguration) WithSpec(value *ContainerImageSca
 func (b *ContainerImageScanApplyConfiguration) WithStatus(value *ContainerImageScanStatusApplyConfiguration) *ContainerImageScanApplyConfiguration {
 	b.Status = value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *ContainerImageScanApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

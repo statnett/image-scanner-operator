@@ -2,7 +2,7 @@
 
 package v1alpha1
 
-// WorkloadApplyConfiguration represents an declarative configuration of the Workload type for use
+// WorkloadApplyConfiguration represents a declarative configuration of the Workload type for use
 // with apply.
 type WorkloadApplyConfiguration struct {
 	Group         *string `json:"group,omitempty"`
@@ -11,7 +11,7 @@ type WorkloadApplyConfiguration struct {
 	ContainerName *string `json:"containerName,omitempty"`
 }
 
-// WorkloadApplyConfiguration constructs an declarative configuration of the Workload type for use with
+// WorkloadApplyConfiguration constructs a declarative configuration of the Workload type for use with
 // apply.
 func Workload() *WorkloadApplyConfiguration {
 	return &WorkloadApplyConfiguration{}

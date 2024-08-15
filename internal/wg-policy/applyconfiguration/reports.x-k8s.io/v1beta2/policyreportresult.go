@@ -9,7 +9,7 @@ import (
 	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 )
 
-// PolicyReportResultApplyConfiguration represents an declarative configuration of the PolicyReportResult type for use
+// PolicyReportResultApplyConfiguration represents a declarative configuration of the PolicyReportResult type for use
 // with apply.
 type PolicyReportResultApplyConfiguration struct {
 	Source           *string                                 `json:"source,omitempty"`
@@ -26,7 +26,7 @@ type PolicyReportResultApplyConfiguration struct {
 	Properties       map[string]string                       `json:"properties,omitempty"`
 }
 
-// PolicyReportResultApplyConfiguration constructs an declarative configuration of the PolicyReportResult type for use with
+// PolicyReportResultApplyConfiguration constructs a declarative configuration of the PolicyReportResult type for use with
 // apply.
 func PolicyReportResult() *PolicyReportResultApplyConfiguration {
 	return &PolicyReportResultApplyConfiguration{}

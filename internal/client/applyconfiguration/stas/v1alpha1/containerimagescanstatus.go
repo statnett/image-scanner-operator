@@ -8,7 +8,7 @@ import (
 	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// ContainerImageScanStatusApplyConfiguration represents an declarative configuration of the ContainerImageScanStatus type for use
+// ContainerImageScanStatusApplyConfiguration represents a declarative configuration of the ContainerImageScanStatus type for use
 // with apply.
 type ContainerImageScanStatusApplyConfiguration struct {
 	ObservedGeneration     *int64                                  `json:"observedGeneration,omitempty"`
@@ -20,7 +20,7 @@ type ContainerImageScanStatusApplyConfiguration struct {
 	VulnerabilitySummary   *VulnerabilitySummaryApplyConfiguration `json:"vulnerabilitySummary,omitempty"`
 }
 
-// ContainerImageScanStatusApplyConfiguration constructs an declarative configuration of the ContainerImageScanStatus type for use with
+// ContainerImageScanStatusApplyConfiguration constructs a declarative configuration of the ContainerImageScanStatus type for use with
 // apply.
 func ContainerImageScanStatus() *ContainerImageScanStatusApplyConfiguration {
 	return &ContainerImageScanStatusApplyConfiguration{}
