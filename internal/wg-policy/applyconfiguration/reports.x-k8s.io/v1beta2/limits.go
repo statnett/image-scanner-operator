@@ -6,14 +6,14 @@ import (
 	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
 )
 
-// LimitsApplyConfiguration represents an declarative configuration of the Limits type for use
+// LimitsApplyConfiguration represents a declarative configuration of the Limits type for use
 // with apply.
 type LimitsApplyConfiguration struct {
 	MaxResults   *int                   `json:"maxResults,omitempty"`
 	StatusFilter []v1beta2.StatusFilter `json:"statusFilter,omitempty"`
 }
 
-// LimitsApplyConfiguration constructs an declarative configuration of the Limits type for use with
+// LimitsApplyConfiguration constructs a declarative configuration of the Limits type for use with
 // apply.
 func Limits() *LimitsApplyConfiguration {
 	return &LimitsApplyConfiguration{}

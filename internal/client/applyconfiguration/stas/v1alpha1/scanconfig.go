@@ -6,14 +6,14 @@ import (
 	v1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 )
 
-// ScanConfigApplyConfiguration represents an declarative configuration of the ScanConfig type for use
+// ScanConfigApplyConfiguration represents a declarative configuration of the ScanConfig type for use
 // with apply.
 type ScanConfigApplyConfiguration struct {
 	MinSeverity   *v1alpha1.Severity `json:"minSeverity,omitempty"`
 	IgnoreUnfixed *bool              `json:"ignoreUnfixed,omitempty"`
 }
 
-// ScanConfigApplyConfiguration constructs an declarative configuration of the ScanConfig type for use with
+// ScanConfigApplyConfiguration constructs a declarative configuration of the ScanConfig type for use with
 // apply.
 func ScanConfig() *ScanConfigApplyConfiguration {
 	return &ScanConfigApplyConfiguration{}
