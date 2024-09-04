@@ -2,6 +2,7 @@ package stas
 
 import (
 	"regexp"
+	"slices"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -102,25 +103,20 @@ var managedByImageScanner = predicate.NewPredicateFuncs(func(object client.Objec
 })
 
 var jobIsFinished = predicate.NewPredicateFuncs(func(object client.Object) bool {
-	return isJobFinished(object.(*batchv1.Job))
+	job := object.(*batchv1.Job)
+	return isJobComplete(job) || isJobFailed(job)
 })
 
-// isJobFinished checks whether the given Job has finished execution.
-// It does not discriminate between successful and failed terminations.
-// https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/job/utils.go#L24-L33
-func isJobFinished(j *batchv1.Job) bool {
-	c := jobCondition(j)
-	return c == batchv1.JobComplete || c == batchv1.JobFailed
+func isJobComplete(j *batchv1.Job) bool {
+	return slices.ContainsFunc(j.Status.Conditions, func(condition batchv1.JobCondition) bool {
+		return condition.Type == batchv1.JobComplete && condition.Status == corev1.ConditionTrue
+	})
 }
 
-func jobCondition(j *batchv1.Job) batchv1.JobConditionType {
-	for _, c := range j.Status.Conditions {
-		if c.Status == corev1.ConditionTrue {
-			return c.Type
-		}
-	}
-
-	return ""
+func isJobFailed(j *batchv1.Job) bool {
+	return slices.ContainsFunc(j.Status.Conditions, func(condition batchv1.JobCondition) bool {
+		return condition.Type == batchv1.JobFailed && condition.Status == corev1.ConditionTrue
+	})
 }
 
 func eventRegardingKind(kind string) predicate.Predicate {
