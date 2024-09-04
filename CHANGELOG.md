@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.19](https://github.com/statnett/image-scanner-operator/compare/v0.8.18...v0.8.19) (2024-09-04)
+
+
+### Bug Fixes
+
+* better job condition logic (support K8s 1.31) ([#1101](https://github.com/statnett/image-scanner-operator/issues/1101)) ([85241de](https://github.com/statnett/image-scanner-operator/commit/85241de6abc9da46db5fab1ffa2e3a7af5ae99d1))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.55.0 ([#1097](https://github.com/statnett/image-scanner-operator/issues/1097)) ([95b0d9b](https://github.com/statnett/image-scanner-operator/commit/95b0d9b7c359ef7af86cbd5ed6b4847307beb3f5))
+* **deps:** update k8s.io/utils digest to 702e33f ([#1095](https://github.com/statnett/image-scanner-operator/issues/1095)) ([1243941](https://github.com/statnett/image-scanner-operator/commit/1243941cbf124acb8512bd038b0184c2384cc9c1))
+* **deps:** update k8s.io/utils digest to f90d014 ([#1088](https://github.com/statnett/image-scanner-operator/issues/1088)) ([80bf24b](https://github.com/statnett/image-scanner-operator/commit/80bf24bda0ca474fdbbc0566aba9a84b1329b28e))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.20.1 ([#1089](https://github.com/statnett/image-scanner-operator/issues/1089)) ([00b31a5](https://github.com/statnett/image-scanner-operator/commit/00b31a5f995345e2289869516207fa66eb958d03))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.20.2 ([#1092](https://github.com/statnett/image-scanner-operator/issues/1092)) ([24485ae](https://github.com/statnett/image-scanner-operator/commit/24485ae2a78bd87f221a0f33acbe904f83dcbc35))
+* **deps:** update module github.com/onsi/gomega to v1.34.2 ([#1093](https://github.com/statnett/image-scanner-operator/issues/1093)) ([6a31aa1](https://github.com/statnett/image-scanner-operator/commit/6a31aa18cad374d9ffd73b782f6835c81a4beed4))
+* **deps:** update module github.com/prometheus/client_golang to v1.20.1 ([#1085](https://github.com/statnett/image-scanner-operator/issues/1085)) ([7c9d4dd](https://github.com/statnett/image-scanner-operator/commit/7c9d4dd89cd1a09b33033a4f5bdfc68a43da3d25))
+* **deps:** update module github.com/prometheus/client_golang to v1.20.2 ([#1091](https://github.com/statnett/image-scanner-operator/issues/1091)) ([376629e](https://github.com/statnett/image-scanner-operator/commit/376629e5c4bf9fb12999708b027e21cf27e0e691))
+
 ## [0.8.18](https://github.com/statnett/image-scanner-operator/compare/v0.8.17...v0.8.18) (2024-08-15)
 
 
