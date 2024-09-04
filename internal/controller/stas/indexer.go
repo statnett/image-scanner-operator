@@ -71,11 +71,11 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 		// TODO: non-exact field matches are not supported by the cache
 		// https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cache/internal/cache_reader.go#L116-L121
 		// So mapping to [Complete, Failed, NotFinished] where the last is a composite condition
-		switch jc := jobCondition(job); jc {
-		case batchv1.JobComplete:
-			return []string{string(jc)}
-		case batchv1.JobFailed:
-			return []string{string(jc)}
+		switch {
+		case isJobComplete(job):
+			return []string{string(batchv1.JobComplete)}
+		case isJobFailed(job):
+			return []string{string(batchv1.JobFailed)}
 		default:
 			return []string{jobNotFinished}
 		}
