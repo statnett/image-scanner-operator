@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.21](https://github.com/statnett/image-scanner-operator/compare/v0.8.20...v0.8.21) (2024-09-17)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.55.1 ([#1115](https://github.com/statnett/image-scanner-operator/issues/1115)) ([729863f](https://github.com/statnett/image-scanner-operator/commit/729863f50ea75581dc1d3dade8eeef6177c6d473))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.55.2 ([#1119](https://github.com/statnett/image-scanner-operator/issues/1119)) ([29482f1](https://github.com/statnett/image-scanner-operator/commit/29482f1b8b115fdc5cf378b9a10010478579b73e))
+* **deps:** update module github.com/prometheus/client_golang to v1.20.4 ([#1120](https://github.com/statnett/image-scanner-operator/issues/1120)) ([4cc5904](https://github.com/statnett/image-scanner-operator/commit/4cc590463cd8a5d8ec65495497e0966d8a9ae2e4))
+
 ## [0.8.20](https://github.com/statnett/image-scanner-operator/compare/v0.8.19...v0.8.20) (2024-09-12)
 
 
