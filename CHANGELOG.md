@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.22](https://github.com/statnett/image-scanner-operator/compare/v0.8.21...v0.8.22) (2024-10-07)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.56.0 ([#1135](https://github.com/statnett/image-scanner-operator/issues/1135)) ([e6f85eb](https://github.com/statnett/image-scanner-operator/commit/e6f85eb4388c63bb36b56ed1b17e2c5a17588980))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.56.1 ([#1136](https://github.com/statnett/image-scanner-operator/issues/1136)) ([d7f0f03](https://github.com/statnett/image-scanner-operator/commit/d7f0f039355c7897e3dfba7be765a202991f1d1d))
+* **deps:** update k8s.io/utils digest to 49e7df5 ([#1122](https://github.com/statnett/image-scanner-operator/issues/1122)) ([68d16e8](https://github.com/statnett/image-scanner-operator/commit/68d16e8874f5c7d8bcb349b7833ff4256c9ded16))
+
 ## [0.8.21](https://github.com/statnett/image-scanner-operator/compare/v0.8.20...v0.8.21) (2024-09-17)
 
 
