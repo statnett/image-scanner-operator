@@ -193,7 +193,7 @@ GCI_VERSION ?= v0.13.5
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
-KUSTOMIZE_VERSION ?= v5.4.3
+KUSTOMIZE_VERSION ?= v5.5.0
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
 CODE_GENERATOR_VERSION ?= v0.31.1
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
