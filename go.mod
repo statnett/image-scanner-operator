@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.20.5
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
-	github.com/statnett/controller-runtime-viper v0.3.25
+	github.com/statnett/controller-runtime-viper v0.3.26
 	github.com/stretchr/testify v1.9.0
 	k8s.io/api v0.31.2
 	k8s.io/apimachinery v0.31.2
@@ -21,7 +21,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6
 	sigs.k8s.io/cli-utils v0.37.2
-	sigs.k8s.io/controller-runtime v0.19.0
+	sigs.k8s.io/controller-runtime v0.19.1
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1
 	sigs.k8s.io/wg-policy-prototypes v0.0.0-20241007222821-25056e1f3eb5
