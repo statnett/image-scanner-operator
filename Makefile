@@ -197,7 +197,7 @@ KUSTOMIZE_VERSION ?= v5.5.0
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
 CODE_GENERATOR_VERSION ?= v0.31.2
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
-CONTROLLER_TOOLS_VERSION ?= v0.16.4
+CONTROLLER_TOOLS_VERSION ?= v0.16.5
 
 .PHONY: applyconfiguration-gen
 applyconfiguration-gen: $(APPLYCONFIGURATION_GEN) ## Download applyconfiguration-gen locally if necessary.
