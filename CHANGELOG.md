@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.24](https://github.com/statnett/image-scanner-operator/compare/v0.8.23...v0.8.24) (2024-10-29)
+
+
+### Bug Fixes
+
+* **deps:** update kubernetes packages to v0.31.2 ([#1156](https://github.com/statnett/image-scanner-operator/issues/1156)) ([403347e](https://github.com/statnett/image-scanner-operator/commit/403347eccf37e273de357df48e9981308cf0c70f))
+* **deps:** update module github.com/prometheus/client_golang to v1.20.5 ([#1150](https://github.com/statnett/image-scanner-operator/issues/1150)) ([9a40514](https://github.com/statnett/image-scanner-operator/commit/9a4051454700f70334a8a397a4c2d4ef228a21bd))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.26 ([#1159](https://github.com/statnett/image-scanner-operator/issues/1159)) ([56a722d](https://github.com/statnett/image-scanner-operator/commit/56a722df6314923242d80e7139f4202bdc625a15))
+* **deps:** update sigs.k8s.io/json digest to 9aa6b5e ([#1146](https://github.com/statnett/image-scanner-operator/issues/1146)) ([4b287de](https://github.com/statnett/image-scanner-operator/commit/4b287de4f6bf1a6c2525ef99e6fb0ec9079808aa))
+* **deps:** update sigs.k8s.io/json digest to cfa47c3 ([#1149](https://github.com/statnett/image-scanner-operator/issues/1149)) ([ca0e006](https://github.com/statnett/image-scanner-operator/commit/ca0e006bba315fb5506d36f0c8979458e5eea314))
+
 ## [0.8.23](https://github.com/statnett/image-scanner-operator/compare/v0.8.22...v0.8.23) (2024-10-10)
 
 
