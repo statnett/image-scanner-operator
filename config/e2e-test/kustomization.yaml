@@ -14,6 +14,11 @@ configMapGenerator:
     behavior: merge
     literals:
       - DB_REPOSITORY=public.ecr.aws/aquasecurity/trivy-db
+  - name: trivy-job-config
+    namespace: image-scanner
+    behavior: merge
+    literals:
+      - JAVA_DB_REPOSITORY=public.ecr.aws/aquasecurity/trivy-java-db
 patches:
   - patch: |-
       - op: add
