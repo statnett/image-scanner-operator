@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.25](https://github.com/statnett/image-scanner-operator/compare/v0.8.24...v0.8.25) (2024-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.57.0 ([#1171](https://github.com/statnett/image-scanner-operator/issues/1171)) ([e48ccee](https://github.com/statnett/image-scanner-operator/commit/e48ccee1ee5af7b9c0ab925557385ea287749994))
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.57.1 ([#1180](https://github.com/statnett/image-scanner-operator/issues/1180)) ([d4a556d](https://github.com/statnett/image-scanner-operator/commit/d4a556d2b22d2df21722096a882e88ace4854169))
+* **deps:** update k8s.io/utils digest to 3ea5e8c ([#1173](https://github.com/statnett/image-scanner-operator/issues/1173)) ([72283d4](https://github.com/statnett/image-scanner-operator/commit/72283d4ff3bc41ce9f8f905f0690d564f1f10d4e))
+* **deps:** update k8s.io/utils digest to 6fe5fd8 ([#1175](https://github.com/statnett/image-scanner-operator/issues/1175)) ([c3ca5e5](https://github.com/statnett/image-scanner-operator/commit/c3ca5e5afa775e9a11f71a7ffb45efb0b7b8ebe3))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.21.0 ([#1165](https://github.com/statnett/image-scanner-operator/issues/1165)) ([4d45fb1](https://github.com/statnett/image-scanner-operator/commit/4d45fb1286697a603d56d3c28e306357ce1991f1))
+* **deps:** update module github.com/onsi/gomega to v1.35.0 ([#1166](https://github.com/statnett/image-scanner-operator/issues/1166)) ([31f2dc8](https://github.com/statnett/image-scanner-operator/commit/31f2dc836575f0f85ce458b595fe413124b43e49))
+* **deps:** update module github.com/onsi/gomega to v1.35.1 ([#1169](https://github.com/statnett/image-scanner-operator/issues/1169)) ([8fc62d9](https://github.com/statnett/image-scanner-operator/commit/8fc62d9874317dbb4d404f1d34d7ac7666f422de))
+* **deps:** update module sigs.k8s.io/structured-merge-diff/v4 to v4.4.3 ([#1170](https://github.com/statnett/image-scanner-operator/issues/1170)) ([334a06f](https://github.com/statnett/image-scanner-operator/commit/334a06ff82f2f716e56ad7ffdf2ba0df56ce6c9c))
+
+
+### Reverts
+
+* "chore(renovate): add marker versioning for k3s image" ([#1172](https://github.com/statnett/image-scanner-operator/issues/1172)) ([befbe09](https://github.com/statnett/image-scanner-operator/commit/befbe098802097789874e696da50ffab00d75012))
+
 ## [0.8.24](https://github.com/statnett/image-scanner-operator/compare/v0.8.23...v0.8.24) (2024-10-29)
 
 
