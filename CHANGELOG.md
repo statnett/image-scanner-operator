@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.27](https://github.com/statnett/image-scanner-operator/compare/v0.8.26...v0.8.27) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/onsi/gomega to v1.36.0 ([#1192](https://github.com/statnett/image-scanner-operator/issues/1192)) ([6391cc9](https://github.com/statnett/image-scanner-operator/commit/6391cc9da28c6527185c07c0118cb281b0167fcd))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.28 ([#1197](https://github.com/statnett/image-scanner-operator/issues/1197)) ([e11f4e2](https://github.com/statnett/image-scanner-operator/commit/e11f4e214fd926f8f8f3e6a67b5bd2d28ca2c0f4))
+* **deps:** update module github.com/stretchr/testify to v1.10.0 ([#1189](https://github.com/statnett/image-scanner-operator/issues/1189)) ([de9f7cb](https://github.com/statnett/image-scanner-operator/commit/de9f7cbfa8134c4203780ef4d08d83f584b92633))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.19.3 ([#1196](https://github.com/statnett/image-scanner-operator/issues/1196)) ([b97c3aa](https://github.com/statnett/image-scanner-operator/commit/b97c3aa431985a61d44cc1b61396d70286dd5661))
+
 ## [0.8.26](https://github.com/statnett/image-scanner-operator/compare/v0.8.25...v0.8.26) (2024-11-21)
 
 
