@@ -20,7 +20,7 @@ spec:
       containers:
         - name: server
           # renovate-image:
-          image: ghcr.io/aquasecurity/trivy:0.57.1
+          image: ghcr.io/aquasecurity/trivy:0.58.0
           args:
             - server
           envFrom:
