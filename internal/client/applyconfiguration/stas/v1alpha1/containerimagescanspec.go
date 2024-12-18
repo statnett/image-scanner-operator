@@ -25,7 +25,7 @@ func ContainerImageScanSpec() *ContainerImageScanSpecApplyConfiguration {
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *ContainerImageScanSpecApplyConfiguration) WithName(value string) *ContainerImageScanSpecApplyConfiguration {
-	b.Name = &value
+	b.ImageApplyConfiguration.Name = &value
 	return b
 }
 
@@ -33,7 +33,7 @@ func (b *ContainerImageScanSpecApplyConfiguration) WithName(value string) *Conta
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Digest field is set to the value of the last call.
 func (b *ContainerImageScanSpecApplyConfiguration) WithDigest(value godigest.Digest) *ContainerImageScanSpecApplyConfiguration {
-	b.Digest = &value
+	b.ImageApplyConfiguration.Digest = &value
 	return b
 }
 
@@ -41,7 +41,7 @@ func (b *ContainerImageScanSpecApplyConfiguration) WithDigest(value godigest.Dig
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the MinSeverity field is set to the value of the last call.
 func (b *ContainerImageScanSpecApplyConfiguration) WithMinSeverity(value stasv1alpha1.Severity) *ContainerImageScanSpecApplyConfiguration {
-	b.MinSeverity = &value
+	b.ScanConfigApplyConfiguration.MinSeverity = &value
 	return b
 }
 
@@ -49,7 +49,7 @@ func (b *ContainerImageScanSpecApplyConfiguration) WithMinSeverity(value stasv1a
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the IgnoreUnfixed field is set to the value of the last call.
 func (b *ContainerImageScanSpecApplyConfiguration) WithIgnoreUnfixed(value bool) *ContainerImageScanSpecApplyConfiguration {
-	b.IgnoreUnfixed = &value
+	b.ScanConfigApplyConfiguration.IgnoreUnfixed = &value
 	return b
 }
 
