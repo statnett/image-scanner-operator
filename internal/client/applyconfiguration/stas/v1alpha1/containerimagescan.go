@@ -32,7 +32,7 @@ func ContainerImageScan(name, namespace string) *ContainerImageScanApplyConfigur
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Kind field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithKind(value string) *ContainerImageScanApplyConfiguration {
-	b.Kind = &value
+	b.TypeMetaApplyConfiguration.Kind = &value
 	return b
 }
 
@@ -40,7 +40,7 @@ func (b *ContainerImageScanApplyConfiguration) WithKind(value string) *Container
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the APIVersion field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithAPIVersion(value string) *ContainerImageScanApplyConfiguration {
-	b.APIVersion = &value
+	b.TypeMetaApplyConfiguration.APIVersion = &value
 	return b
 }
 
@@ -49,7 +49,7 @@ func (b *ContainerImageScanApplyConfiguration) WithAPIVersion(value string) *Con
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithName(value string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Name = &value
+	b.ObjectMetaApplyConfiguration.Name = &value
 	return b
 }
 
@@ -58,7 +58,7 @@ func (b *ContainerImageScanApplyConfiguration) WithName(value string) *Container
 // If called multiple times, the GenerateName field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithGenerateName(value string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.GenerateName = &value
+	b.ObjectMetaApplyConfiguration.GenerateName = &value
 	return b
 }
 
@@ -67,7 +67,7 @@ func (b *ContainerImageScanApplyConfiguration) WithGenerateName(value string) *C
 // If called multiple times, the Namespace field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithNamespace(value string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Namespace = &value
+	b.ObjectMetaApplyConfiguration.Namespace = &value
 	return b
 }
 
@@ -76,7 +76,7 @@ func (b *ContainerImageScanApplyConfiguration) WithNamespace(value string) *Cont
 // If called multiple times, the UID field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithUID(value types.UID) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.UID = &value
+	b.ObjectMetaApplyConfiguration.UID = &value
 	return b
 }
 
@@ -85,7 +85,7 @@ func (b *ContainerImageScanApplyConfiguration) WithUID(value types.UID) *Contain
 // If called multiple times, the ResourceVersion field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithResourceVersion(value string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.ResourceVersion = &value
+	b.ObjectMetaApplyConfiguration.ResourceVersion = &value
 	return b
 }
 
@@ -94,7 +94,7 @@ func (b *ContainerImageScanApplyConfiguration) WithResourceVersion(value string)
 // If called multiple times, the Generation field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithGeneration(value int64) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Generation = &value
+	b.ObjectMetaApplyConfiguration.Generation = &value
 	return b
 }
 
@@ -103,7 +103,7 @@ func (b *ContainerImageScanApplyConfiguration) WithGeneration(value int64) *Cont
 // If called multiple times, the CreationTimestamp field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithCreationTimestamp(value metav1.Time) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.CreationTimestamp = &value
+	b.ObjectMetaApplyConfiguration.CreationTimestamp = &value
 	return b
 }
 
@@ -112,7 +112,7 @@ func (b *ContainerImageScanApplyConfiguration) WithCreationTimestamp(value metav
 // If called multiple times, the DeletionTimestamp field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionTimestamp = &value
+	b.ObjectMetaApplyConfiguration.DeletionTimestamp = &value
 	return b
 }
 
@@ -121,7 +121,7 @@ func (b *ContainerImageScanApplyConfiguration) WithDeletionTimestamp(value metav
 // If called multiple times, the DeletionGracePeriodSeconds field is set to the value of the last call.
 func (b *ContainerImageScanApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionGracePeriodSeconds = &value
+	b.ObjectMetaApplyConfiguration.DeletionGracePeriodSeconds = &value
 	return b
 }
 
@@ -131,11 +131,11 @@ func (b *ContainerImageScanApplyConfiguration) WithDeletionGracePeriodSeconds(va
 // overwriting an existing map entries in Labels field with the same key.
 func (b *ContainerImageScanApplyConfiguration) WithLabels(entries map[string]string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Labels == nil && len(entries) > 0 {
-		b.Labels = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Labels == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Labels = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Labels[k] = v
+		b.ObjectMetaApplyConfiguration.Labels[k] = v
 	}
 	return b
 }
@@ -146,11 +146,11 @@ func (b *ContainerImageScanApplyConfiguration) WithLabels(entries map[string]str
 // overwriting an existing map entries in Annotations field with the same key.
 func (b *ContainerImageScanApplyConfiguration) WithAnnotations(entries map[string]string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Annotations == nil && len(entries) > 0 {
-		b.Annotations = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Annotations == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Annotations = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Annotations[k] = v
+		b.ObjectMetaApplyConfiguration.Annotations[k] = v
 	}
 	return b
 }
@@ -164,7 +164,7 @@ func (b *ContainerImageScanApplyConfiguration) WithOwnerReferences(values ...*v1
 		if values[i] == nil {
 			panic("nil value passed to WithOwnerReferences")
 		}
-		b.OwnerReferences = append(b.OwnerReferences, *values[i])
+		b.ObjectMetaApplyConfiguration.OwnerReferences = append(b.ObjectMetaApplyConfiguration.OwnerReferences, *values[i])
 	}
 	return b
 }
@@ -175,7 +175,7 @@ func (b *ContainerImageScanApplyConfiguration) WithOwnerReferences(values ...*v1
 func (b *ContainerImageScanApplyConfiguration) WithFinalizers(values ...string) *ContainerImageScanApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
-		b.Finalizers = append(b.Finalizers, values[i])
+		b.ObjectMetaApplyConfiguration.Finalizers = append(b.ObjectMetaApplyConfiguration.Finalizers, values[i])
 	}
 	return b
 }
@@ -205,5 +205,5 @@ func (b *ContainerImageScanApplyConfiguration) WithStatus(value *ContainerImageS
 // GetName retrieves the value of the Name field in the declarative configuration.
 func (b *ContainerImageScanApplyConfiguration) GetName() *string {
 	b.ensureObjectMetaApplyConfigurationExists()
-	return b.Name
+	return b.ObjectMetaApplyConfiguration.Name
 }
