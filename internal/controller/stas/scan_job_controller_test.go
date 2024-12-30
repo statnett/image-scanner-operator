@@ -51,7 +51,7 @@ var _ = Describe("Scan Job controller", func() {
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful", "successful-scan-job-pod.log.json"))
 			Expect(komega.UpdateStatus(scanJob, func() {
-				setJobCondition(scanJob, batchv1.JobComplete)
+				setJobComplete(scanJob)
 			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
@@ -110,7 +110,7 @@ var _ = Describe("Scan Job controller", func() {
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-successful-long", "scan-job-pod.log.json"))
 				Expect(komega.UpdateStatus(scanJob, func() {
-					setJobCondition(scanJob, batchv1.JobComplete)
+					setJobComplete(scanJob)
 				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
@@ -185,7 +185,7 @@ var _ = Describe("Scan Job controller", func() {
 				scanJob := getContainerImageScanJob(cis)
 				createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-invalid-json", "scan-job-pod.log.invalid.json"))
 				Expect(komega.UpdateStatus(scanJob, func() {
-					setJobCondition(scanJob, batchv1.JobComplete)
+					setJobComplete(scanJob)
 				})()).To(Succeed())
 
 				// Wait for Job to get reconciled
@@ -225,7 +225,7 @@ var _ = Describe("Scan Job controller", func() {
 			scanJob := getContainerImageScanJob(cis)
 			createScanJobPodWithLogs(scanJob, path.Join("testdata", "scan-job-failed", "failed-scan-job-pod.log"))
 			Expect(komega.UpdateStatus(scanJob, func() {
-				setJobCondition(scanJob, batchv1.JobFailed)
+				setJobFailed(scanJob)
 			})()).To(Succeed())
 
 			// Wait for Job to get reconciled
@@ -249,11 +249,33 @@ var _ = Describe("Scan Job controller", func() {
 	})
 })
 
-func setJobCondition(job *batchv1.Job, conditionType batchv1.JobConditionType) {
-	job.Status.Conditions = []batchv1.JobCondition{{
-		Type:   conditionType,
-		Status: corev1.ConditionTrue,
-	}}
+func setJobComplete(job *batchv1.Job) {
+	job.Status.StartTime = &metav1.Time{Time: time.Now()}
+	job.Status.CompletionTime = &metav1.Time{Time: time.Now()}
+	job.Status.Conditions = []batchv1.JobCondition{
+		{
+			Type:   batchv1.JobSuccessCriteriaMet,
+			Status: corev1.ConditionTrue,
+		},
+		{
+			Type:   batchv1.JobComplete,
+			Status: corev1.ConditionTrue,
+		},
+	}
+}
+
+func setJobFailed(job *batchv1.Job) {
+	job.Status.StartTime = &metav1.Time{Time: time.Now()}
+	job.Status.Conditions = []batchv1.JobCondition{
+		{
+			Type:   batchv1.JobFailureTarget,
+			Status: corev1.ConditionTrue,
+		},
+		{
+			Type:   batchv1.JobFailed,
+			Status: corev1.ConditionTrue,
+		},
+	}
 }
 
 var _ = DescribeTable("Converting to vulnerability summary (severity count)",
