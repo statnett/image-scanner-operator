@@ -9,8 +9,8 @@ import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	testing "k8s.io/client-go/testing"
-	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
-	v1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
+	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/reports.x-k8s.io/v1beta2"
+	v1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
 )
 
 // ForKind returns an apply configuration type for the given GroupVersionKind, or nil if no

@@ -6,24 +6,24 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
-	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
+	reportsxk8siov1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/reports.x-k8s.io/v1beta2"
 )
 
 // PolicyReportResultApplyConfiguration represents a declarative configuration of the PolicyReportResult type for use
 // with apply.
 type PolicyReportResultApplyConfiguration struct {
-	Source           *string                                 `json:"source,omitempty"`
-	Policy           *string                                 `json:"policy,omitempty"`
-	Rule             *string                                 `json:"rule,omitempty"`
-	Category         *string                                 `json:"category,omitempty"`
-	Severity         *v1beta2.PolicyResultSeverity           `json:"severity,omitempty"`
-	Timestamp        *v1.Timestamp                           `json:"timestamp,omitempty"`
-	Result           *v1beta2.PolicyResult                   `json:"result,omitempty"`
-	Scored           *bool                                   `json:"scored,omitempty"`
-	Subjects         []corev1.ObjectReference                `json:"resources,omitempty"`
-	ResourceSelector *metav1.LabelSelectorApplyConfiguration `json:"resourceSelector,omitempty"`
-	Description      *string                                 `json:"message,omitempty"`
-	Properties       map[string]string                       `json:"properties,omitempty"`
+	Source           *string                                    `json:"source,omitempty"`
+	Policy           *string                                    `json:"policy,omitempty"`
+	Rule             *string                                    `json:"rule,omitempty"`
+	Category         *string                                    `json:"category,omitempty"`
+	Severity         *reportsxk8siov1beta2.PolicyResultSeverity `json:"severity,omitempty"`
+	Timestamp        *v1.Timestamp                              `json:"timestamp,omitempty"`
+	Result           *reportsxk8siov1beta2.PolicyResult         `json:"result,omitempty"`
+	Scored           *bool                                      `json:"scored,omitempty"`
+	Subjects         []corev1.ObjectReference                   `json:"resources,omitempty"`
+	ResourceSelector *metav1.LabelSelectorApplyConfiguration    `json:"resourceSelector,omitempty"`
+	Description      *string                                    `json:"message,omitempty"`
+	Properties       map[string]string                          `json:"properties,omitempty"`
 }
 
 // PolicyReportResultApplyConfiguration constructs a declarative configuration of the PolicyReportResult type for use with
@@ -67,7 +67,7 @@ func (b *PolicyReportResultApplyConfiguration) WithCategory(value string) *Polic
 // WithSeverity sets the Severity field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Severity field is set to the value of the last call.
-func (b *PolicyReportResultApplyConfiguration) WithSeverity(value v1beta2.PolicyResultSeverity) *PolicyReportResultApplyConfiguration {
+func (b *PolicyReportResultApplyConfiguration) WithSeverity(value reportsxk8siov1beta2.PolicyResultSeverity) *PolicyReportResultApplyConfiguration {
 	b.Severity = &value
 	return b
 }
@@ -83,7 +83,7 @@ func (b *PolicyReportResultApplyConfiguration) WithTimestamp(value v1.Timestamp)
 // WithResult sets the Result field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Result field is set to the value of the last call.
-func (b *PolicyReportResultApplyConfiguration) WithResult(value v1beta2.PolicyResult) *PolicyReportResultApplyConfiguration {
+func (b *PolicyReportResultApplyConfiguration) WithResult(value reportsxk8siov1beta2.PolicyResult) *PolicyReportResultApplyConfiguration {
 	b.Result = &value
 	return b
 }

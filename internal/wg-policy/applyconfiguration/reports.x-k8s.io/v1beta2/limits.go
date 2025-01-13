@@ -3,14 +3,14 @@
 package v1beta2
 
 import (
-	v1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2"
+	reportsxk8siov1beta2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/reports.x-k8s.io/v1beta2"
 )
 
 // LimitsApplyConfiguration represents a declarative configuration of the Limits type for use
 // with apply.
 type LimitsApplyConfiguration struct {
-	MaxResults   *int                   `json:"maxResults,omitempty"`
-	StatusFilter []v1beta2.StatusFilter `json:"statusFilter,omitempty"`
+	MaxResults   *int                                `json:"maxResults,omitempty"`
+	StatusFilter []reportsxk8siov1beta2.StatusFilter `json:"statusFilter,omitempty"`
 }
 
 // LimitsApplyConfiguration constructs a declarative configuration of the Limits type for use with
@@ -30,7 +30,7 @@ func (b *LimitsApplyConfiguration) WithMaxResults(value int) *LimitsApplyConfigu
 // WithStatusFilter adds the given value to the StatusFilter field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the StatusFilter field.
-func (b *LimitsApplyConfiguration) WithStatusFilter(values ...v1beta2.StatusFilter) *LimitsApplyConfiguration {
+func (b *LimitsApplyConfiguration) WithStatusFilter(values ...reportsxk8siov1beta2.StatusFilter) *LimitsApplyConfiguration {
 	for i := range values {
 		b.StatusFilter = append(b.StatusFilter, values[i])
 	}

@@ -36,7 +36,7 @@ func ClusterPolicyReport(name string) *ClusterPolicyReportApplyConfiguration {
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Kind field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithKind(value string) *ClusterPolicyReportApplyConfiguration {
-	b.Kind = &value
+	b.TypeMetaApplyConfiguration.Kind = &value
 	return b
 }
 
@@ -44,7 +44,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithKind(value string) *ClusterP
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the APIVersion field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithAPIVersion(value string) *ClusterPolicyReportApplyConfiguration {
-	b.APIVersion = &value
+	b.TypeMetaApplyConfiguration.APIVersion = &value
 	return b
 }
 
@@ -53,7 +53,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithAPIVersion(value string) *Cl
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithName(value string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Name = &value
+	b.ObjectMetaApplyConfiguration.Name = &value
 	return b
 }
 
@@ -62,7 +62,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithName(value string) *ClusterP
 // If called multiple times, the GenerateName field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithGenerateName(value string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.GenerateName = &value
+	b.ObjectMetaApplyConfiguration.GenerateName = &value
 	return b
 }
 
@@ -71,7 +71,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithGenerateName(value string) *
 // If called multiple times, the Namespace field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithNamespace(value string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Namespace = &value
+	b.ObjectMetaApplyConfiguration.Namespace = &value
 	return b
 }
 
@@ -80,7 +80,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithNamespace(value string) *Clu
 // If called multiple times, the UID field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithUID(value types.UID) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.UID = &value
+	b.ObjectMetaApplyConfiguration.UID = &value
 	return b
 }
 
@@ -89,7 +89,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithUID(value types.UID) *Cluste
 // If called multiple times, the ResourceVersion field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithResourceVersion(value string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.ResourceVersion = &value
+	b.ObjectMetaApplyConfiguration.ResourceVersion = &value
 	return b
 }
 
@@ -98,7 +98,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithResourceVersion(value string
 // If called multiple times, the Generation field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithGeneration(value int64) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Generation = &value
+	b.ObjectMetaApplyConfiguration.Generation = &value
 	return b
 }
 
@@ -107,7 +107,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithGeneration(value int64) *Clu
 // If called multiple times, the CreationTimestamp field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithCreationTimestamp(value metav1.Time) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.CreationTimestamp = &value
+	b.ObjectMetaApplyConfiguration.CreationTimestamp = &value
 	return b
 }
 
@@ -116,7 +116,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithCreationTimestamp(value meta
 // If called multiple times, the DeletionTimestamp field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionTimestamp = &value
+	b.ObjectMetaApplyConfiguration.DeletionTimestamp = &value
 	return b
 }
 
@@ -125,7 +125,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithDeletionTimestamp(value meta
 // If called multiple times, the DeletionGracePeriodSeconds field is set to the value of the last call.
 func (b *ClusterPolicyReportApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionGracePeriodSeconds = &value
+	b.ObjectMetaApplyConfiguration.DeletionGracePeriodSeconds = &value
 	return b
 }
 
@@ -135,11 +135,11 @@ func (b *ClusterPolicyReportApplyConfiguration) WithDeletionGracePeriodSeconds(v
 // overwriting an existing map entries in Labels field with the same key.
 func (b *ClusterPolicyReportApplyConfiguration) WithLabels(entries map[string]string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Labels == nil && len(entries) > 0 {
-		b.Labels = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Labels == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Labels = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Labels[k] = v
+		b.ObjectMetaApplyConfiguration.Labels[k] = v
 	}
 	return b
 }
@@ -150,11 +150,11 @@ func (b *ClusterPolicyReportApplyConfiguration) WithLabels(entries map[string]st
 // overwriting an existing map entries in Annotations field with the same key.
 func (b *ClusterPolicyReportApplyConfiguration) WithAnnotations(entries map[string]string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Annotations == nil && len(entries) > 0 {
-		b.Annotations = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Annotations == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Annotations = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Annotations[k] = v
+		b.ObjectMetaApplyConfiguration.Annotations[k] = v
 	}
 	return b
 }
@@ -168,7 +168,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithOwnerReferences(values ...*v
 		if values[i] == nil {
 			panic("nil value passed to WithOwnerReferences")
 		}
-		b.OwnerReferences = append(b.OwnerReferences, *values[i])
+		b.ObjectMetaApplyConfiguration.OwnerReferences = append(b.ObjectMetaApplyConfiguration.OwnerReferences, *values[i])
 	}
 	return b
 }
@@ -179,7 +179,7 @@ func (b *ClusterPolicyReportApplyConfiguration) WithOwnerReferences(values ...*v
 func (b *ClusterPolicyReportApplyConfiguration) WithFinalizers(values ...string) *ClusterPolicyReportApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
-		b.Finalizers = append(b.Finalizers, values[i])
+		b.ObjectMetaApplyConfiguration.Finalizers = append(b.ObjectMetaApplyConfiguration.Finalizers, values[i])
 	}
 	return b
 }
@@ -246,5 +246,5 @@ func (b *ClusterPolicyReportApplyConfiguration) WithResults(values ...*PolicyRep
 // GetName retrieves the value of the Name field in the declarative configuration.
 func (b *ClusterPolicyReportApplyConfiguration) GetName() *string {
 	b.ensureObjectMetaApplyConfigurationExists()
-	return b.Name
+	return b.ObjectMetaApplyConfiguration.Name
 }

@@ -64,14 +64,14 @@ wg-policy-client-gen: applyconfiguration-gen
 	$(APPLYCONFIGURATION_GEN) \
 		--output-dir "internal/wg-policy/applyconfiguration" \
 		--output-pkg "$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
-		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/reports.x-k8s.io/v1beta2" \
-		"sigs.k8s.io/wg-policy-prototypes/policy-report/pkg/api/wgpolicyk8s.io/v1alpha2"
+		"sigs.k8s.io/wg-policy-prototypes/policy-report/apis/reports.x-k8s.io/v1beta2" \
+		"sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
 
 .PHONY: wg-policy-crd-update
 wg-policy-crd-update:
 	curl -O --output-dir config/wg-policy/crd/ --remote-name-all \
-		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/master/policy-report/crd/v1beta2/reports.x-k8s.io_{clusterpolicyreports,policyreports}.yaml \
-		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/master/policy-report/crd/v1alpha2/wgpolicyk8s.io_{clusterpolicyreports,policyreports}.yaml
+		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/refs/heads/master/policy-report/crd/reports.x-k8s.io/v1beta2/reports.x-k8s.io_{clusterpolicyreports,policyreports}.yaml \
+		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/refs/heads/master/policy-report/crd/wgpolicyk8s.io/v1alpha2/wgpolicyk8s.io_{clusterpolicyreports,policyreports}.yaml
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
