@@ -24,7 +24,7 @@ require (
 	sigs.k8s.io/controller-runtime v0.19.4
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
 	sigs.k8s.io/structured-merge-diff/v4 v4.5.0
-	sigs.k8s.io/wg-policy-prototypes b6021e95f3be
+	sigs.k8s.io/wg-policy-prototypes v0.0.0-20250113024431-b6021e95f3be
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -45,7 +45,7 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/gnostic-models v0.6.8 // indirect
+	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
