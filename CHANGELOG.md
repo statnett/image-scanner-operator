@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.31](https://github.com/statnett/image-scanner-operator/compare/v0.8.30...v0.8.31) (2025-01-16)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.58.2 ([#1235](https://github.com/statnett/image-scanner-operator/issues/1235)) ([0a6b1d3](https://github.com/statnett/image-scanner-operator/commit/0a6b1d3a127f11481e63a0d83cdc85b71a4f794e))
+* **deps:** update kubernetes packages to v0.32.1 ([#1239](https://github.com/statnett/image-scanner-operator/issues/1239)) ([c61aece](https://github.com/statnett/image-scanner-operator/commit/c61aecee8c1576ac8088ade2826fc5e0cab15020))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.30 ([#1241](https://github.com/statnett/image-scanner-operator/issues/1241)) ([8495c11](https://github.com/statnett/image-scanner-operator/commit/8495c110cf7a76b20632106b16b857a00eeef6d7))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.20.0 ([#1240](https://github.com/statnett/image-scanner-operator/issues/1240)) ([be32bf2](https://github.com/statnett/image-scanner-operator/commit/be32bf2344d821474555a253e4d738af0b5fef7e))
+* **deps:** update sigs.k8s.io/wg-policy-prototypes ([#1232](https://github.com/statnett/image-scanner-operator/issues/1232)) ([b294cbe](https://github.com/statnett/image-scanner-operator/commit/b294cbe7c07072faedffad34c9d0a3174579f2e5))
+
 ## [0.8.30](https://github.com/statnett/image-scanner-operator/compare/v0.8.29...v0.8.30) (2025-01-08)
 
 
