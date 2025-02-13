@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.34](https://github.com/statnett/image-scanner-operator/compare/v0.8.33...v0.8.34) (2025-02-13)
+
+
+### Bug Fixes
+
+* **deps:** update kubernetes packages to v0.32.2 ([#1274](https://github.com/statnett/image-scanner-operator/issues/1274)) ([a8d69eb](https://github.com/statnett/image-scanner-operator/commit/a8d69eb5a80e19d8bd7433664ce0f2396fe5c9b1))
+
 ## [0.8.33](https://github.com/statnett/image-scanner-operator/compare/v0.8.32...v0.8.33) (2025-02-10)
 
 
