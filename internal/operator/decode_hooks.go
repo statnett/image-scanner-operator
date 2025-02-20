@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"github.com/mitchellh/mapstructure"
+	"github.com/go-viper/mapstructure/v2"
 )
 
 // stringToRegexpHookFunc returns a DecodeHookFunc that converts strings to regexp.Regexp.
