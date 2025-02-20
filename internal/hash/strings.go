@@ -3,11 +3,11 @@ package hash
 import (
 	"fmt"
 
-	"github.com/mitchellh/hashstructure/v2"
+	"github.com/gohugoio/hashstructure"
 )
 
 func NewString(objs ...interface{}) (string, error) {
-	hash, err := hashstructure.Hash(objs, hashstructure.FormatV2, nil)
+	hash, err := hashstructure.Hash(objs, nil)
 	if err != nil {
 		return "", err
 	}
