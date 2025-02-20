@@ -145,7 +145,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 	job.Spec.Completions = ptr.To(int32(1))
 	job.Spec.ActiveDeadlineSeconds = ptr.To(int64(3600))
 	job.Spec.BackoffLimit = ptr.To(int32(3))
-	job.Spec.TTLSecondsAfterFinished = ptr.To(int32(f.ScanJobTTLSecondsAfterFinished))
+	job.Spec.TTLSecondsAfterFinished = ptr.To(int32(f.ScanJobTTLSecondsAfterFinished)) // #nosec G115 -- Go is broken in this area
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
 
 	if len(f.preferredNodeNames) > 0 {
