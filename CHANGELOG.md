@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.36](https://github.com/statnett/image-scanner-operator/compare/v0.8.35...v0.8.36) (2025-02-21)
+
+
+### Features
+
+* make scan job lifetime configurable ([#1287](https://github.com/statnett/image-scanner-operator/issues/1287)) ([ed73801](https://github.com/statnett/image-scanner-operator/commit/ed73801dc6819033a584aa22bcf86e5af82c15c5))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/prometheus/client_golang to v1.21.0 ([#1283](https://github.com/statnett/image-scanner-operator/issues/1283)) ([804d362](https://github.com/statnett/image-scanner-operator/commit/804d362f5f40886e21a3f25b6801e096b55648bb))
+* **deps:** update module github.com/statnett/controller-runtime-viper to v0.3.34 ([#1288](https://github.com/statnett/image-scanner-operator/issues/1288)) ([bd9475d](https://github.com/statnett/image-scanner-operator/commit/bd9475df89d97c912237a25b3b42d4c64bd3b288))
+* migrate away from archived mitchellh modules ([#1286](https://github.com/statnett/image-scanner-operator/issues/1286)) ([5b3d25a](https://github.com/statnett/image-scanner-operator/commit/5b3d25a18801cafbda288b9149d4d7a228bd5282))
+
 ## [0.8.35](https://github.com/statnett/image-scanner-operator/compare/v0.8.34...v0.8.35) (2025-02-14)
 
 
