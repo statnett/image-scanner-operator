@@ -12,7 +12,7 @@ type Config struct {
 	ScanInterval                   time.Duration  `mapstructure:"scan-interval"`
 	ScanJobNamespace               string         `mapstructure:"scan-job-namespace"`
 	ScanJobServiceAccount          string         `mapstructure:"scan-job-service-account"`
-	ScanJobTTLSecondsAfterFinished int32            `mapstructure:"scan-job-ttl-seconds-after-finished"`
+	ScanJobTTLSecondsAfterFinished int32          `mapstructure:"scan-job-ttl-seconds-after-finished"`
 	ScanNamespaces                 []string       `mapstructure:"namespaces"`
 	ScanNamespaceExcludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
 	ScanNamespaceIncludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
