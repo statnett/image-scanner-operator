@@ -8,17 +8,18 @@ import (
 )
 
 type Config struct {
-	MetricsLabels              []string       `mapstructure:"cis-metrics-labels"`
-	ScanInterval               time.Duration  `mapstructure:"scan-interval"`
-	ScanJobNamespace           string         `mapstructure:"scan-job-namespace"`
-	ScanJobServiceAccount      string         `mapstructure:"scan-job-service-account"`
-	ScanNamespaces             []string       `mapstructure:"namespaces"`
-	ScanNamespaceExcludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
-	ScanNamespaceIncludeRegexp *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
-	ScanWorkloadResources      []string       `mapstructure:"scan-workload-resources"`
-	TrivyImage                 string         `mapstructure:"trivy-image"`
-	TrivyCommand               TrivyCommand   `mapstructure:"trivy-command"`
-	ActiveScanJobLimit         int            `mapstructure:"active-scan-job-limit"`
+	MetricsLabels                  []string       `mapstructure:"cis-metrics-labels"`
+	ScanInterval                   time.Duration  `mapstructure:"scan-interval"`
+	ScanJobNamespace               string         `mapstructure:"scan-job-namespace"`
+	ScanJobServiceAccount          string         `mapstructure:"scan-job-service-account"`
+	ScanJobTTLSecondsAfterFinished int32          `mapstructure:"scan-job-ttl-seconds-after-finished"`
+	ScanNamespaces                 []string       `mapstructure:"namespaces"`
+	ScanNamespaceExcludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
+	ScanNamespaceIncludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
+	ScanWorkloadResources          []string       `mapstructure:"scan-workload-resources"`
+	TrivyImage                     string         `mapstructure:"trivy-image"`
+	TrivyCommand                   TrivyCommand   `mapstructure:"trivy-command"`
+	ActiveScanJobLimit             int            `mapstructure:"active-scan-job-limit"`
 }
 
 type TrivyCommand string

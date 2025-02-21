@@ -130,4 +130,4 @@ spec:
           name: image-scanner
         - emptyDir: {}
           name: tmp
-  ttlSecondsAfterFinished: 7200  # Two hours
+  ttlSecondsAfterFinished: 60

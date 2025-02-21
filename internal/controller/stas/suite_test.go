@@ -112,11 +112,12 @@ var _ = BeforeSuite(func() {
 	k8sScheme = k8sManager.GetScheme()
 
 	config := config.Config{
-		ScanJobNamespace:      scanJobNamespace,
-		ScanJobServiceAccount: "image-scanner-job",
-		ScanInterval:          time.Hour,
-		TrivyCommand:          config.RootfsTrivyCommand,
-		TrivyImage:            "aquasecurity/trivy",
+		ScanJobNamespace:               scanJobNamespace,
+		ScanJobServiceAccount:          "image-scanner-job",
+		ScanJobTTLSecondsAfterFinished: 60,
+		ScanInterval:                   time.Hour,
+		TrivyCommand:                   config.RootfsTrivyCommand,
+		TrivyImage:                     "aquasecurity/trivy",
 	}
 
 	podReconciler := &PodReconciler{
