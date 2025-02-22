@@ -60,11 +60,13 @@ func isKStatusCurrent() predicate.Predicate {
 			ctrl.Log.Error(err, "Failed to convert object to unstructured")
 			return false
 		}
+
 		res, err := kstatus.Compute(&unstructured.Unstructured{Object: m})
 		if err != nil {
 			ctrl.Log.Error(err, "Failed to compute KStatus.")
 			return false
 		}
+
 		return res.Status == kstatus.CurrentStatus
 	})
 }
