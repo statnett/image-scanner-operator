@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.37](https://github.com/statnett/image-scanner-operator/compare/v0.8.36...v0.8.37) (2025-02-22)
+
+
+### Bug Fixes
+
+* enable controller-runtime priority queue ([#1290](https://github.com/statnett/image-scanner-operator/issues/1290)) ([6d7ffd5](https://github.com/statnett/image-scanner-operator/commit/6d7ffd547ecea128e402fc133a28338de169d5bb))
+* only process stable/current pods ([#1289](https://github.com/statnett/image-scanner-operator/issues/1289)) ([2a4a838](https://github.com/statnett/image-scanner-operator/commit/2a4a838b5a7ccaa8049e408a742ee952da50c55d))
+
 ## [0.8.36](https://github.com/statnett/image-scanner-operator/compare/v0.8.35...v0.8.36) (2025-02-21)
 
 
