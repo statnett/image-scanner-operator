@@ -17,10 +17,12 @@ import (
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
+	ctrlconfig "sigs.k8s.io/controller-runtime/pkg/config"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
@@ -127,6 +129,9 @@ func (o Operator) Start(cfg config.Config) error {
 			Unstructured: true,
 			DisableFor:   []client.Object{&eventsv1.Event{}},
 		}},
+		Controller: ctrlconfig.Controller{
+			UsePriorityQueue: ptr.To(true),
+		},
 		Scheme:                 scheme,
 		MapperProvider:         apiutil.NewDynamicRESTMapper,
 		Metrics:                metricsOpts,
