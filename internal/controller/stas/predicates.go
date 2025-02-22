@@ -8,7 +8,11 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
@@ -47,6 +51,24 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 			return false
 		},
 	}
+}
+
+func isKStatusCurrent() predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(object)
+		if err != nil {
+			ctrl.Log.Error(err, "Failed to convert object to unstructured")
+			return false
+		}
+
+		res, err := kstatus.Compute(&unstructured.Unstructured{Object: m})
+		if err != nil {
+			ctrl.Log.Error(err, "Failed to compute KStatus")
+			return false
+		}
+
+		return res.Status == kstatus.CurrentStatus
+	})
 }
 
 func ignoreCreationPredicate() predicate.Predicate {
