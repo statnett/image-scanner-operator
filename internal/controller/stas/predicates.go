@@ -63,7 +63,7 @@ func isKStatusCurrent() predicate.Predicate {
 
 		res, err := kstatus.Compute(&unstructured.Unstructured{Object: m})
 		if err != nil {
-			ctrl.Log.Error(err, "Failed to compute KStatus.")
+			ctrl.Log.Error(err, "Failed to compute KStatus")
 			return false
 		}
 
