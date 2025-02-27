@@ -4,7 +4,7 @@
 # More info: https://book.kubebuilder.io/reference/project-config.html
 domain: statnett.no
 layout:
-- go.kubebuilder.io/v4-alpha
+- go.kubebuilder.io/v4
 multigroup: true
 projectName: image-scanner-operator
 repo: github.com/statnett/image-scanner-operator
