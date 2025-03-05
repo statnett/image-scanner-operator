@@ -26,7 +26,7 @@ type TestWorkloadFactory func(namespacedName types.NamespacedName, labels map[st
 
 var _ = Describe("Workload controller", func() {
 	const (
-		timeout  = 1 * time.Minute
+		timeout  = 5 * time.Second
 		interval = 100 * time.Millisecond
 	)
 
@@ -87,6 +87,7 @@ var _ = Describe("Workload controller", func() {
 				ImageID: "quay.io/oauth2-proxy/oauth2-proxy@sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f",
 			},
 		}
+		setPodReady(pod)
 		Expect(k8sClient.Create(ctx, pod.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod)).To(Succeed())
 
@@ -144,6 +145,7 @@ var _ = Describe("Workload controller", func() {
 					},
 				)
 			}
+			setPodReady(pod)
 
 			Expect(controllerutil.SetControllerReference(rs, pod, testEnv.Scheme)).To(Succeed())
 			return pod
@@ -229,6 +231,7 @@ var _ = Describe("Workload controller", func() {
 				ImageID: "dummy.registry.mycorp.com/foo-app@sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255",
 			},
 		}
+		setPodReady(pod)
 		Expect(k8sClient.Create(ctx, pod.DeepCopy())).To(Succeed())
 		Expect(k8sClient.Status().Update(ctx, pod)).To(Succeed())
 

@@ -201,6 +201,15 @@ func newPod(owner client.Object, s *runtime.Scheme) *corev1.Pod {
 			ImageID: "my.registry/repository/app@sha256:4b59f7dacd37c688968756d176139715df69d89eb0be1802e059316f9d58d9ef",
 		},
 	}
-
+	setPodReady(p)
 	return p
+}
+
+func setPodReady(p *corev1.Pod) {
+	// Simulate Pod kstatus Current
+	p.Status.Phase = corev1.PodRunning
+	p.Status.Conditions = []corev1.PodCondition{{
+		Type:   corev1.PodReady,
+		Status: corev1.ConditionTrue,
+	}}
 }
