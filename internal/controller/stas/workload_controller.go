@@ -9,10 +9,12 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/validation"
+	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -78,7 +80,6 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				podContainerStatusImagesChanged(),
 				predicate.Or(controllerInKinds(groupKinds...), noController),
 				ignoreDeletionPredicate(),
-				isKStatusCurrent(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
 		Watches(&stasv1alpha1.ContainerImageScan{},
@@ -110,9 +111,27 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 				return ctrl.Result{}, nil
 			}
 
-			err := r.reconcile(ctx, pod)
+			o, err := runtime.DefaultUnstructuredConverter.ToUnstructured(pod)
+			if err != nil {
+				return ctrl.Result{}, fmt.Errorf("when converting pod to unstructured: %w", err)
+			}
 
-			return ctrl.Result{}, err
+			res, err := kstatus.Compute(&unstructured.Unstructured{Object: o})
+			if err != nil {
+				return ctrl.Result{}, fmt.Errorf("when computing pod kstatus: %w", err)
+			}
+
+			switch res.Status {
+			case kstatus.TerminatingStatus:
+				return ctrl.Result{}, nil
+			case kstatus.CurrentStatus:
+				// This is the case we want to reconcile
+			default:
+				logf.FromContext(ctx).Info("requeueing pod in transition", "status", res.Status)
+				return ctrl.Result{Requeue: true}, nil
+			}
+
+			return ctrl.Result{}, r.reconcile(ctx, pod)
 		}
 
 		return controller.Reconcile(ctx, fn)
