@@ -202,6 +202,7 @@ func newPod(owner client.Object, s *runtime.Scheme) *corev1.Pod {
 		},
 	}
 	setPodReady(p)
+
 	return p
 }
 
