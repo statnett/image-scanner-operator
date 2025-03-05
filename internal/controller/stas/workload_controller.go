@@ -78,7 +78,6 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				podContainerStatusImagesChanged(),
 				predicate.Or(controllerInKinds(groupKinds...), noController),
 				ignoreDeletionPredicate(),
-				isKStatusCurrent(),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
 		Watches(&stasv1alpha1.ContainerImageScan{},
