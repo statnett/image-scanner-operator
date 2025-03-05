@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.38](https://github.com/statnett/image-scanner-operator/compare/v0.8.37...v0.8.38) (2025-03-05)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/aquasecurity/trivy docker tag to v0.60.0 ([#1310](https://github.com/statnett/image-scanner-operator/issues/1310)) ([09a11cf](https://github.com/statnett/image-scanner-operator/commit/09a11cff6441c53d99792cf8372cb7a9656fb658))
+* **deps:** update module github.com/prometheus/client_golang to v1.21.1 ([#1305](https://github.com/statnett/image-scanner-operator/issues/1305)) ([1abceea](https://github.com/statnett/image-scanner-operator/commit/1abceead386b8ff4813b448bdd0acf0a5256c4ab))
+* **deps:** update module sigs.k8s.io/structured-merge-diff/v4 to v4.6.0 ([#1308](https://github.com/statnett/image-scanner-operator/issues/1308)) ([9b113fe](https://github.com/statnett/image-scanner-operator/commit/9b113fe2270f0abd2c37796898166dce99bb0cb6))
+* improve use of kstatus to reconcile pods ([#1309](https://github.com/statnett/image-scanner-operator/issues/1309)) ([5682fc1](https://github.com/statnett/image-scanner-operator/commit/5682fc10a32a85c67511d80b628e82e1c676807d))
+
 ## [0.8.37](https://github.com/statnett/image-scanner-operator/compare/v0.8.36...v0.8.37) (2025-02-22)
 
 
