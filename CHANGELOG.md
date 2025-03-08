@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.39](https://github.com/statnett/image-scanner-operator/compare/v0.8.38...v0.8.39) (2025-03-08)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.23.0 ([#1312](https://github.com/statnett/image-scanner-operator/issues/1312)) ([e8c413b](https://github.com/statnett/image-scanner-operator/commit/e8c413b565bf4c12adf3f37a2762634eb949c8ad))
+* **deps:** update module sigs.k8s.io/controller-runtime to v0.20.3 ([#1314](https://github.com/statnett/image-scanner-operator/issues/1314)) ([b862a4e](https://github.com/statnett/image-scanner-operator/commit/b862a4e3e5a980ed895d5ecff06bc00400db979f))
+
 ## [0.8.38](https://github.com/statnett/image-scanner-operator/compare/v0.8.37...v0.8.38) (2025-03-05)
 
 
