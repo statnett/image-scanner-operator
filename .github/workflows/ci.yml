@@ -51,7 +51,7 @@ jobs:
           make generate-all
       # A temporary replacement for tj-actions/verify-changed-files which was hacked.
       # https://www.stepsecurity.io/blog/harden-runner-detection-tj-actions-changed-files-action-is-compromised
-      # If the generated files are updated, this action fails.
+      # If the generated files are not up-to-date, this action fails.
       - uses: int128/update-generated-files-action@65b9a7ae3ededc5679d78343f58fbebcf1ebd785 # v2.57.0
   test:
     needs: verify-generated
