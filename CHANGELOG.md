@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.40](https://github.com/statnett/image-scanner-operator/compare/v0.8.39...v0.8.40) (2025-03-21)
+
+
+### Bug Fixes
+
+* **deps:** update k8s.io/utils digest to 1f6e0b7 ([#1334](https://github.com/statnett/image-scanner-operator/issues/1334)) ([9fb95eb](https://github.com/statnett/image-scanner-operator/commit/9fb95ebbd2352dfbe9d3936a5e05dca44b2ea2fb))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.23.1 ([#1330](https://github.com/statnett/image-scanner-operator/issues/1330)) ([a94b92f](https://github.com/statnett/image-scanner-operator/commit/a94b92fbf960090f6dc0c1e14b28744ee1f73ad4))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.23.2 ([#1332](https://github.com/statnett/image-scanner-operator/issues/1332)) ([e8557c0](https://github.com/statnett/image-scanner-operator/commit/e8557c090376dfa800bd96897cba814dff6c103f))
+* **deps:** update module github.com/onsi/ginkgo/v2 to v2.23.3 ([#1335](https://github.com/statnett/image-scanner-operator/issues/1335)) ([48b60a8](https://github.com/statnett/image-scanner-operator/commit/48b60a8d3a25855445a0e9282db1376e6d0c305c))
+* **deps:** update module github.com/onsi/gomega to v1.36.3 ([#1336](https://github.com/statnett/image-scanner-operator/issues/1336)) ([86ee1d5](https://github.com/statnett/image-scanner-operator/commit/86ee1d5b5a249d51225e37dbb77f3eb52064f090))
+
 ## [0.8.39](https://github.com/statnett/image-scanner-operator/compare/v0.8.38...v0.8.39) (2025-03-15)
 
 
