@@ -150,7 +150,7 @@ func (r *PodReconciler) cisOwnerLookup(ctx context.Context, pod *corev1.Pod) (fu
 	}
 
 	key := func(containerName string, image *podContainerImage) string {
-		return strings.Join([]string{containerName, image.Image.Name, image.Image.Digest.Encoded()}, "/")
+		return strings.Join([]string{containerName, image.Name, image.Digest.Encoded()}, "/")
 	}
 	index := map[string][]corev1.Pod{}
 
@@ -215,7 +215,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 		owners := getCISOwners(containerName, image)
 		if len(owners) == 0 {
 			// Safeguard to validate assumption in `cisOwnerLookup`.
-			return errors.New("Found no owners for CIS")
+			return errors.New("found no owners for CIS")
 		}
 
 		for _, owner := range owners {
