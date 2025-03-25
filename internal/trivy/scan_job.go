@@ -184,7 +184,7 @@ func (f *filesystemScanJobBuilder) OnPreferredNodes(nodeNames ...string) ImageSc
 func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageScanSpec) (corev1.Container, error) {
 	container := corev1.Container{}
 
-	canonical, err := spec.Image.Canonical()
+	canonical, err := spec.Canonical()
 	if err != nil {
 		return container, err
 	}

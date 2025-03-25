@@ -11,7 +11,7 @@ import (
 
 var _ = Describe("Operator config from flags", func() {
 	var (
-		opr Operator = Operator{}
+		opr = Operator{}
 		fs  *flag.FlagSet
 		cfg *config.Config
 	)

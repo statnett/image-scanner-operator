@@ -29,7 +29,7 @@ var (
 			return cis.Name
 		},
 		"image_name": func(cis stasv1alpha1.ContainerImageScan) string {
-			return cis.Spec.Image.Name
+			return cis.Spec.Name
 		},
 		"image_digest": func(cis stasv1alpha1.ContainerImageScan) string {
 			return cis.Spec.Digest.String()

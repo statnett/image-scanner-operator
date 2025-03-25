@@ -19,8 +19,8 @@ var _ = Describe("Scan Job", func() {
 		BeforeEach(func() {
 			jobBuilder = &filesystemScanJobBuilder{}
 			cisSpec = stasv1alpha1.ContainerImageScanSpec{}
-			cisSpec.Image.Name = "foo.registry/bar"
-			cisSpec.Image.Digest = "sha256:f1645ab5fbbbcf9e3484d1506dd65fc9fb26dd6817cb3a0a64249d8a8973e170"
+			cisSpec.Name = "foo.registry/bar"
+			cisSpec.Digest = "sha256:f1645ab5fbbbcf9e3484d1506dd65fc9fb26dd6817cb3a0a64249d8a8973e170"
 		})
 
 		Context("minimum severity config", func() {
@@ -31,7 +31,7 @@ var _ = Describe("Scan Job", func() {
 			})
 
 			It("should set severity when minSeverity set", func() {
-				cisSpec.ScanConfig.MinSeverity = ptr.To(stasv1alpha1.SeverityMedium)
+				cisSpec.MinSeverity = ptr.To(stasv1alpha1.SeverityMedium)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
 				expectedSeverityEnv := corev1.EnvVar{
@@ -42,7 +42,7 @@ var _ = Describe("Scan Job", func() {
 			})
 
 			It("should set ignore-unfixed when ignoreUnfixed set", func() {
-				cisSpec.ScanConfig.IgnoreUnfixed = ptr.To(true)
+				cisSpec.IgnoreUnfixed = ptr.To(true)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
 				expectedSeverityEnv := corev1.EnvVar{

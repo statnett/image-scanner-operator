@@ -281,7 +281,7 @@ func (r *ScanJobReconciler) reconcileJob(ctx context.Context, job *batchv1.Job) 
 		logf.FromContext(ctx).V(1).Info("Patching CIS status", "jobCondition", batchv1.JobFailed)
 		return r.reconcileFailedJob(ctx, job, logs, cis)
 	default:
-		return fmt.Errorf("I don't know how to handle job status %q", job.Status.String())
+		return fmt.Errorf("don't know how to handle job status %q", job.Status.String())
 	}
 }
 

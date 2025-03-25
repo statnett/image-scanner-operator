@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -300,7 +301,7 @@ func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job
 }
 
 func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
-	podLog, err := os.ReadFile(logFilePath)
+	podLog, err := os.ReadFile(filepath.Clean(logFilePath))
 	Expect(err).NotTo(HaveOccurred())
 
 	pod := createScanJobPod(job)
