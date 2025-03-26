@@ -49,10 +49,21 @@ jobs:
       - name: Generate all
         run: |
           make generate-all
-      # A temporary replacement for tj-actions/verify-changed-files which was hacked.
-      # https://www.stepsecurity.io/blog/harden-runner-detection-tj-actions-changed-files-action-is-compromised
-      # If the generated files are not up-to-date, this action fails.
-      - uses: int128/update-generated-files-action@65b9a7ae3ededc5679d78343f58fbebcf1ebd785 # v2.57.0
+      - name: Verify changed files
+        uses: tj-actions/verify-changed-files@a1c6acee9df209257a246f2cc6ae8cb6581c1edf # v20.0.4
+        id: verify-changed-files
+        with:
+          files: |
+            **/*
+      - name: Fail job is any changed files
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
+        run: |
+          errorMsg="::error::\
+            Changed files: $CHANGED_FILES\
+            \nPlease run 'make generate-all' locally and commit the changes"
+          echo -e "$errorMsg" && exit 1
   test:
     needs: verify-generated
     runs-on: ubuntu-latest
