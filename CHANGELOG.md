@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.43](https://github.com/statnett/image-scanner-operator/compare/v0.8.42...v0.8.43) (2025-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/prometheus/client_golang to v1.22.0 ([#1357](https://github.com/statnett/image-scanner-operator/issues/1357)) ([a22dcdc](https://github.com/statnett/image-scanner-operator/commit/a22dcdc2e24021f038706200cc11adcb4da8b520))
+* Don't requeue any pod events ([#1359](https://github.com/statnett/image-scanner-operator/issues/1359)) ([74c103c](https://github.com/statnett/image-scanner-operator/commit/74c103c597e7c63d4aa3a575aaf3cc034e19ad1c))
+
 ## [0.8.42](https://github.com/statnett/image-scanner-operator/compare/v0.8.41...v0.8.42) (2025-04-07)
 
 
