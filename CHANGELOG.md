@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.44](https://github.com/statnett/image-scanner-operator/compare/v0.8.43...v0.8.44) (2025-04-10)
+
+
+### Reverts
+
+* "fix: enable controller-runtime priority queue" ([#1362](https://github.com/statnett/image-scanner-operator/issues/1362)) ([43db314](https://github.com/statnett/image-scanner-operator/commit/43db314ee352c0708d37e9f6694ffd6881a15032))
+
 ## [0.8.43](https://github.com/statnett/image-scanner-operator/compare/v0.8.42...v0.8.43) (2025-04-09)
 
 
