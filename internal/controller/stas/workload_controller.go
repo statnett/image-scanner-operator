@@ -122,10 +122,13 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 			}
 
 			switch res.Status {
+			case kstatus.TerminatingStatus:
+				return ctrl.Result{}, nil
 			case kstatus.CurrentStatus:
 				// This is the case we want to reconcile
 			default:
-				return ctrl.Result{}, nil
+				logf.FromContext(ctx).Info("requeueing pod in transition", "status", res.Status)
+				return ctrl.Result{Requeue: true}, nil
 			}
 
 			return ctrl.Result{}, r.reconcile(ctx, pod)
