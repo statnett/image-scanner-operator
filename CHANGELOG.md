@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.46](https://github.com/statnett/image-scanner-operator/compare/v0.8.45...v0.8.46) (2025-04-23)
+
+
+### Reverts
+
+* "fix: don't requeue any pod events" ([#1375](https://github.com/statnett/image-scanner-operator/issues/1375)) ([7df0fec](https://github.com/statnett/image-scanner-operator/commit/7df0fec8dcbc21dadc072379f5ed19f9673aedf8))
+
 ## [0.8.45](https://github.com/statnett/image-scanner-operator/compare/v0.8.44...v0.8.45) (2025-04-18)
 
 
