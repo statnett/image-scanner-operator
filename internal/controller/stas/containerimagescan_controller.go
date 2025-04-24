@@ -2,7 +2,6 @@ package stas
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -60,12 +59,25 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 		}
 
 		if r.ActiveScanJobLimit > 0 {
-			count, err := r.activeJobCount(ctx)
+			count, err := r.activeScanJobCount(ctx)
 			if err != nil {
 				return ctrl.Result{}, err
 			}
+
+			if r.ActiveScanJobMaxWaitDuration > 0 {
+				// Max number of active scan jobs reached. Waiting for a vacant scan job slot
+				// for up to ActiveScanJobMaxWaitDuration before giving up.
+				startTime := time.Now()
+				for count >= r.ActiveScanJobLimit && time.Since(startTime) < r.ActiveScanJobMaxWaitDuration {
+					count, err = r.activeScanJobCount(ctx)
+					if err != nil {
+						return ctrl.Result{}, err
+					}
+				}
+			}
+
 			if count >= r.ActiveScanJobLimit {
-				// Max number of active scan jobs reached. Requeue request
+				// Max number of active scan jobs reached. Requeue request.
 				return ctrl.Result{Requeue: true}, nil
 			}
 		}
@@ -74,39 +86,6 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 	}
 
 	return controller.Reconcile(ctx, fn)
-}
-
-func (r *ContainerImageScanReconciler) activeJobCount(ctx context.Context) (int, error) {
-	count, err := r.activeScanJobCount(ctx)
-	if err != nil {
-		return 0, err
-	}
-
-	if count >= r.ActiveScanJobLimit && r.ActiveScanJobMaxWaitDuration > 0 {
-		// Max number of active scan jobs reached. Waiting for a vacant scan job slot
-		// for up to ActiveScanJobMaxWaitDuration before giving up.
-		ctx, cancel := context.WithTimeout(ctx, r.ActiveScanJobMaxWaitDuration)
-		defer cancel()
-
-		for count >= r.ActiveScanJobLimit {
-			select {
-			case <-ctx.Done():
-				return count, nil
-			default:
-				newCount, err := r.activeScanJobCount(ctx)
-				if err != nil {
-					if errors.Is(err, context.Canceled) {
-						return count, nil
-					}
-					return 0, err
-				}
-
-				count = newCount
-			}
-		}
-	}
-
-	return count, nil
 }
 
 func (r *ContainerImageScanReconciler) activeScanJobCount(ctx context.Context) (int, error) {
