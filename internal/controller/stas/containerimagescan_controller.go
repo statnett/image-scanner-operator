@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -72,9 +73,18 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			defer cancel()
 
 			for count >= r.ActiveScanJobLimit {
-				count, err = r.activeScanJobCount(ctx)
-				if err != nil {
-					return ctrl.Result{}, err
+				select {
+				case <-ctx.Done():
+					break
+				default:
+					newCount, err := r.activeScanJobCount(ctx)
+					if err != nil {
+						if errors.Is(err, context.Canceled) {
+							break
+						}
+						return ctrl.Result{}, err
+					}
+					count = newCount
 				}
 			}
 		}
