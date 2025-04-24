@@ -59,6 +59,7 @@ func podHasBackoffContainer() predicate.Predicate {
 				}
 			}
 		}
+
 		return false
 	})
 }
