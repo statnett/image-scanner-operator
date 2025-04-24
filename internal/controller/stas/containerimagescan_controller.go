@@ -63,8 +63,23 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, err
 		}
 
+		if r.ActiveScanJobLimit > 0 && count >= r.ActiveScanJobLimit && r.ActiveScanJobMaxWaitDuration > 0 {
+			// Max number of active scan jobs reached.
+			// Waiting for a vacant scan job slot for up to ActiveScanJobMaxWaitDuration,
+			// before giving up and requeuing.
+
+			ctx, cancel := context.WithTimeout(ctx, r.ActiveScanJobMaxWaitDuration)
+			defer cancel()
+
+			for count >= r.ActiveScanJobLimit {
+				count, err = r.activeScanJobCount(ctx)
+				if err != nil {
+					return ctrl.Result{}, err
+				}
+			}
+		}
+
 		if r.ActiveScanJobLimit > 0 && count >= r.ActiveScanJobLimit {
-			// Max number of active scan jobs reached. Requeue request
 			return ctrl.Result{Requeue: true}, nil
 		}
 
