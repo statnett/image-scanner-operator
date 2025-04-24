@@ -69,6 +69,8 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 				// for up to ActiveScanJobMaxWaitDuration before giving up.
 				startTime := time.Now()
 				for count >= r.ActiveScanJobLimit && time.Since(startTime) < r.ActiveScanJobMaxWaitDuration {
+					time.Sleep(10 * time.Millisecond)
+
 					count, err = r.activeScanJobCount(ctx)
 					if err != nil {
 						return ctrl.Result{}, err
