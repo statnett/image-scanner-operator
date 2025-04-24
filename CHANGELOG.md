@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.0](https://github.com/statnett/image-scanner-operator/compare/v0.8.46...v0.9.0) (2025-04-24)
+
+
+### Features
+
+* Wait for vacant slot when max scan jobs running ([#1382](https://github.com/statnett/image-scanner-operator/issues/1382)) ([6c28aa4](https://github.com/statnett/image-scanner-operator/commit/6c28aa425ab7c492df34211120bc783afb3aacf7))
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes packages to v0.32.4 ([#1378](https://github.com/statnett/image-scanner-operator/issues/1378)) ([2249f8a](https://github.com/statnett/image-scanner-operator/commit/2249f8ab08d3bf2ee8d0ea734f9ce6fc742b5660))
+* **deps:** Update kubernetes packages to v0.33.0 ([#1381](https://github.com/statnett/image-scanner-operator/issues/1381)) ([db0079b](https://github.com/statnett/image-scanner-operator/commit/db0079bf900122162d6067ec422a4073aad8674e))
+
 ## [0.8.46](https://github.com/statnett/image-scanner-operator/compare/v0.8.45...v0.8.46) (2025-04-23)
 
 
