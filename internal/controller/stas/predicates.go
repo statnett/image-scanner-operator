@@ -55,7 +55,7 @@ func podHasWaitingReason(reason ...string) predicate.Predicate {
 		"ErrImagePull":     {},
 		"ImagePullBackOff": {},
 	}
-	for _, r := range reasons {
+	for _, r := range reason {
 		set[r] = struct{}{}
 	}
 
