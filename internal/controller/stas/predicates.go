@@ -52,8 +52,8 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 func podHasAnyWaitingReason(reasons []string) predicate.Predicate {
 	// Always include reasons were image is not available.
 	set := map[string]struct{}{
-		"ErrImagePull":     struct{}{},
-		"ImagePullBackOff": struct{}{},
+		"ErrImagePull":     {},
+		"ImagePullBackOff": {},
 	}
 	for _, r := range reasons {
 		set[r] = struct{}{}
