@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/statnett/image-scanner-operator/compare/v0.9.0...v0.9.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* Dont reconcile backoff pods ([#1385](https://github.com/statnett/image-scanner-operator/issues/1385)) ([ace3d31](https://github.com/statnett/image-scanner-operator/commit/ace3d31887886416b05d4051d416e1abaf176cf5))
+
 ## [0.9.0](https://github.com/statnett/image-scanner-operator/compare/v0.8.46...v0.9.0) (2025-04-24)
 
 
