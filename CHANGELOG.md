@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/statnett/image-scanner-operator/compare/v0.10.0...v0.10.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* Active-scan-job-max-wait-duration flag ([#1391](https://github.com/statnett/image-scanner-operator/issues/1391)) ([3cce9fc](https://github.com/statnett/image-scanner-operator/commit/3cce9fc287833322942b27113173d813915dac2d))
+
 ## [0.10.0](https://github.com/statnett/image-scanner-operator/compare/v0.9.1...v0.10.0) (2025-04-25)
 
 
