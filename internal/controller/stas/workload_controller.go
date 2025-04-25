@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -130,7 +129,7 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 				// This is the case we want to reconcile
 			default:
 				logf.FromContext(ctx).Info("requeueing pod in transition", "status", res.Status)
-				return ctrl.Result{RequeueAfter: time.Second}, nil
+				return ctrl.Result{Requeue: true}, nil
 			}
 
 			return ctrl.Result{}, r.reconcile(ctx, pod)
