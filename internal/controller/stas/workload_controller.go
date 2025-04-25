@@ -79,6 +79,7 @@ func (r *PodReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		For(&corev1.Pod{},
 			builder.WithPredicates(
 				podContainerStatusImagesChanged(),
+				predicate.Not(podHasBackoffContainer()),
 				predicate.Or(controllerInKinds(groupKinds...), noController),
 				ignoreDeletionPredicate(),
 			)).

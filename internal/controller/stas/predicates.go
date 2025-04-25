@@ -49,6 +49,21 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 	}
 }
 
+func podHasBackoffContainer() predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		pod := object.(*corev1.Pod)
+		for _, cs := range pod.Status.ContainerStatuses {
+			if csw := cs.State.Waiting; csw != nil {
+				if _, ok := backoffContainerStateReasons[csw.Reason]; ok {
+					return true
+				}
+			}
+		}
+
+		return false
+	})
+}
+
 func ignoreCreationPredicate() predicate.Predicate {
 	return predicate.Funcs{
 		CreateFunc: func(e event.CreateEvent) bool {
