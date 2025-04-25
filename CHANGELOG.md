@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/statnett/image-scanner-operator/compare/v0.9.1...v0.10.0) (2025-04-25)
+
+
+### Features
+
+* Enable configuration of pod scan skip reasons ([#1388](https://github.com/statnett/image-scanner-operator/issues/1388)) ([2f839a4](https://github.com/statnett/image-scanner-operator/commit/2f839a4262ce818b1375dfd7ad00ca54d196c2e2))
+
+
+### Bug Fixes
+
+* Revert: requeue after 1s when pod not ready, to avoid many reconciles ... ([#1389](https://github.com/statnett/image-scanner-operator/issues/1389)) ([b5fbf92](https://github.com/statnett/image-scanner-operator/commit/b5fbf9272744b95c1cb2307ac729d358b8d4876b))
+
 ## [0.9.1](https://github.com/statnett/image-scanner-operator/compare/v0.9.0...v0.9.1) (2025-04-25)
 
 
