@@ -49,12 +49,21 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 	}
 }
 
-func podHasBackoffContainer() predicate.Predicate {
+func podHasAnyWaitingReason(reasons []string) predicate.Predicate {
+	// Always include reasons were image is not available.
+	set := map[string]struct{}{
+		"ErrImagePull":     struct{}{},
+		"ImagePullBackOff": struct{}{},
+	}
+	for _, r := range reasons {
+		set[r] = struct{}{}
+	}
+
 	return predicate.NewPredicateFuncs(func(object client.Object) bool {
 		pod := object.(*corev1.Pod)
 		for _, cs := range pod.Status.ContainerStatuses {
 			if csw := cs.State.Waiting; csw != nil {
-				if _, ok := backoffContainerStateReasons[csw.Reason]; ok {
+				if _, ok := set[csw.Reason]; ok {
 					return true
 				}
 			}

@@ -17,6 +17,7 @@ type Config struct {
 	ScanNamespaceExcludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-exclude-regexp"`
 	ScanNamespaceIncludeRegexp     *regexp.Regexp `mapstructure:"scan-namespace-include-regexp"`
 	ScanWorkloadResources          []string       `mapstructure:"scan-workload-resources"`
+	SkipScanPodWaitingReasons      []string       `mapstructure:"skip-scan-pod-waiting-reasons"`
 	TrivyImage                     string         `mapstructure:"trivy-image"`
 	TrivyCommand                   TrivyCommand   `mapstructure:"trivy-command"`
 	ActiveScanJobLimit             int            `mapstructure:"active-scan-job-limit"`
