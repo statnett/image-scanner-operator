@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/statnett/image-scanner-operator/compare/v0.10.1...v0.10.2) (2025-04-28)
+
+
+### Bug Fixes
+
+* Dont reconcile when scan not needed ([#1394](https://github.com/statnett/image-scanner-operator/issues/1394)) ([f5e1dbc](https://github.com/statnett/image-scanner-operator/commit/f5e1dbc3a9d62ce9d9e18f868b9d03fe5137077d))
+
 ## [0.10.1](https://github.com/statnett/image-scanner-operator/compare/v0.10.0...v0.10.1) (2025-04-25)
 
 
