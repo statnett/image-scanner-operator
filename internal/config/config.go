@@ -21,7 +21,6 @@ type Config struct {
 	TrivyImage                     string         `mapstructure:"trivy-image"`
 	TrivyCommand                   TrivyCommand   `mapstructure:"trivy-command"`
 	ActiveScanJobLimit             int            `mapstructure:"active-scan-job-limit"`
-	ActiveScanJobMaxWaitDuration   time.Duration  `mapstructure:"active-scan-job-max-wait-duration"`
 }
 
 type TrivyCommand string
