@@ -68,7 +68,7 @@ func (o Operator) BindFlags(cfg *config.Config, fs *flag.FlagSet) error {
 	fs.String("trivy-command", string(config.RootfsTrivyCommand), "The trivy command used to scan filesystem in image; can be 'filesystem' or 'rootfs'")
 	fs.String("trivy-image", "", "The image used for obtaining the trivy binary.")
 	fs.Int("active-scan-job-limit", 8, "The maximum number of active scan jobs. Setting it to 0 will disable the limit.")
-	fs.Duration("active-scan-job-max-wait-duration", 0, "When active scan job limit reached, the maximum duration to wait for a vacant slot before requeuing.")
+	fs.Duration("active-scan-job-limit-max-wait-duration", 0, "When active scan job limit reached, the maximum duration to wait for a vacant slot before requeuing.")
 	fs.Bool("help", false, "print out usage and a summary of options")
 
 	pfs := &pflag.FlagSet{}
