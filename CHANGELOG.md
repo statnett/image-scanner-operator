@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.11.0](https://github.com/statnett/image-scanner-operator/compare/v0.10.2...v0.11.0) (2025-04-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove wait feature ([#1396](https://github.com/statnett/image-scanner-operator/issues/1396))
+
+### Miscellaneous Chores
+
+* Remove wait feature ([#1396](https://github.com/statnett/image-scanner-operator/issues/1396)) ([bf30fea](https://github.com/statnett/image-scanner-operator/commit/bf30fea2c1909c46c9ac0cce6dce8465180811d9))
+
 ## [0.10.2](https://github.com/statnett/image-scanner-operator/compare/v0.10.1...v0.10.2) (2025-04-28)
 
 
