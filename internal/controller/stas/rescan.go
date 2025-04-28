@@ -31,7 +31,7 @@ func (r *RescanTrigger) Start(ctx context.Context) error {
 			return nil
 		case <-ticker.C:
 			cisList := &stasv1alpha1.ContainerImageScanList{}
-			if err := r.List(ctx, cisList, client.InNamespace("")); err != nil {
+			if err := r.List(ctx, cisList); err != nil {
 				log.Error(err, "failed to list CISes")
 				continue
 			}
