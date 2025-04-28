@@ -120,6 +120,7 @@ func (r *ContainerImageScanReconciler) SetupWithManager(mgr ctrl.Manager) error 
 			builder.WithPredicates(
 				predicate.GenerationChangedPredicate{},
 				ignoreDeletionPredicate(),
+				predicate.Not(cisScannedInInterval(r.ScanInterval)),
 			)).
 		WithEventFilter(predicate.And(predicates...)).
 		WatchesRawSource(source.Channel(r.EventChan, &handler.EnqueueRequestForObject{})).

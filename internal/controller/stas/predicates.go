@@ -3,6 +3,7 @@ package stas
 import (
 	"regexp"
 	"slices"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -70,6 +71,13 @@ func podHasWaitingReason(reason ...string) predicate.Predicate {
 		}
 
 		return false
+	})
+}
+
+func cisScannedInInterval(interval time.Duration) predicate.Predicate {
+	return predicate.NewPredicateFuncs(func(object client.Object) bool {
+		cis := object.(*stasv1alpha1.ContainerImageScan)
+		return cis.Status.LastScanTime != nil && time.Since(cis.Status.LastScanTime.Time) < interval
 	})
 }
 
