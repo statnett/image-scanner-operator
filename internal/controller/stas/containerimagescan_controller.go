@@ -3,6 +3,7 @@ package stas
 import (
 	"context"
 	"fmt"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -33,6 +34,7 @@ type ContainerImageScanReconciler struct {
 	Scheme *runtime.Scheme
 	config.Config
 	EventChan chan event.GenericEvent
+	*ScanPool
 }
 
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans,verbs=get;list;watch;create;update;patch;delete
@@ -51,14 +53,13 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
-		if r.ActiveScanJobLimit > 0 {
-			count, err := r.activeScanJobCount(ctx)
-			if err != nil {
-				return ctrl.Result{}, err
-			}
-
-			if count >= r.ActiveScanJobLimit {
-				// Max number of active scan jobs reached. Requeue request.
+		if r.ScanPool != nil {
+			select {
+			case <-r.scanPool:
+			case <-ctx.Done():
+				return ctrl.Result{}, ctx.Err()
+			case <-time.After(30 * time.Second):
+				logf.FromContext(ctx).Info("Unable to find vacant scanning slot, requeuing request.")
 				return ctrl.Result{Requeue: true}, nil
 			}
 		}
@@ -67,20 +68,6 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 	}
 
 	return controller.Reconcile(ctx, fn)
-}
-
-func (r *ContainerImageScanReconciler) activeScanJobCount(ctx context.Context) (int, error) {
-	listOps := []client.ListOption{
-		client.InNamespace(r.ScanJobNamespace),
-		client.MatchingFields{indexJobCondition: jobNotFinished},
-	}
-
-	list := &batchv1.JobList{}
-	if err := r.List(ctx, list, listOps...); err != nil {
-		return 0, err
-	}
-
-	return len(list.Items), nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

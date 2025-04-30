@@ -175,6 +175,11 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to create %s controller: %w", "Pod", err)
 	}
 
+	var scanPool *stas.ScanPool
+	if cfg.ActiveScanJobLimit > 0 {
+		scanPool = stas.NewScanPool(cfg.ActiveScanJobLimit)
+	}
+
 	kubeClientset, err := kubernetes.NewForConfig(kubeConfig)
 	if err != nil {
 		return fmt.Errorf("unable to create Kube ClientSet: %w", err)
@@ -185,6 +190,7 @@ func (o Operator) Start(cfg config.Config) error {
 		Scheme:     mgr.GetScheme(),
 		Config:     cfg,
 		LogsReader: pod.NewLogsReader(kubeClientset),
+		ScanPool:   scanPool,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "Job", err)
 	}
@@ -196,6 +202,7 @@ func (o Operator) Start(cfg config.Config) error {
 		Scheme:    mgr.GetScheme(),
 		Config:    cfg,
 		EventChan: rescanEventChan,
+		ScanPool:  scanPool,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "ContainerImageScan", err)
 	}

@@ -45,6 +45,28 @@ type ScanJobReconciler struct {
 	Scheme *runtime.Scheme
 	config.Config
 	pod.LogsReader
+	*ScanPool
+}
+
+type ScanPool struct {
+	scanPool chan struct{}
+}
+
+func NewScanPool(maxScanJobs int) *ScanPool {
+	pool := make(chan struct{}, maxScanJobs)
+	for i := 0; i < maxScanJobs; i++ {
+		pool <- struct{}{}
+	}
+
+	return &ScanPool{
+		scanPool: pool,
+	}
+}
+
+func (sp *ScanPool) Free() {
+	if sp != nil {
+		sp.scanPool <- struct{}{}
+	}
 }
 
 //+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch,namespace=image-scanner
@@ -96,6 +118,8 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 	return func(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 		logf.FromContext(ctx).Info("Reconciling")
+
+		r.ScanPool.Free()
 
 		fn := func(c context.Context) (ctrl.Result, error) {
 			p := &corev1.Pod{}
@@ -228,6 +252,8 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1
 func (r *ScanJobReconciler) reconcile() reconcile.Func {
 	return func(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 		logf.FromContext(ctx).Info("Reconciling")
+
+		r.ScanPool.Free()
 
 		fn := func(c context.Context) (ctrl.Result, error) {
 			job := &batchv1.Job{}
