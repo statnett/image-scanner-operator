@@ -3,7 +3,6 @@ package stas
 import (
 	"context"
 	"fmt"
-	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -50,12 +49,6 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 		cis := &stasv1alpha1.ContainerImageScan{}
 		if err := r.Get(ctx, req.NamespacedName, cis); err != nil {
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
-		}
-
-		lastSuccessfulScanTime := cis.Status.LastSuccessfulScanTime
-		if !lastSuccessfulScanTime.IsZero() && time.Since(lastSuccessfulScanTime.Time) < r.ScanInterval {
-			// Successful scan within scan interval; nothing to do
-			return ctrl.Result{}, nil
 		}
 
 		if r.ActiveScanJobLimit > 0 {
