@@ -112,6 +112,7 @@ var _ = BeforeSuite(func() {
 	k8sScheme = k8sManager.GetScheme()
 
 	config := config.Config{
+		ActiveScanJobLimit:             100,
 		ScanJobNamespace:               scanJobNamespace,
 		ScanJobServiceAccount:          "image-scanner-job",
 		ScanJobTTLSecondsAfterFinished: 60,
@@ -131,12 +132,17 @@ var _ = BeforeSuite(func() {
 	}
 	Expect(podReconciler.SetupWithManager(k8sManager)).To(Succeed())
 
+	var scanPool *ScanPool
+	if config.ActiveScanJobLimit > 0 {
+		scanPool = NewScanPool(config.ActiveScanJobLimit)
+	}
 	cisEventChan := make(chan event.GenericEvent)
 	containerImageScanReconciler := &ContainerImageScanReconciler{
 		Client:    k8sManager.GetClient(),
 		Scheme:    k8sScheme,
 		Config:    config,
 		EventChan: cisEventChan,
+		ScanPool:  scanPool,
 	}
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
 	rescanTrigger := &RescanTrigger{
@@ -152,6 +158,7 @@ var _ = BeforeSuite(func() {
 		Scheme:     k8sScheme,
 		Config:     config,
 		LogsReader: logsReader,
+		ScanPool:   scanPool,
 	}
 	Expect(scanJobReconciler.SetupWithManager(k8sManager)).To(Succeed())
 
