@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.11.1](https://github.com/statnett/image-scanner-operator/compare/v0.11.0...v0.11.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.62.0 ([#1402](https://github.com/statnett/image-scanner-operator/issues/1402)) ([f35757d](https://github.com/statnett/image-scanner-operator/commit/f35757db246af63f46701a4b130359ddbf6905a2))
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.62.1 ([#1409](https://github.com/statnett/image-scanner-operator/issues/1409)) ([5055429](https://github.com/statnett/image-scanner-operator/commit/50554292c8ee9d863239f86120a0ea3e771af93a))
+* **deps:** Update k8s.io/utils digest to 0f33e8f ([#1404](https://github.com/statnett/image-scanner-operator/issues/1404)) ([1692f49](https://github.com/statnett/image-scanner-operator/commit/1692f49b9ffc88a79be6b323ab30934da0328966))
+* Remove scanned within interval check ([#1399](https://github.com/statnett/image-scanner-operator/issues/1399)) ([98cfd32](https://github.com/statnett/image-scanner-operator/commit/98cfd32bd5ab168b070a5b1eaa7db49ed0671e53))
+
 ## [0.11.0](https://github.com/statnett/image-scanner-operator/compare/v0.10.2...v0.11.0) (2025-04-28)
 
 
