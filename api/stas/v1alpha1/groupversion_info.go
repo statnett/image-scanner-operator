@@ -1,5 +1,7 @@
 // Package v1alpha1 contains API Schema definitions for the stas v1alpha1 API group
 // +kubebuilder:object:generate=true
+// +kubebuilder:ac:generate=true
+// +kubebuilder:ac:output:package=../../../internal/client/applyconfiguration
 package v1alpha1
 
 import (
