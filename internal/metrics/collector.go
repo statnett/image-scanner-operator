@@ -126,7 +126,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 	ctx := context.Background()
 
 	cisList := &stasv1alpha1.ContainerImageScanList{}
-	if err := c.List(ctx, cisList, client.InNamespace("")); err != nil {
+	if err := c.List(ctx, cisList); err != nil {
 		// TODO: Log
 		return
 	}
