@@ -48,16 +48,11 @@ manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and Cust
 generate: controller-gen k8s-client-gen ## Generate code required for K8s API and clients
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
-GO_MODULE = $(shell go list -m)
-API_DIRS = $(shell find api -mindepth 2 -type d | sed "s|^|$(shell go list -m)/|" | paste -sd " ")
 .PHONY: k8s-client-gen
-k8s-client-gen: applyconfiguration-gen
-	@echo ">> generating internal/client/applyconfiguration..."
-	$(APPLYCONFIGURATION_GEN) \
-		--output-dir "internal/client/applyconfiguration" \
-		--output-pkg "$(GO_MODULE)/internal/client/applyconfiguration" \
-		$(API_DIRS)
+k8s-client-gen: controller-gen ## Generate API clients
+	$(CONTROLLER_GEN) applyconfiguration paths="./..."
 
+GO_MODULE = $(shell go list -m)
 .PHONY: wg-policy-client-gen
 wg-policy-client-gen: applyconfiguration-gen
 	@echo ">> generating internal/wg-policy/applyconfiguration..."
