@@ -228,7 +228,7 @@ var _ = Describe("Workload controller", func() {
 		pod.Status.ContainerStatuses = []corev1.ContainerStatus{
 			{
 				Image:   "dummy.registry.mycorp.com/foo-app:latest",
-				ImageID: "dummy.registry.mycorp.com/foo-app@sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255",
+				ImageID: "dummy.registry.mycorp.com/foo-app@sha256:7f558fa06b1337656dfc10ef8fb7affc7d155ba9225aca6107104fe93ed3a438",
 			},
 		}
 		setPodReady(pod)
