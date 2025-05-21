@@ -116,7 +116,8 @@ func (r *ContainerImageScanReconciler) latestDigestScan(ctx context.Context, dig
 		scanTime *time.Time
 	)
 
-	for _, c := range cisList.Items {
+	for _, cc := range cisList.Items {
+		c := cc
 		if c.Status.LastSuccessfulScanTime == nil {
 			continue
 		}
