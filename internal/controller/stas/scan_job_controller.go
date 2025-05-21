@@ -196,7 +196,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 
 	return newContainerImageStatusPatch(cis).
 		withScanJob(job.UID, true, metav1.Now()).
-		withResults(vulnerabilities, summary, minSeverity).
+		withResults(vulnerabilities, summary, &minSeverity).
 		apply(ctx, r.Client)
 }
 

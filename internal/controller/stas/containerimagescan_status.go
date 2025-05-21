@@ -69,8 +69,8 @@ func (p *containerImageScanStatusPatch) withScanJob(jobUID types.UID, successful
 	return p
 }
 
-func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity stasv1alpha1.Severity) *containerImageScanStatusPatch {
-	p.minSeverity = &minSeverity
+func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity *stasv1alpha1.Severity) *containerImageScanStatusPatch {
+	p.minSeverity = minSeverity
 
 	p.patch.Status.Vulnerabilities = make([]stasv1alpha1ac.VulnerabilityApplyConfiguration, len(vulnerabilities))
 	for i, v := range vulnerabilities {

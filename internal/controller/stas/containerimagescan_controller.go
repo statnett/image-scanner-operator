@@ -62,7 +62,7 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			// Copy result of latest digest scan if within scan interval
 			if latest != nil && time.Since(latest.Status.LastSuccessfulScanTime.Time) < r.ScanInterval {
 				return ctrl.Result{}, newContainerImageStatusPatch(cis).
-					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, *latest.Spec.MinSeverity).
+					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, nil).
 					withScanJob(latest.Status.LastScanJobUID, true, *latest.Status.LastSuccessfulScanTime).
 					apply(ctx, r.Client)
 			}

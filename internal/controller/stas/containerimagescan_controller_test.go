@@ -13,6 +13,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -119,6 +120,9 @@ var _ = Describe("ContainerImageScan controller", func() {
 					Image: stasv1alpha1.Image{
 						Name:   "docker.io/nginxinc/nginx-unprivileged",
 						Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
+					},
+					ScanConfig: stasv1alpha1.ScanConfig{
+						MinSeverity: ptr.To(stasv1alpha1.SeverityHigh),
 					},
 				},
 			},
