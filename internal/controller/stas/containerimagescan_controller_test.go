@@ -119,7 +119,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
 						Name:   "docker.io/nginxinc/nginx-unprivileged",
-						Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
+						Digest: "sha256:b7a4121907e7c99798ec7e9df594fb7c225a1addffadff7e5df7399edb93e2ab",
 					},
 					ScanConfig: stasv1alpha1.ScanConfig{
 						MinSeverity: ptr.To(stasv1alpha1.SeverityHigh),
@@ -162,7 +162,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
-						Name:   "docker.io/different-from-source",
+						Name:   "docker.io/nginxinc/copy-already-scanned-digest",
 						Digest: sourceCIS.Spec.Digest,
 					},
 				},
