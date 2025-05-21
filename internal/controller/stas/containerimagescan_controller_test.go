@@ -128,7 +128,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 			},
 			Status: stasv1alpha1.ContainerImageScanStatus{
 				ObservedGeneration:     1,
-				LastScanJobUID:         types.UID("0123"),
+				LastScanJobUID:         types.UID("0eb32892-d1a7-4524-9b88-ecc5fd09dfbc"),
 				LastScanTime:           &latestDigestScanTime,
 				LastSuccessfulScanTime: &latestDigestScanTime,
 				Vulnerabilities: []stasv1alpha1.Vulnerability{
@@ -152,6 +152,9 @@ var _ = Describe("ContainerImageScan controller", func() {
 			},
 		}
 		Expect(k8sClient.Create(ctx, sourceCIS)).To(Succeed())
+		// Wait for controller to reconcile
+		Eventually(komega.Object(sourceCIS)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
+		// Override controller
 		Expect(k8sClient.Status().Update(ctx, sourceCIS)).To(Succeed())
 
 		targetCIS := &stasv1alpha1.ContainerImageScan{
@@ -172,6 +175,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 		// Wait for CIS to be processed by controller
 		Eventually(komega.Object(targetCIS)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
+		assertNoContainerImageScanJob(targetCIS)
 		Expect(targetCIS.Status).Should(Equal(sourceCIS.Status))
 	})
 
