@@ -21,6 +21,7 @@ type Config struct {
 	TrivyImage                     string         `mapstructure:"trivy-image"`
 	TrivyCommand                   TrivyCommand   `mapstructure:"trivy-command"`
 	ActiveScanJobLimit             int            `mapstructure:"active-scan-job-limit"`
+	ReuseScanResults               bool           `mapstructure:"reuse-scan-results"`
 }
 
 type TrivyCommand string

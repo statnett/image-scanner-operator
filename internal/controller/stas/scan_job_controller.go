@@ -172,7 +172,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 					WithReason(stasv1alpha1.ReasonScanReportDecodeError).
 					WithMessage(fmt.Sprintf("error decoding scan report JSON from job '%s': %s", job.Name, err)),
 			).
-			withScanJob(job, false).
+			withScanJob(job.UID, false, metav1.Now()).
 			apply(ctx, r.Client)
 	}
 
@@ -195,7 +195,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 	}
 
 	return newContainerImageStatusPatch(cis).
-		withScanJob(job, true).
+		withScanJob(job.UID, true, metav1.Now()).
 		withResults(vulnerabilities, summary, minSeverity).
 		apply(ctx, r.Client)
 }
@@ -221,7 +221,7 @@ func (r *ScanJobReconciler) reconcileFailedJob(ctx context.Context, job *batchv1
 				WithReason("Error").
 				WithMessage(string(logBytes)),
 		).
-		withScanJob(job, false).
+		withScanJob(job.UID, false, metav1.Now()).
 		apply(ctx, r.Client)
 }
 

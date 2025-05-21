@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/opencontainers/go-digest"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -52,6 +53,21 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
+		if r.ReuseScanResults {
+			latest, err := r.latestDigestScan(ctx, cis.Spec.Digest)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
+
+			// Copy result of latest digest scan if within scan interval
+			if latest != nil && time.Since(latest.Status.LastSuccessfulScanTime.Time) < r.ScanInterval {
+				return ctrl.Result{}, newContainerImageStatusPatch(cis).
+					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, *latest.Spec.MinSeverity).
+					withScanJob(latest.Status.LastScanJobUID, true, *latest.Status.LastSuccessfulScanTime).
+					apply(ctx, r.Client)
+			}
+		}
+
 		if r.ActiveScanJobLimit > 0 {
 			count, err := r.activeScanJobCount(ctx)
 			if err != nil {
@@ -82,6 +98,36 @@ func (r *ContainerImageScanReconciler) backoffDuration(lastScan *metav1.Time, no
 
 	// Two minutes if just scanned, down to a minute when scanned long ago
 	return time.Minute + time.Duration(float64(time.Minute)*priority)
+}
+
+// latestDigestScan returns the most recently scanned CIS with the specified digest.
+func (r *ContainerImageScanReconciler) latestDigestScan(ctx context.Context, dig digest.Digest) (*stasv1alpha1.ContainerImageScan, error) {
+	cisList := &stasv1alpha1.ContainerImageScanList{}
+
+	listOps := []client.ListOption{
+		client.MatchingFields{indexDigest: string(dig)},
+	}
+	if err := r.List(ctx, cisList, listOps...); err != nil {
+		return nil, err
+	}
+
+	var (
+		latest   *stasv1alpha1.ContainerImageScan
+		scanTime *time.Time
+	)
+
+	for _, c := range cisList.Items {
+		if c.Status.LastSuccessfulScanTime == nil {
+			continue
+		}
+
+		if scanTime == nil || c.Status.LastSuccessfulScanTime.After(*scanTime) {
+			scanTime = &c.Status.LastSuccessfulScanTime.Time
+			latest = &c
+		}
+	}
+
+	return latest, nil
 }
 
 func (r *ContainerImageScanReconciler) activeScanJobCount(ctx context.Context) (int, error) {

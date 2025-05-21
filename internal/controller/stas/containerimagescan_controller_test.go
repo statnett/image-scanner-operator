@@ -12,6 +12,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -65,7 +66,6 @@ var _ = Describe("ContainerImageScan controller", func() {
 			}},
 		}
 		Expect(cis.Status).Should(WithTransform(normalizeContainerImageScanStatus, Equal(expectedStatus)))
-
 	})
 
 	It("should rescan when due", func() {
@@ -104,6 +104,71 @@ var _ = Describe("ContainerImageScan controller", func() {
 		// Assert new scan job created
 		scanJob2 := getContainerImageScanJob(cis)
 		Expect(scanJob2.UID).To(Not(Equal(scanJob.UID)))
+	})
+
+	It("should copy an existing recent scan result", func() {
+		latestDigestScanTime := metav1.Time{Time: time.Now().Add(-30 * time.Minute)}
+
+		sourceCIS := &stasv1alpha1.ContainerImageScan{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "copy-source",
+				Namespace: "default",
+			},
+			Spec: stasv1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "docker.io/nginxinc/nginx-unprivileged",
+						Digest: "sha256:a96370b18b3d7e70b7b34d49dcb621a805c15cf71217ee8c77be5a98cc793fd3",
+					},
+				},
+			},
+			Status: stasv1alpha1.ContainerImageScanStatus{
+				ObservedGeneration:     1,
+				LastScanJobUID:         types.UID("0123"),
+				LastScanTime:           &latestDigestScanTime,
+				LastSuccessfulScanTime: &latestDigestScanTime,
+				Vulnerabilities: []stasv1alpha1.Vulnerability{
+					{
+						VulnerabilityID:  "1",
+						PkgName:          "pkg",
+						InstalledVersion: "latest",
+						Severity:         1,
+						PkgPath:          "/",
+						FixedVersion:     "next",
+						Title:            "foo",
+					},
+				},
+				VulnerabilitySummary: &stasv1alpha1.VulnerabilitySummary{
+					SeverityCount: map[string]int32{
+						"UNKNOWN": 1,
+					},
+					FixedCount:   1,
+					UnfixedCount: 0,
+				},
+			},
+		}
+		Expect(k8sClient.Create(ctx, sourceCIS)).To(Succeed())
+
+		targetCIS := &stasv1alpha1.ContainerImageScan{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "copy-target",
+				Namespace: "default",
+			},
+			Spec: stasv1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "docker.io/different-from-source",
+						Digest: sourceCIS.Spec.Digest,
+					},
+				},
+			},
+		}
+		Expect(k8sClient.Create(ctx, targetCIS)).To(Succeed())
+
+		// Wait for CIS to be processed by controller
+		Eventually(komega.Object(targetCIS)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
+		expectedStatus := sourceCIS.Status
+		Expect(sourceCIS.Status).Should(Equal(expectedStatus))
 	})
 
 	normalizeUntestableScanJobFields := func(job *batchv1.Job) *batchv1.Job {
