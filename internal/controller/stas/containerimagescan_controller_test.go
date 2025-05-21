@@ -108,7 +108,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 	})
 
 	It("should copy an existing recent scan result", func() {
-		latestDigestScanTime := metav1.Time{Time: time.Now().Add(-30 * time.Minute)}
+		latestDigestScanTime := metav1.Time{Time: time.Now().Add(-time.Minute)}
 
 		sourceCIS := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
@@ -175,8 +175,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 		// Wait for CIS to be processed by controller
 		Eventually(komega.Object(targetCIS)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
-		assertNoContainerImageScanJob(targetCIS)
 		Expect(targetCIS.Status).Should(Equal(sourceCIS.Status))
+		assertNoContainerImageScanJob(targetCIS)
 	})
 
 	normalizeUntestableScanJobFields := func(job *batchv1.Job) *batchv1.Job {
