@@ -167,8 +167,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 		// Wait for CIS to be processed by controller
 		Eventually(komega.Object(targetCIS)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
-		expectedStatus := sourceCIS.Status
-		Expect(sourceCIS.Status).Should(Equal(expectedStatus))
+		Expect(targetCIS.Status).Should(Equal(sourceCIS.Status))
 	})
 
 	normalizeUntestableScanJobFields := func(job *batchv1.Job) *batchv1.Job {
