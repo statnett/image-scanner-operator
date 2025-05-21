@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.3](https://github.com/statnett/image-scanner-operator/compare/v0.11.2...v0.11.3) (2025-05-21)
+
+
+### Bug Fixes
+
+* Guarantee fast requeue for images never scanned ([#1422](https://github.com/statnett/image-scanner-operator/issues/1422)) ([9892171](https://github.com/statnett/image-scanner-operator/commit/9892171f849bffdff533321e5d226fb4661591d6))
+
 ## [0.11.2](https://github.com/statnett/image-scanner-operator/compare/v0.11.1...v0.11.2) (2025-05-20)
 
 
