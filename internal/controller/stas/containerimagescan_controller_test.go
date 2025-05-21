@@ -148,6 +148,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 			},
 		}
 		Expect(k8sClient.Create(ctx, sourceCIS)).To(Succeed())
+		Expect(k8sClient.Status().Update(ctx, sourceCIS)).To(Succeed())
 
 		targetCIS := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
