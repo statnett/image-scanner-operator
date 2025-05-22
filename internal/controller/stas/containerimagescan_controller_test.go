@@ -121,9 +121,6 @@ var _ = Describe("ContainerImageScan controller", func() {
 						Name:   "docker.io/nginxinc/nginx-unprivileged",
 						Digest: "sha256:b7a4121907e7c99798ec7e9df594fb7c225a1addffadff7e5df7399edb93e2ab",
 					},
-					ScanConfig: stasv1alpha1.ScanConfig{
-						MinSeverity: ptr.To(stasv1alpha1.SeverityHigh),
-					},
 				},
 			},
 		}
