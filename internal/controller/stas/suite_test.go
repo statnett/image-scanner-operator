@@ -59,7 +59,8 @@ var _ = BeforeSuite(func() {
 	// Increase Gomega max depth (default is 10, and that is not enough for Deployment)
 	format.MaxDepth = 20
 
-	SetDefaultEventuallyTimeout(3 * time.Second)
+	SetDefaultEventuallyTimeout(2 * time.Second)
+	SetDefaultConsistentlyDuration(2 * time.Second)
 
 	logf.SetLogger(zap.New(zap.WriteTo(GinkgoWriter), zap.UseDevMode(true)))
 
