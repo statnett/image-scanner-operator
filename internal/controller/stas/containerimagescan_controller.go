@@ -53,8 +53,10 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
+		var latest *stasv1alpha1.ContainerImageScan
 		if r.ReuseScanResults {
-			latest, err := r.latestDigestScan(ctx, cis.Spec.Digest)
+			var err error
+			latest, err = r.latestDigestScan(ctx, cis.Spec.Digest)
 			if err != nil {
 				return ctrl.Result{}, err
 			}
@@ -72,6 +74,14 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			}
 
 			if count >= r.ActiveScanJobLimit {
+				if latest != nil {
+					// Copy result of latest digest scan, regardless of age, to at least
+					// provide some information untill a fresh scan can be scheduled.
+					if err := r.applyCISStatusFrom(ctx, cis, latest); err != nil {
+						return ctrl.Result{}, err
+					}
+				}
+
 				// Max number of active scan jobs reached. Requeue request.
 				return ctrl.Result{Requeue: true}, nil
 			}
