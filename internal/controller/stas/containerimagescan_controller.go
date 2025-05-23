@@ -61,10 +61,7 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 			// Copy result of latest digest scan if within scan interval
 			if latest != nil && time.Since(latest.Status.LastSuccessfulScanTime.Time) < r.ScanInterval {
-				return ctrl.Result{}, newContainerImageStatusPatch(cis).
-					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, nil).
-					withScanJob(latest.Status.LastScanJobUID, true, *latest.Status.LastSuccessfulScanTime).
-					apply(ctx, r.Client)
+				return ctrl.Result{}, r.applyCISStatusFrom(ctx, cis, latest)
 			}
 		}
 
@@ -84,6 +81,14 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 	}
 
 	return controller.Reconcile(ctx, fn)
+}
+
+// applyCISStatusFrom updates the status of a CIS copying it from another CIS.
+func (r *ContainerImageScanReconciler) applyCISStatusFrom(ctx context.Context, dst *stasv1alpha1.ContainerImageScan, src *stasv1alpha1.ContainerImageScan) error {
+	return newContainerImageStatusPatch(dst).
+		withResults(src.Status.Vulnerabilities, src.Status.VulnerabilitySummary, nil).
+		withScanJob(src.Status.LastScanJobUID, true, *src.Status.LastSuccessfulScanTime).
+		apply(ctx, r.Client)
 }
 
 // latestDigestScan returns the most recently scanned CIS with the specified digest.
