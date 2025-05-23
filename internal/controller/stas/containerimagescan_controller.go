@@ -76,7 +76,7 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 			if count >= r.ActiveScanJobLimit {
 				// Max number of active scan jobs reached. Requeue request.
-				return ctrl.Result{RequeueAfter: r.backoffDuration(cis.Status.LastScanTime, time.Now())}, nil
+				return ctrl.Result{Requeue: true}, nil
 			}
 		}
 
@@ -84,20 +84,6 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 	}
 
 	return controller.Reconcile(ctx, fn)
-}
-
-func (r *ContainerImageScanReconciler) backoffDuration(lastScan *metav1.Time, now time.Time) time.Duration {
-	if lastScan == nil {
-		// Fast requeue for images that are never scanned.
-		return 3 * time.Second
-	}
-
-	overdue := now.Sub(lastScan.Time) - r.ScanInterval
-	// Priority between (highest) 0 and (lowest) 1, where just scanned is 1 and an hour overdue is 0.5
-	priority := float64(time.Hour) / float64(time.Hour+overdue)
-
-	// Two minutes if just scanned, down to a minute when scanned long ago
-	return time.Minute + time.Duration(float64(time.Minute)*priority)
 }
 
 // latestDigestScan returns the most recently scanned CIS with the specified digest.
