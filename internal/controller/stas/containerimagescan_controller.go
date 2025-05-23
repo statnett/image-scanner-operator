@@ -54,8 +54,10 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 		}
 
 		var latest *stasv1alpha1.ContainerImageScan
+
 		if r.ReuseScanResults {
 			var err error
+
 			latest, err = r.latestDigestScan(ctx, cis.Spec.Digest)
 			if err != nil {
 				return ctrl.Result{}, err
