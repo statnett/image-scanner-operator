@@ -12,7 +12,7 @@ metadata:
     workload.statnett.no/name: echo
     workload.statnett.no/namespace: replica-set
   namespace: image-scanner
-  name: echo-6bdfc76c56-8ae43-38618
+  name: echo-6bdfc76c56-8ae43-e2c8b
 spec:
   activeDeadlineSeconds: 3600 # 1 hour
   backoffLimit: 3
@@ -71,7 +71,7 @@ spec:
             - prefix: TRIVY_
               configMapRef:
                 name: trivy-job-config
-          image: docker.io/nginxinc/nginx-unprivileged@sha256:6da1811b094adbea1eb34c3e48fc2833b1a11a351ec7b36cc390e740a64fbae4
+          image: docker.io/nginxinc/nginx-unprivileged@sha256:204d4094343ed60ff60ed4b009785151c43d8f611761929aae3a1beb02fc0adf
           imagePullPolicy: IfNotPresent
           name: scan-image
           resources:

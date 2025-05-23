@@ -16,6 +16,7 @@ const (
 	indexControllerUID = ".metadata.controller"
 	indexOwnerUID      = ".metadata.owner"
 	indexUID           = ".metadata.uid"
+	indexDigest        = ".metadata.imageDigest"
 	indexJobCondition  = ".status.condition"
 
 	jobNotFinished = "NotFinished"
@@ -62,6 +63,16 @@ func (r *Indexer) SetupWithManager(mgr ctrl.Manager) error {
 	}
 	for _, object := range []client.Object{&stasv1alpha1.ContainerImageScan{}} {
 		if err := indexer.IndexField(context.TODO(), object, indexUID, UIDFn); err != nil {
+			return err
+		}
+	}
+
+	imageDigestFn := func(obj client.Object) []string {
+		cis := obj.(*stasv1alpha1.ContainerImageScan)
+		return []string{string(cis.Spec.Digest)}
+	}
+	for _, object := range []client.Object{&stasv1alpha1.ContainerImageScan{}} {
+		if err := indexer.IndexField(context.TODO(), object, indexDigest, imageDigestFn); err != nil {
 			return err
 		}
 	}

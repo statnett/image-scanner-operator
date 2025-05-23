@@ -112,6 +112,7 @@ var _ = BeforeSuite(func() {
 	k8sScheme = k8sManager.GetScheme()
 
 	config := config.Config{
+		ReuseScanResults:               true,
 		ScanJobNamespace:               scanJobNamespace,
 		ScanJobServiceAccount:          "image-scanner-job",
 		ScanJobTTLSecondsAfterFinished: 60,

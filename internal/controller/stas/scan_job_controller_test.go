@@ -300,6 +300,15 @@ func getContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) *batchv1.Job
 	return &jobs.Items[0]
 }
 
+func assertNoContainerImageScanJob(cis *stasv1alpha1.ContainerImageScan) {
+	jobs := &batchv1.JobList{}
+	listOps := []client.ListOption{
+		client.InNamespace(scanJobNamespace),
+		client.MatchingLabels(map[string]string{stasv1alpha1.LabelStatnettControllerUID: string(cis.UID)}),
+	}
+	Consistently(komega.ObjectList(jobs, listOps...)).Should(HaveField("Items", HaveLen(0)))
+}
+
 func createScanJobPodWithLogs(job *batchv1.Job, logFilePath string) {
 	podLog, err := os.ReadFile(filepath.Clean(logFilePath))
 	Expect(err).NotTo(HaveOccurred())

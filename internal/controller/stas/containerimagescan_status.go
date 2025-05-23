@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"slices"
 
-	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -56,23 +56,21 @@ func (p *containerImageScanStatusPatch) withCondition(c *metav1ac.ConditionApply
 	return p
 }
 
-func (p *containerImageScanStatusPatch) withScanJob(job *batchv1.Job, successful bool) *containerImageScanStatusPatch {
-	now := metav1.Now()
-
+func (p *containerImageScanStatusPatch) withScanJob(jobUID types.UID, successful bool, scanTime metav1.Time) *containerImageScanStatusPatch {
 	p.patch.Status.
-		WithLastScanJobUID(job.UID).
-		WithLastScanTime(now)
+		WithLastScanJobUID(jobUID).
+		WithLastScanTime(scanTime)
 
 	if successful {
 		p.patch.Status.
-			WithLastSuccessfulScanTime(now)
+			WithLastSuccessfulScanTime(scanTime)
 	}
 
 	return p
 }
 
-func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity stasv1alpha1.Severity) *containerImageScanStatusPatch {
-	p.minSeverity = &minSeverity
+func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity *stasv1alpha1.Severity) *containerImageScanStatusPatch {
+	p.minSeverity = minSeverity
 
 	p.patch.Status.Vulnerabilities = make([]stasv1alpha1ac.VulnerabilityApplyConfiguration, len(vulnerabilities))
 	for i, v := range vulnerabilities {
