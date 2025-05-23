@@ -169,7 +169,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 		if apierrors.IsAlreadyExists(err) {
 			// Job already exists; delete it and requeue
 			err = r.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationBackground))
-			result.Requeue = true
+			result.RequeueAfter = 10 * time.Second
 		}
 
 		return result, err
