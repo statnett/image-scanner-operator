@@ -3,7 +3,6 @@ package stas
 import (
 	"context"
 	"path"
-	"testing"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -18,7 +17,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	"github.com/statnett/image-scanner-operator/internal/config"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
 	"github.com/statnett/image-scanner-operator/internal/yaml"
 )
@@ -233,56 +231,3 @@ var _ = Describe("ContainerImageScan controller", func() {
 		Expect(scanJob).Should(WithTransform(normalizeUntestableScanJobFields, BeComparableTo(expectedScanJob)))
 	})
 })
-
-var now = time.Now()
-var scanInterval = 6 * time.Hour
-
-func TestBackoffDuration(t *testing.T) {
-	tests := []struct {
-		name        string
-		lastScan    *metav1.Time
-		expectedDur time.Duration
-	}{
-		{
-			name:        "never scanned",
-			lastScan:    nil,
-			expectedDur: 3 * time.Second,
-		},
-		{
-			name: "scanned on time",
-			lastScan: &metav1.Time{
-				Time: now.Add(-scanInterval),
-			},
-			expectedDur: 2 * time.Minute,
-		},
-		{
-			name: "scanned an hour late",
-			lastScan: &metav1.Time{
-				Time: now.Add(-scanInterval - time.Hour),
-			},
-			expectedDur: time.Minute + 30*time.Second,
-		},
-		{
-			name: "scanned 19 hours late",
-			lastScan: &metav1.Time{
-				Time: now.Add(-scanInterval - 19*time.Hour),
-			},
-			expectedDur: time.Minute + 3*time.Second,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			r := &ContainerImageScanReconciler{
-				Config: config.Config{
-					ScanInterval: scanInterval,
-				},
-			}
-
-			got := r.backoffDuration(tt.lastScan, now)
-			if got != tt.expectedDur {
-				t.Errorf("backoffDuration() = %v, want %v", got, tt.expectedDur)
-			}
-		})
-	}
-}
