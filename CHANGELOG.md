@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0](https://github.com/statnett/image-scanner-operator/compare/v0.11.3...v0.12.0) (2025-05-23)
+
+
+### Features
+
+* Enable reuse of scan results ([#1424](https://github.com/statnett/image-scanner-operator/issues/1424)) ([337a519](https://github.com/statnett/image-scanner-operator/commit/337a519ba235171cde9e50d24863365223d84f93))
+
+
+### Reverts
+
+* Fix: guarantee fast requeue for images never scanned ([#1429](https://github.com/statnett/image-scanner-operator/issues/1429)) ([9c7cf1f](https://github.com/statnett/image-scanner-operator/commit/9c7cf1ff1192b5299902e7aefeb8581ec8dd3490))
+
 ## [0.11.3](https://github.com/statnett/image-scanner-operator/compare/v0.11.2...v0.11.3) (2025-05-21)
 
 
