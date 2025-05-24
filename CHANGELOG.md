@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/statnett/image-scanner-operator/compare/v0.12.0...v0.12.1) (2025-05-24)
+
+
+### Bug Fixes
+
+* **deps:** Update sigs.k8s.io/wg-policy-prototypes digest to ed0ca5a ([#1425](https://github.com/statnett/image-scanner-operator/issues/1425)) ([af70350](https://github.com/statnett/image-scanner-operator/commit/af7035031f97a2b9e8fa8900cec1861859995a5b))
+
 ## [0.12.0](https://github.com/statnett/image-scanner-operator/compare/v0.11.3...v0.12.0) (2025-05-23)
 
 
