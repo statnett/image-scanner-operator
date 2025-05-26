@@ -169,7 +169,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 		if apierrors.IsAlreadyExists(err) {
 			// Job already exists; delete it and requeue
 			err = r.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationBackground))
-			result.Requeue = true
+			result.Requeue = true //nolint:staticcheck // SA1019: FIXME: https://github.com/kubernetes-sigs/controller-runtime/pull/3107#issuecomment-2648121233
 		}
 
 		return result, err
