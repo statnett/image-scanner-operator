@@ -25,7 +25,7 @@ func Reconcile(ctx context.Context, reconcileFn ReconcileFn) (ctrl.Result, error
 			V(-1).
 			Info("Assuming transient error (race condition), requeuing request")
 
-		return ctrl.Result{Requeue: true}, nil
+		return ctrl.Result{Requeue: true}, nil //nolint:staticcheck // SA1019: FIXME: https://github.com/kubernetes-sigs/controller-runtime/pull/3107#issuecomment-2648121233
 	}
 
 	return result, staserrors.IgnoreAny(err, staserrors.IsNamespaceTerminating, apierrors.IsNotFound)
