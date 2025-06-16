@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/distribution/reference v0.6.0
-	github.com/go-viper/mapstructure/v2 v2.2.1
+	github.com/go-viper/mapstructure/v2 v2.3.0
 	github.com/gohugoio/hashstructure v0.5.0
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.37.0
