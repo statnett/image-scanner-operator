@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.12.3](https://github.com/statnett/image-scanner-operator/compare/v0.12.2...v0.12.3) (2025-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes packages to v0.33.2 ([#1450](https://github.com/statnett/image-scanner-operator/issues/1450)) ([a7cc510](https://github.com/statnett/image-scanner-operator/commit/a7cc510461e4ae02fd21d9f9f317166108e61e6a))
+* **deps:** Update module github.com/go-viper/mapstructure/v2 to v2.3.0 ([#1447](https://github.com/statnett/image-scanner-operator/issues/1447)) ([127a5d5](https://github.com/statnett/image-scanner-operator/commit/127a5d591b88d389263ffd75f5f16a1cda8a596c))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.40 ([#1444](https://github.com/statnett/image-scanner-operator/issues/1444)) ([0f6acd1](https://github.com/statnett/image-scanner-operator/commit/0f6acd15c34f3c303644562d71935023b660bdec))
+
 ## [0.12.2](https://github.com/statnett/image-scanner-operator/compare/v0.12.1...v0.12.2) (2025-06-16)
 
 
