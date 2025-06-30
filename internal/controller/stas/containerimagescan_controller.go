@@ -53,18 +53,19 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			return ctrl.Result{}, staserrors.Ignore(err, apierrors.IsNotFound)
 		}
 
+		var latest *stasv1alpha1.ContainerImageScan
+
 		if r.ReuseScanResults {
-			latest, err := r.latestDigestScan(ctx, cis.Spec.Digest)
+			var err error
+
+			latest, err = r.latestDigestScan(ctx, cis.Spec.Digest)
 			if err != nil {
 				return ctrl.Result{}, err
 			}
 
 			// Copy result of latest digest scan if within scan interval
 			if latest != nil && time.Since(latest.Status.LastSuccessfulScanTime.Time) < r.ScanInterval {
-				return ctrl.Result{}, newContainerImageStatusPatch(cis).
-					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, nil).
-					withScanJob(latest.Status.LastScanJobUID, true, *latest.Status.LastSuccessfulScanTime).
-					apply(ctx, r.Client)
+				return ctrl.Result{}, r.applyCISStatusFrom(ctx, cis, latest)
 			}
 		}
 
@@ -75,6 +76,14 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			}
 
 			if count >= r.ActiveScanJobLimit {
+				if latest != nil {
+					// Copy result of latest digest scan, regardless of age, to at least
+					// provide some information untill a fresh scan can be scheduled.
+					if err := r.applyCISStatusFrom(ctx, cis, latest); err != nil {
+						return ctrl.Result{}, err
+					}
+				}
+
 				// Max number of active scan jobs reached. Requeue request.
 				return ctrl.Result{Requeue: true}, nil
 			}
@@ -84,6 +93,14 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 	}
 
 	return controller.Reconcile(ctx, fn)
+}
+
+// applyCISStatusFrom updates the status of a CIS copying it from another CIS.
+func (r *ContainerImageScanReconciler) applyCISStatusFrom(ctx context.Context, dst *stasv1alpha1.ContainerImageScan, src *stasv1alpha1.ContainerImageScan) error {
+	return newContainerImageStatusPatch(dst).
+		withResults(src.Status.Vulnerabilities, src.Status.VulnerabilitySummary, nil).
+		withScanJob(src.Status.LastScanJobUID, true, *src.Status.LastSuccessfulScanTime).
+		apply(ctx, r.Client)
 }
 
 // latestDigestScan returns the most recently scanned CIS with the specified digest.
