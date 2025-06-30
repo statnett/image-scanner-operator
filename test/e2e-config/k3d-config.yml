@@ -4,4 +4,4 @@ kind: Simple
 metadata:
   name: image-scanner
 # renovate-image:
-image: docker.io/rancher/k3s:v1.33.1-k3s1
+image: docker.io/rancher/k3s:v1.33.2-k3s1
