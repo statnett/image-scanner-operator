@@ -42,6 +42,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - openreports.io
+  resources:
+  - reports
+  verbs:
+  - create
+  - delete
+  - patch
+- apiGroups:
   - stas.statnett.no
   resources:
   - containerimagescans
@@ -67,14 +75,6 @@ rules:
   - get
   - patch
   - update
-- apiGroups:
-  - wgpolicyk8s.io
-  resources:
-  - policyreports
-  verbs:
-  - create
-  - delete
-  - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role

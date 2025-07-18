@@ -53,7 +53,7 @@ type ScanJobReconciler struct {
 //+kubebuilder:rbac:groups="events.k8s.io",resources=events,verbs=get;list;watch
 // Must add policyreports delete verb and containerimagescans/finalizers update verb to satisfy
 // https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#ownerreferencespermissionenforcement
-//+kubebuilder:rbac:groups="wgpolicyk8s.io",resources=policyreports,verbs=create;patch;delete
+//+kubebuilder:rbac:groups="openreports.io",resources=reports,verbs=create;patch;delete
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/finalizers,verbs=update
 
 // SetupWithManager sets up the controller with the Manager.
