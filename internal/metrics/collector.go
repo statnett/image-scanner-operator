@@ -118,7 +118,9 @@ func (c ImageMetricsCollector) NeedLeaderElection() bool {
 
 func (c ImageMetricsCollector) Describe(descs chan<- *prometheus.Desc) {
 	descs <- c.successDesc
+
 	descs <- c.issuesDesc
+
 	descs <- c.patchStatusDesc
 }
 
@@ -148,6 +150,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 		if meta.IsStatusConditionTrue(cis.Status.Conditions, string(kstatus.ConditionStalled)) {
 			successValue = float64(0)
 		}
+
 		metrics <- prometheus.MustNewConstMetric(c.successDesc, prometheus.GaugeValue, successValue, cisLabelValues...)
 
 		severities := cis.Status.VulnerabilitySummary.GetSeverityCount()
