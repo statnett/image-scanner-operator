@@ -134,7 +134,7 @@ base. Your initial kustomization.yaml could be as simple as:
 <!-- x-release-please-start-version -->
 ```yaml
 resources:
-  - https://github.com/statnett/image-scanner-operator?ref=v0.12.4
+  - https://github.com/statnett/image-scanner-operator?ref=v0.13.0
 ```
 <!-- x-release-please-end -->
 
