@@ -52,21 +52,10 @@ generate: controller-gen k8s-client-gen ## Generate code required for K8s API an
 k8s-client-gen: controller-gen ## Generate API clients
 	$(CONTROLLER_GEN) applyconfiguration paths="./..."
 
-GO_MODULE = $(shell go list -m)
-.PHONY: wg-policy-client-gen
-wg-policy-client-gen: applyconfiguration-gen
-	@echo ">> generating internal/wg-policy/applyconfiguration..."
-	$(APPLYCONFIGURATION_GEN) \
-		--output-dir "internal/wg-policy/applyconfiguration" \
-		--output-pkg "$(GO_MODULE)/internal/wg-policy/applyconfiguration" \
-		"sigs.k8s.io/wg-policy-prototypes/policy-report/apis/reports.x-k8s.io/v1beta2" \
-		"sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
-
-.PHONY: wg-policy-crd-update
-wg-policy-crd-update:
-	curl -O --output-dir config/wg-policy/crd/ --remote-name-all \
-		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/refs/heads/master/policy-report/crd/reports.x-k8s.io/v1beta2/reports.x-k8s.io_{clusterpolicyreports,policyreports}.yaml \
-		https://raw.githubusercontent.com/kubernetes-sigs/wg-policy-prototypes/refs/heads/master/policy-report/crd/wgpolicyk8s.io/v1alpha2/wgpolicyk8s.io_{clusterpolicyreports,policyreports}.yaml
+.PHONY: openreports-crd-update
+openreports-crd-update:
+	curl -O --output-dir config/openreports/crd/ --remote-name-all \
+		https://raw.githubusercontent.com/openreports/reports-api/refs/heads/main/crd/openreports.io/v1alpha1/openreports.io_{clusterreports,reports}.yaml \
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.

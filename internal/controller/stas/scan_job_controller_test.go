@@ -16,10 +16,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	openreportsv1alpha1 "openreports.io/apis/openreports.io/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
-	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
@@ -77,19 +77,19 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
 
 			// Check policy report exists with expected content
-			report := &policyv1alpha2.PolicyReport{}
+			report := &openreportsv1alpha1.Report{}
 			report.Name = cis.Name
 			report.Namespace = cis.Namespace
 			Expect(komega.Get(report)()).To(Succeed())
 			Expect(report.Results).To(Not(BeEmpty()))
 			Expect(report.Results).Should(HaveEach(
-				WithTransform(func(vulnerability policyv1alpha2.PolicyReportResult) map[string]string {
+				WithTransform(func(vulnerability openreportsv1alpha1.ReportResult) map[string]string {
 					return vulnerability.Properties
 				},
 					Not(BeEmpty()),
 				),
 			))
-			expectedSummary := policyv1alpha2.PolicyReportSummary{
+			expectedSummary := openreportsv1alpha1.ReportSummary{
 				Fail: 19,
 			}
 			Expect(report.Summary).To(Equal(expectedSummary))
@@ -146,13 +146,13 @@ var _ = Describe("Scan Job controller", func() {
 				Expect(cis.Status.VulnerabilitySummary).To(Equal(expectedVulnSummary))
 
 				// Check policy report exists with expected content
-				report := &policyv1alpha2.PolicyReport{}
+				report := &openreportsv1alpha1.Report{}
 				report.Name = cis.Name
 				report.Namespace = cis.Namespace
 				Expect(komega.Get(report)()).To(Succeed())
 				Expect(report.Results).To(Not(BeEmpty()))
 				Expect(report.Results).Should(HaveEach(
-					WithTransform(func(vulnerability policyv1alpha2.PolicyReportResult) string {
+					WithTransform(func(vulnerability openreportsv1alpha1.ReportResult) string {
 						return string(vulnerability.Severity)
 					},
 						SatisfyAny(
@@ -161,7 +161,7 @@ var _ = Describe("Scan Job controller", func() {
 						),
 					),
 				))
-				expectedSummary := policyv1alpha2.PolicyReportSummary{
+				expectedSummary := openreportsv1alpha1.ReportSummary{
 					Fail: 3259,
 					Warn: 7059,
 					Skip: 77,
@@ -202,7 +202,7 @@ var _ = Describe("Scan Job controller", func() {
 				Expect(condition.Message).To(Not(BeEmpty()))
 
 				// Check policy report does NOT exist
-				report := &policyv1alpha2.PolicyReport{}
+				report := &openreportsv1alpha1.Report{}
 				report.Name = cis.Name
 				report.Namespace = cis.Namespace
 				Expect(komega.Get(report)()).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
@@ -242,7 +242,7 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(condition.Message).To(Not(BeEmpty()))
 
 			// Check policy report does NOT exist
-			report := &policyv1alpha2.PolicyReport{}
+			report := &openreportsv1alpha1.Report{}
 			report.Name = cis.Name
 			report.Namespace = cis.Namespace
 			Expect(komega.Get(report)()).Should(WithTransform(errors.ReasonForError, Equal(metav1.StatusReasonNotFound)))
