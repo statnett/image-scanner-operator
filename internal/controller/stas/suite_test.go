@@ -18,6 +18,7 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/record"
+	openreportsv1alpha1 "openreports.io/apis/openreports.io/v1alpha1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -26,7 +27,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
-	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -72,7 +72,7 @@ var _ = BeforeSuite(func() {
 	testEnv = &envtest.Environment{
 		CRDDirectoryPaths: []string{
 			filepath.Join("..", "..", "..", "config", "crd", "bases"),
-			filepath.Join("..", "..", "..", "config", "wg-policy", "crd"),
+			filepath.Join("..", "..", "..", "config", "openreports", "crd"),
 		},
 		ErrorIfCRDPathMissing: true,
 	}
@@ -86,7 +86,7 @@ var _ = BeforeSuite(func() {
 	Expect(appsv1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(stasv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(batchv1.AddToScheme(scheme.Scheme)).To(Succeed())
-	Expect(policyv1alpha2.AddToScheme(scheme.Scheme)).To(Succeed())
+	Expect(openreportsv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 
 	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
 	Expect(err).NotTo(HaveOccurred())

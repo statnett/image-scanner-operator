@@ -9,17 +9,17 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	openreportsv1alpha1 "openreports.io/apis/openreports.io/v1alpha1"
+	openreportsv1alpha1ac "openreports.io/pkg/client/applyconfiguration/openreports.io/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	policyv1alpha2 "sigs.k8s.io/wg-policy-prototypes/policy-report/apis/wgpolicyk8s.io/v1alpha2"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	policyv1alpha2ac "github.com/statnett/image-scanner-operator/internal/wg-policy/applyconfiguration/wgpolicyk8s.io/v1alpha2"
 )
 
 func newPolicyReportPatch(cis *stasv1alpha1.ContainerImageScan) *policyReportPatch {
 	return &policyReportPatch{
 		cis: cis,
-		patch: policyv1alpha2ac.PolicyReport(cis.Name, cis.Namespace).
+		patch: openreportsv1alpha1ac.Report(cis.Name, cis.Namespace).
 			WithScope(
 				corev1.ObjectReference{
 					Kind: cis.Spec.Workload.Kind,
@@ -31,7 +31,7 @@ func newPolicyReportPatch(cis *stasv1alpha1.ContainerImageScan) *policyReportPat
 
 type policyReportPatch struct {
 	cis             *stasv1alpha1.ContainerImageScan
-	patch           *policyv1alpha2ac.PolicyReportApplyConfiguration
+	patch           *openreportsv1alpha1ac.ReportApplyConfiguration
 	vulnerabilities []stasv1alpha1.Vulnerability
 	minSeverity     stasv1alpha1.Severity
 }
@@ -41,7 +41,7 @@ func (p *policyReportPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerabi
 	p.minSeverity = minSeverity
 
 	p.patch.
-		WithSummary(policyv1alpha2ac.PolicyReportSummary().
+		WithSummary(openreportsv1alpha1ac.ReportSummary().
 			WithSkip(int(summary.SeverityCount[stasv1alpha1.SeverityUnknown.String()])).
 			WithWarn(int(summary.SeverityCount[stasv1alpha1.SeverityLow.String()] + summary.SeverityCount[stasv1alpha1.SeverityMedium.String()])).
 			WithFail(int(summary.SeverityCount[stasv1alpha1.SeverityHigh.String()] + summary.SeverityCount[stasv1alpha1.SeverityCritical.String()])))
@@ -54,7 +54,7 @@ func (p *policyReportPatch) apply(ctx context.Context, c client.Client, scheme *
 		return err
 	}
 
-	report := &policyv1alpha2.PolicyReport{}
+	report := &openreportsv1alpha1.Report{}
 	report.Name = *p.patch.Name
 	report.Namespace = *p.patch.Namespace
 
@@ -65,7 +65,7 @@ func (p *policyReportPatch) apply(ctx context.Context, c client.Client, scheme *
 			return v.Severity < severity
 		})
 
-		p.patch.Results = make([]policyv1alpha2ac.PolicyReportResultApplyConfiguration, len(p.vulnerabilities))
+		p.patch.Results = make([]openreportsv1alpha1ac.ReportResultApplyConfiguration, len(p.vulnerabilities))
 		for i, v := range p.vulnerabilities {
 			p.patch.Results[i] = *policyReportResultPatch(v)
 		}
@@ -83,7 +83,7 @@ func (p *policyReportPatch) apply(ctx context.Context, c client.Client, scheme *
 	return nil
 }
 
-func policyReportResultPatch(v stasv1alpha1.Vulnerability) *policyv1alpha2ac.PolicyReportResultApplyConfiguration {
+func policyReportResultPatch(v stasv1alpha1.Vulnerability) *openreportsv1alpha1ac.ReportResultApplyConfiguration {
 	properties := map[string]string{
 		"pkgName":          v.PkgName,
 		"pkgPath":          v.PkgPath,
@@ -97,7 +97,7 @@ func policyReportResultPatch(v stasv1alpha1.Vulnerability) *policyv1alpha2ac.Pol
 		return len(v) == 0
 	})
 
-	report := policyv1alpha2ac.PolicyReportResult().
+	report := openreportsv1alpha1ac.ReportResult().
 		WithCategory("vulnerability scan").
 		WithSource("image-scanner").
 		WithPolicy(v.VulnerabilityID).
@@ -113,16 +113,16 @@ func policyReportResultPatch(v stasv1alpha1.Vulnerability) *policyv1alpha2ac.Pol
 	return report
 }
 
-func severityToPolicyResultSeverity(severity stasv1alpha1.Severity) (policyv1alpha2.PolicyResultSeverity, bool) {
+func severityToPolicyResultSeverity(severity stasv1alpha1.Severity) (openreportsv1alpha1.ResultSeverity, bool) {
 	switch severity {
 	case stasv1alpha1.SeverityUnknown:
 		return "", false
 	default:
-		return policyv1alpha2.PolicyResultSeverity(strings.ToLower(severity.String())), true
+		return openreportsv1alpha1.ResultSeverity(strings.ToLower(severity.String())), true
 	}
 }
 
-func severityToPolicyResult(severity stasv1alpha1.Severity) policyv1alpha2.PolicyResult {
+func severityToPolicyResult(severity stasv1alpha1.Severity) openreportsv1alpha1.Result {
 	switch severity {
 	case stasv1alpha1.SeverityUnknown:
 		return "skip"
