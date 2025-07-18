@@ -53,6 +53,7 @@ type containerImageScanStatusPatch struct {
 func (p *containerImageScanStatusPatch) withCondition(c *metav1ac.ConditionApplyConfiguration) *containerImageScanStatusPatch {
 	p.patch.Status.
 		WithConditions(NewConditionsPatch(p.cis.Status.Conditions, c)...)
+
 	return p
 }
 
