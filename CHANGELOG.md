@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.13.0](https://github.com/statnett/image-scanner-operator/compare/v0.12.4...v0.13.0) (2025-07-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate wg-policy-prototypes to openreports ([#1471](https://github.com/statnett/image-scanner-operator/issues/1471))
+
+### Features
+
+* Migrate wg-policy-prototypes to openreports ([#1471](https://github.com/statnett/image-scanner-operator/issues/1471)) ([54de9cf](https://github.com/statnett/image-scanner-operator/commit/54de9cf873111fc43031e1042da8b05002761dcd))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/spf13/pflag to v1.0.7 ([#1468](https://github.com/statnett/image-scanner-operator/issues/1468)) ([ca94859](https://github.com/statnett/image-scanner-operator/commit/ca948598028348fcf8365cb987bd83b87bfb782a))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.42 ([#1470](https://github.com/statnett/image-scanner-operator/issues/1470)) ([44ca1bc](https://github.com/statnett/image-scanner-operator/commit/44ca1bc9d1777ee93bc1f57aebb5cb4e4b0c5a28))
+
 ## [0.12.4](https://github.com/statnett/image-scanner-operator/compare/v0.12.3...v0.12.4) (2025-07-16)
 
 
