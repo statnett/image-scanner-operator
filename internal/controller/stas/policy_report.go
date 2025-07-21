@@ -7,10 +7,10 @@ import (
 	"slices"
 	"strings"
 
+	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
+	openreportsv1alpha1ac "github.com/openreports/reports-api/pkg/client/applyconfiguration/openreports.io/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	openreportsv1alpha1 "openreports.io/apis/openreports.io/v1alpha1"
-	openreportsv1alpha1ac "openreports.io/pkg/client/applyconfiguration/openreports.io/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
