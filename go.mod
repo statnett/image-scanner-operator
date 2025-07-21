@@ -9,6 +9,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.37.0
 	github.com/opencontainers/go-digest v1.0.0
+	github.com/openreports/reports-api v0.0.0-20250719202023-28a4ee05f82e
 	github.com/prometheus/client_golang v1.22.0
 	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
@@ -20,7 +21,6 @@ require (
 	k8s.io/component-base v0.33.3
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
-	openreports.io v0.0.0-00010101000000-000000000000
 	sigs.k8s.io/cli-utils v0.37.2
 	sigs.k8s.io/controller-runtime v0.21.0
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
@@ -93,5 +93,3 @@ require (
 	k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 )
-
-replace openreports.io => github.com/openreports/reports-api v0.0.0-20250717145034-41a243295b93

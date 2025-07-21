@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-viper/mapstructure/v2"
+	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	eventsv1 "k8s.io/api/events/v1"
@@ -18,7 +19,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/utils/ptr"
-	openreportsv1alpha1 "openreports.io/apis/openreports.io/v1alpha1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
