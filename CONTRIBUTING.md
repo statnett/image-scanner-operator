@@ -81,6 +81,8 @@ Before you submit your Pull Request (PR) consider the following guidelines:
    golangci-lint run
    ```
 
+   Some lint issues can be fixed automatically by `golangci-lint` by appending the `--fix` option to the command.
+
 1. Commit your changes using a descriptive commit message.
 
    ```shell
