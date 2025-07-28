@@ -61,9 +61,6 @@ openreports-crd-update:
 fmt: ## Run go fmt against code.
 	go fmt ./...
 
-fmt-imports: gci ## Run gci against code.
-	$(GCI) write --skip-generated -s standard -s default -s "prefix($(shell go list -m))" .
-
 .PHONY: vet
 vet: ## Run go vet against code.
 	go vet ./...
@@ -86,7 +83,7 @@ go-mod-tidy: ## Run go mod tidy against code.
 	go mod tidy
 
 .PHONY: generate-all
-generate-all: manifests generate fmt fmt-imports go-mod-tidy ## Ensure all generated files are up-to-date
+generate-all: manifests generate fmt go-mod-tidy ## Ensure all generated files are up-to-date
 
 ##@ Build
 
@@ -172,8 +169,6 @@ APPLYCONFIGURATION_GEN ?= $(LOCALBIN)/applyconfiguration-gen
 KUSTOMIZE ?= $(LOCALBIN)/kustomize
 CONTROLLER_GEN ?= $(LOCALBIN)/controller-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
-# renovate: datasource=go depName=github.com/daixiang0/gci
-GCI_VERSION ?= v0.13.6
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
@@ -209,11 +204,6 @@ $(CONTROLLER_GEN): $(LOCALBIN)
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
-
-GCI = $(LOCALBIN)/gci
-gci: $(GCI) ## Download gci locally if necessary.
-$(GCI):
-	GOBIN=$(LOCALBIN) go install github.com/daixiang0/gci@${GCI_VERSION}
 
 ##@ End-to-end (e2e) Testing
 
