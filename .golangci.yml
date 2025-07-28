@@ -29,4 +29,4 @@ formatters:
       sections:
         - standard # Standard section: captures all standard packages.
         - default # Default section: contains all imports that could not be matched to another section type.
-        - prefix(github.com/statnett/image-scanner-operator) # Custom section: groups all imports with the specified Prefix.
+        - prefix(github.com/statnett/image-scanner-operator) # Custom section: groups all imports with the specified prefix.
