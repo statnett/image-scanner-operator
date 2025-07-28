@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/statnett/image-scanner-operator/compare/v0.13.0...v0.13.1) (2025-07-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/gomega to v1.38.0 ([#1477](https://github.com/statnett/image-scanner-operator/issues/1477)) ([4c54c65](https://github.com/statnett/image-scanner-operator/commit/4c54c658a9bcec659478f129af635a36439f0021))
+* **deps:** Update module sigs.k8s.io/yaml to v1.6.0 ([#1480](https://github.com/statnett/image-scanner-operator/issues/1480)) ([51adc2c](https://github.com/statnett/image-scanner-operator/commit/51adc2ce5cc449a6e8fa48a3defc4b057e270cb6))
+
 ## [0.13.0](https://github.com/statnett/image-scanner-operator/compare/v0.12.4...v0.13.0) (2025-07-21)
 
 
