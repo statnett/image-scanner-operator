@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.13.1](https://github.com/statnett/image-scanner-operator/compare/v0.13.0...v0.13.1) (2025-08-04)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.65.0 ([#1487](https://github.com/statnett/image-scanner-operator/issues/1487)) ([4c38e38](https://github.com/statnett/image-scanner-operator/commit/4c38e38f56e26fa57900fb38b404b5a90ee57afd))
+* **deps:** Update module github.com/onsi/gomega to v1.38.0 ([#1477](https://github.com/statnett/image-scanner-operator/issues/1477)) ([4c54c65](https://github.com/statnett/image-scanner-operator/commit/4c54c658a9bcec659478f129af635a36439f0021))
+* **deps:** Update module github.com/prometheus/client_golang to v1.23.0 ([#1488](https://github.com/statnett/image-scanner-operator/issues/1488)) ([4cad3eb](https://github.com/statnett/image-scanner-operator/commit/4cad3eb3423d44bd90f4438402c2b06deb3230e3))
+* **deps:** Update module sigs.k8s.io/yaml to v1.6.0 ([#1480](https://github.com/statnett/image-scanner-operator/issues/1480)) ([51adc2c](https://github.com/statnett/image-scanner-operator/commit/51adc2ce5cc449a6e8fa48a3defc4b057e270cb6))
+* **deps:** Update sigs.k8s.io/json digest to 2d32026 ([#1484](https://github.com/statnett/image-scanner-operator/issues/1484)) ([7f52bf2](https://github.com/statnett/image-scanner-operator/commit/7f52bf2bf59715f3cba3a581d2c22f52b9a8f2d2))
+
 ## [0.13.0](https://github.com/statnett/image-scanner-operator/compare/v0.12.4...v0.13.0) (2025-07-21)
 
 
