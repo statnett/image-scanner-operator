@@ -111,6 +111,6 @@ jobs:
           k3d image import ${{ env.IMG_FILE }} --cluster ${{ env.K3D_CLUSTER }}
           make deploy-dependencies deploy
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@f2b47b97dc889c12702113753d713f01ec268de5 # v0.2.12
+        uses: kyverno/action-install-chainsaw@6354895e0f99ab23d3e38d85cf5c71b5dc21d727 # v0.2.13
       - run: |
           make e2e-test
