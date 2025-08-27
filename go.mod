@@ -9,7 +9,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.25.1
 	github.com/onsi/gomega v1.38.2
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/openreports/reports-api v0.0.0-20250719202023-28a4ee05f82e
+	github.com/openreports/reports-api v0.0.0-20250826223734-cf8f26f46767
 	github.com/prometheus/client_golang v1.23.0
 	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
