@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.13.3](https://github.com/statnett/image-scanner-operator/compare/v0.13.2...v0.13.3) (2025-08-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/openreports/reports-api digest to cf8f26f ([#1514](https://github.com/statnett/image-scanner-operator/issues/1514)) ([ab5aaf5](https://github.com/statnett/image-scanner-operator/commit/ab5aaf5156f953d24cb683a87911a69293755f78))
+* **deps:** Update k8s.io/utils digest to 0af2bda ([#1503](https://github.com/statnett/image-scanner-operator/issues/1503)) ([84799f1](https://github.com/statnett/image-scanner-operator/commit/84799f16c380f5bd59f639163ea0739706f4ab69))
+* **deps:** Update kubernetes go packages ([#1522](https://github.com/statnett/image-scanner-operator/issues/1522)) ([cf75904](https://github.com/statnett/image-scanner-operator/commit/cf7590499c20525cea6f233420a4e432dc6fee78))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.24.0 ([#1501](https://github.com/statnett/image-scanner-operator/issues/1501)) ([035ad40](https://github.com/statnett/image-scanner-operator/commit/035ad40180e4f61a5a443f6101bfcc697a410c63))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.25.1 ([#1504](https://github.com/statnett/image-scanner-operator/issues/1504)) ([1da5aad](https://github.com/statnett/image-scanner-operator/commit/1da5aad0ec6fde42dcec636fce97c01683d7c8b6))
+* **deps:** Update module github.com/onsi/gomega to v1.38.1 ([#1506](https://github.com/statnett/image-scanner-operator/issues/1506)) ([573b9ef](https://github.com/statnett/image-scanner-operator/commit/573b9efc019b38476144107ae758a6f7415254ab))
+* **deps:** Update module github.com/onsi/gomega to v1.38.2 ([#1512](https://github.com/statnett/image-scanner-operator/issues/1512)) ([a94549a](https://github.com/statnett/image-scanner-operator/commit/a94549a792eab749558e498e1c972b31ce1f9f52))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.43 ([#1520](https://github.com/statnett/image-scanner-operator/issues/1520)) ([532114b](https://github.com/statnett/image-scanner-operator/commit/532114b293a72e32598b611f0827e429f10c4e6c))
+* **deps:** Update module github.com/stretchr/testify to v1.11.0 ([#1508](https://github.com/statnett/image-scanner-operator/issues/1508)) ([c0d0d91](https://github.com/statnett/image-scanner-operator/commit/c0d0d9130f1758770766305acd8a437ded3cd6bf))
+* **deps:** Update module github.com/stretchr/testify to v1.11.1 ([#1515](https://github.com/statnett/image-scanner-operator/issues/1515)) ([dda959f](https://github.com/statnett/image-scanner-operator/commit/dda959ff3ca5b13b3a4c9bbdf938ac9362b5eec8))
+
 ## [0.13.2](https://github.com/statnett/image-scanner-operator/compare/v0.13.1...v0.13.2) (2025-08-14)
 
 
