@@ -11,7 +11,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/openreports/reports-api v0.0.0-20250826223734-cf8f26f46767
 	github.com/prometheus/client_golang v1.23.0
-	github.com/spf13/pflag v1.0.7
+	github.com/spf13/pflag v1.0.9
 	github.com/spf13/viper v1.20.1
 	github.com/statnett/controller-runtime-viper v0.3.43
 	github.com/stretchr/testify v1.11.1
