@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.4](https://github.com/statnett/image-scanner-operator/compare/v0.13.3...v0.13.4) (2025-09-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/openreports/reports-api digest to 9366136 ([#1523](https://github.com/statnett/image-scanner-operator/issues/1523)) ([0152e15](https://github.com/statnett/image-scanner-operator/commit/0152e1569c8c852bb4a35b1b3a29351585208b65))
+* **deps:** Update module github.com/openreports/reports-api to v0.2.0-alpha.1 ([#1529](https://github.com/statnett/image-scanner-operator/issues/1529)) ([596819c](https://github.com/statnett/image-scanner-operator/commit/596819c6eaf5270d9ccc19072a367c4b4fcd5b1c))
+* **deps:** Update module github.com/spf13/pflag to v1.0.9 ([#1525](https://github.com/statnett/image-scanner-operator/issues/1525)) ([3c05ae0](https://github.com/statnett/image-scanner-operator/commit/3c05ae0ca8f4895c4674f79e433f4fbb5093ad0c))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.44 ([#1527](https://github.com/statnett/image-scanner-operator/issues/1527)) ([714274d](https://github.com/statnett/image-scanner-operator/commit/714274d222bef8d7c4d875eb07702f9cbe667e19))
+
 ## [0.13.3](https://github.com/statnett/image-scanner-operator/compare/v0.13.2...v0.13.3) (2025-08-28)
 
 
