@@ -86,7 +86,7 @@ var _ = BeforeSuite(func() {
 	Expect(appsv1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(stasv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(batchv1.AddToScheme(scheme.Scheme)).To(Succeed())
-	Expect(openreportsv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
+	Expect(openreportsv1alpha1.Install(scheme.Scheme)).To(Succeed())
 
 	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
 	Expect(err).NotTo(HaveOccurred())
