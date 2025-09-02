@@ -43,7 +43,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 	utilruntime.Must(stasv1alpha1.AddToScheme(scheme))
-	utilruntime.Must(openreportsv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(openreportsv1alpha1.Install(scheme))
 }
 
 type Operator struct{}
