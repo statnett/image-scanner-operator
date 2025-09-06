@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.6](https://github.com/statnett/image-scanner-operator/compare/v0.13.5...v0.13.6) (2025-09-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.25.3 ([#1524](https://github.com/statnett/image-scanner-operator/issues/1524)) ([89ca0a1](https://github.com/statnett/image-scanner-operator/commit/89ca0a19bd6a35139c699a408b7082dc7812a91d))
+* **deps:** Update module github.com/prometheus/client_golang to v1.23.2 ([#1538](https://github.com/statnett/image-scanner-operator/issues/1538)) ([514570b](https://github.com/statnett/image-scanner-operator/commit/514570b3bd7484b7927251ef705edbb7f19df052))
+
 ## [0.13.5](https://github.com/statnett/image-scanner-operator/compare/v0.13.4...v0.13.5) (2025-09-04)
 
 
