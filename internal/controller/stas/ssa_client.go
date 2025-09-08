@@ -47,37 +47,6 @@ func (p applyPatch) Data(_ client.Object) ([]byte, error) {
 	return json.Marshal(p.patch)
 }
 
-// FieldValidationStrict instructs the server on how to handle
-// objects in the request (POST/PUT/PATCH) containing unknown
-// or duplicate fields. This will fail the request with a BadRequest
-// error if any unknown fields would be dropped from the object, or if any
-// duplicate fields are present. The error returned from the server
-// will contain all unknown and duplicate fields encountered.
-var FieldValidationStrict = fieldValidationStrict{}
-
-var (
-	_ client.PatchOption            = fieldValidationStrict{}
-	_ client.SubResourcePatchOption = fieldValidationStrict{}
-)
-
-type fieldValidationStrict struct{}
-
-func (fieldValidationStrict) ApplyToPatch(opts *client.PatchOptions) {
-	if opts.Raw == nil {
-		opts.Raw = &metav1.PatchOptions{}
-	}
-
-	opts.Raw.FieldValidation = "Strict"
-}
-
-func (fieldValidationStrict) ApplyToSubResourcePatch(opts *client.SubResourcePatchOptions) {
-	if opts.Raw == nil {
-		opts.Raw = &metav1.PatchOptions{}
-	}
-
-	opts.Raw.FieldValidation = "Strict"
-}
-
 func NewConditionsPatch(existingConditions []metav1.Condition, conditions ...*metav1ac.ConditionApplyConfiguration) []*metav1ac.ConditionApplyConfiguration {
 	for _, condition := range conditions {
 		if condition.LastTransitionTime.IsZero() {

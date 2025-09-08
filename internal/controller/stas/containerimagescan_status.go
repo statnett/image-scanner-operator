@@ -93,7 +93,7 @@ func (p *containerImageScanStatusPatch) apply(ctx context.Context, c client.Clie
 	}
 
 	if p.minSeverity == nil {
-		if err := c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner); err != nil {
+		if err := c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, client.FieldValidation(metav1.FieldValidationStrict), client.ForceOwnership, fieldOwner); err != nil {
 			return fmt.Errorf("when patching status: %w", err)
 		}
 
@@ -107,7 +107,7 @@ func (p *containerImageScanStatusPatch) apply(ctx context.Context, c client.Clie
 			return *v.Severity < severity
 		})
 
-		err = c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
+		err = c.Status().Patch(ctx, p.cis, applyPatch{p.patch}, client.FieldValidation(metav1.FieldValidationStrict), client.ForceOwnership, fieldOwner)
 		if !isResourceTooLargeError(err) {
 			break
 		}
