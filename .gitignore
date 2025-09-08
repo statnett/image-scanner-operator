@@ -28,3 +28,6 @@ Dockerfile.cross
 
 # Chainsaw
 /chainsaw-report.xml
+
+# Dowloaded Helm charts
+**/charts/
