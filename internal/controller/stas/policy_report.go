@@ -22,8 +22,10 @@ func newPolicyReportPatch(cis *stasv1alpha1.ContainerImageScan) *policyReportPat
 		patch: openreportsv1alpha1ac.Report(cis.Name, cis.Namespace).
 			WithScope(
 				corev1.ObjectReference{
-					Kind: cis.Spec.Workload.Kind,
-					Name: cis.Spec.Workload.Name,
+					APIVersion: cis.Spec.Workload.APIVersion,
+					Kind:       cis.Spec.Workload.Kind,
+					Name:       cis.Spec.Workload.Name,
+					UID:        cis.Spec.Workload.UID,
 				},
 			),
 	}

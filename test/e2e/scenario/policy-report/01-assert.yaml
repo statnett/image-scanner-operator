@@ -10,5 +10,6 @@ metadata:
       kind: ContainerImageScan
       name: pod-echo-app-ab50d
 scope:
+  apiVersion: v1
   kind: Pod
   name: echo

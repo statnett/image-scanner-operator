@@ -18,10 +18,22 @@ type Image struct {
 }
 
 type Workload struct {
-	Group         string `json:"group"`
-	Kind          string `json:"kind"`
-	Name          string `json:"name"`
-	ContainerName string `json:"containerName"`
+	// API version of the referent.
+	// +optional
+	APIVersion string `json:"apiVersion,omitempty"`
+	// Deprecated: Use APIVersion instead. Will be removed in the next version of the API.
+	Group string `json:"group"`
+	// Kind of the referent.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	Kind string `json:"kind"`
+	// Name of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	Name string `json:"name"`
+	// UID of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids
+	// +optional
+	UID           types.UID `json:"uid,omitempty"`
+	ContainerName string    `json:"containerName"`
 }
 
 type ScanConfig struct {

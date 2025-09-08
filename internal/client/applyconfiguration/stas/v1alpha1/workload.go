@@ -2,19 +2,33 @@
 
 package v1alpha1
 
+import (
+	types "k8s.io/apimachinery/pkg/types"
+)
+
 // WorkloadApplyConfiguration represents a declarative configuration of the Workload type for use
 // with apply.
 type WorkloadApplyConfiguration struct {
-	Group         *string `json:"group,omitempty"`
-	Kind          *string `json:"kind,omitempty"`
-	Name          *string `json:"name,omitempty"`
-	ContainerName *string `json:"containerName,omitempty"`
+	APIVersion    *string    `json:"apiVersion,omitempty"`
+	Group         *string    `json:"group,omitempty"`
+	Kind          *string    `json:"kind,omitempty"`
+	Name          *string    `json:"name,omitempty"`
+	UID           *types.UID `json:"uid,omitempty"`
+	ContainerName *string    `json:"containerName,omitempty"`
 }
 
 // WorkloadApplyConfiguration constructs a declarative configuration of the Workload type for use with
 // apply.
 func Workload() *WorkloadApplyConfiguration {
 	return &WorkloadApplyConfiguration{}
+}
+
+// WithAPIVersion sets the APIVersion field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the APIVersion field is set to the value of the last call.
+func (b *WorkloadApplyConfiguration) WithAPIVersion(value string) *WorkloadApplyConfiguration {
+	b.APIVersion = &value
+	return b
 }
 
 // WithGroup sets the Group field in the declarative configuration to the given value
@@ -38,6 +52,14 @@ func (b *WorkloadApplyConfiguration) WithKind(value string) *WorkloadApplyConfig
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *WorkloadApplyConfiguration) WithName(value string) *WorkloadApplyConfiguration {
 	b.Name = &value
+	return b
+}
+
+// WithUID sets the UID field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the UID field is set to the value of the last call.
+func (b *WorkloadApplyConfiguration) WithUID(value types.UID) *WorkloadApplyConfiguration {
+	b.UID = &value
 	return b
 }
 
