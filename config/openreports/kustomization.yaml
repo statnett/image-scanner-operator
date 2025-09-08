@@ -4,5 +4,5 @@ kind: Kustomization
 helmCharts:
   - name: openreports
     includeCRDs: true
-    version: v0.2.0
+    version: 0.2.1
     repo: oci://ghcr.io/openreports/charts/
