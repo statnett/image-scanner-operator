@@ -13,11 +13,12 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/json"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/client-go/kubernetes/scheme"
-	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -27,6 +28,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/kustomize/api/krusty"
+	"sigs.k8s.io/kustomize/api/types"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -37,7 +41,6 @@ import (
 const scanJobNamespace = "image-scanner"
 
 var (
-	cfg              *rest.Config
 	k8sClient        client.Client
 	k8sScheme        *runtime.Scheme
 	k8sEventRecorder record.EventRecorder
@@ -68,18 +71,19 @@ var _ = BeforeSuite(func() {
 
 	Expect(config.DefaultMutableFeatureGate.OverrideDefault(feature.PolicyReport, true)).To(Succeed())
 
+	openReportsCRDs := loadOpenReportsCRDs()
+
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
 		CRDDirectoryPaths: []string{
 			filepath.Join("..", "..", "..", "config", "crd", "bases"),
-			filepath.Join("..", "..", "..", "config", "openreports", "crd"),
 		},
+		CRDs:                  openReportsCRDs,
 		ErrorIfCRDPathMissing: true,
 	}
 
-	var err error
 	// cfg is defined in this file globally.
-	cfg, err = testEnv.Start()
+	cfg, err := testEnv.Start()
 	Expect(err).NotTo(HaveOccurred())
 	Expect(cfg).NotTo(BeNil())
 
@@ -166,6 +170,31 @@ var _ = BeforeSuite(func() {
 		Expect(k8sManager.Start(ctrlCtx)).To(Succeed())
 	}()
 })
+
+func loadOpenReportsCRDs() []*apiextensionsv1.CustomResourceDefinition {
+	kOpts := krusty.MakeDefaultOptions()
+	kOpts.PluginConfig = types.EnabledPluginConfig(types.BploUndefined)
+	kOpts.PluginConfig.HelmConfig.Command = "helm"
+	k := krusty.MakeKustomizer(kOpts)
+	m, err := k.Run(filesys.FileSystemOrOnDisk{}, filepath.Join("..", "..", "..", "config", "openreports"))
+	Expect(err).To(Succeed())
+
+	resources := m.Resources()
+
+	crds := make([]*apiextensionsv1.CustomResourceDefinition, len(resources))
+	for i := range resources {
+		bytes, err := resources[i].MarshalJSON()
+		Expect(err).To(Succeed())
+
+		crd := &apiextensionsv1.CustomResourceDefinition{}
+		err = json.Unmarshal(bytes, crd)
+		Expect(err).To(Succeed())
+
+		crds[i] = crd
+	}
+
+	return crds
+}
 
 var _ = AfterSuite(func() {
 	cancel()

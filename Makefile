@@ -52,11 +52,6 @@ generate: controller-gen k8s-client-gen ## Generate code required for K8s API an
 k8s-client-gen: controller-gen ## Generate API clients
 	$(CONTROLLER_GEN) applyconfiguration paths="./..."
 
-.PHONY: openreports-crd-update
-openreports-crd-update:
-	curl -O --output-dir config/openreports/crd/ --remote-name-all \
-		https://raw.githubusercontent.com/openreports/reports-api/refs/heads/main/crd/openreports.io/v1alpha1/openreports.io_{clusterreports,reports}.yaml \
-
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
@@ -140,7 +135,7 @@ uninstall: manifests kustomize ## Uninstall CRDs from the K8s cluster specified 
 .PHONY: deploy
 deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
-	$(KUSTOMIZE) build config/e2e-test | kubectl apply --server-side -f -
+	$(KUSTOMIZE) build config/e2e-test --enable-helm | kubectl apply --server-side -f -
 	for w in statefulset/trivy deployment/image-scanner-controller-manager; do \
 		if ! kubectl rollout status $$w -n $(K8S_NAMESPACE) --timeout=2m; then \
 			kubectl get events -n $(K8S_NAMESPACE); \
@@ -151,7 +146,7 @@ deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in
 
 .PHONY: undeploy
 undeploy: ## Undeploy controller from the K8s cluster specified in ~/.kube/config. Call with ignore-not-found=true to ignore resource not found errors during deletion.
-	$(KUSTOMIZE) build config/e2e-test | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
+	$(KUSTOMIZE) build config/e2e-test --enable-helm | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
 
 .PHONY: deploy-dependencies
 deploy-dependencies: kustomize ## Install operator dependent software not part of standard K8s
