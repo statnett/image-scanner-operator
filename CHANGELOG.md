@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.14.0](https://github.com/statnett/image-scanner-operator/compare/v0.13.5...v0.14.0) (2025-09-08)
+
+
+### Features
+
+* Enrich policy report with more scope information ([#1541](https://github.com/statnett/image-scanner-operator/issues/1541)) ([ff234be](https://github.com/statnett/image-scanner-operator/commit/ff234bedaf97a5fd22244bd24ba92399c54b391c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.25.3 ([#1524](https://github.com/statnett/image-scanner-operator/issues/1524)) ([89ca0a1](https://github.com/statnett/image-scanner-operator/commit/89ca0a19bd6a35139c699a408b7082dc7812a91d))
+* **deps:** Update module github.com/openreports/reports-api to v0.2.1 ([#1545](https://github.com/statnett/image-scanner-operator/issues/1545)) ([e215e18](https://github.com/statnett/image-scanner-operator/commit/e215e18883ebb1e60eef169358c6a5670d04cb79))
+* **deps:** Update module github.com/prometheus/client_golang to v1.23.2 ([#1538](https://github.com/statnett/image-scanner-operator/issues/1538)) ([514570b](https://github.com/statnett/image-scanner-operator/commit/514570b3bd7484b7927251ef705edbb7f19df052))
+
 ## [0.13.5](https://github.com/statnett/image-scanner-operator/compare/v0.13.4...v0.13.5) (2025-09-04)
 
 
