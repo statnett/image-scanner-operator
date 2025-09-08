@@ -54,10 +54,6 @@ func (p *policyReportPatch) apply(ctx context.Context, c client.Client, scheme *
 		return err
 	}
 
-	report := &openreportsv1alpha1.Report{}
-	report.Name = *p.patch.Name
-	report.Namespace = *p.patch.Namespace
-
 	var err error
 	// Repeat until resource fits in api-server by increasing minimum severity on failure.
 	for severity := p.minSeverity; severity <= stasv1alpha1.MaxSeverity; severity++ {
@@ -70,7 +66,7 @@ func (p *policyReportPatch) apply(ctx context.Context, c client.Client, scheme *
 			p.patch.Results[i] = *policyReportResultPatch(v)
 		}
 
-		err = c.Patch(ctx, report, applyPatch{p.patch}, FieldValidationStrict, client.ForceOwnership, fieldOwner)
+		err = c.Apply(ctx, p.patch, client.ForceOwnership, fieldOwner)
 		if !isResourceTooLargeError(err) {
 			break
 		}

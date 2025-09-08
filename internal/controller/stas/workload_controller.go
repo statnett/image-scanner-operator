@@ -233,7 +233,7 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 			return err
 		}
 
-		if err := r.Patch(ctx, cisObj, applyPatch{cis}, FieldValidationStrict, client.ForceOwnership, fieldOwner); err != nil {
+		if err := r.Apply(ctx, cis, client.ForceOwnership, fieldOwner); err != nil {
 			return err
 		}
 
