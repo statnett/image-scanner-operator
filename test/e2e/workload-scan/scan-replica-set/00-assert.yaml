@@ -7,6 +7,7 @@ spec:
   digest: 'sha256:1645798310a56491acb75d750ed6a4693a35506c9860503d21a877cc54d95191'
   name: docker.io/nginxinc/nginx-unprivileged
   workload:
+    apiVersion: apps/v1
     containerName: app
     group: apps
     kind: ReplicaSet

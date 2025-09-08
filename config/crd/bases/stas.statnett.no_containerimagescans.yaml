@@ -83,13 +83,29 @@ spec:
                 type: string
               workload:
                 properties:
+                  apiVersion:
+                    description: API version of the referent.
+                    type: string
                   containerName:
                     type: string
                   group:
+                    description: 'Deprecated: Use APIVersion instead. Will be removed
+                      in the next version of the API.'
                     type: string
                   kind:
+                    description: |-
+                      Kind of the referent.
+                      More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
                     type: string
                   name:
+                    description: |-
+                      Name of the referent.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    type: string
+                  uid:
+                    description: |-
+                      UID of the referent.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids
                     type: string
                 required:
                 - containerName

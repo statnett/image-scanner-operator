@@ -202,9 +202,11 @@ func (r *PodReconciler) reconcile(ctx context.Context, pod *corev1.Pod) error {
 				stasv1alpha1ac.ContainerImageScanSpec().
 					WithWorkload(
 						stasv1alpha1ac.Workload().
+							WithAPIVersion(podController.GetObjectKind().GroupVersionKind().GroupVersion().String()).
 							WithGroup(podController.GetObjectKind().GroupVersionKind().Group).
 							WithKind(podController.GetObjectKind().GroupVersionKind().Kind).
 							WithName(podController.GetName()).
+							WithUID(podController.GetUID()).
 							WithContainerName(containerName),
 					).
 					WithName(image.Image.Name).

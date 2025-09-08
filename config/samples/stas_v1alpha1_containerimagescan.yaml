@@ -13,10 +13,12 @@ spec:
   digest: 'sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33'
   name: docker.io/nginxinc/nginx-unprivileged
   workload:
+    apiVersion: v1
     containerName: app
     group: ''
     kind: Pod
     name: nginx
+    uid: dcf88169-468c-4af4-b5cd-1c1d4b112137
 status:
   lastScanJobName: pod-nginx-app-afd44hs7rw
   lastScanTime: '2023-01-10T10:24:53Z'

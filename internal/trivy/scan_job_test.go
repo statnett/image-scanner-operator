@@ -64,14 +64,14 @@ var _ = Describe("Scan Job", func() {
 		})
 
 		It("should use CIS name", func() {
-			Expect(scanJobName(cis)).To(Equal("bar-e4512"))
+			Expect(scanJobName(cis)).To(Equal("bar-5e09e"))
 		})
 
 		It("should truncate name if CIS name too long", func() {
 			cis.Name = strings.Repeat("a", 128)
 			Expect(scanJobName(cis)).To(
 				And(
-					Equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-e4512"),
+					Equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-5e09e"),
 					HaveLen(KubernetesJobNameMaxLength),
 				))
 		})
@@ -80,7 +80,7 @@ var _ = Describe("Scan Job", func() {
 			cis.Name = "bar" + strings.Repeat("a.", 64)
 			Expect(scanJobName(cis)).To(
 				And(
-					Equal("bara.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a-e4512"),
+					Equal("bara.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a-5e09e"),
 					HaveLen(KubernetesJobNameMaxLength-1),
 				))
 		})

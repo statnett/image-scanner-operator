@@ -8,5 +8,8 @@ spec:
   digest: 'sha256:204d4094343ed60ff60ed4b009785151c43d8f611761929aae3a1beb02fc0adf'
   name: docker.io/nginxinc/nginx-unprivileged
   workload:
+    apiVersion: v1
+    containerName: app
+    group: ''
     kind: Pod
     name: echo
