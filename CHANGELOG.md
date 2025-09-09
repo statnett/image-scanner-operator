@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2](https://github.com/statnett/image-scanner-operator/compare/v0.14.1...v0.14.2) (2025-09-09)
+
+
+### Bug Fixes
+
+* Also create policy report when reusing report from CIS ([#1553](https://github.com/statnett/image-scanner-operator/issues/1553)) ([2bbdb82](https://github.com/statnett/image-scanner-operator/commit/2bbdb82d998d0475f796ef4f09cadb2c664d2c5f))
+
 ## [0.14.1](https://github.com/statnett/image-scanner-operator/compare/v0.14.0...v0.14.1) (2025-09-09)
 
 
