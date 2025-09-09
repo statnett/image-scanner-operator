@@ -11,6 +11,7 @@ import (
 	openreportsv1alpha1ac "github.com/openreports/reports-api/pkg/client/applyconfiguration/openreports.io/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
@@ -38,9 +39,9 @@ type policyReportPatch struct {
 	minSeverity     stasv1alpha1.Severity
 }
 
-func (p *policyReportPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity stasv1alpha1.Severity) *policyReportPatch {
+func (p *policyReportPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity *stasv1alpha1.Severity) *policyReportPatch {
 	p.vulnerabilities = vulnerabilities
-	p.minSeverity = minSeverity
+	p.minSeverity = ptr.Deref(minSeverity, stasv1alpha1.MinSeverity)
 
 	p.patch.
 		WithSummary(openreportsv1alpha1ac.ReportSummary().
