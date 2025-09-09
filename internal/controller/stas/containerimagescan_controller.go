@@ -24,6 +24,7 @@ import (
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 	"github.com/statnett/image-scanner-operator/internal/controller"
 	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	"github.com/statnett/image-scanner-operator/internal/trivy"
@@ -61,6 +62,15 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 			// Copy result of latest digest scan if within scan interval
 			if latest != nil && time.Since(latest.Status.LastSuccessfulScanTime.Time) < r.ScanInterval {
+				if config.DefaultFeatureGate.Enabled(feature.PolicyReport) {
+					err = newPolicyReportPatch(cis).
+						withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, nil).
+						apply(ctx, r.Client, r.Scheme)
+					if err != nil {
+						return ctrl.Result{}, err
+					}
+				}
+
 				return ctrl.Result{}, newContainerImageStatusPatch(cis).
 					withResults(latest.Status.Vulnerabilities, latest.Status.VulnerabilitySummary, nil).
 					withScanJob(latest.Status.LastScanJobUID, true, *latest.Status.LastSuccessfulScanTime).

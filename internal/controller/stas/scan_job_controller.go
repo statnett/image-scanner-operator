@@ -187,7 +187,7 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 
 	if config.DefaultFeatureGate.Enabled(feature.PolicyReport) {
 		err = newPolicyReportPatch(cis).
-			withResults(vulnerabilities, summary, minSeverity).
+			withResults(vulnerabilities, summary, &minSeverity).
 			apply(ctx, r.Client, r.Scheme)
 		if err != nil {
 			return err
