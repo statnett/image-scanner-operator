@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.1](https://github.com/statnett/image-scanner-operator/compare/v0.14.0...v0.14.1) (2025-09-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/spf13/viper to v1.21.0 ([#1548](https://github.com/statnett/image-scanner-operator/issues/1548)) ([b8394ea](https://github.com/statnett/image-scanner-operator/commit/b8394ea2063af89a8929a1292a068ec1842f7dbb))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.46 ([#1550](https://github.com/statnett/image-scanner-operator/issues/1550)) ([af99101](https://github.com/statnett/image-scanner-operator/commit/af991016dda51d5a23e6030ee4bb0db3b87ad466))
+
 ## [0.14.0](https://github.com/statnett/image-scanner-operator/compare/v0.13.5...v0.14.0) (2025-09-08)
 
 
