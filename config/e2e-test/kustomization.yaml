@@ -20,13 +20,6 @@ configMapGenerator:
     literals:
       - JAVA_DB_REPOSITORY=public.ecr.aws/aquasecurity/trivy-java-db
 patches:
-  - patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --feature-gates=PolicyReport=true
-    target:
-      kind: Deployment
-      name: image-scanner-controller-manager
   # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
   # Disable trivy server sessionAffinity; not really needed when running a single replica
   - patch: |-
