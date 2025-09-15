@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.3](https://github.com/statnett/image-scanner-operator/compare/v0.14.2...v0.14.3) (2025-09-15)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes go packages to v0.34.1 ([#1547](https://github.com/statnett/image-scanner-operator/issues/1547)) ([ca06dce](https://github.com/statnett/image-scanner-operator/commit/ca06dce4bf4b87e23980a60a1e3c7cf672cc4acb))
+
 ## [0.14.2](https://github.com/statnett/image-scanner-operator/compare/v0.14.1...v0.14.2) (2025-09-09)
 
 
