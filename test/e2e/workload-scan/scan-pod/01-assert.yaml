@@ -25,4 +25,4 @@ scope:
   kind: Pod
   name: echo
 (summary != null): true
-(length(results) > 0): true
+(length(results) > `0`): true
