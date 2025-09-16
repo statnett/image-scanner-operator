@@ -9,3 +9,20 @@ spec:
 status:
   vulnerabilitySummary:
     (severityCount != null): true
+---
+apiVersion: openreports.io/v1alpha1
+kind: Report
+metadata:
+  name: daemonset-echo-app-ab50d
+  ownerReferences:
+    - apiVersion: stas.statnett.no/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ContainerImageScan
+      name: daemonset-echo-app-ab50d
+scope:
+  apiVersion: apps/v1
+  kind: DaemonSet
+  name: echo
+(summary != null): true
+(length(results) > `0`): true

@@ -9,3 +9,20 @@ spec:
 status:
   vulnerabilitySummary:
     (severityCount != null): true
+---
+apiVersion: openreports.io/v1alpha1
+kind: Report
+metadata:
+  name: pod-echo-app-ab50d
+  ownerReferences:
+    - apiVersion: stas.statnett.no/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ContainerImageScan
+      name: pod-echo-app-ab50d
+scope:
+  apiVersion: v1
+  kind: Pod
+  name: echo
+(summary != null): true
+(length(results) > `0`): true

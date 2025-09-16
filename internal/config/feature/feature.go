@@ -15,5 +15,5 @@ func init() {
 }
 
 var defaultFeatureGates = map[featuregate.Feature]featuregate.FeatureSpec{
-	PolicyReport: {Default: false, PreRelease: featuregate.Alpha},
+	PolicyReport: {Default: true, PreRelease: featuregate.Beta},
 }
