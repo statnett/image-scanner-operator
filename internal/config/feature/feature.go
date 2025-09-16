@@ -20,5 +20,5 @@ func init() {
 
 var defaultFeatureGates = map[featuregate.Feature]featuregate.FeatureSpec{
 	PolicyReport:               {Default: true, PreRelease: featuregate.Beta},
-	NoCISStatusVulnerabilities: {Default: false, PreRelease: featuregate.Alpha},
+	NoCISStatusVulnerabilities: {Default: true, PreRelease: featuregate.Beta},
 }
