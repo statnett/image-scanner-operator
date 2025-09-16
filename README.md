@@ -71,8 +71,12 @@ See [stas_v1alpha1_containerimagescan.yaml][CIS-example] for a (simplified)
 example of a CIS resource.
 
 The CIS resource `.spec` specifies the container image to scan and some
-additional workload metadata, and the image scan result is added/updated
+additional workload metadata, and a summary of the image scan result is added/updated
 in `.status` by the `ContainerImageScan` controller.
+A detailed report of detected vulnerabilities is published into a
+[OpenReports](https://openreports.io/) `Report` resource owned by the CIS.
+See [v1alpha1_report.yaml][Report-example] for an example of a `Report` resource
+managed by Image Scanner operator.
 
 CIS resources should not be edited by standard users, as the `Workload`
 controller will create CIS resources from running pods. And the standard
@@ -122,6 +126,24 @@ We currently only support installation using
 [Kustomize](https://kustomize.io/), either as a standalone tool,
 using the kustomize (`-k`) feature in recent versions of `kubectl`
 or any GitOps tool with support for Kustomize.
+
+### Prerequisites
+
+Before installing Image Scanner operator, the OpenReports CRDs must be present
+in the cluster.
+
+If you are using [Kyverno](https://kyverno.io/), the OpenReports CRDs might be
+installed already. Starting with Kyverno 1.15 release (Helm chart 3.5), there
+is an opt-in to make Kyverno reports in OpenReports format. To enable the opt-in,
+set the Kyverno Helm chart value `openreports.enable=true`, which will ensure
+the required CRDs are installed by the Kyverno Helm chart.
+
+If you are not using Kyverno, the OpenReports CRDs can be installed with the
+upstream [OpenReports Helm chart](https://github.com/openreports/reports-api/pkgs/container/charts%2Fopenreports).
+
+```sh
+helm install oci://ghcr.io/openreports/charts/openreports
+```
 
 ### Install
 
@@ -237,7 +259,7 @@ scanning of running container images as illustrated in the diagrams below.
 
 The container image scan Kubernetes API is materialized
 by the `ContainerImageScan` custom resources providing
-an eventually consistent image scanning result in its
+an eventually consistent image scanning summary in its
 status.
 
 The actual vulnerability scan of a container image and the vulnerability
@@ -248,8 +270,9 @@ Using a simple `Pod`, with a single container, as an example:
 1. Create a `ContainerImageScan` when the immutable image reference is available in the `Pod` status.
 2. Create a scan `Job` from immutable image reference in the `ContainerImageScan` spec.
 3. When a scan `Job` is completed, read the scan result from pod log of the scan `Job`,
-   and update the `ContainerImageScan` status.
-4. When the `Pod` is deleted, the `ContainerImageScan` is garbage collected.
+   and update the `ContainerImageScan` status. Create/update a `Report` resource containing
+   details of the detected vulnerabilities.
+4. When the `Pod` is deleted, the `ContainerImageScan` and `Report` is garbage collected.
 
 ![Image scanner component diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/operator-component.puml))
 ![Scan image sequence diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/statnett/image-scanner-operator/main/docs/scan-sequence.puml)
@@ -278,3 +301,4 @@ Licensed under the [MIT License](LICENSE).
 [report-card]: https://goreportcard.com/report/github.com/statnett/image-scanner-operator
 [CIS-CRD]: https://doc.crds.dev/github.com/statnett/image-scanner-operator/stas.statnett.no/ContainerImageScan/v1alpha1
 [CIS-example]: config/samples/stas_v1alpha1_containerimagescan.yaml
+[Report-example]: config/samples/v1alpha1_report.yaml

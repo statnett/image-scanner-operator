@@ -7,13 +7,18 @@ import (
 	"github.com/statnett/image-scanner-operator/internal/config"
 )
 
-// PolicyReport will ensure PolicyReport resources are created for completed scan jobs.
-const PolicyReport featuregate.Feature = "PolicyReport"
+const (
+	// PolicyReport will ensure PolicyReport resources are created for completed scan jobs.
+	PolicyReport featuregate.Feature = "PolicyReport"
+	// NoCISStatusVulnerabilities is a feature gate to disable detailed list of vulnerabilities in ContainerImageScan status.
+	NoCISStatusVulnerabilities featuregate.Feature = "NoCISStatusVulnerabilities"
+)
 
 func init() {
 	runtime.Must(config.DefaultMutableFeatureGate.Add(defaultFeatureGates))
 }
 
 var defaultFeatureGates = map[featuregate.Feature]featuregate.FeatureSpec{
-	PolicyReport: {Default: true, PreRelease: featuregate.Beta},
+	PolicyReport:               {Default: true, PreRelease: featuregate.Beta},
+	NoCISStatusVulnerabilities: {Default: true, PreRelease: featuregate.Beta},
 }

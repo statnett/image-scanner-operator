@@ -9,6 +9,7 @@ spec:
 status:
   vulnerabilitySummary:
     (severityCount != null): true
+  (vulnerabilities == null): true
 ---
 apiVersion: openreports.io/v1alpha1
 kind: Report

@@ -1,275 +1,35 @@
 apiVersion: stas.statnett.no/v1alpha1
 kind: ContainerImageScan
 metadata:
-  name: pod-nginx-app-afd44
+  name: pod-nginx-app-8d8bf
   ownerReferences:
     - apiVersion: v1
       kind: Pod
       name: nginx
-      uid: 4b759b6e-cce1-4327-9110-7f81bc1cd37d
-  labels:
-    app.kubernetes.io/name: nginx
+      uid: 20202cb1-cd63-45fb-bf71-ae2b6cc4cbea
 spec:
-  digest: 'sha256:0fd172200e9ef7d3187cf526b24567027992ffce8a34cc9d5ac0d18deb974d33'
+  digest: 'sha256:3fbc5ad2c00a62a6c175e9a9a3b2de2b3011f3e5d005a091276620b34e1bae39'
+  ignoreUnfixed: false
   name: docker.io/nginxinc/nginx-unprivileged
+  tag: latest
   workload:
     apiVersion: v1
     containerName: app
     group: ''
     kind: Pod
     name: nginx
-    uid: dcf88169-468c-4af4-b5cd-1c1d4b112137
+    uid: 20202cb1-cd63-45fb-bf71-ae2b6cc4cbea
 status:
-  lastScanJobName: pod-nginx-app-afd44hs7rw
-  lastScanTime: '2023-01-10T10:24:53Z'
-  lastSuccessfulScanTime: '2023-01-10T10:24:53Z'
+  lastScanJobUID: 5abb37cb-e57b-433b-b92e-8452e423e109
+  lastScanTime: '2025-09-16T07:40:10Z'
+  lastSuccessfulScanTime: '2025-09-16T07:40:10Z'
   observedGeneration: 1
-  vulnerabilities:
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32207'
-      severity: CRITICAL
-      title: 'curl: Unpreserved file permissions'
-      vulnerabilityID: CVE-2022-32207
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32221'
-      severity: CRITICAL
-      title: 'curl: POST following PUT confusion'
-      vulnerabilityID: CVE-2022-32221
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42915'
-      severity: CRITICAL
-      title: 'curl: HTTP proxy double-free'
-      vulnerabilityID: CVE-2022-42915
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32207'
-      severity: CRITICAL
-      title: 'curl: Unpreserved file permissions'
-      vulnerabilityID: CVE-2022-32207
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32221'
-      severity: CRITICAL
-      title: 'curl: POST following PUT confusion'
-      vulnerabilityID: CVE-2022-32221
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42915'
-      severity: CRITICAL
-      title: 'curl: HTTP proxy double-free'
-      vulnerabilityID: CVE-2022-42915
-    - fixedVersion: 1.2.12-r2
-      installedVersion: 1.2.12-r0
-      pkgName: zlib
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-37434'
-      severity: CRITICAL
-      title: >-
-        zlib: heap-based buffer over-read and overflow in inflate() in inflate.c
-        via a large gzip header extra field
-      vulnerabilityID: CVE-2022-37434
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27780'
-      severity: HIGH
-      title: 'curl: percent-encoded path separator in URL host'
-      vulnerabilityID: CVE-2022-27780
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27781'
-      severity: HIGH
-      title: 'curl: CERTINFO never-ending busy-loop'
-      vulnerabilityID: CVE-2022-27781
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27782'
-      severity: HIGH
-      title: 'curl: TLS and SSH connection too eager reuse'
-      vulnerabilityID: CVE-2022-27782
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42916'
-      severity: HIGH
-      title: 'curl: HSTS bypass via IDN'
-      vulnerabilityID: CVE-2022-42916
-    - fixedVersion: 7.80.0-r5
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43551'
-      severity: HIGH
-      title: 'curl: HSTS bypass via IDN'
-      vulnerabilityID: CVE-2022-43551
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27780'
-      severity: HIGH
-      title: 'curl: percent-encoded path separator in URL host'
-      vulnerabilityID: CVE-2022-27780
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27781'
-      severity: HIGH
-      title: 'curl: CERTINFO never-ending busy-loop'
-      vulnerabilityID: CVE-2022-27781
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27782'
-      severity: HIGH
-      title: 'curl: TLS and SSH connection too eager reuse'
-      vulnerabilityID: CVE-2022-27782
-    - fixedVersion: 7.80.0-r4
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-42916'
-      severity: HIGH
-      title: 'curl: HSTS bypass via IDN'
-      vulnerabilityID: CVE-2022-42916
-    - fixedVersion: 7.80.0-r5
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43551'
-      severity: HIGH
-      title: 'curl: HSTS bypass via IDN'
-      vulnerabilityID: CVE-2022-43551
-    - fixedVersion: 2.9.14-r1
-      installedVersion: 2.9.14-r0
-      pkgName: libxml2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2309'
-      severity: HIGH
-      title: 'lxml: NULL Pointer Dereference in lxml'
-      vulnerabilityID: CVE-2022-2309
-    - fixedVersion: 2.9.14-r2
-      installedVersion: 2.9.14-r0
-      pkgName: libxml2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-40303'
-      severity: HIGH
-      title: 'libxml2: integer overflows with XML_PARSE_HUGE'
-      vulnerabilityID: CVE-2022-40303
-    - fixedVersion: 2.9.14-r2
-      installedVersion: 2.9.14-r0
-      pkgName: libxml2
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-40304'
-      severity: HIGH
-      title: 'libxml2: dict corruption caused by entity reference cycles'
-      vulnerabilityID: CVE-2022-40304
-    - fixedVersion: 6.3_p20211120-r1
-      installedVersion: 6.3_p20211120-r0
-      pkgName: ncurses-libs
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
-      severity: HIGH
-      title: 'ncurses: segfaulting OOB read'
-      vulnerabilityID: CVE-2022-29458
-    - fixedVersion: 6.3_p20211120-r1
-      installedVersion: 6.3_p20211120-r0
-      pkgName: ncurses-terminfo-base
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-29458'
-      severity: HIGH
-      title: 'ncurses: segfaulting OOB read'
-      vulnerabilityID: CVE-2022-29458
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32205'
-      severity: MEDIUM
-      title: 'curl: Set-Cookie denial of service'
-      vulnerabilityID: CVE-2022-32205
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32206'
-      severity: MEDIUM
-      title: 'curl: HTTP compression denial of service'
-      vulnerabilityID: CVE-2022-32206
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32208'
-      severity: MEDIUM
-      title: 'curl: FTP-KRB bad message verification'
-      vulnerabilityID: CVE-2022-32208
-    - fixedVersion: 7.80.0-r5
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
-      severity: MEDIUM
-      title: 'curl: HTTP Proxy deny use-after-free'
-      vulnerabilityID: CVE-2022-43552
-    - fixedVersion: 1.1.1q-r0
-      installedVersion: 1.1.1n-r0
-      pkgName: libcrypto1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2097'
-      severity: MEDIUM
-      title: 'openssl: AES OCB fails to encrypt some bytes'
-      vulnerabilityID: CVE-2022-2097
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32205'
-      severity: MEDIUM
-      title: 'curl: Set-Cookie denial of service'
-      vulnerabilityID: CVE-2022-32205
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32206'
-      severity: MEDIUM
-      title: 'curl: HTTP compression denial of service'
-      vulnerabilityID: CVE-2022-32206
-    - fixedVersion: 7.80.0-r2
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-32208'
-      severity: MEDIUM
-      title: 'curl: FTP-KRB bad message verification'
-      vulnerabilityID: CVE-2022-32208
-    - fixedVersion: 7.80.0-r5
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-43552'
-      severity: MEDIUM
-      title: 'curl: HTTP Proxy deny use-after-free'
-      vulnerabilityID: CVE-2022-43552
-    - fixedVersion: 1.1.1q-r0
-      installedVersion: 1.1.1n-r0
-      pkgName: libssl1.1
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-2097'
-      severity: MEDIUM
-      title: 'openssl: AES OCB fails to encrypt some bytes'
-      vulnerabilityID: CVE-2022-2097
-    - fixedVersion: 7.80.0-r3
-      installedVersion: 7.80.0-r1
-      pkgName: curl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-35252'
-      severity: LOW
-      title: 'curl: control code in cookie denial of service'
-      vulnerabilityID: CVE-2022-35252
-    - fixedVersion: 7.80.0-r3
-      installedVersion: 7.80.0-r1
-      pkgName: libcurl
-      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-35252'
-      severity: LOW
-      title: 'curl: control code in cookie denial of service'
-      vulnerabilityID: CVE-2022-35252
   vulnerabilitySummary:
-    fixedCount: 34
+    fixedCount: 0
     severityCount:
-      CRITICAL: 7
-      HIGH: 15
-      LOW: 2
-      MEDIUM: 10
-      UNKNOWN: 0
+      CRITICAL: 2
+      HIGH: 9
+      LOW: 107
+      MEDIUM: 21
+      UNKNOWN: 1
+    unfixedCount: 140
