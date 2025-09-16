@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/statnett/image-scanner-operator/internal/config"
-	"github.com/statnett/image-scanner-operator/internal/config/feature"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
@@ -14,6 +12,8 @@ import (
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	stasv1alpha1ac "github.com/statnett/image-scanner-operator/internal/client/applyconfiguration/stas/v1alpha1"
+	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 )
 
 func newContainerImageStatusPatch(cis *stasv1alpha1.ContainerImageScan) *containerImageScanStatusPatch {
