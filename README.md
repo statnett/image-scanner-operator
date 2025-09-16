@@ -75,7 +75,7 @@ additional workload metadata, and a summary of the image scan result is added/up
 in `.status` by the `ContainerImageScan` controller.
 A detailed report of detected vulnerabilities is published into a
 [OpenReports](https://openreports.io/) `Report` resource owned by the CIS.
-See [v1alpha1_report.yaml][Reoort-example] for an example of a `Report` resource
+See [v1alpha1_report.yaml][Report-example] for an example of a `Report` resource
 managed by Image Scanner operator.
 
 CIS resources should not be edited by standard users, as the `Workload`
