@@ -132,17 +132,6 @@ var _ = Describe("ContainerImageScan controller", func() {
 				LastScanJobUID:         types.UID("0eb32892-d1a7-4524-9b88-ecc5fd09dfbc"),
 				LastScanTime:           &latestDigestScanTime,
 				LastSuccessfulScanTime: &latestDigestScanTime,
-				Vulnerabilities: []stasv1alpha1.Vulnerability{
-					{
-						VulnerabilityID:  "1",
-						PkgName:          "pkg",
-						InstalledVersion: "latest",
-						Severity:         1,
-						PkgPath:          "/",
-						FixedVersion:     "next",
-						Title:            "foo",
-					},
-				},
 				VulnerabilitySummary: &stasv1alpha1.VulnerabilitySummary{
 					SeverityCount: map[string]int32{
 						"UNKNOWN": 1,
