@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.15.0](https://github.com/statnett/image-scanner-operator/compare/v0.14.3...v0.15.0) (2025-09-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* add feature gate to disable vulnerabilities in CIS status ([#1560](https://github.com/statnett/image-scanner-operator/issues/1560))
+
+### Features
+
+* Add feature gate to disable vulnerabilities in CIS status ([#1560](https://github.com/statnett/image-scanner-operator/issues/1560)) ([bf170c6](https://github.com/statnett/image-scanner-operator/commit/bf170c6fa7bd7e0a5efb70c89cbd9bf4aaafbe8f))
+* Enable PolicyReport feature gate by default ([#1558](https://github.com/statnett/image-scanner-operator/issues/1558)) ([8afd320](https://github.com/statnett/image-scanner-operator/commit/8afd32099ca52e368f22054cad26bdbce34c4ea0))
+
 ## [0.14.3](https://github.com/statnett/image-scanner-operator/compare/v0.14.2...v0.14.3) (2025-09-15)
 
 
