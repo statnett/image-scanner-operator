@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
@@ -73,9 +75,11 @@ func (p *containerImageScanStatusPatch) withScanJob(jobUID types.UID, successful
 func (p *containerImageScanStatusPatch) withResults(vulnerabilities []stasv1alpha1.Vulnerability, summary *stasv1alpha1.VulnerabilitySummary, minSeverity *stasv1alpha1.Severity) *containerImageScanStatusPatch {
 	p.minSeverity = minSeverity
 
-	p.patch.Status.Vulnerabilities = make([]stasv1alpha1ac.VulnerabilityApplyConfiguration, len(vulnerabilities))
-	for i, v := range vulnerabilities {
-		p.patch.Status.Vulnerabilities[i] = *vulnerabilityPatch(v)
+	if !config.DefaultFeatureGate.Enabled(feature.NoCISStatusVulnerabilities) {
+		p.patch.Status.Vulnerabilities = make([]stasv1alpha1ac.VulnerabilityApplyConfiguration, len(vulnerabilities))
+		for i, v := range vulnerabilities {
+			p.patch.Status.Vulnerabilities[i] = *vulnerabilityPatch(v)
+		}
 	}
 
 	p.patch.Status.
