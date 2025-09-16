@@ -1,0 +1,1420 @@
+apiVersion: openreports.io/v1alpha1
+kind: Report
+metadata:
+  name: pod-nginx-app-8d8bf
+  ownerReferences:
+    - apiVersion: stas.statnett.no/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ContainerImageScan
+      name: pod-nginx-app-8d8bf
+      uid: a2bb41d2-f0f8-4087-91a4-f87c579001e6
+results:
+  - category: vulnerability scan
+    message: It was discovered that dpkg-deb does not properly sanitize directory p ...
+    policy: CVE-2025-6297
+    properties:
+      installedVersion: 1.21.22
+      pkgName: dpkg
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6297'
+    result: skip
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'It was found that apt-key in apt, all versions, do not correctly valid ...'
+    policy: CVE-2011-3374
+    properties:
+      installedVersion: 2.6.1
+      pkgName: apt
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3374'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: '[Privilege escalation possible to other user than root]'
+    policy: TEMP-0841856-B18BAF
+    properties:
+      installedVersion: 5.2.15-2+b9
+      pkgName: bash
+      primaryURL: 'https://security-tracker.debian.org/tracker/TEMP-0841856-B18BAF'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: '1:2.38.1-5+deb12u3'
+      pkgName: bsdutils
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'coreutils: Non-privileged session can escape to the parent session in chroot'
+    policy: CVE-2016-2781
+    properties:
+      installedVersion: 9.1-1
+      pkgName: coreutils
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2016-2781'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'coreutils: race condition vulnerability in chown and chgrp'
+    policy: CVE-2017-18018
+    properties:
+      installedVersion: 9.1-1
+      pkgName: coreutils
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-18018'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'coreutils: Heap Buffer Under-Read in GNU Coreutils sort via Key Specification'
+    policy: CVE-2025-5278
+    properties:
+      installedVersion: 9.1-1
+      pkgName: coreutils
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-5278'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: QUIC certificate check bypass with wolfSSL'
+    policy: CVE-2024-2379
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-2379'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libcurl: Buffer Overflow in libcurl via zlib Integer Overflow'
+    policy: CVE-2025-0725
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-0725'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows stack exhaustion in demangle_const'
+    policy: CVE-2022-27943
+    properties:
+      installedVersion: 12.2.0-14+deb12u1
+      pkgName: gcc-12-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27943'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'gnupg: denial of service issue (resource consumption) using compressed packets'
+    policy: CVE-2022-3219
+    properties:
+      installedVersion: 2.2.40-1.1+deb12u1
+      pkgName: gpgv
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-3219'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'gnupg: verification DoS due to a malicious subkey in the keyring'
+    policy: CVE-2025-30258
+    properties:
+      installedVersion: 2.2.40-1.1+deb12u1
+      pkgName: gpgv
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-30258'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'It was found that apt-key in apt, all versions, do not correctly valid ...'
+    policy: CVE-2011-3374
+    properties:
+      installedVersion: 2.6.1
+      pkgName: libapt-pkg6.0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3374'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: libblkid1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions'
+    policy: CVE-2010-4756
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-4756'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c'
+    policy: CVE-2018-20796
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-20796'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: stack guard protection bypass'
+    policy: CVE-2019-1010022
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010022'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: running ldd on malicious ELF leads to code execution because of wrong size computation'
+    policy: CVE-2019-1010023
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010023'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: ASLR bypass using cache of thread stack and heap'
+    policy: CVE-2019-1010024
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010024'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: information disclosure of heap addresses of pthread_created thread'
+    policy: CVE-2019-1010025
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010025'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c'
+    policy: CVE-2019-9192
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-9192'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions'
+    policy: CVE-2010-4756
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2010-4756'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c'
+    policy: CVE-2018-20796
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-20796'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: stack guard protection bypass'
+    policy: CVE-2019-1010022
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010022'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: running ldd on malicious ELF leads to code execution because of wrong size computation'
+    policy: CVE-2019-1010023
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010023'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: ASLR bypass using cache of thread stack and heap'
+    policy: CVE-2019-1010024
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010024'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: information disclosure of heap addresses of pthread_created thread'
+    policy: CVE-2019-1010025
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-1010025'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c'
+    policy: CVE-2019-9192
+    properties:
+      installedVersion: 2.36-9+deb12u13
+      pkgName: libc6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2019-9192'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: QUIC certificate check bypass with wolfSSL'
+    policy: CVE-2024-2379
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: libcurl4
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-2379'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libcurl: Buffer Overflow in libcurl via zlib Integer Overflow'
+    policy: CVE-2025-0725
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: libcurl4
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-0725'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'expat: recursive XML entity expansion vulnerability'
+    policy: CVE-2023-52426
+    properties:
+      installedVersion: 2.5.0-1+deb12u2
+      pkgName: libexpat1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-52426'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'expat: XML Entity Expansion'
+    policy: CVE-2024-28757
+    properties:
+      installedVersion: 2.5.0-1+deb12u2
+      pkgName: libexpat1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-28757'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows stack exhaustion in demangle_const'
+    policy: CVE-2022-27943
+    properties:
+      installedVersion: 12.2.0-14+deb12u1
+      pkgName: libgcc-s1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27943'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libgcrypt: ElGamal implementation doesn''t have semantic security due to incorrectly encoded plaintexts possibly allowing to obtain sensitive information'
+    policy: CVE-2018-6829
+    properties:
+      installedVersion: 1.10.1-3
+      pkgName: libgcrypt20
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-6829'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libgcrypt: vulnerable to Marvin Attack'
+    policy: CVE-2024-2236
+    properties:
+      installedVersion: 1.10.1-3
+      pkgName: libgcrypt20
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-2236'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'HTTPS: block-wise chosen-plaintext attack against SSL/TLS (BEAST)'
+    policy: CVE-2011-3389
+    properties:
+      installedVersion: 3.7.9-2+deb12u5
+      pkgName: libgnutls30
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-3389'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
+    policy: CVE-2018-5709
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libgssapi-krb5-2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c'
+    policy: CVE-2024-26458
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libgssapi-krb5-2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26458'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c'
+    policy: CVE-2024-26461
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libgssapi-krb5-2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26461'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: libheif v1.17.5 was discovered to contain a segmentation violation via ...
+    policy: CVE-2023-49463
+    properties:
+      installedVersion: 1.15.1-1+deb12u1
+      pkgName: libheif1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-49463'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libheif <= 1.17.6 contains a memory leak in the function JpegEncoder:: ...'
+    policy: CVE-2024-25269
+    properties:
+      installedVersion: 1.15.1-1+deb12u1
+      pkgName: libheif1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-25269'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: memory malloc failure in tif_jbig.c could cause DOS.'
+    policy: CVE-2017-9937
+    properties:
+      installedVersion: 2.1-6.1
+      pkgName: libjbig0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-9937'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
+    policy: CVE-2018-5709
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libk5crypto3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c'
+    policy: CVE-2024-26458
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libk5crypto3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26458'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c'
+    policy: CVE-2024-26461
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libk5crypto3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26461'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
+    policy: CVE-2018-5709
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5-3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c'
+    policy: CVE-2024-26458
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5-3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26458'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c'
+    policy: CVE-2024-26461
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5-3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26461'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c'
+    policy: CVE-2018-5709
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5support0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-5709'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c'
+    policy: CVE-2024-26458
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5support0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26458'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c'
+    policy: CVE-2024-26461
+    properties:
+      installedVersion: 1.20.1-2+deb12u4
+      pkgName: libkrb5support0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-26461'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'openldap: incorrect multi-keyword mode cipherstring parsing'
+    policy: CVE-2015-3276
+    properties:
+      installedVersion: 2.5.13+dfsg-5
+      pkgName: libldap-2.5-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2015-3276'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'openldap: Privilege escalation via PID file manipulation'
+    policy: CVE-2017-14159
+    properties:
+      installedVersion: 2.5.13+dfsg-5
+      pkgName: libldap-2.5-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-14159'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'openldap: contrib/slapd-modules/nops/nops.c attempts to free stack buffer allowing remote attackers to cause a denial of service'
+    policy: CVE-2017-17740
+    properties:
+      installedVersion: 2.5.13+dfsg-5
+      pkgName: libldap-2.5-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-17740'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'openldap: Certificate validation incorrectly matches name against CN-ID'
+    policy: CVE-2020-15719
+    properties:
+      installedVersion: 2.5.13+dfsg-5
+      pkgName: libldap-2.5-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2020-15719'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: libmount1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libpng: hardcoded value leads to heap-overflow'
+    policy: CVE-2021-4214
+    properties:
+      installedVersion: 1.6.39-2
+      pkgName: libpng16-16
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2021-4214'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: libsmartcols1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: OpenSSL 3.0.0 through 3.3.2 on the PowerPC architecture is vulnerable  ...
+    policy: CVE-2025-27587
+    properties:
+      installedVersion: 3.0.17-1~deb12u2
+      pkgName: libssl3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-27587'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows stack exhaustion in demangle_const'
+    policy: CVE-2022-27943
+    properties:
+      installedVersion: 12.2.0-14+deb12u1
+      pkgName: libstdc++6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-27943'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'systemd: TOCTOU race condition when updating file permissions and SELinux security contexts'
+    policy: CVE-2013-4392
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libsystemd0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4392'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can modify a seale ...
+    policy: CVE-2023-31437
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libsystemd0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31437'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can truncate a sea ...
+    policy: CVE-2023-31438
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libsystemd0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31438'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can modify the con ...
+    policy: CVE-2023-31439
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libsystemd0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31439'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: Memory leaks in tif_open.c, tif_lzw.c, and tif_aux.c'
+    policy: CVE-2017-16232
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-16232'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: heap-based use after free in tiff2pdf.c:t2p_writeproc'
+    policy: CVE-2017-17973
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-17973'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: Heap-buffer overflow in LZWEncode tif_lzw.c'
+    policy: CVE-2017-5563
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-5563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: Heap-based buffer over-read in bmp2tiff'
+    policy: CVE-2017-9117
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2017-9117'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: NULL pointer dereference in the jpeg_fdct_16x16 function in jfdctint.c'
+    policy: CVE-2018-10126
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2018-10126'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'tiff: Malicious file leads to a denial of service in TIFF File Handler'
+    policy: CVE-2022-1210
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-1210'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: out-of-bounds read in extractImageSection() in tools/tiffcrop.c'
+    policy: CVE-2023-1916
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-1916'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: heap-buffer-overflow in extractImageSection()'
+    policy: CVE-2023-3164
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-3164'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: heap-based buffer overflow in cpStripToTile() in tools/tiffcp.c'
+    policy: CVE-2023-6228
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-6228'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF Null Pointer Dereference'
+    policy: CVE-2024-13978
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-13978'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF Use-After-Free Vulnerability'
+    policy: CVE-2025-8176
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8176'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF Buffer Overflow'
+    policy: CVE-2025-8177
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8177'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: Libtiff Null Pointer Dereference Vulnerability'
+    policy: CVE-2025-8534
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8534'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF Stack-based buffer overflow'
+    policy: CVE-2025-8851
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8851'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF memory corruption'
+    policy: CVE-2025-8961
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8961'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: LibTIFF memory leak'
+    policy: CVE-2025-9165
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-9165'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'gnu-ncurses: ncurses Stack Buffer Overflow'
+    policy: CVE-2025-6141
+    properties:
+      installedVersion: 6.4-4
+      pkgName: libtinfo6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6141'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'systemd: TOCTOU race condition when updating file permissions and SELinux security contexts'
+    policy: CVE-2013-4392
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libudev1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-4392'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can modify a seale ...
+    policy: CVE-2023-31437
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libudev1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31437'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can truncate a sea ...
+    policy: CVE-2023-31438
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libudev1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31438'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: An issue was discovered in systemd 253. An attacker can modify the con ...
+    policy: CVE-2023-31439
+    properties:
+      installedVersion: 252.39-1~deb12u1
+      pkgName: libudev1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31439'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: libuuid1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libxml2: libxml2: Uncontrolled Recursion Vulnerability'
+    policy: CVE-2025-8732
+    properties:
+      installedVersion: 2.9.14+dfsg-1.3~deb12u4
+      pkgName: libxml2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-8732'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libxslt: math.random() in xslt uses unseeded randomness'
+    policy: CVE-2015-9019
+    properties:
+      installedVersion: 1.1.35-1+deb12u2
+      pkgName: libxslt1.1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2015-9019'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: initscripts in rPath Linux 1 sets insecure permissions for the /var/lo ...
+    policy: CVE-2007-5686
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: login
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-5686'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'shadow-utils: Default subordinate ID configuration in /etc/login.defs could lead to compromise'
+    policy: CVE-2024-56433
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: login
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-56433'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: '[more related to CVE-2005-4890]'
+    policy: TEMP-0628843-DBAD28
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: login
+      primaryURL: 'https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: mount
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'gnu-ncurses: ncurses Stack Buffer Overflow'
+    policy: CVE-2025-6141
+    properties:
+      installedVersion: 6.4-4
+      pkgName: ncurses-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6141'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'gnu-ncurses: ncurses Stack Buffer Overflow'
+    policy: CVE-2025-6141
+    properties:
+      installedVersion: 6.4-4
+      pkgName: ncurses-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6141'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'nginx: Absent sanitation of escape sequences in web server log'
+    policy: CVE-2009-4487
+    properties:
+      installedVersion: 1.29.1-1~bookworm
+      pkgName: nginx
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2009-4487'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'The default configuration of nginx, possibly 1.3.13 and earlier, uses  ...'
+    policy: CVE-2013-0337
+    properties:
+      installedVersion: 1.29.1-1~bookworm
+      pkgName: nginx
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2013-0337'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'HTTP/2: Multiple HTTP/2 enabled web servers are vulnerable to a DDoS attack (Rapid Reset Attack)'
+    policy: CVE-2023-44487
+    properties:
+      installedVersion: 1.29.1-1~bookworm
+      pkgName: nginx
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-44487'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: OpenSSL 3.0.0 through 3.3.2 on the PowerPC architecture is vulnerable  ...
+    policy: CVE-2025-27587
+    properties:
+      installedVersion: 3.0.17-1~deb12u2
+      pkgName: openssl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-27587'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: initscripts in rPath Linux 1 sets insecure permissions for the /var/lo ...
+    policy: CVE-2007-5686
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: passwd
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2007-5686'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'shadow-utils: Default subordinate ID configuration in /etc/login.defs could lead to compromise'
+    policy: CVE-2024-56433
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: passwd
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-56433'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: '[more related to CVE-2005-4890]'
+    policy: TEMP-0628843-DBAD28
+    properties:
+      installedVersion: '1:4.13+dfsg1-1+deb12u1'
+      pkgName: passwd
+      primaryURL: 'https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'perl: File:: Temp insecure temporary file handling'
+    policy: CVE-2011-4116
+    properties:
+      installedVersion: 5.36.0-7+deb12u3
+      pkgName: perl-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2011-4116'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'http-tiny: insecure TLS cert default'
+    policy: CVE-2023-31486
+    properties:
+      installedVersion: 5.36.0-7+deb12u3
+      pkgName: perl-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-31486'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: '[sysvinit: no-root option in expert installer exposes locally exploitable security flaw]'
+    policy: TEMP-0517018-A83CE6
+    properties:
+      installedVersion: 3.06-4
+      pkgName: sysvinit-utils
+      primaryURL: 'https://security-tracker.debian.org/tracker/TEMP-0517018-A83CE6'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'tar: does not properly warn the user when extracting setuid or setgid files'
+    policy: CVE-2005-2541
+    properties:
+      installedVersion: 1.34+dfsg-1.2+deb12u1
+      pkgName: tar
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2005-2541'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: '[tar''s rmt command may have undesired side effects]'
+    policy: TEMP-0290435-0B57B5
+    properties:
+      installedVersion: 1.34+dfsg-1.2+deb12u1
+      pkgName: tar
+      primaryURL: 'https://security-tracker.debian.org/tracker/TEMP-0290435-0B57B5'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: util-linux
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline'
+    policy: CVE-2022-0563
+    properties:
+      installedVersion: 2.38.1-5+deb12u3
+      pkgName: util-linux-extra
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2022-0563'
+    result: warn
+    severity: low
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: predictable WebSocket mask'
+    policy: CVE-2025-10148
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-10148'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: libcurl: Curl out of bounds read for cookie path'
+    policy: CVE-2025-9086
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: curl
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-9086'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: predictable WebSocket mask'
+    policy: CVE-2025-10148
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: libcurl4
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-10148'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'curl: libcurl: Curl out of bounds read for cookie path'
+    policy: CVE-2025-9086
+    properties:
+      installedVersion: 7.88.1-10+deb12u14
+      pkgName: libcurl4
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-9086'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: VideoLAN dav1d before 1.2.0 has a thread_task.c race condition that ca ...
+    policy: CVE-2023-32570
+    properties:
+      installedVersion: 1.0.0-2+deb12u1
+      pkgName: libdav1d6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-32570'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: Buffer Overflow vulnerability in libde265 v1.0.12 allows a local attac ...
+    policy: CVE-2023-51792
+    properties:
+      installedVersion: 1.0.11-1+deb12u2
+      pkgName: libde265-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-51792'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: Heap Buffer Overflow vulnerability in Libde265 v1.0.15 allows attacker ...
+    policy: CVE-2024-38949
+    properties:
+      installedVersion: 1.0.11-1+deb12u2
+      pkgName: libde265-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-38949'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: Heap Buffer Overflow vulnerability in Libde265 v1.0.15 allows attacker ...
+    policy: CVE-2024-38950
+    properties:
+      installedVersion: 1.0.11-1+deb12u2
+      pkgName: libde265-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-38950'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: libpam: Libpam vulnerable to read hashed password'
+    policy: CVE-2024-10041
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-10041'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: allowing unprivileged user to block another user namespace'
+    policy: CVE-2024-22365
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-22365'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: libpam: Libpam vulnerable to read hashed password'
+    policy: CVE-2024-10041
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-10041'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: allowing unprivileged user to block another user namespace'
+    policy: CVE-2024-22365
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-22365'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: libpam: Libpam vulnerable to read hashed password'
+    policy: CVE-2024-10041
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-runtime
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-10041'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: allowing unprivileged user to block another user namespace'
+    policy: CVE-2024-22365
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-runtime
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-22365'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: libpam: Libpam vulnerable to read hashed password'
+    policy: CVE-2024-10041
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam0g
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-10041'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'pam: allowing unprivileged user to block another user namespace'
+    policy: CVE-2024-22365
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam0g
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2024-22365'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: Out-of-memory in TIFFOpen via a craft file'
+    policy: CVE-2023-6277
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-6277'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'ncurses: segmentation fault via _nc_wrap_entry()'
+    policy: CVE-2023-50495
+    properties:
+      installedVersion: 6.4-4
+      pkgName: libtinfo6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-50495'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libxslt: libxml2: Inifinite recursion at exsltDynMapFunction function in libexslt/dynamic.c'
+    policy: CVE-2025-9714
+    properties:
+      installedVersion: 2.9.14+dfsg-1.3~deb12u4
+      pkgName: libxml2
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-9714'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'ncurses: segmentation fault via _nc_wrap_entry()'
+    policy: CVE-2023-50495
+    properties:
+      installedVersion: 6.4-4
+      pkgName: ncurses-base
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-50495'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'ncurses: segmentation fault via _nc_wrap_entry()'
+    policy: CVE-2023-50495
+    properties:
+      installedVersion: 6.4-4
+      pkgName: ncurses-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-50495'
+    result: warn
+    severity: medium
+    source: image-scanner
+  - category: vulnerability scan
+    message: AOMedia v3.0.0 to v3.5.0 was discovered to contain an invalid read mem ...
+    policy: CVE-2023-39616
+    properties:
+      installedVersion: 3.6.0-1+deb12u2
+      pkgName: libaom3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-39616'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'expat: libexpat in Expat allows attackers to trigger large dynamic memory allocations via a small document that is submitted for parsing'
+    policy: CVE-2025-59375
+    properties:
+      installedVersion: 2.5.0-1+deb12u2
+      pkgName: libexpat1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-59375'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'openldap: null pointer dereference in  ber_memalloc_x  function'
+    policy: CVE-2023-2953
+    properties:
+      installedVersion: 2.5.13+dfsg-5
+      pkgName: libldap-2.5-0
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-2953'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'linux-pam: Linux-pam directory Traversal'
+    policy: CVE-2025-6020
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6020'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'linux-pam: Linux-pam directory Traversal'
+    policy: CVE-2025-6020
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-modules-bin
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6020'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'linux-pam: Linux-pam directory Traversal'
+    policy: CVE-2025-6020
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam-runtime
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6020'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'linux-pam: Linux-pam directory Traversal'
+    policy: CVE-2025-6020
+    properties:
+      installedVersion: 1.5.2-6+deb12u1
+      pkgName: libpam0g
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-6020'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libtiff: TIFFRasterScanlineSize64 produce too-big size and could cause OOM'
+    policy: CVE-2023-52355
+    properties:
+      installedVersion: 4.5.0-6+deb12u2
+      pkgName: libtiff6
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-52355'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'libxslt: Heap Use-After-Free in libxslt caused by atype corruption in xmlAttrPtr'
+    policy: CVE-2025-7425
+    properties:
+      installedVersion: 1.1.35-1+deb12u2
+      pkgName: libxslt1.1
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2025-7425'
+    result: fail
+    severity: high
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'aom: heap-buffer-overflow on frame size change'
+    policy: CVE-2023-6879
+    properties:
+      installedVersion: 3.6.0-1+deb12u2
+      pkgName: libaom3
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-6879'
+    result: fail
+    severity: critical
+    source: image-scanner
+  - category: vulnerability scan
+    message: 'zlib: integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_6'
+    policy: CVE-2023-45853
+    properties:
+      installedVersion: '1:1.2.13.dfsg-1'
+      pkgName: zlib1g
+      primaryURL: 'https://avd.aquasec.com/nvd/cve-2023-45853'
+    result: fail
+    severity: critical
+    source: image-scanner
+scope:
+  apiVersion: v1
+  kind: Pod
+  name: nginx
+  uid: 20202cb1-cd63-45fb-bf71-ae2b6cc4cbea
+summary:
+  fail: 11
+  skip: 1
+  warn: 128
