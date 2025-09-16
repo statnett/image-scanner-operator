@@ -134,7 +134,7 @@ in the cluster.
 
 If you are using [Kyverno](https://kyverno.io/), the OpenReports CRDs might be
 installed already. Starting with Kyverno 1.15 release (Helm chart 3.5), there
-is an opt-in to make Kyverno report in OpenReports format. To enable the opt-in,
+is an opt-in to make Kyverno reports in OpenReports format. To enable the opt-in,
 set the Kyverno Helm chart value `openreports.enable=true`, which will ensure
 the required CRDs are installed by the Kyverno Helm chart.
 
