@@ -78,6 +78,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			&eventsv1.Event{},
 			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
 				e := obj.(*eventsv1.Event)
+
 				return []reconcile.Request{
 					{NamespacedName: types.NamespacedName{
 						Name:      e.Regarding.Name,
