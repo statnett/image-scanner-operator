@@ -31,20 +31,25 @@ func podContainerStatusImagesChanged() predicate.Predicate {
 		},
 		UpdateFunc: func(e event.UpdateEvent) bool {
 			pod1 := e.ObjectOld.(*corev1.Pod)
+
 			pod2 := e.ObjectNew.(*corev1.Pod)
 			if len(pod1.Status.ContainerStatuses) != len(pod2.Status.ContainerStatuses) {
 				return true
 			}
+
 			for i := 0; i < len(pod1.Status.ContainerStatuses); i++ {
 				cs1 := pod1.Status.ContainerStatuses[i]
+
 				cs2 := pod2.Status.ContainerStatuses[i]
 				if cs1.Image != cs2.Image {
 					return true
 				}
+
 				if cs1.ImageID != cs2.ImageID {
 					return true
 				}
 			}
+
 			return false
 		},
 	}
