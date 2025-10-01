@@ -1,5 +1,5 @@
 # Build the manager binary
-FROM docker.io/library/golang:1.25.1@sha256:8305f5fa8ea63c7b5bc85bd223ccc62941f852318ebfbd22f53bbd0b358c07e1 AS builder
+FROM docker.io/library/golang:1.25.1@sha256:ab1f5c47de0f2693ed97c46a646bde2e4f380e40c173454d00352940a379af60 AS builder
 ARG GOPROXY
 ARG TARGETOS
 ARG TARGETARCH
