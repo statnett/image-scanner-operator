@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	eventsv1 "k8s.io/api/events/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
@@ -127,6 +128,15 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	options := ctrl.Options{
+		Cache: cache.Options{
+			ByObject: map[client.Object]cache.ByObject{
+				&openreportsv1alpha1.Report{}: {
+					Label: labels.SelectorFromSet(map[string]string{
+						stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.AppNameImageScanner,
+					}),
+				},
+			},
+		},
 		Client: client.Options{Cache: &client.CacheOptions{
 			Unstructured: true,
 			DisableFor:   []client.Object{&eventsv1.Event{}},
