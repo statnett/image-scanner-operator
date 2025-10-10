@@ -127,6 +127,9 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	options := ctrl.Options{
+		Cache: cache.Options{
+			ReaderFailOnMissingInformer: true,
+		},
 		Client: client.Options{Cache: &client.CacheOptions{
 			Unstructured: true,
 			DisableFor:   []client.Object{&eventsv1.Event{}},
