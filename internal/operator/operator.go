@@ -18,6 +18,7 @@ import (
 	eventsv1 "k8s.io/api/events/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
@@ -155,6 +156,11 @@ func (o Operator) Start(cfg config.Config) error {
 			&stasv1alpha1.ContainerImageScan{}: {},
 			&corev1.Pod{}:                      {},
 			&batchv1.Job{}:                     {},
+			&openreportsv1alpha1.Report{}: {
+				Label: labels.SelectorFromSet(map[string]string{
+					stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.AppNameImageScanner,
+				}),
+			},
 		},
 		ReaderFailOnMissingInformer: true,
 	}

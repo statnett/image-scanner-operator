@@ -5,6 +5,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 	"github.com/stretchr/testify/mock"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -97,6 +98,15 @@ func newClientWithTestdata() client.Client {
 				},
 			},
 		},
+		&openreportsv1alpha1.Report{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "good-app-aaa123",
+				Namespace: "default",
+				Labels: map[string]string{
+					stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
+				},
+			},
+		},
 		&stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "bad-app-666666",
@@ -120,6 +130,47 @@ func newClientWithTestdata() client.Client {
 					SeverityCount: map[string]int32{"CRITICAL": 1, "HIGH": 5},
 					FixedCount:    4,
 					UnfixedCount:  2,
+				},
+			},
+		},
+		&openreportsv1alpha1.Report{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "bad-app-666666",
+				Namespace: "default",
+				Labels: map[string]string{
+					stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
+				},
+			},
+			Results: []openreportsv1alpha1.ReportResult{
+				{
+					Severity: "critical",
+					Properties: map[string]string{
+						"fixedVersion": "1.2.3",
+					},
+				},
+				{
+					Severity: "high",
+					Properties: map[string]string{
+						"fixedVersion": "1.2.3",
+					},
+				},
+				{
+					Severity: "high",
+					Properties: map[string]string{
+						"fixedVersion": "1.2.3",
+					},
+				},
+				{
+					Severity: "high",
+					Properties: map[string]string{
+						"fixedVersion": "1.2.3",
+					},
+				},
+				{
+					Severity: "high",
+				},
+				{
+					Severity: "high",
 				},
 			},
 		},
@@ -153,6 +204,7 @@ func newClientWithTestdata() client.Client {
 	}
 	scheme := runtime.NewScheme()
 	Expect(stasv1alpha1.AddToScheme(scheme)).To(Succeed())
+	Expect(openreportsv1alpha1.Install(scheme)).To(Succeed())
 
 	return fake.NewClientBuilder().
 		WithScheme(scheme).
