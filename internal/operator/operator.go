@@ -13,6 +13,8 @@ import (
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	batchv1 "k8s.io/api/batch/v1"
+	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -128,6 +130,15 @@ func (o Operator) Start(cfg config.Config) error {
 
 	options := ctrl.Options{
 		Cache: cache.Options{
+			ByObject: map[client.Object]cache.ByObject{
+				&stasv1alpha1.ContainerImageScan{}: {},
+				&corev1.Pod{}:                      {},
+				&batchv1.Job{}: {
+					Namespaces: map[string]cache.Config{
+						cfg.ScanJobNamespace: {},
+					},
+				},
+			},
 			ReaderFailOnMissingInformer: true,
 		},
 		Client: client.Options{Cache: &client.CacheOptions{
