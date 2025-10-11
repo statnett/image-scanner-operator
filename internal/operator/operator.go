@@ -13,13 +13,13 @@ import (
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -128,19 +128,35 @@ func (o Operator) Start(cfg config.Config) error {
 		metricsOpts.ExtraHandlers = map[string]http.Handler{"/debug/pprof/": http.HandlerFunc(pprof.Index)}
 	}
 
-	options := ctrl.Options{
-		Cache: cache.Options{
-			ByObject: map[client.Object]cache.ByObject{
-				&stasv1alpha1.ContainerImageScan{}: {},
-				&corev1.Pod{}:                      {},
-				&batchv1.Job{}: {
-					Namespaces: map[string]cache.Config{
-						cfg.ScanJobNamespace: {},
-					},
-				},
-			},
-			ReaderFailOnMissingInformer: true,
+	cacheOpts := cache.Options{
+		ByObject: map[client.Object]cache.ByObject{
+			&stasv1alpha1.ContainerImageScan{}: {},
+			&corev1.Pod{}:                      {},
 		},
+		ReaderFailOnMissingInformer: true,
+	}
+
+	restCfg := ctrl.GetConfigOrDie()
+
+	httpClient, err := rest.HTTPClientFor(restCfg)
+	if err != nil {
+		return fmt.Errorf("failed to create HTTP client: %w", err)
+	}
+
+	restMapper, err := apiutil.NewDynamicRESTMapper(restCfg, httpClient)
+	if err != nil {
+		return fmt.Errorf("failed to create REST mapper: %w", err)
+	}
+
+	resourceMapper := &resources.ResourceKindMapper{RestMapper: restMapper}
+
+	kinds, err := resourceMapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
+	if err != nil {
+		return fmt.Errorf("unable to map resources to kinds: %w", err)
+	}
+
+	options := ctrl.Options{
+		Cache: cacheOpts,
 		Client: client.Options{Cache: &client.CacheOptions{
 			Unstructured: true,
 			DisableFor:   []client.Object{&eventsv1.Event{}},
@@ -172,13 +188,6 @@ func (o Operator) Start(cfg config.Config) error {
 
 	if err = (&stas.Indexer{}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to setup indexer: %w", err)
-	}
-
-	mapper := &resources.ResourceKindMapper{RestMapper: mgr.GetRESTMapper()}
-
-	kinds, err := mapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
-	if err != nil {
-		return fmt.Errorf("unable to map resources to kinds: %w", err)
 	}
 
 	if err = (&stas.PodReconciler{
