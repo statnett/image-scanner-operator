@@ -22,7 +22,7 @@ var _ = Describe("ContainerImageScan Collector", func() {
 	JustBeforeEach(func() {
 		c := newClientWithTestdata()
 		imageMetricsCollector = &ImageMetricsCollector{
-			Client: c,
+			Reader: c,
 			Config: config.Config{MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"}},
 		}
 		mgr := &MockManager{}

@@ -227,7 +227,7 @@ func (o Operator) Start(cfg config.Config) error {
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.Add(&stas.RescanTrigger{
-		Client:        mgr.GetClient(),
+		Reader:        mgr.GetCache(),
 		Config:        cfg,
 		EventChan:     rescanEventChan,
 		CheckInterval: time.Minute,
@@ -244,7 +244,7 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	if err = (&metrics.ImageMetricsCollector{
-		Client: mgr.GetClient(),
+		Reader: mgr.GetCache(),
 		Config: cfg,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to set up image metrics collector: %w", err)
