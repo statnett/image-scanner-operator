@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/viper"
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
@@ -136,14 +137,14 @@ func (o Operator) Start(cfg config.Config) error {
 		ReaderFailOnMissingInformer: true,
 	}
 
-	restCfg := ctrl.GetConfigOrDie()
+	kubeConfig := ctrl.GetConfigOrDie()
 
-	httpClient, err := rest.HTTPClientFor(restCfg)
+	httpClient, err := rest.HTTPClientFor(kubeConfig)
 	if err != nil {
 		return fmt.Errorf("failed to create HTTP client: %w", err)
 	}
 
-	restMapper, err := apiutil.NewDynamicRESTMapper(restCfg, httpClient)
+	restMapper, err := apiutil.NewDynamicRESTMapper(kubeConfig, httpClient)
 	if err != nil {
 		return fmt.Errorf("failed to create REST mapper: %w", err)
 	}
@@ -163,12 +164,14 @@ func (o Operator) Start(cfg config.Config) error {
 				DisableFor:   []client.Object{&eventsv1.Event{}},
 			},
 			HTTPClient: httpClient,
-			Mapper:     restMapper,
 		},
 		Controller: ctrlconfig.Controller{
 			UsePriorityQueue: ptr.To(true),
 		},
-		Scheme:                 scheme,
+		Scheme: scheme,
+		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
+			return restMapper, nil
+		},
 		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
@@ -181,8 +184,6 @@ func (o Operator) Start(cfg config.Config) error {
 			options.Cache.DefaultNamespaces[n] = cache.Config{}
 		}
 	}
-
-	kubeConfig := ctrl.GetConfigOrDie()
 
 	mgr, err := ctrl.NewManager(kubeConfig, options)
 	if err != nil {
