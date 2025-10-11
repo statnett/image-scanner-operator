@@ -157,15 +157,18 @@ func (o Operator) Start(cfg config.Config) error {
 
 	options := ctrl.Options{
 		Cache: cacheOpts,
-		Client: client.Options{Cache: &client.CacheOptions{
-			Unstructured: true,
-			DisableFor:   []client.Object{&eventsv1.Event{}},
-		}},
+		Client: client.Options{
+			Cache: &client.CacheOptions{
+				Unstructured: true,
+				DisableFor:   []client.Object{&eventsv1.Event{}},
+			},
+			HTTPClient: httpClient,
+			Mapper:     restMapper,
+		},
 		Controller: ctrlconfig.Controller{
 			UsePriorityQueue: ptr.To(true),
 		},
 		Scheme:                 scheme,
-		MapperProvider:         apiutil.NewDynamicRESTMapper,
 		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
