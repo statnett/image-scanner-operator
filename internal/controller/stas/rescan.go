@@ -13,7 +13,7 @@ import (
 )
 
 type RescanTrigger struct {
-	client.Client
+	client.Reader
 	config.Config
 	EventChan     chan event.GenericEvent
 	CheckInterval time.Duration

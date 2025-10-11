@@ -41,7 +41,7 @@ var (
 )
 
 type ImageMetricsCollector struct {
-	client.Client
+	client.Reader
 	config.Config
 
 	cisLabels       cisLabels
