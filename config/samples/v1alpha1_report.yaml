@@ -2,6 +2,8 @@ apiVersion: openreports.io/v1alpha1
 kind: Report
 metadata:
   name: pod-nginx-app-8d8bf
+  labels:
+    app.kubernetes.io/managed-by: image-scanner
   ownerReferences:
     - apiVersion: stas.statnett.no/v1alpha1
       blockOwnerDeletion: true
