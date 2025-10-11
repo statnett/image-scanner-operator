@@ -13,9 +13,11 @@ import (
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
@@ -129,14 +131,6 @@ func (o Operator) Start(cfg config.Config) error {
 		metricsOpts.ExtraHandlers = map[string]http.Handler{"/debug/pprof/": http.HandlerFunc(pprof.Index)}
 	}
 
-	cacheOpts := cache.Options{
-		ByObject: map[client.Object]cache.ByObject{
-			&stasv1alpha1.ContainerImageScan{}: {},
-			&corev1.Pod{}:                      {},
-		},
-		ReaderFailOnMissingInformer: true,
-	}
-
 	kubeConfig := ctrl.GetConfigOrDie()
 
 	httpClient, err := rest.HTTPClientFor(kubeConfig)
@@ -151,9 +145,31 @@ func (o Operator) Start(cfg config.Config) error {
 
 	resourceMapper := &resources.ResourceKindMapper{RestMapper: restMapper}
 
-	kinds, err := resourceMapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
+	workloadKinds, err := resourceMapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
 	if err != nil {
 		return fmt.Errorf("unable to map resources to kinds: %w", err)
+	}
+
+	cacheOpts := cache.Options{
+		ByObject: map[client.Object]cache.ByObject{
+			&stasv1alpha1.ContainerImageScan{}: {},
+			&corev1.Pod{}:                      {},
+			&batchv1.Job{}:                     {},
+		},
+		ReaderFailOnMissingInformer: true,
+	}
+
+	for _, kind := range workloadKinds {
+		obj := &metav1.PartialObjectMetadata{}
+		obj.SetGroupVersionKind(kind)
+		cacheOpts.ByObject[obj] = cache.ByObject{}
+	}
+
+	if len(cfg.ScanNamespaces) > 0 {
+		cacheOpts.DefaultNamespaces = make(map[string]cache.Config, len(cfg.ScanNamespaces))
+		for _, n := range cfg.ScanNamespaces {
+			cacheOpts.DefaultNamespaces[n] = cache.Config{}
+		}
 	}
 
 	options := ctrl.Options{
@@ -178,13 +194,6 @@ func (o Operator) Start(cfg config.Config) error {
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
 
-	if len(cfg.ScanNamespaces) > 0 {
-		options.Cache.DefaultNamespaces = make(map[string]cache.Config, len(cfg.ScanNamespaces))
-		for _, n := range cfg.ScanNamespaces {
-			options.Cache.DefaultNamespaces[n] = cache.Config{}
-		}
-	}
-
 	mgr, err := ctrl.NewManager(kubeConfig, options)
 	if err != nil {
 		return fmt.Errorf("unable to start manager: %w", err)
@@ -198,7 +207,7 @@ func (o Operator) Start(cfg config.Config) error {
 		Client:        mgr.GetClient(),
 		Scheme:        mgr.GetScheme(),
 		Config:        cfg,
-		WorkloadKinds: kinds,
+		WorkloadKinds: workloadKinds,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "Pod", err)
 	}
