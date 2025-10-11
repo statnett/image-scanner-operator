@@ -21,6 +21,9 @@ func newPolicyReportPatch(cis *stasv1alpha1.ContainerImageScan) *policyReportPat
 	return &policyReportPatch{
 		cis: cis,
 		patch: openreportsv1alpha1ac.Report(cis.Name, cis.Namespace).
+			WithLabels(map[string]string{
+				stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.AppNameImageScanner,
+			}).
 			WithScope(
 				corev1.ObjectReference{
 					APIVersion: cis.Spec.Workload.APIVersion,
