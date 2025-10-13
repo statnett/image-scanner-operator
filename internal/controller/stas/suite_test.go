@@ -148,7 +148,7 @@ var _ = BeforeSuite(func() {
 	}
 	Expect(containerImageScanReconciler.SetupWithManager(k8sManager)).To(Succeed())
 	rescanTrigger := &RescanTrigger{
-		Client:        k8sManager.GetClient(),
+		Reader:        k8sManager.GetCache(),
 		Config:        config,
 		EventChan:     cisEventChan,
 		CheckInterval: time.Second,

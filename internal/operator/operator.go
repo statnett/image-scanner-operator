@@ -13,11 +13,16 @@ import (
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	batchv1 "k8s.io/api/batch/v1"
+	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -126,30 +131,68 @@ func (o Operator) Start(cfg config.Config) error {
 		metricsOpts.ExtraHandlers = map[string]http.Handler{"/debug/pprof/": http.HandlerFunc(pprof.Index)}
 	}
 
+	kubeConfig := ctrl.GetConfigOrDie()
+
+	httpClient, err := rest.HTTPClientFor(kubeConfig)
+	if err != nil {
+		return fmt.Errorf("failed to create HTTP client: %w", err)
+	}
+
+	restMapper, err := apiutil.NewDynamicRESTMapper(kubeConfig, httpClient)
+	if err != nil {
+		return fmt.Errorf("failed to create REST mapper: %w", err)
+	}
+
+	resourceMapper := &resources.ResourceKindMapper{RestMapper: restMapper}
+
+	workloadKinds, err := resourceMapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
+	if err != nil {
+		return fmt.Errorf("unable to map resources to kinds: %w", err)
+	}
+
+	cacheOpts := cache.Options{
+		ByObject: map[client.Object]cache.ByObject{
+			&stasv1alpha1.ContainerImageScan{}: {},
+			&corev1.Pod{}:                      {},
+			&batchv1.Job{}:                     {},
+		},
+		ReaderFailOnMissingInformer: true,
+	}
+
+	for _, kind := range workloadKinds {
+		obj := &metav1.PartialObjectMetadata{}
+		obj.SetGroupVersionKind(kind)
+		cacheOpts.ByObject[obj] = cache.ByObject{}
+	}
+
+	if len(cfg.ScanNamespaces) > 0 {
+		cacheOpts.DefaultNamespaces = make(map[string]cache.Config, len(cfg.ScanNamespaces))
+		for _, n := range cfg.ScanNamespaces {
+			cacheOpts.DefaultNamespaces[n] = cache.Config{}
+		}
+	}
+
 	options := ctrl.Options{
-		Client: client.Options{Cache: &client.CacheOptions{
-			Unstructured: true,
-			DisableFor:   []client.Object{&eventsv1.Event{}},
-		}},
+		Cache: cacheOpts,
+		Client: client.Options{
+			Cache: &client.CacheOptions{
+				Unstructured: true,
+				DisableFor:   []client.Object{&eventsv1.Event{}},
+			},
+			HTTPClient: httpClient,
+		},
 		Controller: ctrlconfig.Controller{
 			UsePriorityQueue: ptr.To(true),
 		},
-		Scheme:                 scheme,
-		MapperProvider:         apiutil.NewDynamicRESTMapper,
+		Scheme: scheme,
+		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {
+			return restMapper, nil
+		},
 		Metrics:                metricsOpts,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "398aa7bc.statnett.no",
 	}
-
-	if len(cfg.ScanNamespaces) > 0 {
-		options.Cache.DefaultNamespaces = make(map[string]cache.Config, len(cfg.ScanNamespaces))
-		for _, n := range cfg.ScanNamespaces {
-			options.Cache.DefaultNamespaces[n] = cache.Config{}
-		}
-	}
-
-	kubeConfig := ctrl.GetConfigOrDie()
 
 	mgr, err := ctrl.NewManager(kubeConfig, options)
 	if err != nil {
@@ -160,18 +203,11 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to setup indexer: %w", err)
 	}
 
-	mapper := &resources.ResourceKindMapper{RestMapper: mgr.GetRESTMapper()}
-
-	kinds, err := mapper.NamespacedKindsForResources(cfg.ScanWorkloadResources...)
-	if err != nil {
-		return fmt.Errorf("unable to map resources to kinds: %w", err)
-	}
-
 	if err = (&stas.PodReconciler{
 		Client:        mgr.GetClient(),
 		Scheme:        mgr.GetScheme(),
 		Config:        cfg,
-		WorkloadKinds: kinds,
+		WorkloadKinds: workloadKinds,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create %s controller: %w", "Pod", err)
 	}
@@ -204,7 +240,7 @@ func (o Operator) Start(cfg config.Config) error {
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.Add(&stas.RescanTrigger{
-		Client:        mgr.GetClient(),
+		Reader:        mgr.GetCache(),
 		Config:        cfg,
 		EventChan:     rescanEventChan,
 		CheckInterval: time.Minute,
@@ -221,7 +257,7 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	if err = (&metrics.ImageMetricsCollector{
-		Client: mgr.GetClient(),
+		Reader: mgr.GetCache(),
 		Config: cfg,
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to set up image metrics collector: %w", err)
