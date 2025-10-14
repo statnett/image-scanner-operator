@@ -3,7 +3,9 @@ package metrics
 import (
 	"context"
 	"regexp"
+	"strings"
 
+	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/apimachinery/pkg/api/meta"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
@@ -13,6 +15,7 @@ import (
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 )
 
 const (
@@ -153,6 +156,39 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 
 		metrics <- prometheus.MustNewConstMetric(c.successDesc, prometheus.GaugeValue, successValue, cisLabelValues...)
 
+		if config.DefaultMutableFeatureGate.Enabled(feature.PolicyReport) {
+			report := openreportsv1alpha1.Report{}
+			if err := c.Get(ctx, client.ObjectKeyFromObject(&cis), &report); err != nil {
+				// TODO: Log
+				continue
+			}
+
+			severities := make(map[string]int32)
+
+			patchStatuses := make(map[string]int32)
+
+			for _, r := range report.Results {
+				severities[reportSeverityCompat(r.Severity)]++
+				if _, ok := r.Properties["fixedVersion"]; ok {
+					patchStatuses["fixed"]++
+				} else {
+					patchStatuses["unfixed"]++
+				}
+			}
+
+			for severity, count := range severities {
+				issuesLabelValues[len(issuesLabelValues)-1] = severity
+				metrics <- prometheus.MustNewConstMetric(c.issuesDesc, prometheus.GaugeValue, float64(count), issuesLabelValues...)
+			}
+
+			for patchStatus, count := range patchStatuses {
+				patchStatusLabelValues[len(patchStatusLabelValues)-1] = patchStatus
+				metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(count), patchStatusLabelValues...)
+			}
+
+			continue
+		}
+
 		severities := cis.Status.VulnerabilitySummary.GetSeverityCount()
 		for severity, count := range severities {
 			issuesLabelValues[len(issuesLabelValues)-1] = severity
@@ -167,6 +203,12 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(cis.Status.VulnerabilitySummary.UnfixedCount), patchStatusLabelValues...)
 		}
 	}
+}
+
+// reportSeverityCompat is converting the severity label values to the currently used values
+// We should probably consider a (metrics) breaking change in a follow-up PR to avoid this.
+func reportSeverityCompat(reportSeverity openreportsv1alpha1.ResultSeverity) string {
+	return strings.ToUpper(string(reportSeverity))
 }
 
 type cisMetricsLabelFunc func(cis stasv1alpha1.ContainerImageScan) string
