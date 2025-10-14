@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.16.0](https://github.com/statnett/image-scanner-operator/compare/v0.15.1...v0.16.0) (2025-10-14)
+
+
+### Features
+
+* Add missing managed-by labels to policy reports ([#1582](https://github.com/statnett/image-scanner-operator/issues/1582)) ([292e561](https://github.com/statnett/image-scanner-operator/commit/292e561c89625c2d4e0747fd6e43c9a702a566c8))
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.67.1 ([#1575](https://github.com/statnett/image-scanner-operator/issues/1575)) ([6f21e2c](https://github.com/statnett/image-scanner-operator/commit/6f21e2c74ccead26ac6c20da495f0c63f90388d1))
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.67.2 ([#1577](https://github.com/statnett/image-scanner-operator/issues/1577)) ([428ffca](https://github.com/statnett/image-scanner-operator/commit/428ffcac24cc95aac686643e9c48feab6899d70b))
+* **deps:** Update module github.com/gohugoio/hashstructure to v0.6.0 ([#1574](https://github.com/statnett/image-scanner-operator/issues/1574)) ([97e745a](https://github.com/statnett/image-scanner-operator/commit/97e745a92ffbe6944810a9f655a3c1255ea94cbe))
+* **deps:** Update module sigs.k8s.io/controller-runtime to v0.22.3 ([#1581](https://github.com/statnett/image-scanner-operator/issues/1581)) ([5873819](https://github.com/statnett/image-scanner-operator/commit/5873819e163eab2605b185692c72d7b078d71568))
+* Metrics from reports when feature gate enabled ([#1578](https://github.com/statnett/image-scanner-operator/issues/1578)) ([e344771](https://github.com/statnett/image-scanner-operator/commit/e344771879ff44003cc7b4943906c91b5b2981aa))
+
 ## [0.15.1](https://github.com/statnett/image-scanner-operator/compare/v0.15.0...v0.15.1) (2025-10-09)
 
 
