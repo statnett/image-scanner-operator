@@ -51,6 +51,8 @@ type ImageMetricsCollector struct {
 	client.Reader
 	config.Config
 
+	// Log is the logger used for logging within the ImageMetricsCollector.
+	// If unset, it defaults to a discard logger, disabling all logging output.
 	Log logr.Logger
 
 	cisLabels       cisLabels
