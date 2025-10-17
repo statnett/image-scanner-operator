@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"context"
+	"errors"
 	"regexp"
 	"strings"
 
@@ -22,6 +23,8 @@ import (
 const (
 	Namespace = "image_scanner"
 	Subsystem = "container_image"
+
+	LoggerName = "metrics-collector"
 )
 
 var (
@@ -62,6 +65,10 @@ type Manager interface {
 }
 
 func (c *ImageMetricsCollector) SetupWithManager(mgr Manager) error {
+	if c.Log == (logr.Logger{}) {
+		return errors.New("cannot setup metrics collector without logger")
+	}
+
 	labels := make(cisLabels, 0, len(c.MetricsLabels)+len(cisResourceLabels)+1)
 
 	if len(c.MetricsLabels) > 0 {
