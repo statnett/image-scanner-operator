@@ -25,6 +25,7 @@ var _ = Describe("ContainerImageScan Collector", func() {
 		imageMetricsCollector = &ImageMetricsCollector{
 			Reader: c,
 			Config: config.Config{MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"}},
+			Log:    GinkgoLogr.WithName(LoggerName),
 		}
 		mgr := &MockManager{}
 		mgr.EXPECT().Add(mock.Anything).Call.Return(nil)
