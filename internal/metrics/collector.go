@@ -2,7 +2,6 @@ package metrics
 
 import (
 	"context"
-	"errors"
 	"regexp"
 	"strings"
 
