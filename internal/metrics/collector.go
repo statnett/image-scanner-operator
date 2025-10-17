@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/go-logr/logr"
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -46,6 +47,8 @@ var (
 type ImageMetricsCollector struct {
 	client.Reader
 	config.Config
+
+	Log logr.Logger
 
 	cisLabels       cisLabels
 	successDesc     *prometheus.Desc
@@ -132,7 +135,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 
 	cisList := &stasv1alpha1.ContainerImageScanList{}
 	if err := c.List(ctx, cisList, client.InNamespace("")); err != nil {
-		// TODO: Log
+		c.Log.Error(err, "Failed to list all ContainerImageScans")
 		return
 	}
 
@@ -159,7 +162,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 		if config.DefaultMutableFeatureGate.Enabled(feature.PolicyReport) {
 			report := openreportsv1alpha1.Report{}
 			if err := c.Get(ctx, client.ObjectKeyFromObject(&cis), &report); err != nil {
-				// TODO: Log
+				c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
 				continue
 			}
 

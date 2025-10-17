@@ -265,6 +265,7 @@ func (o Operator) Start(cfg config.Config) error {
 	if err = (&metrics.ImageMetricsCollector{
 		Reader: mgr.GetCache(),
 		Config: cfg,
+		Log:    ctrl.Log.WithName("metrics-collector"),
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to set up image metrics collector: %w", err)
 	}
