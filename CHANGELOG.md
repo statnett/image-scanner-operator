@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/statnett/image-scanner-operator/compare/v0.16.0...v0.16.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* Add missing logging to metrics collector ([#1587](https://github.com/statnett/image-scanner-operator/issues/1587)) ([397a27b](https://github.com/statnett/image-scanner-operator/commit/397a27bfb3e77aa924ce83cb6295cd0e3f5ab00c))
+
 ## [0.16.0](https://github.com/statnett/image-scanner-operator/compare/v0.15.1...v0.16.0) (2025-10-14)
 
 
