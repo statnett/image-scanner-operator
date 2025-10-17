@@ -24,6 +24,7 @@ const (
 	Namespace = "image_scanner"
 	Subsystem = "container_image"
 
+	// LoggerName is the name used for the metrics collector logger.
 	LoggerName = "metrics-collector"
 )
 
@@ -66,7 +67,7 @@ type Manager interface {
 
 func (c *ImageMetricsCollector) SetupWithManager(mgr Manager) error {
 	if c.Log.GetSink() == nil {
-		return errors.New("cannot set up metrics collector without logger")
+		c.Log = logr.Discard()
 	}
 
 	labels := make(cisLabels, 0, len(c.MetricsLabels)+len(cisResourceLabels)+1)
