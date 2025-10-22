@@ -204,6 +204,7 @@ $(ENVTEST): $(LOCALBIN)
 
 e2e-test: ## Run e2e tests
 	chainsaw test --config test/e2e-config/.chainsaw.yaml \
+	--test-dir test/e2e/metrics \
 	--test-dir test/e2e/scenario \
 	--test-dir test/e2e/workload-scan
 

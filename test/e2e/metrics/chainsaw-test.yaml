@@ -12,11 +12,6 @@ spec:
         - assert:
             file: 00-assert.yaml
       catch:
-        - events:
-            namespace: image-scanner
-        - podLogs:
-            name: trivy-0
-            namespace: image-scanner
         - podLogs:
             namespace: image-scanner
             selector: control-plane=image-scanner
