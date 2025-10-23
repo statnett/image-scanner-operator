@@ -6,3 +6,11 @@ metadata:
   namespace: image-scanner
 status:
   phase: Succeeded
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metrics-custom
+  namespace: image-scanner
+status:
+  phase: Succeeded

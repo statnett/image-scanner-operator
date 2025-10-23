@@ -29,3 +29,20 @@ spec:
       args:
         - >-
           curl -s "http://metrics.image-scanner.svc.cluster.local:80/metrics" | grep certwatcher_read_certificate_errors_total;
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metrics-custom
+  namespace: image-scanner
+spec:
+  restartPolicy: Never
+  containers:
+    - name: run
+      image: docker.io/curlimages/curl
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - >-
+          curl -s "http://metrics.image-scanner.svc.cluster.local:80/metrics" | grep image_scanner_container_image_issues;
