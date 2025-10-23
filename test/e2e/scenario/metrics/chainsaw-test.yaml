@@ -18,6 +18,16 @@ spec:
         - podLogs:
             namespace: image-scanner
             name: metrics-up
+    - name: step-01
+      try:
+        - apply:
+            file: 01-create.yaml
+        - assert:
+            file: 01-assert.yaml
+      catch:
+        - podLogs:
+            namespace: image-scanner
+            selector: control-plane=image-scanner
         - podLogs:
             namespace: image-scanner
             name: metrics-custom
