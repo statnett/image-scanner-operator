@@ -175,6 +175,7 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 				if !errors.IsNotFound(err) {
 					c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
 				}
+
 				continue
 			}
 
