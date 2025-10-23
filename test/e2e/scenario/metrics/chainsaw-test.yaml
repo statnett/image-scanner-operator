@@ -27,5 +27,6 @@ spec:
         - podLogs:
             namespace: image-scanner
             selector: control-plane=image-scanner
+            tail: -1
         - podLogs:
             name: metrics-custom
