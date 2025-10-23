@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
@@ -53,7 +54,7 @@ type ScanJobReconciler struct {
 //+kubebuilder:rbac:groups="events.k8s.io",resources=events,verbs=get;list;watch
 // Must add policyreports delete verb and containerimagescans/finalizers update verb to satisfy
 // https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#ownerreferencespermissionenforcement
-//+kubebuilder:rbac:groups="openreports.io",resources=reports,verbs=create;patch;delete
+//+kubebuilder:rbac:groups="openreports.io",resources=reports,verbs=get;list;watch;create;patch;delete
 //+kubebuilder:rbac:groups=stas.statnett.no,resources=containerimagescans/finalizers,verbs=update
 
 // SetupWithManager sets up the controller with the Manager.
@@ -65,7 +66,8 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				inNamespacePredicate(r.ScanJobNamespace),
 				jobIsFinished,
 				ignoreDeletionPredicate(),
-			)).
+										)).
+		Watches(&openreportsv1alpha1.Report{}, handler.Funcs{}). // Watches reports with empty handler to ensure informer creation for metrics collection
 		Complete(r.reconcile())
 	if err != nil {
 		return err

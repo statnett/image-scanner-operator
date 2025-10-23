@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metrics-up
+status:
+  phase: Succeeded
+---
+# Assert that at least one Report exists to provide the custom metrics in the next step
+apiVersion: openreports.io/v1alpha1
+kind: Report

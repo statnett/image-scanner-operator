@@ -8,6 +8,7 @@ import (
 	"github.com/go-logr/logr"
 	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	"github.com/prometheus/client_golang/prometheus"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -171,7 +172,10 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 		if config.DefaultMutableFeatureGate.Enabled(feature.PolicyReport) {
 			report := openreportsv1alpha1.Report{}
 			if err := c.Get(ctx, client.ObjectKeyFromObject(&cis), &report); err != nil {
-				c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
+				if !errors.IsNotFound(err) {
+					c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
+				}
+
 				continue
 			}
 
