@@ -48,7 +48,11 @@ rules:
   verbs:
   - create
   - delete
+  - get
+  - list
   - patch
+  - update
+  - watch
 - apiGroups:
   - stas.statnett.no
   resources:
