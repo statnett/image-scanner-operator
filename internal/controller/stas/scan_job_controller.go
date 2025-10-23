@@ -67,7 +67,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				jobIsFinished,
 				ignoreDeletionPredicate(),
 										)).
-		Watches(&openreportsv1alpha1.Report{}, handler.Funcs{}). // added to create informer for reports
+		Watches(&openreportsv1alpha1.Report{}, handler.Funcs{}). // Watches reports with empty handler to ensure informer creation for metrics collection
 		Complete(r.reconcile())
 	if err != nil {
 		return err
