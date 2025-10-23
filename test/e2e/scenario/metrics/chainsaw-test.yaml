@@ -16,7 +16,6 @@ spec:
             namespace: image-scanner
             selector: control-plane=image-scanner
         - podLogs:
-            namespace: image-scanner
             name: metrics-up
     - name: step-01
       try:
@@ -29,5 +28,4 @@ spec:
             namespace: image-scanner
             selector: control-plane=image-scanner
         - podLogs:
-            namespace: image-scanner
             name: metrics-custom
