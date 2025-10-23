@@ -263,7 +263,7 @@ func (o Operator) Start(cfg config.Config) error {
 	}
 
 	if err = (&metrics.ImageMetricsCollector{
-		Reader: mgr.GetClient(),
+		Reader: mgr.GetCache(),
 		Config: cfg,
 		Log:    ctrl.Log.WithName(metrics.LoggerName),
 	}).SetupWithManager(mgr); err != nil {
