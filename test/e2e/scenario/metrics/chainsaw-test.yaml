@@ -16,4 +16,8 @@ spec:
             namespace: image-scanner
             selector: control-plane=image-scanner
         - podLogs:
+            namespace: image-scanner
             name: metrics-up
+        - podLogs:
+            namespace: image-scanner
+            name: metrics-custom
