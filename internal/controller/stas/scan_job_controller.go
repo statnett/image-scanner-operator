@@ -8,7 +8,6 @@ import (
 	"slices"
 	"strings"
 
-	openreportsv1alpha1 "github.com/openreports/reports-api/apis/openreports.io/v1alpha1"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	eventsv1 "k8s.io/api/events/v1"
@@ -66,8 +65,7 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 				inNamespacePredicate(r.ScanJobNamespace),
 				jobIsFinished,
 				ignoreDeletionPredicate(),
-										)).
-		Watches(&openreportsv1alpha1.Report{}, handler.Funcs{}). // Watches reports with empty handler to ensure informer creation for metrics collection
+			)).
 		Complete(r.reconcile())
 	if err != nil {
 		return err
