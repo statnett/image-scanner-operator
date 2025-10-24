@@ -123,8 +123,6 @@ func (o Operator) ValidateConfig(cfg config.Config) error {
 }
 
 func (o Operator) Start(cfg config.Config) error {
-	ctx := ctrl.SetupSignalHandler()
-
 	metricsAddr := viper.GetString("metrics-bind-address")
 	probeAddr := viper.GetString("health-probe-bind-address")
 	enableLeaderElection := viper.GetBool("leader-elect")
@@ -263,6 +261,8 @@ func (o Operator) Start(cfg config.Config) error {
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		return fmt.Errorf("unable to set up ready check: %w", err)
 	}
+
+	ctx := ctrl.SetupSignalHandler()
 
 	// We need to create an informer for reports to ensure all reports are available in cache to
 	// serve custom image scanner metrics.
