@@ -123,6 +123,8 @@ func (o Operator) ValidateConfig(cfg config.Config) error {
 }
 
 func (o Operator) Start(cfg config.Config) error {
+	ctx := ctrl.SetupSignalHandler()
+
 	metricsAddr := viper.GetString("metrics-bind-address")
 	probeAddr := viper.GetString("health-probe-bind-address")
 	enableLeaderElection := viper.GetBool("leader-elect")
@@ -262,6 +264,12 @@ func (o Operator) Start(cfg config.Config) error {
 		return fmt.Errorf("unable to set up ready check: %w", err)
 	}
 
+	// We need to create an informer for reports to ensure all reports are available in cache to
+	// serve custom image scanner metrics.
+	if _, err := mgr.GetCache().GetInformer(ctx, &openreportsv1alpha1.Report{}); err != nil {
+		return fmt.Errorf("failed to create reports informer: %w", err)
+	}
+
 	if err = (&metrics.ImageMetricsCollector{
 		Reader: mgr.GetCache(),
 		Config: cfg,
@@ -272,7 +280,7 @@ func (o Operator) Start(cfg config.Config) error {
 
 	ctrl.Log.Info("starting manager")
 
-	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
+	if err := mgr.Start(ctx); err != nil {
 		return fmt.Errorf("problem running manager: %w", err)
 	}
 
