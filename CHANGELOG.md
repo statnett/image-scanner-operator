@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.1](https://github.com/statnett/image-scanner-operator/compare/v0.16.0...v0.16.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* Add missing logging to metrics collector ([#1587](https://github.com/statnett/image-scanner-operator/issues/1587)) ([397a27b](https://github.com/statnett/image-scanner-operator/commit/397a27bfb3e77aa924ce83cb6295cd0e3f5ab00c))
+* Broken custom image scan metrics ([#1591](https://github.com/statnett/image-scanner-operator/issues/1591)) ([e87d3ff](https://github.com/statnett/image-scanner-operator/commit/e87d3ffe89d3c5e9c90e818c93e9a8eeadf7426e))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.27.1 ([#1590](https://github.com/statnett/image-scanner-operator/issues/1590)) ([2f7d847](https://github.com/statnett/image-scanner-operator/commit/2f7d8470725b382cd3c986feec0ee2b3b5b65679))
+
 ## [0.16.0](https://github.com/statnett/image-scanner-operator/compare/v0.15.1...v0.16.0) (2025-10-14)
 
 
