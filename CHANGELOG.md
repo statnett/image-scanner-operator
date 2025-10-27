@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.2](https://github.com/statnett/image-scanner-operator/compare/v0.16.1...v0.16.2) (2025-10-27)
+
+
+### Bug Fixes
+
+* Add reports informer to ensure correct metrics ([#1592](https://github.com/statnett/image-scanner-operator/issues/1592)) ([0c11c45](https://github.com/statnett/image-scanner-operator/commit/0c11c4504e371635c4b5b37f1a9c4a5b0adaf483))
+
 ## [0.16.1](https://github.com/statnett/image-scanner-operator/compare/v0.16.0...v0.16.1) (2025-10-23)
 
 
