@@ -14,12 +14,12 @@ var _ = Describe("ResourceKindMapper", func() {
 	})
 
 	It("should map GRs to GVKs", func() {
-		kinds, err := mapper.NamespacedKindsForResources("deployments.apps", "jobs.batch", "replicationcontrollers")
+		kinds, err := mapper.NamespacedKindsForResources("deployments.apps", "jobs.batch", "pods")
 		Expect(err).ToNot(HaveOccurred())
 		expectedGVKs := []schema.GroupVersionKind{
 			{Group: "apps", Version: "v1", Kind: "Deployment"},
 			{Group: "batch", Version: "v1", Kind: "Job"},
-			{Version: "v1", Kind: "ReplicationController"},
+			{Version: "v1", Kind: "Pod"},
 		}
 		Expect(kinds).To(Equal(expectedGVKs))
 	})

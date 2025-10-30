@@ -53,7 +53,6 @@ type PodReconciler struct {
 //+kubebuilder:rbac:groups=apps,resources=daemonsets,verbs=get;list;watch
 //+kubebuilder:rbac:groups=batch,resources=cronjobs,verbs=get;list;watch
 //+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch
-//+kubebuilder:rbac:groups="",resources=replicationcontrollers,verbs=get;list;watch
 //+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
 
 // SetupWithManager sets up the controllers with the Manager.
