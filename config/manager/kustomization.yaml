@@ -12,7 +12,7 @@ configMapGenerator:
       - TRIVY_IMAGE=ghcr.io/aquasecurity/trivy:0.67.2
       - SCAN_JOB_NAMESPACE=image-scanner
       - SCAN_JOB_SERVICE_ACCOUNT=image-scanner-job
-      - SCAN_WORKLOAD_RESOURCES=deployments.apps,replicasets.apps,statefulsets.apps,daemonsets.apps,cronjobs.batch,jobs.batch,replicationcontrollers
+      - SCAN_WORKLOAD_RESOURCES=deployments.apps,replicasets.apps,statefulsets.apps,daemonsets.apps,cronjobs.batch,jobs.batch
       - ZAP_ENCODER=json
       - ZAP_LOG_LEVEL=info
       - ZAP_TIME_ENCODING=iso8601
