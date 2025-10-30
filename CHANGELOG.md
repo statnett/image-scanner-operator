@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.3](https://github.com/statnett/image-scanner-operator/compare/v0.16.2...v0.16.3) (2025-10-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.27.2 ([#1595](https://github.com/statnett/image-scanner-operator/issues/1595)) ([f2a75d6](https://github.com/statnett/image-scanner-operator/commit/f2a75d61a12ff3e3ba07d9e15c8a8e0701c7736f))
+* Remove legacy ReplicationController from scan workloads default ([#1598](https://github.com/statnett/image-scanner-operator/issues/1598)) ([5e70743](https://github.com/statnett/image-scanner-operator/commit/5e70743cffca554af7c59ca9d75b3a87e2065089))
+
 ## [0.16.2](https://github.com/statnett/image-scanner-operator/compare/v0.16.1...v0.16.2) (2025-10-27)
 
 
