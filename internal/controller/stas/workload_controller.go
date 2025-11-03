@@ -254,8 +254,6 @@ func (r *PodReconciler) garbageCollectObsoleteImageScans(ctx context.Context, po
 	}
 
 	for _, cis := range CISes {
-		// Done to avoid "Implicit memory aliasing in for loop"
-		cis := cis
 		if cis.Name != wantCIS.Name {
 			if err := r.Delete(ctx, &cis); err != nil {
 				return err

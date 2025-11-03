@@ -261,6 +261,8 @@ spec:
                 - unfixedCount
                 type: object
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

@@ -8,6 +8,7 @@ linters:
     - gocritic
     - godot
     - gosec
+    - modernize
     - predeclared
     - unparam
     - whitespace

@@ -116,11 +116,13 @@ type ContainerImageScanStatus struct {
 
 // ContainerImageScan is the Schema for the containerImageScans API.
 type ContainerImageScan struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta `json:",inline"`
+	// +optional
+	metav1.ObjectMeta `json:"metadata"`
 
-	Spec   ContainerImageScanSpec   `json:"spec,omitempty"`
-	Status ContainerImageScanStatus `json:"status,omitempty"`
+	Spec ContainerImageScanSpec `json:"spec"`
+	// +optional
+	Status ContainerImageScanStatus `json:"status,omitzero"`
 }
 
 //+kubebuilder:object:root=true
@@ -128,7 +130,8 @@ type ContainerImageScan struct {
 // ContainerImageScanList contains a list of ContainerImageScan.
 type ContainerImageScanList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
+	// +optional
+	metav1.ListMeta `json:"metadata"`
 	Items           []ContainerImageScan `json:"items"`
 }
 

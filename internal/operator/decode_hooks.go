@@ -12,12 +12,12 @@ func stringToRegexpHookFunc() mapstructure.DecodeHookFunc {
 	return func(
 		f reflect.Type,
 		t reflect.Type,
-		data interface{}) (interface{}, error) {
+		data any) (any, error) {
 		if f.Kind() != reflect.String {
 			return data, nil
 		}
 
-		if t != reflect.TypeOf(&regexp.Regexp{}) {
+		if t != reflect.TypeFor[*regexp.Regexp]() {
 			return data, nil
 		}
 
