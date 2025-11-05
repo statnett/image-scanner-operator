@@ -6,7 +6,7 @@ import (
 	"github.com/gohugoio/hashstructure"
 )
 
-func NewString(objs ...interface{}) (string, error) {
+func NewString(objs ...any) (string, error) {
 	hash, err := hashstructure.Hash(objs, nil)
 	if err != nil {
 		return "", err
