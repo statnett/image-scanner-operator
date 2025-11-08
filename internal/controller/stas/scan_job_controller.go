@@ -195,6 +195,12 @@ func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batch
 		}
 	}
 
+	var count int32 = 0
+	for _, c := range summary.SeverityCount {
+		count += c
+	}
+	logf.FromContext(ctx).Info("Scan complete", "issues", fmt.Sprintf("%v", count))
+
 	return newContainerImageStatusPatch(cis).
 		withScanJob(job.UID, true, metav1.Now()).
 		withResults(vulnerabilities, summary, &minSeverity).
