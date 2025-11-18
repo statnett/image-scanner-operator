@@ -2,6 +2,8 @@ package metrics
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -12,6 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	k8smetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
@@ -120,6 +123,7 @@ func (c ImageMetricsCollector) Start(ctx context.Context) error {
 	if err := k8smetrics.Registry.Register(c); err != nil {
 		return err
 	}
+	logf.FromContext(ctx).Info("ImageMetricsCollectorStart", "heisann", "hoppsann")
 
 	// Block until the context is done.
 	<-ctx.Done()
@@ -152,6 +156,8 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 	cisLabelValues := make([]string, len(c.cisLabels))
 	issuesLabelValues := make([]string, len(cisLabelValues)+1)
 	patchStatusLabelValues := make([]string, len(cisLabelValues)+1)
+
+	logf.FromContext(ctx).Info("ImageMetricsCollector", "len", fmt.Sprintf("%v", len(cisList.Items)))
 
 	for _, cis := range cisList.Items {
 		for i, l := range c.cisLabels {
@@ -192,9 +198,12 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 				}
 			}
 
+			d, _ := json.Marshal(severities)
+			logf.FromContext(ctx).Info("IssuesSeverities", "issues", string(d))
 			for severity, count := range severities {
 				issuesLabelValues[len(issuesLabelValues)-1] = severity
 				metrics <- prometheus.MustNewConstMetric(c.issuesDesc, prometheus.GaugeValue, float64(count), issuesLabelValues...)
+				logf.FromContext(ctx).Info("Issues", "issues", fmt.Sprintf("%v", count))
 			}
 
 			for patchStatus, count := range patchStatuses {
