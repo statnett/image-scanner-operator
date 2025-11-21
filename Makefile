@@ -167,7 +167,7 @@ ENVTEST ?= $(LOCALBIN)/setup-envtest
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
-KUSTOMIZE_VERSION ?= v5.7.1
+KUSTOMIZE_VERSION ?= v5.8.0
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
 CODE_GENERATOR_VERSION ?= v0.34.1
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
