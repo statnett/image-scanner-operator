@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.16.3](https://github.com/statnett/image-scanner-operator/compare/v0.16.2...v0.16.3) (2025-12-03)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.68.1 ([#1620](https://github.com/statnett/image-scanner-operator/issues/1620)) ([41cb914](https://github.com/statnett/image-scanner-operator/commit/41cb914f08641ab248c1aa082d261b512175500f))
+* **deps:** Update kubernetes go packages ([#1609](https://github.com/statnett/image-scanner-operator/issues/1609)) ([fe11d1d](https://github.com/statnett/image-scanner-operator/commit/fe11d1d17b86cf4134d39d9231276a6113704218))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.27.2 ([#1595](https://github.com/statnett/image-scanner-operator/issues/1595)) ([f2a75d6](https://github.com/statnett/image-scanner-operator/commit/f2a75d61a12ff3e3ba07d9e15c8a8e0701c7736f))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.48 ([#1601](https://github.com/statnett/image-scanner-operator/issues/1601)) ([76548e6](https://github.com/statnett/image-scanner-operator/commit/76548e6a39b89d9a5522fa3eafe3c8b14b1b393e))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.49 ([#1619](https://github.com/statnett/image-scanner-operator/issues/1619)) ([f422069](https://github.com/statnett/image-scanner-operator/commit/f42206984295650f6aed8705b56eb3ba88eb840f))
+* **deps:** Update module sigs.k8s.io/controller-runtime to v0.22.4 ([#1599](https://github.com/statnett/image-scanner-operator/issues/1599)) ([ba9720f](https://github.com/statnett/image-scanner-operator/commit/ba9720f288466b08fe45b483ab65ab47d093801f))
+* Remove legacy ReplicationController from scan workloads default ([#1598](https://github.com/statnett/image-scanner-operator/issues/1598)) ([5e70743](https://github.com/statnett/image-scanner-operator/commit/5e70743cffca554af7c59ca9d75b3a87e2065089))
+
 ## [0.16.2](https://github.com/statnett/image-scanner-operator/compare/v0.16.1...v0.16.2) (2025-10-27)
 
 
