@@ -10,14 +10,24 @@ import (
 
 // ContainerImageScanStatusApplyConfiguration represents a declarative configuration of the ContainerImageScanStatus type for use
 // with apply.
+//
+// ContainerImageScanStatus defines the observed state of ContainerImageScan.
 type ContainerImageScanStatusApplyConfiguration struct {
-	ObservedGeneration     *int64                                  `json:"observedGeneration,omitempty"`
-	LastScanJobUID         *types.UID                              `json:"lastScanJobUID,omitempty"`
-	LastScanTime           *v1.Time                                `json:"lastScanTime,omitempty"`
-	LastSuccessfulScanTime *v1.Time                                `json:"lastSuccessfulScanTime,omitempty"`
-	Conditions             []metav1.ConditionApplyConfiguration    `json:"conditions,omitempty"`
-	Vulnerabilities        []VulnerabilityApplyConfiguration       `json:"vulnerabilities,omitempty"`
-	VulnerabilitySummary   *VulnerabilitySummaryApplyConfiguration `json:"vulnerabilitySummary,omitempty"`
+	// ObservedGeneration is the generation observed by the image scanner operator.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	// LastScanJobUID is the UID of the scan job that last updated the status.
+	LastScanJobUID *types.UID `json:"lastScanJobUID,omitempty"`
+	// LastScanTime is the timestamp for the last attempt to scan the image.
+	LastScanTime *v1.Time `json:"lastScanTime,omitempty"`
+	// LastSuccessfulScanTime is the timestamp for the last successful scan of the image.
+	LastSuccessfulScanTime *v1.Time `json:"lastSuccessfulScanTime,omitempty"`
+	// Conditions represent the latest available observations of an object's state.
+	Conditions []metav1.ConditionApplyConfiguration `json:"conditions,omitempty"`
+	// Vulnerabilities contains the image scan result.
+	// NOTE: This is currently in an experimental state, and is subject to breaking changes.
+	Vulnerabilities []VulnerabilityApplyConfiguration `json:"vulnerabilities,omitempty"`
+	// VulnerabilitySummary is a summary of detected vulnerabilities.
+	VulnerabilitySummary *VulnerabilitySummaryApplyConfiguration `json:"vulnerabilitySummary,omitempty"`
 }
 
 // ContainerImageScanStatusApplyConfiguration constructs a declarative configuration of the ContainerImageScanStatus type for use with

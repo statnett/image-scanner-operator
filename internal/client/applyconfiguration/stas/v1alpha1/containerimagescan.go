@@ -10,6 +10,8 @@ import (
 
 // ContainerImageScanApplyConfiguration represents a declarative configuration of the ContainerImageScan type for use
 // with apply.
+//
+// ContainerImageScan is the Schema for the containerImageScans API.
 type ContainerImageScanApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
@@ -27,6 +29,7 @@ func ContainerImageScan(name, namespace string) *ContainerImageScanApplyConfigur
 	b.WithAPIVersion("stas.statnett.no/v1alpha1")
 	return b
 }
+
 func (b ContainerImageScanApplyConfiguration) IsApplyConfiguration() {}
 
 // WithKind sets the Kind field in the declarative configuration to the given value
