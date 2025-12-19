@@ -18,7 +18,7 @@ var _ = Describe("LogsReader", func() {
 
 	BeforeEach(func() {
 		ctx = context.Background()
-		reader = NewLogsReader(fake.NewSimpleClientset())
+		reader = NewLogsReader(fake.NewClientset())
 	})
 
 	Context("GetLogs", func() {

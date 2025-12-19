@@ -9,8 +9,11 @@ import (
 // ScanConfigApplyConfiguration represents a declarative configuration of the ScanConfig type for use
 // with apply.
 type ScanConfigApplyConfiguration struct {
-	MinSeverity   *stasv1alpha1.Severity `json:"minSeverity,omitempty"`
-	IgnoreUnfixed *bool                  `json:"ignoreUnfixed,omitempty"`
+	// MinSeverity sets the minimum vulnerability severity included the vulnerabilities report after scanning the image.
+	// Note: If the report is too large to make the resource fit in the api-server, the actual minimum reported vulnerability severity might be higher.
+	MinSeverity *stasv1alpha1.Severity `json:"minSeverity,omitempty"`
+	// IgnoreUnfixed set to true will report only fixed vulnerabilities when scanning the image.
+	IgnoreUnfixed *bool `json:"ignoreUnfixed,omitempty"`
 }
 
 // ScanConfigApplyConfiguration constructs a declarative configuration of the ScanConfig type for use with

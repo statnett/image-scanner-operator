@@ -9,6 +9,8 @@ import (
 
 // ContainerImageScanSpecApplyConfiguration represents a declarative configuration of the ContainerImageScanSpec type for use
 // with apply.
+//
+// ContainerImageScanSpec contains a resolved container image in use by owning workload.
 type ContainerImageScanSpecApplyConfiguration struct {
 	ImageScanSpecApplyConfiguration `json:",inline"`
 	Tag                             *string                     `json:"tag,omitempty"`

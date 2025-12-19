@@ -9,10 +9,18 @@ import (
 // WorkloadApplyConfiguration represents a declarative configuration of the Workload type for use
 // with apply.
 type WorkloadApplyConfiguration struct {
-	APIVersion    *string    `json:"apiVersion,omitempty"`
-	Group         *string    `json:"group,omitempty"`
-	Kind          *string    `json:"kind,omitempty"`
-	Name          *string    `json:"name,omitempty"`
+	// API version of the referent.
+	APIVersion *string `json:"apiVersion,omitempty"`
+	// Deprecated: Use APIVersion instead. Will be removed in the next version of the API.
+	Group *string `json:"group,omitempty"`
+	// Kind of the referent.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	Kind *string `json:"kind,omitempty"`
+	// Name of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	Name *string `json:"name,omitempty"`
+	// UID of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids
 	UID           *types.UID `json:"uid,omitempty"`
 	ContainerName *string    `json:"containerName,omitempty"`
 }
