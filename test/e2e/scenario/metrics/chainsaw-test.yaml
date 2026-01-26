@@ -30,3 +30,4 @@ spec:
             tail: -1
         - podLogs:
             name: metrics-custom
+        - events: {}
