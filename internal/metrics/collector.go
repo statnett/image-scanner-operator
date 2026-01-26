@@ -17,6 +17,7 @@ import (
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
+	"github.com/statnett/image-scanner-operator/internal/config/feature"
 )
 
 const (
@@ -168,36 +169,54 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 
 		metrics <- prometheus.MustNewConstMetric(c.successDesc, prometheus.GaugeValue, successValue, cisLabelValues...)
 
-		report := openreportsv1alpha1.Report{}
-		if err := c.Get(ctx, client.ObjectKeyFromObject(&cis), &report); err != nil {
-			if !errors.IsNotFound(err) {
-				c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
+		if config.DefaultMutableFeatureGate.Enabled(feature.PolicyReport) {
+			report := openreportsv1alpha1.Report{}
+			if err := c.Get(ctx, client.ObjectKeyFromObject(&cis), &report); err != nil {
+				if !errors.IsNotFound(err) {
+					c.Log.Error(err, "Failed to get Report", "namespace", cis.Namespace, "name", cis.Name)
+				}
+
+				continue
+			}
+
+			severities := make(map[string]int32)
+
+			patchStatuses := make(map[string]int32)
+
+			for _, r := range report.Results {
+				severities[reportSeverityCompat(r.Severity)]++
+				if _, ok := r.Properties["fixedVersion"]; ok {
+					patchStatuses["fixed"]++
+				} else {
+					patchStatuses["unfixed"]++
+				}
+			}
+
+			for severity, count := range severities {
+				issuesLabelValues[len(issuesLabelValues)-1] = severity
+				metrics <- prometheus.MustNewConstMetric(c.issuesDesc, prometheus.GaugeValue, float64(count), issuesLabelValues...)
+			}
+
+			for patchStatus, count := range patchStatuses {
+				patchStatusLabelValues[len(patchStatusLabelValues)-1] = patchStatus
+				metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(count), patchStatusLabelValues...)
 			}
 
 			continue
 		}
 
-		severities := make(map[string]int32)
-
-		patchStatuses := make(map[string]int32)
-
-		for _, r := range report.Results {
-			severities[reportSeverityCompat(r.Severity)]++
-			if _, ok := r.Properties["fixedVersion"]; ok {
-				patchStatuses["fixed"]++
-			} else {
-				patchStatuses["unfixed"]++
-			}
-		}
-
+		severities := cis.Status.VulnerabilitySummary.GetSeverityCount()
 		for severity, count := range severities {
 			issuesLabelValues[len(issuesLabelValues)-1] = severity
 			metrics <- prometheus.MustNewConstMetric(c.issuesDesc, prometheus.GaugeValue, float64(count), issuesLabelValues...)
 		}
 
-		for patchStatus, count := range patchStatuses {
-			patchStatusLabelValues[len(patchStatusLabelValues)-1] = patchStatus
-			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(count), patchStatusLabelValues...)
+		if cis.Status.VulnerabilitySummary != nil {
+			patchStatusLabelValues[len(patchStatusLabelValues)-1] = "fixed"
+			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(cis.Status.VulnerabilitySummary.FixedCount), patchStatusLabelValues...)
+
+			patchStatusLabelValues[len(patchStatusLabelValues)-1] = "unfixed"
+			metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(cis.Status.VulnerabilitySummary.UnfixedCount), patchStatusLabelValues...)
 		}
 	}
 }
