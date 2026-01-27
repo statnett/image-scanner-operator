@@ -7,7 +7,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: run
-      image: quay.io/curl/curl
+      image: docker.io/curlimages/curl
       command:
         - /bin/sh
         - -c

@@ -192,34 +192,14 @@ func (c ImageMetricsCollector) Collect(metrics chan<- prometheus.Metric) {
 				}
 			}
 
-			knownSeverities := []string{
-				"CRITICAL",
-				"HIGH",
-				"MEDIUM",
-				"LOW",
-				"INFO",
-			}
-
-			for _, severity := range knownSeverities {
+			for severity, count := range severities {
 				issuesLabelValues[len(issuesLabelValues)-1] = severity
-				metrics <- prometheus.MustNewConstMetric(
-					c.issuesDesc,
-					prometheus.GaugeValue,
-					float64(severities[severity]), // 0 if absent
-					issuesLabelValues...,
-				)
+				metrics <- prometheus.MustNewConstMetric(c.issuesDesc, prometheus.GaugeValue, float64(count), issuesLabelValues...)
 			}
 
-			knownPatchStatuses := []string{"fixed", "unfixed"}
-
-			for _, status := range knownPatchStatuses {
-				patchStatusLabelValues[len(patchStatusLabelValues)-1] = status
-				metrics <- prometheus.MustNewConstMetric(
-					c.patchStatusDesc,
-					prometheus.GaugeValue,
-					float64(patchStatuses[status]),
-					patchStatusLabelValues...,
-				)
+			for patchStatus, count := range patchStatuses {
+				patchStatusLabelValues[len(patchStatusLabelValues)-1] = patchStatus
+				metrics <- prometheus.MustNewConstMetric(c.patchStatusDesc, prometheus.GaugeValue, float64(count), patchStatusLabelValues...)
 			}
 
 			continue
