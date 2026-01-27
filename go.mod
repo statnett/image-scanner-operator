@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/distribution/reference v0.6.0
 	github.com/go-logr/logr v1.4.3
-	github.com/go-viper/mapstructure/v2 v2.4.0
+	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/gohugoio/hashstructure v0.6.0
 	github.com/onsi/ginkgo/v2 v2.27.5
 	github.com/onsi/gomega v1.39.0
