@@ -13,20 +13,6 @@ spec:
         - -c
       args:
         - |
-          for i in $(seq 1 5); do
-            echo "=== Attempt $i ==="
-
-            METRICS="$(curl -s http://metrics.image-scanner.svc.cluster.local:80/metrics)"
-            echo "$METRICS"
-
-            if echo "$METRICS" | grep -q "image_scanner_container_image_issues"; then
-              echo "✅ Metric found"
-              exit 0
-            fi
-
-            echo "❌ Metric not found, retrying..."
-            sleep 2
-          done
-
-          echo "❌ Metric not found after retries"
-          exit 1
+          METRICS="$(curl -s http://metrics.image-scanner.svc.cluster.local:80/metrics)"
+          echo "$METRICS"
+          echo "$METRICS" | grep -Eq '^image_scanner_container_image_scan_success\{[^}]*\}[[:space:]]+1$'
