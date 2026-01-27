@@ -46,7 +46,7 @@ var _ = Describe("Scan Job BackOff Pod controller", func() {
 					},
 				}}
 			})()).To(Succeed())
-			k8sEventRecorder.Event(pod, corev1.EventTypeNormal, "BackOff", fmt.Sprintf("Back-off pulling image %q", cis.Spec.Digest))
+			k8sEventRecorder.Eventf(pod, nil, corev1.EventTypeWarning, "BackOff", "BackOff", fmt.Sprintf("Back-off pulling image %q", cis.Spec.Digest))
 
 			// Wait for back-off scan job to get reconciled
 			Eventually(komega.Object(cis)).Should(HaveField("Status.LastScanTime", Not(BeZero())))
