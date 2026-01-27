@@ -12,5 +12,7 @@ spec:
         - /bin/sh
         - -c
       args:
-        - >-
-          curl -s "http://metrics.image-scanner.svc.cluster.local:80/metrics" | grep image_scanner_container_image_issues;
+        - |
+          METRICS="$(curl -s http://metrics.image-scanner.svc.cluster.local:80/metrics)"
+          echo "$METRICS"
+          echo "$METRICS" | grep -Eq '^image_scanner_container_image_scan_success\{[^}]*\}[[:space:]]+1$'
