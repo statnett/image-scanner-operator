@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.9](https://github.com/statnett/image-scanner-operator/compare/v0.16.8...v0.16.9) (2026-02-08)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.69.1 ([#1663](https://github.com/statnett/image-scanner-operator/issues/1663)) ([d02d6ff](https://github.com/statnett/image-scanner-operator/commit/d02d6ffcf3096a154a0ef8fe2d56cf83efbd916b))
+* **deps:** Update module sigs.k8s.io/structured-merge-diff/v6 to v6.3.2 ([#1664](https://github.com/statnett/image-scanner-operator/issues/1664)) ([46604de](https://github.com/statnett/image-scanner-operator/commit/46604deb6dd5d96391fe190064a3c6b23bdba1f1))
+
 ## [0.16.8](https://github.com/statnett/image-scanner-operator/compare/v0.16.7...v0.16.8) (2026-01-30)
 
 
