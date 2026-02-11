@@ -14,6 +14,7 @@ var _ = Describe("ImageReference", func() {
 			images, err := containerImages(pod)
 			Expect(err).To(Succeed())
 			Expect(images).To(HaveLen(1))
+
 			for _, image := range images {
 				Expect(*image).To(Equal(expectedImage))
 			}

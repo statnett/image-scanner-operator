@@ -74,6 +74,7 @@ var _ = BeforeSuite(func() {
 	openReportsCRDs := loadOpenReportsCRDs()
 
 	By("bootstrapping test environment")
+
 	testEnv = &envtest.Environment{
 		CRDDirectoryPaths: []string{
 			filepath.Join("..", "..", "..", "config", "crd", "bases"),
@@ -165,7 +166,9 @@ var _ = BeforeSuite(func() {
 
 	go func() {
 		defer GinkgoRecover()
+
 		var ctrlCtx context.Context
+
 		ctrlCtx, cancel = context.WithCancel(ctrl.SetupSignalHandler())
 		Expect(k8sManager.Start(ctrlCtx)).To(Succeed())
 	}()
@@ -200,6 +203,7 @@ var _ = AfterSuite(func() {
 	cancel()
 
 	By("tearing down the test environment")
+
 	err := testEnv.Stop()
 	Expect(err).NotTo(HaveOccurred())
 })

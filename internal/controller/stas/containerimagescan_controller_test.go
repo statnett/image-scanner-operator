@@ -32,6 +32,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 			status.Conditions[i].LastTransitionTime = metav1.Time{}
 			status.Conditions[i].Message = "<MESSAGE>"
 		}
+
 		return status
 	}
 
@@ -54,6 +55,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 		// Wait for CIS to be processed by controller
 		Eventually(komega.Object(cis)).Should(HaveField("Status.ObservedGeneration", Not(BeZero())))
+
 		expectedStatus := stasv1alpha1.ContainerImageScanStatus{
 			ObservedGeneration: 1,
 			Conditions: []metav1.Condition{{
@@ -170,12 +172,14 @@ var _ = Describe("ContainerImageScan controller", func() {
 		job.UID = ""
 		job.ResourceVersion = ""
 		job.CreationTimestamp = metav1.Time{}
+
 		job.ManagedFields = nil
 		for k := range job.Labels {
 			if k == stasv1alpha1.LabelStatnettControllerUID {
 				job.Labels[k] = "<CIS-UID>"
 			}
 		}
+
 		job.Spec.Selector = nil
 		for k := range job.Spec.Template.Labels {
 			switch k {
@@ -190,8 +194,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 			case stasv1alpha1.LabelStatnettControllerUID:
 				job.Spec.Template.Labels[k] = "<CIS-UID>"
 			}
-
 		}
+
 		for _, container := range job.Spec.Template.Spec.Containers {
 			if container.Name == trivy.ScanJobContainerName {
 				for i, ev := range container.Env {
@@ -201,6 +205,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 				}
 			}
 		}
+
 		return job
 	}
 
