@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.10](https://github.com/statnett/image-scanner-operator/compare/v0.16.9...v0.16.10) (2026-02-11)
+
+
+### Bug Fixes
+
+* **deps:** Update k8s.io/utils digest to b8788ab ([#1669](https://github.com/statnett/image-scanner-operator/issues/1669)) ([916bd2c](https://github.com/statnett/image-scanner-operator/commit/916bd2c9a4f7117c264895a655d9825e29b4dd9b))
+* **deps:** Update kubernetes go packages ([#1667](https://github.com/statnett/image-scanner-operator/issues/1667)) ([7e0d1db](https://github.com/statnett/image-scanner-operator/commit/7e0d1db988d0b62e51c9fcab05cd3f035acc5e0f))
+* **deps:** Update kubernetes go packages to v0.35.1 ([#1672](https://github.com/statnett/image-scanner-operator/issues/1672)) ([12b0c04](https://github.com/statnett/image-scanner-operator/commit/12b0c0496ccc444f10505907bb6bc260be0ec131))
+
 ## [0.16.9](https://github.com/statnett/image-scanner-operator/compare/v0.16.8...v0.16.9) (2026-02-08)
 
 
