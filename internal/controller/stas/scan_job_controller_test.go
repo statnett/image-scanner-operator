@@ -63,6 +63,7 @@ var _ = Describe("Scan Job controller", func() {
 			Expect(cis.Status.Conditions).To(BeEmpty())
 			// Check scan results available
 			Expect(cis.Status.Vulnerabilities).To(BeEmpty())
+
 			expectedVulnSummary := &stasv1alpha1.VulnerabilitySummary{
 				SeverityCount: map[string]int32{
 					"CRITICAL": 4,
@@ -89,6 +90,7 @@ var _ = Describe("Scan Job controller", func() {
 					Not(BeEmpty()),
 				),
 			))
+
 			expectedSummary := openreportsv1alpha1.ReportSummary{
 				Fail: 19,
 			}
@@ -122,6 +124,7 @@ var _ = Describe("Scan Job controller", func() {
 				Expect(cis.Status.Conditions).To(BeEmpty())
 				// Check scan results available and filtered
 				Expect(cis.Status.Vulnerabilities).To(BeEmpty())
+
 				expectedVulnSummary := &stasv1alpha1.VulnerabilitySummary{
 					SeverityCount: map[string]int32{
 						"CRITICAL": 653,
@@ -151,6 +154,7 @@ var _ = Describe("Scan Job controller", func() {
 						),
 					),
 				))
+
 				expectedSummary := openreportsv1alpha1.ReportSummary{
 					Fail: 3259,
 					Warn: 7059,

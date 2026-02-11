@@ -29,6 +29,7 @@ func TestAPIs(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	By("bootstrapping test environment")
+
 	testEnv = &envtest.Environment{}
 	restCfg, err := testEnv.Start()
 	Expect(err).NotTo(HaveOccurred())

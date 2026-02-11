@@ -136,6 +136,7 @@ var managedByImageScanner = predicate.NewPredicateFuncs(func(object client.Objec
 	if managedBy, ok := object.GetLabels()[stasv1alpha1.LabelK8SAppManagedBy]; ok {
 		return managedBy == stasv1alpha1.AppNameImageScanner
 	}
+
 	return false
 })
 

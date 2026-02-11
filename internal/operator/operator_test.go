@@ -44,5 +44,4 @@ var _ = Describe("Operator config from flags", func() {
 			Expect(opr.UnmarshalConfig(cfg)).To(MatchError(ContainSubstring("error parsing regexp")))
 		})
 	})
-
 })

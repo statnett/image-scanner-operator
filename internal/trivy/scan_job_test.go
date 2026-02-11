@@ -13,8 +13,10 @@ import (
 
 var _ = Describe("Scan Job", func() {
 	Context("Creating Job container", func() {
-		var jobBuilder *filesystemScanJobBuilder
-		var cisSpec stasv1alpha1.ContainerImageScanSpec
+		var (
+			jobBuilder *filesystemScanJobBuilder
+			cisSpec    stasv1alpha1.ContainerImageScanSpec
+		)
 
 		BeforeEach(func() {
 			jobBuilder = &filesystemScanJobBuilder{}
@@ -34,6 +36,7 @@ var _ = Describe("Scan Job", func() {
 				cisSpec.MinSeverity = ptr.To(stasv1alpha1.SeverityMedium)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
+
 				expectedSeverityEnv := corev1.EnvVar{
 					Name:  "TRIVY_SEVERITY",
 					Value: "MEDIUM,HIGH,CRITICAL",
@@ -45,6 +48,7 @@ var _ = Describe("Scan Job", func() {
 				cisSpec.IgnoreUnfixed = ptr.To(true)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
+
 				expectedSeverityEnv := corev1.EnvVar{
 					Name:  "TRIVY_IGNORE_UNFIXED",
 					Value: "true",

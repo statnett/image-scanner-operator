@@ -51,6 +51,7 @@ var _ = Describe("Workload controller", func() {
 			Expect(k8sClient.Create(ctx, workload)).To(Succeed())
 
 			createPod(ctx, workload, k8sClient.Scheme())
+
 			expectedImage := stasv1alpha1.Image{
 				Name:   "my.registry/repository/app",
 				Digest: "sha256:4b59f7dacd37c688968756d176139715df69d89eb0be1802e059316f9d58d9ef",
@@ -119,6 +120,7 @@ var _ = Describe("Workload controller", func() {
 			rs.Spec.Selector = &metav1.LabelSelector{
 				MatchLabels: rs.Spec.Template.Labels,
 			}
+
 			return rs
 		}
 
@@ -145,9 +147,11 @@ var _ = Describe("Workload controller", func() {
 					},
 				)
 			}
+
 			setPodReady(pod)
 
 			Expect(controllerutil.SetControllerReference(rs, pod, testEnv.Scheme)).To(Succeed())
+
 			return pod
 		}
 
@@ -157,8 +161,11 @@ var _ = Describe("Workload controller", func() {
 		Expect(k8sClient.Create(ctx, rs1)).To(Succeed())
 		Expect(k8sClient.Create(ctx, rs2)).To(Succeed())
 
-		const FirstSHA = "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f"
-		const SecondSHA = "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255"
+		const (
+			FirstSHA  = "sha256:10615e4f03bddba4cd49823420d9f50a403776d1b58991caa6d123e3527ff79f"
+			SecondSHA = "sha256:45dddaa9b519329a688366e2b6119214a42cac569529ccacb0989c43355f0255"
+		)
+
 		pod1 := newPod(rs1, "controlled-1", FirstSHA, "")
 		pod2 := newPod(rs1, "controlled-2", FirstSHA, "")
 		// This pod simulates the ReplicaSet previously having different
@@ -184,16 +191,20 @@ var _ = Describe("Workload controller", func() {
 			sort.Slice(imageScans.Items, func(i, j int) bool {
 				return imageScans.Items[i].Name < imageScans.Items[j].Name
 			})
+
 			for i := range imageScans.Items {
 				sort.Slice(imageScans.Items[i].OwnerReferences, func(j, k int) bool {
 					return imageScans.Items[i].OwnerReferences[j].Name < imageScans.Items[i].OwnerReferences[k].Name
 				})
+
 				ors := make([]types.UID, 0, len(imageScans.Items[i].OwnerReferences))
 				for _, or := range imageScans.Items[i].OwnerReferences {
 					ors = append(ors, or.UID)
 				}
+
 				ownerRefs = append(ownerRefs, ors)
 			}
+
 			return ownerRefs
 		}
 
@@ -258,9 +269,11 @@ var _ = Describe("Workload controller", func() {
 })
 
 var _ = Describe("Naming ContainerImageScan", func() {
-	var img stasv1alpha1.Image
-	var ctrl client.Object
-	var containerName string
+	var (
+		img           stasv1alpha1.Image
+		ctrl          client.Object
+		containerName string
+	)
 
 	BeforeEach(func() {
 		ctrl = &metav1.PartialObjectMetadata{
