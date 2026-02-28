@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.11](https://github.com/statnett/image-scanner-operator/compare/v0.16.10...v0.16.11) (2026-02-28)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes go packages to v0.35.2 ([#1686](https://github.com/statnett/image-scanner-operator/issues/1686)) ([d2dbc44](https://github.com/statnett/image-scanner-operator/commit/d2dbc44f18f16a9a45588b6e6ea6fb037fd375a2))
+
 ## [0.16.10](https://github.com/statnett/image-scanner-operator/compare/v0.16.9...v0.16.10) (2026-02-11)
 
 
