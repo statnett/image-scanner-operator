@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.11](https://github.com/statnett/image-scanner-operator/compare/v0.16.10...v0.16.11) (2026-03-02)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.69.2 ([#1688](https://github.com/statnett/image-scanner-operator/issues/1688)) ([d34ee05](https://github.com/statnett/image-scanner-operator/commit/d34ee059bbe973103020a8e654e83c8dd4148f65))
+* **deps:** Update kubernetes go packages to v0.35.2 ([#1686](https://github.com/statnett/image-scanner-operator/issues/1686)) ([d2dbc44](https://github.com/statnett/image-scanner-operator/commit/d2dbc44f18f16a9a45588b6e6ea6fb037fd375a2))
+
 ## [0.16.10](https://github.com/statnett/image-scanner-operator/compare/v0.16.9...v0.16.10) (2026-02-11)
 
 
