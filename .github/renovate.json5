@@ -11,6 +11,7 @@
         "ghcr.io/aquasecurity/trivy",
       ],
       "semanticCommitType": "fix",
+      "dependencyDashboardApproval": true,
     },
   ],
 }
