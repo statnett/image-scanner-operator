@@ -24,7 +24,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
-	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -188,7 +187,7 @@ func (o Operator) Start(cfg config.Config) error {
 			HTTPClient: httpClient,
 		},
 		Controller: ctrlconfig.Controller{
-			UsePriorityQueue: ptr.To(true),
+			UsePriorityQueue: new(true),
 		},
 		Scheme: scheme,
 		MapperProvider: func(c *rest.Config, httpClient *http.Client) (meta.RESTMapper, error) {

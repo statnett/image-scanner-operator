@@ -45,7 +45,7 @@ var _ = Describe("Scan Job", func() {
 			})
 
 			It("should set ignore-unfixed when ignoreUnfixed set", func() {
-				cisSpec.IgnoreUnfixed = ptr.To(true)
+				cisSpec.IgnoreUnfixed = new(true)
 				container, err := jobBuilder.container(cisSpec)
 				Expect(err).ToNot(HaveOccurred())
 
