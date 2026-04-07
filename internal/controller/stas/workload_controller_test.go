@@ -12,7 +12,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
@@ -98,7 +97,7 @@ var _ = Describe("Workload controller", func() {
 			client.MatchingLabels(pod.Labels),
 		}
 		Eventually(komega.ObjectList(imageScans, listOps...), timeout, interval).Should(HaveField("Items", HaveLen(1)))
-		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(ptr.To(true)))
+		Expect(imageScans.Items[0].Spec.IgnoreUnfixed).To(Equal(new(true)))
 	})
 
 	It("should add all Pods from same workload with same image as CIS owners", func() {

@@ -141,11 +141,11 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 		},
 	}
 
-	job.Spec.Parallelism = ptr.To(int32(1))
-	job.Spec.Completions = ptr.To(int32(1))
-	job.Spec.ActiveDeadlineSeconds = ptr.To(int64(3600))
-	job.Spec.BackoffLimit = ptr.To(int32(3))
-	job.Spec.TTLSecondsAfterFinished = ptr.To(f.ScanJobTTLSecondsAfterFinished)
+	job.Spec.Parallelism = new(int32(1))
+	job.Spec.Completions = new(int32(1))
+	job.Spec.ActiveDeadlineSeconds = new(int64(3600))
+	job.Spec.BackoffLimit = new(int32(3))
+	job.Spec.TTLSecondsAfterFinished = new(f.ScanJobTTLSecondsAfterFinished)
 	job.Spec.Template.Spec.ServiceAccountName = f.ScanJobServiceAccount
 
 	if len(f.preferredNodeNames) > 0 {
@@ -170,7 +170,7 @@ func (f *filesystemScanJobBuilder) newImageScanJob(spec stasv1alpha1.ContainerIm
 		}
 	}
 
-	job.Spec.Template.Spec.AutomountServiceAccountToken = ptr.To(false)
+	job.Spec.Template.Spec.AutomountServiceAccountToken = new(false)
 	job.Spec.Template.Spec.RestartPolicy = corev1.RestartPolicyOnFailure
 
 	return job, nil
@@ -247,13 +247,13 @@ func (f *filesystemScanJobBuilder) container(spec stasv1alpha1.ContainerImageSca
 		},
 	}
 	container.SecurityContext = &corev1.SecurityContext{
-		Privileged:               ptr.To(false),
-		AllowPrivilegeEscalation: ptr.To(false),
+		Privileged:               new(false),
+		AllowPrivilegeEscalation: new(false),
 		Capabilities: &corev1.Capabilities{
 			Drop: []corev1.Capability{"all"},
 		},
-		ReadOnlyRootFilesystem: ptr.To(true),
-		RunAsUser:              ptr.To(int64(0)),
+		ReadOnlyRootFilesystem: new(true),
+		RunAsUser:              new(int64(0)),
 	}
 	container.TerminationMessagePolicy = corev1.TerminationMessageFallbackToLogsOnError
 	container.VolumeMounts = []corev1.VolumeMount{
