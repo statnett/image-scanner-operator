@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.14](https://github.com/statnett/image-scanner-operator/compare/v0.16.13...v0.16.14) (2026-04-08)
+
+
+### Bug Fixes
+
+* Bump min Go version to 1.26 ([#1719](https://github.com/statnett/image-scanner-operator/issues/1719)) ([fe8b3d5](https://github.com/statnett/image-scanner-operator/commit/fe8b3d5512e94573c8ff91b6c8d6fd165a4ff77b))
+
 ## [0.16.13](https://github.com/statnett/image-scanner-operator/compare/v0.16.12...v0.16.13) (2026-03-30)
 
 
