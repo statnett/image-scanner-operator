@@ -40,7 +40,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		cis := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "nginx-unprivileged",
-				Namespace: "default",
+				Namespace: DefaultNamespaceName,
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
@@ -72,7 +72,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		cis := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "nginx-rescan",
-				Namespace: "default",
+				Namespace: DefaultNamespaceName,
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
@@ -112,7 +112,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		sourceCIS := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "copy-source",
-				Namespace: "default",
+				Namespace: DefaultNamespaceName,
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
@@ -147,7 +147,7 @@ var _ = Describe("ContainerImageScan controller", func() {
 		targetCIS := &stasv1alpha1.ContainerImageScan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "copy-target",
-				Namespace: "default",
+				Namespace: DefaultNamespaceName,
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
