@@ -134,7 +134,3 @@ type ContainerImageScanList struct {
 	metav1.ListMeta `json:"metadata"`
 	Items           []ContainerImageScan `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ContainerImageScan{}, &ContainerImageScanList{})
-}
