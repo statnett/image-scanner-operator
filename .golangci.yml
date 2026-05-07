@@ -17,6 +17,8 @@ linters:
     gocritic:
       enabled-checks:
         - importShadow
+    goconst:
+      min-occurrences: 6 # TODO: Review this and eventually improve
     wsl_v5:
       allow-first-in-block: true
       allow-whole-block: false
