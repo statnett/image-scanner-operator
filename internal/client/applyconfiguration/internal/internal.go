@@ -23,6 +23,292 @@ func Parser() *typed.Parser {
 var parserOnce sync.Once
 var parser *typed.Parser
 var schemaYAML = typed.YAMLObject(`types:
+- name: com.github.opencontainers.go-digest.Digest
+  scalar: string
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScan
+  map:
+    fields:
+    - name: apiVersion
+      type:
+        scalar: string
+    - name: kind
+      type:
+        scalar: string
+    - name: metadata
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta
+    - name: spec
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScanSpec
+    - name: status
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScanStatus
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScanSpec
+  map:
+    fields:
+    - name: digest
+      type:
+        namedType: com.github.opencontainers.go-digest.Digest
+    - name: ignoreUnfixed
+      type:
+        scalar: boolean
+    - name: minSeverity
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Severity
+    - name: name
+      type:
+        scalar: string
+    - name: tag
+      type:
+        scalar: string
+    - name: workload
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Workload
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScanStatus
+  map:
+    fields:
+    - name: conditions
+      type:
+        list:
+          elementType:
+            namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Condition
+          elementRelationship: atomic
+    - name: lastScanJobUID
+      type:
+        namedType: io.k8s.apimachinery.pkg.types.UID
+    - name: lastScanTime
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+    - name: lastSuccessfulScanTime
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+    - name: observedGeneration
+      type:
+        scalar: numeric
+    - name: vulnerabilities
+      type:
+        list:
+          elementType:
+            namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Vulnerability
+          elementRelationship: atomic
+    - name: vulnerabilitySummary
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.VulnerabilitySummary
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Severity
+  scalar: string
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Vulnerability
+  map:
+    fields:
+    - name: fixedVersion
+      type:
+        scalar: string
+    - name: installedVersion
+      type:
+        scalar: string
+    - name: pkgName
+      type:
+        scalar: string
+    - name: pkgPath
+      type:
+        scalar: string
+    - name: primaryURL
+      type:
+        scalar: string
+    - name: severity
+      type:
+        namedType: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Severity
+    - name: title
+      type:
+        scalar: string
+    - name: vulnerabilityID
+      type:
+        scalar: string
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.VulnerabilitySummary
+  map:
+    fields:
+    - name: fixedCount
+      type:
+        scalar: numeric
+    - name: severityCount
+      type:
+        map:
+          elementType:
+            scalar: numeric
+          elementRelationship: atomic
+    - name: unfixedCount
+      type:
+        scalar: numeric
+- name: com.github.statnett.image-scanner-operator.api.stas.v1alpha1.Workload
+  map:
+    fields:
+    - name: apiVersion
+      type:
+        scalar: string
+    - name: containerName
+      type:
+        scalar: string
+    - name: group
+      type:
+        scalar: string
+    - name: kind
+      type:
+        scalar: string
+    - name: name
+      type:
+        scalar: string
+    - name: uid
+      type:
+        namedType: io.k8s.apimachinery.pkg.types.UID
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.Condition
+  map:
+    fields:
+    - name: lastTransitionTime
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+    - name: message
+      type:
+        scalar: string
+    - name: observedGeneration
+      type:
+        scalar: numeric
+    - name: reason
+      type:
+        scalar: string
+    - name: status
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.ConditionStatus
+    - name: type
+      type:
+        scalar: string
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.ConditionStatus
+  scalar: string
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.FieldsV1
+  map:
+    elementType:
+      scalar: untyped
+      list:
+        elementType:
+          namedType: __untyped_atomic_
+        elementRelationship: atomic
+      map:
+        elementType:
+          namedType: __untyped_deduced_
+        elementRelationship: separable
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry
+  map:
+    fields:
+    - name: apiVersion
+      type:
+        scalar: string
+    - name: fieldsType
+      type:
+        scalar: string
+    - name: fieldsV1
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.FieldsV1
+    - name: manager
+      type:
+        scalar: string
+    - name: operation
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsOperationType
+    - name: subresource
+      type:
+        scalar: string
+    - name: time
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsOperationType
+  scalar: string
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta
+  map:
+    fields:
+    - name: annotations
+      type:
+        map:
+          elementType:
+            scalar: string
+    - name: creationTimestamp
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+    - name: deletionGracePeriodSeconds
+      type:
+        scalar: numeric
+    - name: deletionTimestamp
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+    - name: finalizers
+      type:
+        list:
+          elementType:
+            scalar: string
+          elementRelationship: associative
+    - name: generateName
+      type:
+        scalar: string
+    - name: generation
+      type:
+        scalar: numeric
+    - name: labels
+      type:
+        map:
+          elementType:
+            scalar: string
+    - name: managedFields
+      type:
+        list:
+          elementType:
+            namedType: io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry
+          elementRelationship: atomic
+    - name: name
+      type:
+        scalar: string
+    - name: namespace
+      type:
+        scalar: string
+    - name: ownerReferences
+      type:
+        list:
+          elementType:
+            namedType: io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference
+          elementRelationship: associative
+          keys:
+          - uid
+    - name: resourceVersion
+      type:
+        scalar: string
+    - name: selfLink
+      type:
+        scalar: string
+    - name: uid
+      type:
+        namedType: io.k8s.apimachinery.pkg.types.UID
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference
+  map:
+    fields:
+    - name: apiVersion
+      type:
+        scalar: string
+    - name: blockOwnerDeletion
+      type:
+        scalar: boolean
+    - name: controller
+      type:
+        scalar: boolean
+    - name: kind
+      type:
+        scalar: string
+    - name: name
+      type:
+        scalar: string
+    - name: uid
+      type:
+        namedType: io.k8s.apimachinery.pkg.types.UID
+    elementRelationship: atomic
+- name: io.k8s.apimachinery.pkg.apis.meta.v1.Time
+  scalar: untyped
+- name: io.k8s.apimachinery.pkg.types.UID
+  scalar: string
 - name: __untyped_atomic_
   scalar: untyped
   list:

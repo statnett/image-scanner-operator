@@ -3,8 +3,11 @@
 package v1alpha1
 
 import (
+	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
+	internal "github.com/statnett/image-scanner-operator/internal/client/applyconfiguration/internal"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
+	managedfields "k8s.io/apimachinery/pkg/util/managedfields"
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
@@ -28,6 +31,47 @@ func ContainerImageScan(name, namespace string) *ContainerImageScanApplyConfigur
 	b.WithKind("ContainerImageScan")
 	b.WithAPIVersion("stas.statnett.no/v1alpha1")
 	return b
+}
+
+// ExtractContainerImageScanFrom extracts the applied configuration owned by fieldManager from
+// containerImageScan for the specified subresource. Pass an empty string for subresource to extract
+// the main resource. Common subresources include "status", "scale", etc.
+// containerImageScan must be a unmodified ContainerImageScan API object that was retrieved from the Kubernetes API.
+// ExtractContainerImageScanFrom provides a way to perform a extract/modify-in-place/apply workflow.
+// Note that an extracted apply configuration will contain fewer fields than what the fieldManager previously
+// applied if another fieldManager has updated or force applied any of the previously applied fields.
+func ExtractContainerImageScanFrom(containerImageScan *stasv1alpha1.ContainerImageScan, fieldManager string, subresource string) (*ContainerImageScanApplyConfiguration, error) {
+	b := &ContainerImageScanApplyConfiguration{}
+	err := managedfields.ExtractInto(containerImageScan, internal.Parser().Type("com.github.statnett.image-scanner-operator.api.stas.v1alpha1.ContainerImageScan"), fieldManager, b, subresource)
+	if err != nil {
+		return nil, err
+	}
+	b.WithName(containerImageScan.Name)
+	b.WithNamespace(containerImageScan.Namespace)
+
+	b.WithKind("ContainerImageScan")
+	b.WithAPIVersion("stas.statnett.no/v1alpha1")
+	return b, nil
+}
+
+// ExtractContainerImageScan extracts the applied configuration owned by fieldManager from
+// containerImageScan. If no managedFields are found in containerImageScan for fieldManager, a
+// ContainerImageScanApplyConfiguration is returned with only the Name, Namespace (if applicable),
+// APIVersion and Kind populated. It is possible that no managed fields were found for because other
+// field managers have taken ownership of all the fields previously owned by fieldManager, or because
+// the fieldManager never owned fields any fields.
+// containerImageScan must be a unmodified ContainerImageScan API object that was retrieved from the Kubernetes API.
+// ExtractContainerImageScan provides a way to perform a extract/modify-in-place/apply workflow.
+// Note that an extracted apply configuration will contain fewer fields than what the fieldManager previously
+// applied if another fieldManager has updated or force applied any of the previously applied fields.
+func ExtractContainerImageScan(containerImageScan *stasv1alpha1.ContainerImageScan, fieldManager string) (*ContainerImageScanApplyConfiguration, error) {
+	return ExtractContainerImageScanFrom(containerImageScan, fieldManager, "")
+}
+
+// ExtractContainerImageScanStatus extracts the applied configuration owned by fieldManager from
+// containerImageScan for the status subresource.
+func ExtractContainerImageScanStatus(containerImageScan *stasv1alpha1.ContainerImageScan, fieldManager string) (*ContainerImageScanApplyConfiguration, error) {
+	return ExtractContainerImageScanFrom(containerImageScan, fieldManager, "status")
 }
 
 func (b ContainerImageScanApplyConfiguration) IsApplyConfiguration() {}
