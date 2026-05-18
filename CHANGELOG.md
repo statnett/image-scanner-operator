@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.17](https://github.com/statnett/image-scanner-operator/compare/v0.16.16...v0.16.17) (2026-05-18)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes go packages to v0.36.1 ([#1745](https://github.com/statnett/image-scanner-operator/issues/1745)) ([d12dc34](https://github.com/statnett/image-scanner-operator/commit/d12dc34aa4e6c6c58087fafb5dd3e2a0c87e66f6))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.29.0 ([#1749](https://github.com/statnett/image-scanner-operator/issues/1749)) ([bd528ba](https://github.com/statnett/image-scanner-operator/commit/bd528ba87bb2363be2fbe79f455afb2e2c99f5f6))
+* **deps:** Update module github.com/onsi/gomega to v1.41.0 ([#1750](https://github.com/statnett/image-scanner-operator/issues/1750)) ([0b3fe10](https://github.com/statnett/image-scanner-operator/commit/0b3fe10733b5283f3a283b1c545091a9836502c4))
+
 ## [0.16.16](https://github.com/statnett/image-scanner-operator/compare/v0.16.15...v0.16.16) (2026-05-12)
 
 
