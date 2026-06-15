@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.16.18](https://github.com/statnett/image-scanner-operator/compare/v0.16.17...v0.16.18) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.71.1 ([#1769](https://github.com/statnett/image-scanner-operator/issues/1769)) ([760bcf6](https://github.com/statnett/image-scanner-operator/commit/760bcf6dfa0fafe37d6bee313bfed7321a358a42))
+* **deps:** Update kubernetes go packages to v0.36.2 ([#1765](https://github.com/statnett/image-scanner-operator/issues/1765)) ([762498d](https://github.com/statnett/image-scanner-operator/commit/762498ddb0e252fe7817e42d706a12bac8bb59e6))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.30.0 ([#1763](https://github.com/statnett/image-scanner-operator/issues/1763)) ([ca58093](https://github.com/statnett/image-scanner-operator/commit/ca58093c0afade827a41db531691854a43e3c19e))
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.31.0 ([#1767](https://github.com/statnett/image-scanner-operator/issues/1767)) ([84585a2](https://github.com/statnett/image-scanner-operator/commit/84585a266c1c77d651b95ce49ae4d2b7f9049c15))
+* **deps:** Update module github.com/onsi/gomega to v1.42.0 ([#1768](https://github.com/statnett/image-scanner-operator/issues/1768)) ([2353746](https://github.com/statnett/image-scanner-operator/commit/2353746fe6a7312635d26e7a50ef712b435cc655))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.57 ([#1771](https://github.com/statnett/image-scanner-operator/issues/1771)) ([8ee1b21](https://github.com/statnett/image-scanner-operator/commit/8ee1b21f908825c092b32db1479ce1ed4036e6eb))
+
+
+### Reverts
+
+* "ci: stop automatic PR creation for trivy" ([#1770](https://github.com/statnett/image-scanner-operator/issues/1770)) ([ceaa0df](https://github.com/statnett/image-scanner-operator/commit/ceaa0df2fc5ece81b174bbf0686f3ce9fe2a355e))
+
 ## [0.16.17](https://github.com/statnett/image-scanner-operator/compare/v0.16.16...v0.16.17) (2026-05-18)
 
 
