@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.20](https://github.com/statnett/image-scanner-operator/compare/v0.16.19...v0.16.20) (2026-06-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.32.0 ([#1777](https://github.com/statnett/image-scanner-operator/issues/1777)) ([d261157](https://github.com/statnett/image-scanner-operator/commit/d261157e7fa004fb4d78f41c8976a0b0de1c54f9))
+* **deps:** Update module github.com/onsi/gomega to v1.42.1 ([#1779](https://github.com/statnett/image-scanner-operator/issues/1779)) ([7ee0130](https://github.com/statnett/image-scanner-operator/commit/7ee01304d58d8528a5fb77f8b5492aa67c7909e4))
+
 ## [0.16.19](https://github.com/statnett/image-scanner-operator/compare/v0.16.18...v0.16.19) (2026-06-19)
 
 
