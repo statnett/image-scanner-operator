@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.21](https://github.com/statnett/image-scanner-operator/compare/v0.16.20...v0.16.21) (2026-07-10)
+
+
+### Bug Fixes
+
+* Bump base image to distoless Debian 13 ([#1795](https://github.com/statnett/image-scanner-operator/issues/1795)) ([36170a1](https://github.com/statnett/image-scanner-operator/commit/36170a1af5b2e6de05e8e0f4d398ed537b108e9b))
+* **deps:** Update kubernetes go packages ([#1791](https://github.com/statnett/image-scanner-operator/issues/1791)) ([b793ace](https://github.com/statnett/image-scanner-operator/commit/b793ace65414ed82a68f9e125595e5207e0ec431))
+
 ## [0.16.20](https://github.com/statnett/image-scanner-operator/compare/v0.16.19...v0.16.20) (2026-07-05)
 
 
