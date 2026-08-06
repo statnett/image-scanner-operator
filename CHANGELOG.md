@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.22](https://github.com/statnett/image-scanner-operator/compare/v0.16.21...v0.16.22) (2026-08-06)
+
+
+### Bug Fixes
+
+* **trivy:** Halve default server cache TTL ([#1810](https://github.com/statnett/image-scanner-operator/issues/1810)) ([0f9ce3d](https://github.com/statnett/image-scanner-operator/commit/0f9ce3d0b072f97ba9670b3967eda1bbb83aed67))
+
 ## [0.16.21](https://github.com/statnett/image-scanner-operator/compare/v0.16.20...v0.16.21) (2026-07-10)
 
 
