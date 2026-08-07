@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/distribution/reference v0.6.0
-	github.com/go-logr/logr v1.4.3
+	github.com/go-logr/logr v1.4.4
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/gohugoio/hashstructure v1.0.0
 	github.com/onsi/ginkgo/v2 v2.32.0
@@ -14,7 +14,7 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
-	github.com/statnett/controller-runtime-viper v0.3.57
+	github.com/statnett/controller-runtime-viper v0.3.58
 	github.com/stretchr/testify v1.11.1
 	k8s.io/api v0.36.3
 	k8s.io/apiextensions-apiserver v0.36.3
