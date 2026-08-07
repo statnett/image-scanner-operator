@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.16.23](https://github.com/statnett/image-scanner-operator/compare/v0.16.22...v0.16.23) (2026-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.73.0 ([#1808](https://github.com/statnett/image-scanner-operator/issues/1808)) ([16c7262](https://github.com/statnett/image-scanner-operator/commit/16c72628c43d4c30ed0b06c039eb66ef341d099d))
+* **deps:** Update kubernetes go packages to v0.36.3 ([#1804](https://github.com/statnett/image-scanner-operator/issues/1804)) ([78d777f](https://github.com/statnett/image-scanner-operator/commit/78d777f35d15c7264ea5da21528a92cf708477e2))
+* **deps:** Update module github.com/gohugoio/hashstructure to v1 ([#1807](https://github.com/statnett/image-scanner-operator/issues/1807)) ([2aa7de4](https://github.com/statnett/image-scanner-operator/commit/2aa7de4e89820881a07bb3f20df90d0978965b5d))
+* **deps:** Update module github.com/prometheus/client_golang to v1.24.1 ([#1802](https://github.com/statnett/image-scanner-operator/issues/1802)) ([ae6952e](https://github.com/statnett/image-scanner-operator/commit/ae6952e1f153ec305df890a0c20de4a8bbea0f1b))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.58 ([#1813](https://github.com/statnett/image-scanner-operator/issues/1813)) ([1bb60a8](https://github.com/statnett/image-scanner-operator/commit/1bb60a8e8e4fd64b21198782eef5e8955a181ea8))
+
 ## [0.16.22](https://github.com/statnett/image-scanner-operator/compare/v0.16.21...v0.16.22) (2026-08-06)
 
 
