@@ -106,6 +106,44 @@ var _ = Describe("ContainerImageScan controller", func() {
 		Expect(scanJob2.UID).To(Not(Equal(scanJob.UID)))
 	})
 
+	It("should not recreate a scan job that is still running", func() {
+		// Regression test: a scan job that takes longer to complete than the
+		// rescan check interval must not be deleted and recreated by a
+		// subsequent reconcile triggered while it is still active. Doing so
+		// livelocks indefinitely, since the replacement job never gets a
+		// chance to finish either.
+		cis := &stasv1alpha1.ContainerImageScan{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "nginx-still-running",
+				Namespace: DefaultNamespaceName,
+			},
+			Spec: stasv1alpha1.ContainerImageScanSpec{
+				ImageScanSpec: stasv1alpha1.ImageScanSpec{
+					Image: stasv1alpha1.Image{
+						Name:   "docker.io/nginxinc/nginx-unprivileged",
+						Digest: "sha256:11111111111111111111111111111111111111111111111111111111111111",
+					},
+				},
+			},
+		}
+		Expect(k8sClient.Create(ctx, cis)).To(Succeed())
+
+		// Wait for scan job to be created; leave it running (no Complete/Failed
+		// condition set), simulating a scan that is still in progress.
+		scanJob := getContainerImageScanJob(cis)
+
+		// Simulate the RescanTrigger firing again while the scan job above is
+		// still active, e.g. because LastScanTime hasn't been updated yet.
+		// The suite's RescanTrigger ticks every second (see suite_test.go), so
+		// this will very quickly cause another reconcile of this CIS.
+		Expect(komega.UpdateStatus(cis, func() {
+			cis.Status.LastScanTime = &metav1.Time{Time: time.Now().Add(-time.Hour * 12)}
+		})()).To(Succeed())
+
+		// The still-running job must not be deleted or replaced.
+		Consistently(komega.Object(scanJob)).Should(HaveField("UID", scanJob.UID))
+	})
+
 	It("should copy an existing recent scan result", func() {
 		latestDigestScanTime := metav1.Time{Time: time.Now().Add(-time.Minute)}
 
