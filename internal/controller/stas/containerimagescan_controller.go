@@ -177,9 +177,30 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 	err = r.Create(ctx, scanJob)
 	if err != nil {
 		if apierrors.IsAlreadyExists(err) {
-			// Job already exists; delete it and requeue
+			existing := &batchv1.Job{}
+			if getErr := r.Get(ctx, client.ObjectKeyFromObject(scanJob), existing); getErr != nil {
+				return result, getErr
+			}
+
+			if !isJobComplete(existing) && !isJobFailed(existing) {
+				// Scan job already exists and is still running. Deleting it here would
+				// kill an in-progress scan and immediately recreate it, which can
+				// livelock indefinitely for any scan that takes longer than the
+				// rescan check interval (RescanTrigger keeps requeuing stale CISes
+				// on a fixed tick, without knowing a scan is already in flight).
+				// Let the running job finish; ScanJobReconciler will pick up its
+				// result and update the CIS status once it completes.
+				logf.FromContext(ctx).V(1).Info("Scan job already exists and is still running, not recreating", "job", existing.Name)
+
+				return result, nil
+			}
+
+			// Job already exists but is finished (e.g. not yet cleaned up by TTL);
+			// delete it and requeue so a fresh scan job can be created.
 			err = r.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationBackground))
 			result.Requeue = true //nolint:staticcheck // SA1019: FIXME: https://github.com/kubernetes-sigs/controller-runtime/pull/3107#issuecomment-2648121233
+
+			return result, err
 		}
 
 		return result, err
