@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.16.24](https://github.com/statnett/image-scanner-operator/compare/v0.16.23...v0.16.24) (2026-08-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.32.1 ([#1814](https://github.com/statnett/image-scanner-operator/issues/1814)) ([590ca5e](https://github.com/statnett/image-scanner-operator/commit/590ca5e92e5d2ccfd74d5b144ed5041c8d9360cc))
+* **scan-job:** Don't delete a scan Job that is still running ([#1820](https://github.com/statnett/image-scanner-operator/issues/1820)) ([945c19d](https://github.com/statnett/image-scanner-operator/commit/945c19d88fb55c34ef0feddcf976d8fdbeace5a2))
+
 ## [0.16.23](https://github.com/statnett/image-scanner-operator/compare/v0.16.22...v0.16.23) (2026-08-07)
 
 
