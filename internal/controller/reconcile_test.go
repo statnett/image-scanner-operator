@@ -29,8 +29,8 @@ func TestReconcile(t *testing.T) {
 	}{
 		{name: "no error", args: args{reconcileFn: reconcileError(nil)}},
 		{name: "unrelated", args: args{reconcileFn: reconcileError(errors.New("error"))}, wantErr: true},
-		{name: "conflict", args: args{reconcileFn: reconcileError(apierrors.NewConflict(gr, "name", nil))}, want: ctrl.Result{Requeue: true}},
-		{name: "already exists", args: args{reconcileFn: reconcileError(apierrors.NewAlreadyExists(gr, "name"))}, want: ctrl.Result{Requeue: true}},
+		{name: "conflict", args: args{reconcileFn: reconcileError(apierrors.NewConflict(gr, "name", nil))}, wantErr: true},
+		{name: "already exists", args: args{reconcileFn: reconcileError(apierrors.NewAlreadyExists(gr, "name"))}, wantErr: true},
 		{name: "not found", args: args{reconcileFn: reconcileError(apierrors.NewNotFound(gr, "name"))}},
 		{name: "namespace terminating", args: args{reconcileFn: reconcileError(newNamespaceTerminatingError())}},
 	}

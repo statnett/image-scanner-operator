@@ -7,6 +7,7 @@ import (
 	"io"
 	"slices"
 	"strings"
+	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -123,7 +124,7 @@ func (r *ScanJobReconciler) reconcileBackOffJobPod() reconcile.Func {
 
 				logf.FromContext(ctx).V(1).Info("no waiting state found", "expectedReasons", expectedReasons)
 				// Pod (in controller cache) has not yet reached waiting state. Requeue event
-				return ctrl.Result{Requeue: true}, nil
+				return ctrl.Result{RequeueAfter: time.Second}, nil
 			}
 
 			podController := metav1.GetControllerOf(p)

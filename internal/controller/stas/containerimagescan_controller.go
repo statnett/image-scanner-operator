@@ -85,8 +85,8 @@ func (r *ContainerImageScanReconciler) Reconcile(ctx context.Context, req ctrl.R
 			}
 
 			if count >= r.ActiveScanJobLimit {
-				// Max number of active scan jobs reached. Requeue request.
-				return ctrl.Result{Requeue: true}, nil
+				// Max number of active scan jobs reached. Requeue request with some delay.
+				return ctrl.Result{RequeueAfter: 10 * time.Second}, nil
 			}
 		}
 
@@ -198,7 +198,7 @@ func (r *ContainerImageScanReconciler) reconcile(ctx context.Context, cis *stasv
 			// Job already exists but is finished (e.g. not yet cleaned up by TTL);
 			// delete it and requeue so a fresh scan job can be created.
 			err = r.Delete(ctx, scanJob, client.PropagationPolicy(metav1.DeletePropagationBackground))
-			result.Requeue = true //nolint:staticcheck // SA1019: FIXME: https://github.com/kubernetes-sigs/controller-runtime/pull/3107#issuecomment-2648121233
+			result.RequeueAfter = 5 * time.Second
 
 			return result, err
 		}
