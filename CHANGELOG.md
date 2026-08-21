@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.25](https://github.com/statnett/image-scanner-operator/compare/v0.16.24...v0.16.25) (2026-08-21)
+
+
+### Bug Fixes
+
+* **deps:** Update ghcr.io/aquasecurity/trivy docker tag to v0.74.0 ([#1827](https://github.com/statnett/image-scanner-operator/issues/1827)) ([cdc8da4](https://github.com/statnett/image-scanner-operator/commit/cdc8da4595da802dbe8049d5e7d2e788bb71afff))
+* **deps:** Update kubernetes go packages to v0.36.4 ([#1831](https://github.com/statnett/image-scanner-operator/issues/1831)) ([4c76a34](https://github.com/statnett/image-scanner-operator/commit/4c76a34978215f875b28363a3f63414fbfd19831))
+* **deps:** Update module github.com/statnett/controller-runtime-viper to v0.3.59 ([#1823](https://github.com/statnett/image-scanner-operator/issues/1823)) ([ce205d5](https://github.com/statnett/image-scanner-operator/commit/ce205d5d5ed8b253d7ceab3014ceb5e2a84498b0))
+* **deps:** Update module github.com/stretchr/testify to v1.12.0 ([#1829](https://github.com/statnett/image-scanner-operator/issues/1829)) ([ff925aa](https://github.com/statnett/image-scanner-operator/commit/ff925aa61196eb4124a70c115ccd77d7a05e27d8))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#1832](https://github.com/statnett/image-scanner-operator/issues/1832)) ([62baa89](https://github.com/statnett/image-scanner-operator/commit/62baa8935071c50f89fe36abd044ad6fea1d30f9))
+* Replace use of deprecated Result.Requeue with Result.RequeueAfter ([#1836](https://github.com/statnett/image-scanner-operator/issues/1836)) ([0b61b6f](https://github.com/statnett/image-scanner-operator/commit/0b61b6f72faf4c2d14b80eca7509a65cf43f7bf6))
+
 ## [0.16.24](https://github.com/statnett/image-scanner-operator/compare/v0.16.23...v0.16.24) (2026-08-13)
 
 
