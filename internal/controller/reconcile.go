@@ -3,9 +3,10 @@ package controller
 import (
 	"context"
 
-	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
+
+	staserrors "github.com/statnett/image-scanner-operator/internal/errors"
 )
 
 type ReconcileFn func(context.Context) (ctrl.Result, error)
