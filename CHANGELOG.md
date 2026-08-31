@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.16.26](https://github.com/statnett/image-scanner-operator/compare/v0.16.25...v0.16.26) (2026-08-31)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes go packages to v0.37.0 ([#1841](https://github.com/statnett/image-scanner-operator/issues/1841)) ([bd26a3c](https://github.com/statnett/image-scanner-operator/commit/bd26a3ccd9b8bc16514e86c18b4475d814aec0e5))
+* **deps:** Update module github.com/gohugoio/hashstructure to v1.1.0 ([#1845](https://github.com/statnett/image-scanner-operator/issues/1845)) ([ada2d36](https://github.com/statnett/image-scanner-operator/commit/ada2d36dba9ac9d16b93f2cee8c11c76686a1f71))
+* **deps:** Update module github.com/onsi/gomega to v1.43.0 ([#1843](https://github.com/statnett/image-scanner-operator/issues/1843)) ([3430256](https://github.com/statnett/image-scanner-operator/commit/34302563bc6b6e111fe70355f29a2db34eae2e61))
+* Ignore pods in transition even more ([#1837](https://github.com/statnett/image-scanner-operator/issues/1837)) ([dace563](https://github.com/statnett/image-scanner-operator/commit/dace5636606499bec1d85c358dfff5fadb00d4b4))
+
 ## [0.16.25](https://github.com/statnett/image-scanner-operator/compare/v0.16.24...v0.16.25) (2026-08-21)
 
 
