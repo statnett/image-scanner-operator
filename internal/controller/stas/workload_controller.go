@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -122,14 +121,9 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 				return ctrl.Result{}, fmt.Errorf("when computing pod kstatus: %w", err)
 			}
 
-			switch res.Status {
-			case kstatus.TerminatingStatus:
+			if res.Status != kstatus.CurrentStatus {
+				logf.FromContext(ctx).V(1).Info("skipping pod, status is not Current", "status", res.Status)
 				return ctrl.Result{}, nil
-			case kstatus.CurrentStatus:
-				// This is the case we want to reconcile
-			default:
-				logf.FromContext(ctx).Info("requeueing pod in transition", "status", res.Status)
-				return ctrl.Result{RequeueAfter: time.Second}, nil
 			}
 
 			return ctrl.Result{}, r.reconcile(ctx, pod)
