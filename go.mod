@@ -8,7 +8,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/gohugoio/hashstructure v1.0.0
 	github.com/onsi/ginkgo/v2 v2.32.1
-	github.com/onsi/gomega v1.42.1
+	github.com/onsi/gomega v1.43.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/openreports/reports-api v0.2.1
 	github.com/prometheus/client_golang v1.24.1
