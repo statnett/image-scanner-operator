@@ -122,7 +122,7 @@ func (r *PodReconciler) reconcilePod() reconcile.Func {
 			}
 
 			if res.Status != kstatus.CurrentStatus {
-				logf.FromContext(ctx).V(1).Info("ignoring event for pod in transition", "status", res.Status)
+				logf.FromContext(ctx).V(1).Info("skipping pod, status is not Current", "status", res.Status)
 				return ctrl.Result{}, nil
 			}
 
