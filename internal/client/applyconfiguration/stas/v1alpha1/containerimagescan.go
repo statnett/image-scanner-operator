@@ -16,7 +16,7 @@ import (
 //
 // ContainerImageScan is the Schema for the containerImageScans API.
 type ContainerImageScanApplyConfiguration struct {
-	v1.TypeMetaApplyConfiguration    `json:",inline"`
+	v1.TypeMetaApplyConfiguration    `json:""`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
 	Spec                             *ContainerImageScanSpecApplyConfiguration   `json:"spec,omitempty"`
 	Status                           *ContainerImageScanStatusApplyConfiguration `json:"status,omitempty"`

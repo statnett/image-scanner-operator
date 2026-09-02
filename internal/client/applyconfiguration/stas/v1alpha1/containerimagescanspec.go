@@ -12,7 +12,7 @@ import (
 //
 // ContainerImageScanSpec contains a resolved container image in use by owning workload.
 type ContainerImageScanSpecApplyConfiguration struct {
-	ImageScanSpecApplyConfiguration `json:",inline"`
+	ImageScanSpecApplyConfiguration `json:""`
 	Tag                             *string                     `json:"tag,omitempty"`
 	Workload                        *WorkloadApplyConfiguration `json:"workload,omitempty"`
 }
