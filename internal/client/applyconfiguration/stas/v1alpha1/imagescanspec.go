@@ -12,8 +12,8 @@ import (
 //
 // ImageScanSpec represents the specification for the container image scan.
 type ImageScanSpecApplyConfiguration struct {
-	ImageApplyConfiguration      `json:",inline"`
-	ScanConfigApplyConfiguration `json:",inline"`
+	ImageApplyConfiguration      `json:""`
+	ScanConfigApplyConfiguration `json:""`
 }
 
 // ImageScanSpecApplyConfiguration constructs a declarative configuration of the ImageScanSpec type for use with
