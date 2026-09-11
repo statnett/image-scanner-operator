@@ -2,6 +2,7 @@ package stas
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -24,7 +25,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/json"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
 	"github.com/statnett/image-scanner-operator/internal/config"
@@ -164,7 +164,7 @@ func (r *ScanJobReconciler) reconcileBackOffJob(ctx context.Context, job *batchv
 func (r *ScanJobReconciler) reconcileCompleteJob(ctx context.Context, job *batchv1.Job, log io.Reader, cis *stasv1alpha1.ContainerImageScan) error {
 	var vulnerabilities []stasv1alpha1.Vulnerability
 
-	err := json.NewDecoderCaseSensitivePreserveInts(log).Decode(&vulnerabilities)
+	err := json.NewDecoder(log).Decode(&vulnerabilities)
 	if err != nil {
 		return newContainerImageStatusPatch(cis).
 			withCondition(
