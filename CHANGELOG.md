@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.28](https://github.com/statnett/image-scanner-operator/compare/v0.16.27...v0.16.28) (2026-09-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/onsi/ginkgo/v2 to v2.32.2 ([#1854](https://github.com/statnett/image-scanner-operator/issues/1854)) ([22b12e9](https://github.com/statnett/image-scanner-operator/commit/22b12e9b69ab10772cb228041016a27df38de498))
+* **deps:** Update module sigs.k8s.io/controller-runtime to v0.25.1 ([#1855](https://github.com/statnett/image-scanner-operator/issues/1855)) ([e57b0b2](https://github.com/statnett/image-scanner-operator/commit/e57b0b2b8709019437bab526189cbdcce821cb83))
+* Use std Go JSON decoder ([#1858](https://github.com/statnett/image-scanner-operator/issues/1858)) ([539b3a1](https://github.com/statnett/image-scanner-operator/commit/539b3a185f3f404bcfc4febc1994019fbab49390))
+
 ## [0.16.27](https://github.com/statnett/image-scanner-operator/compare/v0.16.26...v0.16.27) (2026-09-04)
 
 
