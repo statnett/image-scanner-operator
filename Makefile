@@ -167,11 +167,11 @@ ENVTEST ?= $(LOCALBIN)/setup-envtest
 
 ## Tool Versions
 # renovate: datasource=go depName=sigs.k8s.io/kustomize/kustomize/v5
-KUSTOMIZE_VERSION ?= v5.8.2
+KUSTOMIZE_VERSION ?= v5.8.3
 # renovate: datasource=go depName=github.com/kubernetes/code-generator
 CODE_GENERATOR_VERSION ?= v0.37.1
 # renovate: datasource=go depName=sigs.k8s.io/controller-tools
-CONTROLLER_TOOLS_VERSION ?= v0.22.0
+CONTROLLER_TOOLS_VERSION ?= v0.23.0
 
 .PHONY: applyconfiguration-gen
 applyconfiguration-gen: $(APPLYCONFIGURATION_GEN) ## Download applyconfiguration-gen locally if necessary.
