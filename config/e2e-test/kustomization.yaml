@@ -10,15 +10,6 @@ configMapGenerator:
     literals:
       # Only include chainsaw namespace pattern to reduce resource waste running e2e tests
       - SCAN_NAMESPACE_INCLUDE_REGEXP=^chainsaw-.*
-  - name: trivy-server-config
-    behavior: merge
-    literals:
-      - DB_REPOSITORY=public.ecr.aws/aquasecurity/trivy-db
-  - name: trivy-job-config
-    namespace: image-scanner
-    behavior: merge
-    literals:
-      - JAVA_DB_REPOSITORY=public.ecr.aws/aquasecurity/trivy-java-db
 patches:
   # FIXME: Somehow sessionAffinity does not work when running e2e tests in some environments
   # Disable trivy server sessionAffinity; not really needed when running a single replica
