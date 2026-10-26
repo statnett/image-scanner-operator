@@ -1,8 +1,5 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-helmCharts:
-  - name: openreports
-    includeCRDs: true
-    version: 0.2.1
-    repo: oci://ghcr.io/openreports/charts/
+resources:
+  - crd
