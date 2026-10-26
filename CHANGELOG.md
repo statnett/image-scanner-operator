@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.32](https://github.com/statnett/image-scanner-operator/compare/v0.16.31...v0.16.32) (2026-10-26)
+
+
+### Reverts
+
+* "ci(e2e-test): try unofficial Trivy DB to mend failing CI" ([#1896](https://github.com/statnett/image-scanner-operator/issues/1896)) ([d121ca8](https://github.com/statnett/image-scanner-operator/commit/d121ca815d904140e1ca98022505aa4a40781484))
+
 ## [0.16.31](https://github.com/statnett/image-scanner-operator/compare/v0.16.30...v0.16.31) (2026-10-21)
 
 
