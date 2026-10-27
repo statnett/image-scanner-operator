@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.16.33](https://github.com/statnett/image-scanner-operator/compare/v0.16.32...v0.16.33) (2026-10-27)
+
+
+### Bug Fixes
+
+* Bump minimum Go version to 1.27 ([#1902](https://github.com/statnett/image-scanner-operator/issues/1902)) ([3942dbd](https://github.com/statnett/image-scanner-operator/commit/3942dbd152eba445251af01ebed557e32a672684))
+* **deps:** Update kubernetes go packages ([#1881](https://github.com/statnett/image-scanner-operator/issues/1881)) ([171d08e](https://github.com/statnett/image-scanner-operator/commit/171d08ecdd11e9adfb80f80c57ed444a5fb73d9f))
+
+
+### Reverts
+
+* "refactor: install openreports CRDs from their Helm chart ([#1543](https://github.com/statnett/image-scanner-operator/issues/1543))" ([#1899](https://github.com/statnett/image-scanner-operator/issues/1899)) ([dc98b66](https://github.com/statnett/image-scanner-operator/commit/dc98b662660264695e1ffba080ec2ac11a1b2374))
+
 ## [0.16.32](https://github.com/statnett/image-scanner-operator/compare/v0.16.31...v0.16.32) (2026-10-26)
 
 
