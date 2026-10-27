@@ -3,6 +3,7 @@ ignore: |
   /config/crd/bases/
   /config/rbac/role.yaml
   /config/samples/
+  /config/openreports/crd/
 rules:
   comments:
     require-starting-space: false
