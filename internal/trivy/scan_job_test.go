@@ -20,9 +20,9 @@ var _ = Describe("Scan Job", func() {
 
 		BeforeEach(func() {
 			jobBuilder = &filesystemScanJobBuilder{}
-			cisSpec = stasv1alpha1.ContainerImageScanSpec{}
-			cisSpec.Name = "foo.registry/bar"
-			cisSpec.Digest = "sha256:f1645ab5fbbbcf9e3484d1506dd65fc9fb26dd6817cb3a0a64249d8a8973e170"
+			cisSpec = stasv1alpha1.ContainerImageScanSpec{
+				Name:   "foo.registry/bar",
+				Digest: "sha256:f1645ab5fbbbcf9e3484d1506dd65fc9fb26dd6817cb3a0a64249d8a8973e170"}
 		})
 
 		Context("minimum severity config", func() {

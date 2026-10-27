@@ -38,10 +38,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 	It("should reconcile status", func() {
 		cis := &stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "nginx-unprivileged",
-				Namespace: DefaultNamespaceName,
-			},
+			Name:      "nginx-unprivileged",
+			Namespace: DefaultNamespaceName,
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
@@ -70,10 +68,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 
 	It("should rescan when due", func() {
 		cis := &stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "nginx-rescan",
-				Namespace: DefaultNamespaceName,
-			},
+			Name:      "nginx-rescan",
+			Namespace: DefaultNamespaceName,
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
@@ -113,10 +109,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 		// livelocks indefinitely, since the replacement job never gets a
 		// chance to finish either.
 		cis := &stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "nginx-still-running",
-				Namespace: DefaultNamespaceName,
-			},
+			Name:      "nginx-still-running",
+			Namespace: DefaultNamespaceName,
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
@@ -150,10 +144,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 		latestDigestScanTime := metav1.Time{Time: time.Now().Add(-time.Minute)}
 
 		sourceCIS := &stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "copy-source",
-				Namespace: DefaultNamespaceName,
-			},
+			Name:      "copy-source",
+			Namespace: DefaultNamespaceName,
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
@@ -185,10 +177,8 @@ var _ = Describe("ContainerImageScan controller", func() {
 		})()).To(Succeed())
 
 		targetCIS := &stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "copy-target",
-				Namespace: DefaultNamespaceName,
-			},
+			Name:      "copy-target",
+			Namespace: DefaultNamespaceName,
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
 					Image: stasv1alpha1.Image{
