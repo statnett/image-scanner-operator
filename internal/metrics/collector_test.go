@@ -14,7 +14,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	stasv1alpha1 "github.com/statnett/image-scanner-operator/api/stas/v1alpha1"
-	"github.com/statnett/image-scanner-operator/internal/config"
 )
 
 var _ = Describe("ContainerImageScan Collector", func() {
@@ -23,9 +22,9 @@ var _ = Describe("ContainerImageScan Collector", func() {
 	JustBeforeEach(func() {
 		c := newClientWithTestdata()
 		imageMetricsCollector = &ImageMetricsCollector{
-			Reader: c,
-			Config: config.Config{MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"}},
-			Log:    GinkgoLogr.WithName(LoggerName),
+			Reader:        c,
+			MetricsLabels: []string{"system.statnett.no/name", "app.kubernetes.io/name"},
+			Log:           GinkgoLogr.WithName(LoggerName),
 		}
 		mgr := &MockManager{}
 		mgr.EXPECT().Add(mock.Anything).Call.Return(nil)
@@ -82,13 +81,11 @@ var _ = Describe("ContainerImageScan Collector", func() {
 func newClientWithTestdata() client.Client {
 	ciss := []runtime.Object{
 		&stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "good-app-aaa123",
-				Namespace: "default",
-				Labels: map[string]string{
-					"system.statnett.no/name": "light-side",
-					"app.kubernetes.io/name":  "good-app",
-				},
+			Name:      "good-app-aaa123",
+			Namespace: "default",
+			Labels: map[string]string{
+				"system.statnett.no/name": "light-side",
+				"app.kubernetes.io/name":  "good-app",
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
@@ -100,22 +97,18 @@ func newClientWithTestdata() client.Client {
 			},
 		},
 		&openreportsv1alpha1.Report{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "good-app-aaa123",
-				Namespace: "default",
-				Labels: map[string]string{
-					stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
-				},
+			Name:      "good-app-aaa123",
+			Namespace: "default",
+			Labels: map[string]string{
+				stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
 			},
 		},
 		&stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "bad-app-666666",
-				Namespace: "default",
-				Labels: map[string]string{
-					"system.statnett.no/name": "dark-side",
-					"app.kubernetes.io/name":  "bad-app",
-				},
+			Name:      "bad-app-666666",
+			Namespace: "default",
+			Labels: map[string]string{
+				"system.statnett.no/name": "dark-side",
+				"app.kubernetes.io/name":  "bad-app",
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{
@@ -135,12 +128,10 @@ func newClientWithTestdata() client.Client {
 			},
 		},
 		&openreportsv1alpha1.Report{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "bad-app-666666",
-				Namespace: "default",
-				Labels: map[string]string{
-					stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
-				},
+			Name:      "bad-app-666666",
+			Namespace: "default",
+			Labels: map[string]string{
+				stasv1alpha1.LabelK8SAppManagedBy: stasv1alpha1.LabelK8SAppManagedBy,
 			},
 			Results: []openreportsv1alpha1.ReportResult{
 				{
@@ -176,13 +167,11 @@ func newClientWithTestdata() client.Client {
 			},
 		},
 		&stasv1alpha1.ContainerImageScan{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "scan-failure-111111",
-				Namespace: "default",
-				Labels: map[string]string{
-					"system.statnett.no/name": "light-side",
-					"app.kubernetes.io/name":  "scan-failure",
-				},
+			Name:      "scan-failure-111111",
+			Namespace: "default",
+			Labels: map[string]string{
+				"system.statnett.no/name": "light-side",
+				"app.kubernetes.io/name":  "scan-failure",
 			},
 			Spec: stasv1alpha1.ContainerImageScanSpec{
 				ImageScanSpec: stasv1alpha1.ImageScanSpec{

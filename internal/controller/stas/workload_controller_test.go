@@ -276,12 +276,8 @@ var _ = Describe("Naming ContainerImageScan", func() {
 
 	BeforeEach(func() {
 		ctrl = &metav1.PartialObjectMetadata{
-			TypeMeta: metav1.TypeMeta{
-				Kind: "Application",
-			},
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "workload",
-			},
+			Kind: "Application",
+			Name: "workload",
 		}
 		containerName = "app"
 		img = stasv1alpha1.Image{Name: "img-name", Digest: "img-digest"}
@@ -310,12 +306,8 @@ var _ = Describe("Naming ContainerImageScan", func() {
 
 	It("should contain controller kind", func() {
 		ctrl = &metav1.PartialObjectMetadata{
-			TypeMeta: metav1.TypeMeta{
-				Kind: "Deployment",
-			},
-			ObjectMeta: metav1.ObjectMeta{
-				Name: ctrl.GetName(),
-			},
+			Kind: "Deployment",
+			Name: ctrl.GetName(),
 		}
 		Expect(imageScanName(ctrl, containerName, img)).To(Equal("deployment-workload-app-88c48"))
 	})

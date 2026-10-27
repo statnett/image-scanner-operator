@@ -16,7 +16,6 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	metav1ac "k8s.io/client-go/applyconfigurations/meta/v1"
 	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -80,12 +79,10 @@ func (r *ScanJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
 				e := obj.(*eventsv1.Event)
 
-				return []reconcile.Request{
-					{NamespacedName: types.NamespacedName{
-						Name:      e.Regarding.Name,
-						Namespace: e.Regarding.Namespace,
-					}},
-				}
+				return []reconcile.Request{{
+					Name:      e.Regarding.Name,
+					Namespace: e.Regarding.Namespace,
+				}}
 			}),
 			builder.WithPredicates(
 				eventRegardingKind("Pod"),
