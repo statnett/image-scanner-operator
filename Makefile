@@ -55,7 +55,7 @@ k8s-client-gen: controller-gen ## Generate API clients
 .PHONY: openreports-crd-update
 openreports-crd-update:
 	curl -O --output-dir config/openreports/crd/ --remote-name-all \
-		https://raw.githubusercontent.com/openreports/reports-api/refs/heads/main/config/crd/openreports.io_{clusterreports,reports}.yaml \
+		https://raw.githubusercontent.com/openreports/reports-api/refs/heads/main/config/crd/openreports.io_reports.yaml \
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
