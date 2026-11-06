@@ -12,7 +12,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/openreports/reports-api v0.2.1
 	github.com/prometheus/client_golang v1.25.0
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 	github.com/spf13/viper v1.21.0
 	github.com/statnett/controller-runtime-viper v0.3.64
 	github.com/stretchr/testify v1.12.1
