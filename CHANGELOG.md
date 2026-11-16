@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.36](https://github.com/statnett/image-scanner-operator/compare/v0.16.35...v0.16.36) (2026-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module sigs.k8s.io/controller-runtime to v0.25.3 ([#1920](https://github.com/statnett/image-scanner-operator/issues/1920)) ([f471db0](https://github.com/statnett/image-scanner-operator/commit/f471db0498d900648a870626023ea8f095bea3f4))
+
 ## [0.16.35](https://github.com/statnett/image-scanner-operator/compare/v0.16.34...v0.16.35) (2026-11-06)
 
 
